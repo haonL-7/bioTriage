@@ -11,6 +11,11 @@ on:
         required: false
         default: '50'
         type: string
+      build_only:
+        description: '仅重建部署（跳过爬取/AI评估/轻频道策展，适合纯UI改动，约1-2分钟）'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: pages
@@ -41,12 +46,14 @@ jobs:
 
       - name: Crawl news
         id: crawl
+        if: ${{ !inputs.build_only }}
         continue-on-error: true
         run: python scripts/crawler.py
         timeout-minutes: 5
 
       - name: AI evaluate
         id: evaluate
+        if: ${{ !inputs.build_only }}
         continue-on-error: true
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -60,8 +67,16 @@ jobs:
         run: python scripts/build.py
         timeout-minutes: 2
 
+      - name: Restore lightweight channel snapshots (build-only)
+        if: ${{ inputs.build_only }}
+        run: |
+          for ch in computational-genomics metagenomics-informatics structural-bioinformatics systems-biology ml-biology single-cell-omics databases-knowledge-graphs ai-drug-discovery; do
+            git checkout HEAD -- "_site/$ch" || true
+          done
+
       - name: Lightweight curation — All channels
         id: curate-all
+        if: ${{ !inputs.build_only }}
         continue-on-error: true
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
