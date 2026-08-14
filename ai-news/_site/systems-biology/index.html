@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Systems Biology & Network Analysis — BioTriage</title>
+<style>
+:root { --bg: #fff; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8c8c8c; --border: #d5d5d5; --accent: #1a5276; --max-width: 800px; --font-serif: 'Georgia','Times New Roman',serif; --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; font-size: 15px; }
+.top-bar { background: #1a1a1a; color: #ccc; font-size: 12px; padding: 8px 20px; display: flex; justify-content: space-between; }
+.top-bar a { color: #fff; text-decoration: none; }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 32px 20px 60px; }
+h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+.channel-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.channel-stats { font-size: 12px; color: var(--text-muted); margin-bottom: 28px; }
+.paper-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+.paper-item:first-of-type { border-top: 1px solid var(--border); }
+.paper-meta { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; font-size: 12px; }
+.paper-meta .journal { color: var(--text-muted); font-style: italic; }
+.paper-meta .date { color: var(--text-muted); }
+.paper-meta .sig { font-size: 10px; font-weight: 600; padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.sig-high { background: #e8f5e9; color: #1a6b3c; }
+.sig-medium { background: #f5f5f5; color: #4a4a4a; }
+.sig-low { background: #fff5f5; color: #a0a0a0; }
+.paper-title { font-family: var(--font-serif); font-size: 15px; font-weight: 400; margin-bottom: 4px; line-height: 1.5; }
+.paper-title a { color: var(--text); text-decoration: none; }
+.paper-title a:hover { color: var(--accent); text-decoration: underline; }
+.paper-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 6px; }
+.paper-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font-size: 10px; color: var(--accent); background: #eaf0f6; padding: 2px 8px; letter-spacing: 0.3px; }
+.back-link { font-size: 12px; color: var(--accent); text-decoration: none; }
+.site-footer { max-width: var(--max-width); margin: 0 auto; padding: 24px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; text-align: center; }
+.site-footer a { color: var(--accent); }
+@media (max-width: 640px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav class="top-bar"><a href="../">BioTriage</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
+<div class="container">
+<a href="../" class="back-link">&larr; BioTriage</a>
+<h1>Systems Biology & Network Analysis</h1>
+<p class="channel-desc">Gene regulatory network inference, metabolic network modeling (FBA), and multi-omics integration frameworks.</p>
+<p class="channel-stats">14 papers curated &middot; High: 3 &middot; Medium: 10 &middot; Low: 1 &middot; Updated: 2026-07-10</p>
+<article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Jun-28</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.06.22.733862" target="_blank" rel="noopener">The genetic signature of memory encoding along the human hippocampal axis.</a></h3>
+            <p class="paper-summary">This study combined intracranial EEG recordings with cell-type-resolved transcriptomics from the same patients to investigate the molecular basis of memory encoding along the hippocampal axis. The authors identified distinct oscillatory signatures and gene expression programs associated with successful memory formation, linking specific cell types and molecular pathways to anterior-posterior hippocampal specialization.</p>
+            <div class="paper-tags"><span class="tag">neuroscience</span><span class="tag">transcriptomics</span><span class="tag">single-cell</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">BMC bioinformatics</span>
+                <span class="date">2026-Jun-26</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12859-026-06542-9" target="_blank" rel="noopener">SimMapNet: a Bayesian framework for gene regulatory network inference using gene ontology similarities as external hint.</a></h3>
+            <p class="paper-summary">SimMapNet is a new Bayesian method that improves gene regulatory network inference by incorporating Gene Ontology similarity as prior knowledge, under the assumption that functionally similar genes are more likely to be connected. The framework estimates a precision matrix to represent network adjacency, offering a principled way to integrate external biological information into network reconstruction.</p>
+            <div class="paper-tags"><span class="tag">network-analysis</span><span class="tag">methodology</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cell</span>
+                <span class="date">2026-Jun-25</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.cell.2026.04.028" target="_blank" rel="noopener">D-SPIN constructs regulatory network models from scRNA-seq that reveal organizing principles of perturbation response.</a></h3>
+            <p class="paper-summary">D-SPIN is a new computational framework that infers interpretable gene regulatory network models from single-cell RNA-seq data collected across thousands of perturbation conditions. It reveals how perturbations modulate gene expression and the organizing principles cells use to maintain homeostasis and execute state transitions.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">network-analysis</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Jun-23</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1101%2F2025.04.24.650458" target="_blank" rel="noopener">Deep dynamical models of single-cell multiomic velocities predict loss-of-function and rescue perturbations in B cells.</a></h3>
+            <p class="paper-summary">DynaVelo is a new deep learning model that uses single-cell multiomic data to jointly model gene expression and transcription factor activity dynamics, improving the prediction of cell state transitions. Applied to mouse B cells, it accurately recovers complex developmental trajectories and can simulate the effects of genetic perturbations.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">BMC bioinformatics</span>
+                <span class="date">2026-Jun-22</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12859-026-06524-x" target="_blank" rel="noopener">pyVIPER: a fast and scalable Python package for protein activity estimation and master regulator analysis of single-cell RNA sequencing data.</a></h3>
+            <p class="paper-summary">pyVIPER is a new Python package that enables fast and scalable estimation of protein activity and identification of master regulator proteins from single-cell RNA sequencing data. It addresses the computational challenges posed by large scRNA-seq datasets by providing an efficient implementation of the VIPER algorithm, which helps overcome the low signal-to-noise ratio inherent in single-cell data.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">tool</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">BMC bioinformatics</span>
+                <span class="date">2026-Jun-18</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12859-026-06511-2" target="_blank" rel="noopener">A causal reinforcement learning framework for reliable gene regulatory network inference.</a></h3>
+            <p class="paper-summary">This paper introduces a new method for inferring gene regulatory networks that uses causal reinforcement learning to overcome limitations of traditional correlation-based and deep learning approaches. The method improves the identification of causal directions and structural interpretability, and efficiently handles large-scale networks. This represents a methodological advance in network inference.</p>
+            <div class="paper-tags"><span class="tag">network-analysis</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Stem cell reports</span>
+                <span class="date">2026-Jun-18</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.stemcr.2026.102964" target="_blank" rel="noopener">WNT signaling in human pluripotent stem cells promotes HDAC2-dependent epigenetic programs and development of retinoic acid-responsive mesoderm.</a></h3>
+            <p class="paper-summary">This study shows that early WNT signaling activation in human pluripotent stem cells drives the formation of a specific mesoderm population (KDR+ ALDH1A2+) that is critical for generating T cells in a retinoic acid-dependent manner. Using single-cell RNA-seq and ATAC-seq, the authors mapped the developmental trajectory and identified HDAC2 and E-box transcription factors as key regulators of this WNT-dependent epigenetic program.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">immunology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cell</span>
+                <span class="date">2026-Jun-11</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.cell.2026.04.022" target="_blank" rel="noopener">RegVelo: Gene-regulatory-informed dynamics of single cells.</a></h3>
+            <p class="paper-summary">RegVelo is a new deep learning framework that integrates gene regulatory network information with RNA velocity models to better predict cell fate transitions. By jointly modeling splicing kinetics and regulatory interactions, it provides more accurate and interpretable predictions of cellular dynamics across diverse biological systems.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">deep-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Genes</span>
+                <span class="date">2026-Jun-10</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fgenes17060684" target="_blank" rel="noopener">PXDN, TCF4 and TSPAN7 Are Differentially Expressed in B-Cell Acute Lymphoblastic Leukaemia: An Integrative Analysis.</a></h3>
+            <p class="paper-summary">This study identifies three genes (PXDN, TCF4, and TSPAN7) that are differentially expressed in B-cell acute lymphoblastic leukemia, suggesting they may serve as biomarkers or therapeutic targets. The findings highlight potential molecular candidates for improving risk stratification and treatment of high-risk and relapsed cases.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">cancer</span><span class="tag">biomarker</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Jun-10</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.06.09.731172" target="_blank" rel="noopener">Perturbation of genes linked to common schizophrenia risk variants identifies cilia programs.</a></h3>
+            <p class="paper-summary">This study uses in vivo CRISPR droplet sequencing (CROP-seq) in the mouse neocortex to perturb 12 schizophrenia risk genes linked to non-coding risk variants. The findings reveal that these genes converge on cilia-related programs, suggesting a new biological pathway for schizophrenia risk.</p>
+            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">CRISPR</span><span class="tag">neuroscience</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of biomedical informatics</span>
+                <span class="date">2026-Jul-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.jbi.2026.105080" target="_blank" rel="noopener">Causal intervention validation of gene regulatory signals in scGPT.</a></h3>
+            <p class="paper-summary">This study tests whether the single-cell foundation model scGPT captures genuine regulatory signals by performing causal interventions on its gene tokens, rather than relying on correlational attention weights. The authors find that model-internal transcription factor-target dependencies recovered through these interventions align with curated references and transfer to real perturbation responses. This provides a more rigorous validation of regulatory signal in scGPT beyond simple correlation.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">transcriptomics</span><span class="tag">single-cell</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Reproduction (Cambridge, England)</span>
+                <span class="date">2026-Jul-02</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Freprod%2Fxaag079" target="_blank" rel="noopener">Spatial Transcriptomics in Ovarian Biology Technologies, Computational Challenges, and Biological Insights.</a></h3>
+            <p class="paper-summary">This review discusses how spatially resolved transcriptomics (ST) technologies are being applied to study the ovary, a complex organ where cell interactions are critical. It covers major ST platforms and their potential to provide new biological insights into ovarian function by preserving spatial context that single-cell RNA-seq loses.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">spatial-omics</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nature neuroscience</span>
+                <span class="date">2026-Jul-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1038%2Fs41593-026-02316-x" target="_blank" rel="noopener">Single-cell multi-omic atlas and morphogen screening informs midbrain and hindbrain organoid engineering.</a></h3>
+            <p class="paper-summary">This study uses single-cell multi-omic sequencing to map cell types and regulatory mechanisms in midbrain and hindbrain organoids, revealing that current protocols predominantly produce ventral cell types. The findings provide a resource for improving organoid engineering to better model neurological disorders.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">neuroscience</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Computers in biology and medicine</span>
+                <span class="date">2026-Jul-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.compbiomed.2026.111714" target="_blank" rel="noopener">Ensemble threshold Boolean modeling reveals robust attractors and regulatory drivers in pediatric leukemia.</a></h3>
+            <p class="paper-summary">This study models the gene regulatory network of pediatric B-cell acute lymphoblastic leukemia using an ensemble of threshold Boolean networks. The analysis reveals robust attractors and identifies key regulatory drivers, providing insights into the dynamical principles underlying the disease's phenotypic heterogeneity.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">network-analysis</span><span class="tag">cancer</span></div>
+        </article>
+</div>
+<footer class="site-footer">
+<p>AI-curated by BioTriage. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">BioTriage Home</a></p>
+</footer>
+</body>
+</html>
