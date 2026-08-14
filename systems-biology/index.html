@@ -41,7 +41,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
 <a href="../" class="back-link">&larr; BioTriage</a>
 <h1>Systems Biology & Network Analysis</h1>
 <p class="channel-desc">Gene regulatory network inference, metabolic network modeling (FBA), and multi-omics integration frameworks.</p>
-<p class="channel-stats">20 papers curated &middot; High: 5 &middot; Medium: 15 &middot; Low: 0 &middot; Updated: 2026-08-14</p>
+<p class="channel-stats">42 papers curated &middot; High: 5 &middot; Medium: 37 &middot; Low: 0 &middot; Updated: 2026-08-14</p>
 <article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Plant science : an international journal of experimental plant biology</span>
@@ -55,10 +55,10 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
             <div class="paper-meta">
                 <span class="journal">bioRxiv : the preprint server for biology</span>
                 <span class="date">2026-Jul-25</span>
-                <span class="sig sig-high">High</span>
+                <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.07.21.739795" target="_blank" rel="noopener">FERRET: Framework to Evaluate Robustness in Regulatory Networks Using Heterogeneous Cell Types.</a></h3>
-            <p class="paper-summary">FERRET is a new benchmarking framework for single-cell gene regulatory network (GRN) inference methods that evaluates robustness by comparing network estimates from the same versus different cellular states, avoiding reliance on simulated or small ground-truth networks. This approach captures biological variability in real datasets and provides a more realistic assessment of GRN inference performance.</p>
+            <p class="paper-summary">FERRET is a new benchmarking framework for evaluating gene regulatory network (GRN) inference methods that uses real single-cell data from heterogeneous cell types instead of simulated or small ground-truth networks. It is based on the principle that GRN estimates from the same cellular state should be more similar to each other than to estimates from different states, providing a more biologically realistic robustness assessment.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">network-analysis</span><span class="tag">methodology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -67,7 +67,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12859-026-06538-5" target="_blank" rel="noopener">Residual-stream geometry of single-cell foundation models carries incremental gene-regulatory signal across tissues.</a></h3>
-            <p class="paper-summary">This study investigates whether single-cell foundation models like scGPT and Geneformer encode gene regulatory information beyond mere co-expression. The authors find that the residual-stream representations of these models carry incremental gene-regulatory signal across tissues, suggesting that deeper layers capture regulatory relationships not present in expression-level data.</p>
+            <p class="paper-summary">This study investigates whether single-cell foundation models like scGPT and Geneformer encode gene regulatory information beyond mere co-expression. The authors find that the residual-stream representations of these models carry incremental gene-regulatory signal across tissues, suggesting that deeper layers capture regulatory relationships not present in expression-level data alone.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">deep-learning</span><span class="tag">systems-biology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -76,7 +76,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fmsystems.00760-26" target="_blank" rel="noopener">A fungal exudate-inspired substrate mixture elicits an emergent growth phenotype and metabolic responses in Pseudomonas putida.</a></h3>
-            <p class="paper-summary">This study shows that a defined mixture of compounds mimicking fungal exudates triggers earlier and faster growth in Pseudomonas putida compared to individual substrates, even when total carbon and nitrogen are matched. The findings highlight that substrate diversity itself, not just nutrient quantity, can shape microbial growth phenotypes and metabolic responses.</p>
+            <p class="paper-summary">This study shows that a defined mixture of compounds mimicking fungal exudates triggers earlier and faster growth in Pseudomonas putida compared to individual substrates like glucose, even when total carbon and nitrogen are matched. The findings highlight that substrate diversity itself, not just nutrient quantity, can shape microbial growth phenotypes and metabolic responses.</p>
             <div class="paper-tags"><span class="tag">microbiology</span><span class="tag">metabolomics</span><span class="tag">systems-biology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -85,8 +85,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fbioinformatics%2Fbtag531" target="_blank" rel="noopener">SignifiKANTE: Efficient P-value computation for gene regulatory networks.</a></h3>
-            <p class="paper-summary">This paper presents SignifiKANTE, a tool that efficiently computes P-values for gene regulatory networks (GRNs) inferred from gene expression data. It addresses the computational bottleneck of permutation-based significance testing, making it feasible to assess statistical confidence for large-scale GRN inference.</p>
-            <div class="paper-tags"><span class="tag">tool</span><span class="tag">methodology</span><span class="tag">systems-biology</span></div>
+            <p class="paper-summary">This paper presents SignifiKANTE, a new tool that efficiently computes P-values for gene regulatory networks (GRNs) inferred from gene expression data. It addresses the computational bottleneck of permutation-based significance testing, making it feasible to assess statistical confidence for large, realistic GRN inference tasks.</p>
+            <div class="paper-tags"><span class="tag">tool</span><span class="tag">methodology</span><span class="tag">network-analysis</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">BMC genomics</span>
@@ -94,8 +94,35 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-high">High</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12864-026-12965-8" target="_blank" rel="noopener">Systematic evaluation of single-cell foundation model interpretability: attention-derived edge scores add no incremental value over gene-level features for perturbation-target prediction.</a></h3>
-            <p class="paper-summary">This study systematically evaluates whether attention-derived edge scores from single-cell foundation models (scGPT, Geneformer) provide additional predictive value for perturbation-target prediction beyond simple gene-level expression features. The authors find that attention scores add no incremental information over gene-level features, and that attention-identified regulatory components are not causally required for predictions, challenging the common practice of interpreting attention as regulatory evidence.</p>
+            <p class="paper-summary">This study systematically evaluates whether attention-derived edge scores from single-cell foundation models like scGPT and Geneformer provide additional predictive value for perturbation outcomes beyond simple gene-level expression features. The authors find that attention scores add no incremental information, suggesting that these interpretability outputs may not be causally meaningful for regulatory inference.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Research square</span>
+                <span class="date">2026-Jul-22</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.21203%2Frs.3.rs-10385637%2Fv1" target="_blank" rel="noopener">Systems-Level Mapping of the Tumor Microenvironment Reveals Immune-Mediated Mechanisms and Potential Targets in Platinum-Resistant Ovarian Cancer.</a></h3>
+            <p class="paper-summary">This study maps the tumor microenvironment in platinum-resistant ovarian cancer, identifying immune-mediated mechanisms and potential therapeutic targets that may drive treatment resistance. The findings highlight the importance of cancer cell-microenvironment interactions in overcoming chemotherapy resistance.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">immunology</span><span class="tag">systems-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Circulation</span>
+                <span class="date">2026-Jul-21</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1161%2FCIRCULATIONAHA.125.076453" target="_blank" rel="noopener">Loss of ATP-Dependent Citrate Lyase Drives Left Ventricular Dysfunction by Metabolic Remodeling.</a></h3>
+            <p class="paper-summary">This study investigates the role of ATP-dependent citrate lyase (ACL) in cardiac metabolism and heart failure. The authors find that loss of ACL drives left ventricular dysfunction through metabolic remodeling, suggesting that ACL may be a therapeutic target for heart failure.</p>
+            <div class="paper-tags"><span class="tag">metabolomics</span><span class="tag">clinical</span><span class="tag">systems-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">mSystems</span>
+                <span class="date">2026-Jul-21</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fmsystems.00137-26" target="_blank" rel="noopener">Systemic trade-offs between core and accessory genomes govern stress adaptation in Rhodococcus erythropolis.</a></h3>
+            <p class="paper-summary">This study integrates pangenomics with multi-omics and phenotypic analyses to reveal systemic trade-offs between core and accessory genomes in Rhodococcus erythropolis, showing that the accessory genome drives stress adaptation through horizontal gene transfer. The findings provide a high-quality pangenome and refine taxonomy, offering new insights into the genetic basis of stress resilience in this biotechnologically important bacterium.</p>
+            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">microbiology</span><span class="tag">evolution</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Scientific reports</span>
@@ -103,8 +130,26 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1038%2Fs41598-026-63016-x" target="_blank" rel="noopener">Comparative genomics of the Nap2-2B clade reveals substrate partitioning and niche diversification among uncultured hydrocarbon-degrading Desulfotomaculales.</a></h3>
-            <p class="paper-summary">This study uses comparative genomics of 17 metagenome-assembled genomes to characterize the metabolic diversity of uncultured Nap2-2B bacteria, a clade within Desulfotomaculales commonly found in methanogenic hydrocarbon-degrading environments. The authors identify strict substrate partitioning among glycyl radical enzymes, with distinct operons for aliphatic versus aromatic hydrocarbon activation, and reveal niche diversification across four genera. These findings expand our understanding of the ecological roles and metabolic capabilities of these previously poorly understood hydrocarbon-degrading microorganisms.</p>
+            <p class="paper-summary">This study uses comparative genomics of 17 uncultured Nap2-2B metagenome-assembled genomes to reveal that this clade of hydrocarbon-degrading bacteria is a monophyletic family-level lineage within Desulfotomaculales, with strict substrate partitioning driven by distinct glycyl radical enzymes for aliphatic versus aromatic hydrocarbon activation. The findings illuminate the metabolic diversity and niche specialization of these environmentally important but poorly understood microorganisms.</p>
             <div class="paper-tags"><span class="tag">genomics</span><span class="tag">metagenomics</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">International journal of molecular sciences</span>
+                <span class="date">2026-Jul-20</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fijms27146457" target="_blank" rel="noopener">Systems Biology and Experimental Validation Enable Discovery of MMP9-Centered Networks, Anticancer Activity, and Pharmacodynamic Signature in Non-Small Cell Lung Cancer.</a></h3>
+            <p class="paper-summary">This study integrates systems biology approaches with experimental validation to characterize MMP9-centered signaling networks in non-small cell lung cancer (NSCLC), revealing extracellular matrix- and inflammation-related interaction modules. The authors identify an MMP9-associated gene signature that serves as a pharmacodynamic biomarker for MMP9 inhibition, providing new insights into the anticancer activity of targeting MMP9 in NSCLC.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">cancer</span><span class="tag">network-analysis</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cell reports methods</span>
+                <span class="date">2026-Jul-20</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.crmeth.2026.101456" target="_blank" rel="noopener">Spatial multi-omics imputation and embedding with SpaMIE.</a></h3>
+            <p class="paper-summary">SpaMIE is a deep graph neural network framework that integrates spatial multi-omics data across tissue sections with missing modalities, using a two-stage approach to impute missing data and embed sections into a shared space. It addresses the challenge of heterogeneous modality coverage in large-scale spatial atlases, enabling more comprehensive analysis of cost-effective mono-omics datasets.</p>
+            <div class="paper-tags"><span class="tag">spatial-omics</span><span class="tag">deep-learning</span><span class="tag">tool</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Biomolecules</span>
@@ -112,8 +157,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fbiom16071054" target="_blank" rel="noopener">Analytical Methods and Application of Single-Cell and Single-Nucleus Transcriptomics in the Study of Ischemic Stroke.</a></h3>
-            <p class="paper-summary">This review discusses the application of single-cell and single-nucleus RNA sequencing (sc/snRNA-seq) to study ischemic stroke, highlighting how these techniques reveal cellular heterogeneity and complex pathophysiological processes. It covers analytical methods and recent findings, emphasizing the potential of sc/snRNA-seq to uncover novel therapeutic targets and biomarkers.</p>
-            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">single-cell</span><span class="tag">neuroscience</span></div>
+            <p class="paper-summary">This review discusses the application of single-cell and single-nucleus RNA sequencing (sc/snRNA-seq) to study ischemic stroke, highlighting how these high-resolution methods reveal cellular heterogeneity in the brain's response to injury. It covers analytical approaches and their utility in understanding the complex pathophysiology of stroke, potentially guiding future therapeutic targets.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">single-cell</span><span class="tag">review</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">iScience</span>
@@ -121,8 +166,26 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.isci.2026.116619" target="_blank" rel="noopener">Tensor network-based gene regulatory network inference for single-cell transcriptomic data.</a></h3>
-            <p class="paper-summary">This paper introduces a quantum-inspired tensor network framework for inferring gene regulatory networks from single-cell transcriptomic data, which captures higher-order and nonlinear gene dependencies that traditional methods miss. The approach uses quantum mutual information and permutation testing to construct statistically significant networks, preserving biological locality in a lower-dimensional representation.</p>
+            <p class="paper-summary">This paper introduces a quantum-inspired tensor network framework for inferring gene regulatory networks from single-cell transcriptomic data. The method captures higher-order and nonlinear gene dependencies using quantum mutual information, outperforming traditional approaches. It provides a new tool for understanding complex gene-gene interactions in single-cell data.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">network-analysis</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cells</span>
+                <span class="date">2026-Jul-17</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fcells15141287" target="_blank" rel="noopener">Mediterranean Diet and Neurodegenerative Diseases: Recent Advances from the Gut-Immune-Brain Axis to Multi-Omics-Guided Precision Nutrition.</a></h3>
+            <p class="paper-summary">This review synthesizes recent evidence on how the Mediterranean diet influences neurodegenerative diseases through the gut-immune-brain axis, integrating multi-omics data to support precision nutrition approaches. It highlights the diet's potential to reduce neuroinflammation and cognitive decline, while emphasizing the need for personalized dietary interventions based on individual omics profiles.</p>
+            <div class="paper-tags"><span class="tag">review</span><span class="tag">nutrition</span><span class="tag">neuroscience</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">iScience</span>
+                <span class="date">2026-Jul-17</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.isci.2026.116397" target="_blank" rel="noopener">Matched sampling reveals uncoupled phenotypic plasticity during metastasis formation in uveal melanoma.</a></h3>
+            <p class="paper-summary">This study profiles gene expression in primary and metastatic uveal melanoma, revealing two molecular subtypes in both and showing that matched primary-metastasis pairs have little transcriptional concordance, indicating extensive phenotypic reprogramming during metastasis. About half of primary tumors show a proliferative, MAPK/PI3K-driven phenotype, suggesting heterogeneous dependencies that may inform treatment.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">cancer</span><span class="tag">clinical</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">bioRxiv : the preprint server for biology</span>
@@ -130,8 +193,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.07.10.737848" target="_blank" rel="noopener">Reference Regulatory Element-Guided Gene Expression Analysis for Mechanistic Inference of Gene Regulatory Networks.</a></h3>
-            <p class="paper-summary">This preprint introduces REGA, an interpretable framework that leverages reference regulatory element (RE) catalogs to infer transcription factor (TF)-RE-gene regulatory programs from gene expression data alone. The method bridges the gap between deep multi-omics and broad expression datasets, and benchmarks show it improves functional RE prioritization and TF-gene inference across ChIP-seq, knockdown, Hi-C, and eQTL datasets.</p>
-            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">transcriptomics</span><span class="tag">methodology</span></div>
+            <p class="paper-summary">REGA is a new computational framework that uses reference regulatory element catalogs to infer transcription factor-regulatory element-gene programs from gene expression data alone, bridging the gap between deep multi-omics and broad expression datasets. It improves the prioritization of functional regulatory elements and gene regulatory network inference, as validated across multiple benchmarks including ChIP-seq, knockdown, and eQTL data.</p>
+            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">transcriptomics</span><span class="tag">network-analysis</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">bioRxiv : the preprint server for biology</span>
@@ -139,8 +202,17 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.07.15.738791" target="_blank" rel="noopener">Large-scale, interpretable gene regulatory network inference through biologically informed matrix factorization.</a></h3>
-            <p class="paper-summary">This preprint presents a new method for inferring gene regulatory networks (GRNs) that integrates gene expression data with motif-derived regulatory priors using biologically informed matrix factorization. The approach is designed to be large-scale and interpretable, reconstructing condition-specific regulatory architecture. The method advances GRN inference by providing a complementary view that estimates evidence for regulatory interactions, with potential broad applicability in biology.</p>
-            <div class="paper-tags"><span class="tag">gene regulatory networks</span><span class="tag">matrix factorization</span><span class="tag">transcriptomics</span></div>
+            <p class="paper-summary">This preprint presents a new method for inferring gene regulatory networks (GRNs) that integrates gene expression data with motif-derived regulatory priors using biologically informed matrix factorization. The approach is designed to be large-scale and interpretable, reconstructing condition-specific regulatory architecture and estimating evidence for regulatory interactions. This offers a complementary perspective to existing GRN inference methods and could be broadly useful for understanding transcriptional regulation.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">network-analysis</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of translational medicine</span>
+                <span class="date">2026-Jul-16</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12967-026-08660-7" target="_blank" rel="noopener">Transcriptomic profiling combined with pharmacological research of Panax notoginseng-derived nanovesicles for preliminary biocompatibility profiling and STAT5/SOCS3-driven immunomodulation in psoriasis.</a></h3>
+            <p class="paper-summary">This study profiles Panax notoginseng-derived nanovesicles for biocompatibility and immunomodulatory effects in psoriasis, revealing a STAT5/SOCS3-driven mechanism that suppresses IL-23/Th17 signaling. The work combines transcriptomic and pharmacological approaches to support the safety and therapeutic potential of plant-derived nanovesicles as a biocompatible alternative to biologics.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">systems-biology</span><span class="tag">immunology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">BMC genomics</span>
@@ -148,7 +220,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12864-026-13185-w" target="_blank" rel="noopener">CoReGRN: a context-aware post-processing framework for gene regulatory network inference revealing regulatory signatures in HIV-Leishmaniasis.</a></h3>
-            <p class="paper-summary">CoReGRN is a new post-processing framework that improves gene regulatory network inference from single-cell data by reweighting candidate interactions using mutual information and local network context. Applied to HIV-Leishmaniasis co-infection data, it revealed regulatory signatures that were missed by standard methods, demonstrating its utility for extracting biologically meaningful networks from noisy single-cell data.</p>
+            <p class="paper-summary">CoReGRN is a new post-processing framework that improves gene regulatory network inference from single-cell data by reweighting candidate interactions based on mutual information and local network context. Applied to HIV-Leishmaniasis co-infection data, it reveals regulatory signatures that might be missed by standard methods.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">network-analysis</span><span class="tag">methodology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -157,8 +229,17 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.compbiomed.2026.111737" target="_blank" rel="noopener">A multiscale modeling approach to study the role of mechanics and inflammation in the pathophysiology of articular cartilage.</a></h3>
-            <p class="paper-summary">This paper presents a multiscale computational model integrating finite element simulations at tissue and cellular scales to investigate how mechanical loading and inflammation interact in articular cartilage, with implications for osteoarthritis progression. The framework aims to capture complex mechano-biochemical couplings that are difficult to study experimentally, offering a tool for exploring disease mechanisms in silico.</p>
+            <p class="paper-summary">This study presents an integrated multiscale modeling framework for articular cartilage that combines finite element models at tissue and cellular scales to investigate how mechanical loading and inflammation contribute to osteoarthritis. The framework aims to capture the complex mechanical and biochemical interactions across length scales that are difficult to study experimentally, providing a computational tool to explore disease mechanisms.</p>
             <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">methodology</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Plant signaling & behavior</span>
+                <span class="date">2026-Dec-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1080%2F15592324.2026.2710517" target="_blank" rel="noopener">Hormone-metabolism crosstalk in plants: an integrated signaling network coordinating growth and stress adaptation.</a></h3>
+            <p class="paper-summary">This review argues that plant hormone signaling and metabolism should be viewed as an integrated, reciprocal network rather than separate linear pathways, highlighting how carbon status, nutrients, redox balance, and energy signals coordinate growth and stress responses. It synthesizes current knowledge to propose a more holistic framework for understanding plant adaptation.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">plants</span><span class="tag">review</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">iScience</span>
@@ -166,8 +247,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.isci.2026.116820" target="_blank" rel="noopener">Causal AI digital twin for bioprocess bottleneck diagnosis via metabolic flexibility and rigidification maps.</a></h3>
-            <p class="paper-summary">The authors developed a causal AI digital twin that integrates genome-informed metabolic flexibility and rigidification maps to diagnose bottlenecks in underperforming non-model microbial cultures. Using Stenotrophomonas maltophilia grown on acetate as a testbed, the twin converts sparse experimental data into actionable diagnostic insights via explainable learning and causal-structure discovery.</p>
-            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">machine-learning</span><span class="tag">microbiology</span></div>
+            <p class="paper-summary">The authors developed a causal AI digital twin that integrates genome-informed metabolic flexibility maps with explainable machine learning to diagnose bottlenecks in underperforming microbial cultures. Using Stenotrophomonas maltophilia grown on acetate as a testbed, the twin converts sparse experimental data into actionable diagnostic insights, demonstrating a new approach for non-model organism bioprocess optimization.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">systems-biology</span><span class="tag">microbiology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Developmental cell</span>
@@ -175,8 +256,35 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-high">High</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.devcel.2026.07.002" target="_blank" rel="noopener">Longitudinal zone- and cell type-specific pattern-triggered immune responses in Arabidopsis roots.</a></h3>
-            <p class="paper-summary">This study uses single-cell transcriptomics and live-cell imaging to map pattern-triggered immune responses across cell types and developmental zones in Arabidopsis roots, revealing that plant-derived phytocytokines induce stronger immune responses than microbial patterns. The differential expression of receptors and signaling components explains the cell-type- and zone-specific response intensities, and phytocytokines balance growth and defense trade-offs.</p>
+            <p class="paper-summary">This study uses single-cell transcriptomics and live-cell imaging to map pattern-triggered immune responses across cell types and developmental zones in Arabidopsis roots. It finds that plant-derived phytocytokines induce stronger immune responses than microbe-associated patterns, with receptor expression and signaling modules determining cell-type-specific response intensity. The work reveals how roots balance growth and defense, providing a high-resolution atlas of root immunity.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">plants</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PLoS computational biology</span>
+                <span class="date">2026-Aug-11</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pcbi.1014633" target="_blank" rel="noopener">CRITERIA: A network decomposition and elementary flux mode translation-based tool for computing equilibria of biochemical systems.</a></h3>
+            <p class="paper-summary">CRITERIA is a new computational tool that efficiently computes equilibria of biochemical reaction networks by decomposing the network and translating elementary flux modes, overcoming limitations of the previous COMPILES framework such as computational intensity and restriction to zero kinetic deficiency. This enables analysis of larger and more complex systems, facilitating understanding of cellular decision-making and robustness.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">tool</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">FEMS yeast research</span>
+                <span class="date">2026-Aug-10</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Ffemsyr%2Ffoag038" target="_blank" rel="noopener">From one genome to thousands, and beyond.</a></h3>
+            <p class="paper-summary">This review traces the evolution of Saccharomyces cerevisiae research from the first eukaryotic genome sequence to a species-wide pangenome, highlighting how advances in sequencing and functional genomics have uncovered vast genetic diversity shaped by evolution and domestication. It emphasizes yeast's role as a premier model organism due to large-scale experimental resources.</p>
+            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">population-genetics</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">The Biochemical journal</span>
+                <span class="date">2026-Aug-05</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1042%2FBCJ20250135" target="_blank" rel="noopener">Biochemical principles of SMAD signaling across the animal kingdom.</a></h3>
+            <p class="paper-summary">This review examines the BMP-SMAD signaling pathway across diverse animal systems, highlighting both its conserved core architecture and the striking variability in its quantitative dynamics and regulatory strategies. By comparing contexts such as Drosophila development and zebrafish, it provides a framework for understanding how a common pathway is adapted to different biological requirements.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">review</span><span class="tag">development</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Plant physiology</span>
@@ -184,8 +292,17 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-high">High</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fplphys%2Fkiag428" target="_blank" rel="noopener">A genome-scale metabolic model of a pathosystem sheds light on bacterial wilt.</a></h3>
-            <p class="paper-summary">This study presents a genome-scale metabolic model that integrates both plant and pathogen metabolism to simulate their metabolic interactions during bacterial wilt infection. The model was calibrated with experimental data and provides quantitative insights into how nutrient competition and availability influence disease development.</p>
-            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">metabolomics</span><span class="tag">plant-microbe-interactions</span></div>
+            <p class="paper-summary">This study presents a genome-scale metabolic model integrating both a plant host and a bacterial pathogen to simulate their metabolic interactions during infection. The model quantifies how nutrient competition and availability influence bacterial wilt disease development, providing a new systems-level framework for understanding host-pathogen trophic interactions.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">metabolomics</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Bioinformatics (Oxford, England)</span>
+                <span class="date">2026-Aug-04</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fbioinformatics%2Fbtag587" target="_blank" rel="noopener">Trans-dimensional Bayesian model averaging for 13C-metabolic flux analysis: Evidence-based flux inference under structural model uncertainty.</a></h3>
+            <p class="paper-summary">This paper introduces a trans-dimensional Bayesian model averaging approach for 13C-metabolic flux analysis that explicitly accounts for structural uncertainty in metabolic network models. The method enables evidence-based flux inference when isotope labeling data cannot uniquely support a single network formulation, providing more robust flux estimates.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">methodology</span><span class="tag">metabolomics</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Brain : a journal of neurology</span>
@@ -193,8 +310,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fbrain%2Fawaf474" target="_blank" rel="noopener">Sex-aware causal inference assessment of the immune system in complex neurodegenerative diseases.</a></h3>
-            <p class="paper-summary">This study applies sex-aware causal inference methods to investigate the relationship between the immune system and complex neurodegenerative diseases, revealing sex-specific causal links that may explain differences in disease prevalence and progression. The findings highlight the importance of considering sex in genetic and functional analyses of neurodegeneration.</p>
-            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">systems-biology</span><span class="tag">neuroscience</span></div>
+            <p class="paper-summary">This study applies a sex-aware causal inference framework to investigate the relationship between the immune system and complex neurodegenerative diseases (ALS, Parkinson's, Alzheimer's). The findings reveal sex-specific causal links between immune traits and disease risk, highlighting that immune contributions differ between males and females. This work underscores the importance of considering sex in studying the immune system's role in neurodegeneration.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">immunology</span><span class="tag">neuroscience</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Bioinformatics (Oxford, England)</span>
@@ -202,8 +319,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fbioinformatics%2Fbtag510" target="_blank" rel="noopener">WILDkCAT: extract, retrieve, and predict enzyme turnover numbers of constraint-based metabolic models.</a></h3>
-            <p class="paper-summary">WILDkCAT is a Python pipeline that automatically retrieves enzyme turnover numbers (kcat) for constraint-based metabolic models, filtering values by user-specified pH and temperature conditions. It addresses the bottleneck of scattered and inconsistent kcat data by providing a streamlined extraction and prediction workflow, demonstrated on the E. coli model iML1515.</p>
-            <div class="paper-tags"><span class="tag">tool</span><span class="tag">methodology</span><span class="tag">systems-biology</span></div>
+            <p class="paper-summary">WILDkCAT is a Python pipeline that automatically retrieves enzyme turnover numbers (kcat) for constraint-based metabolic models, filtering values by user-specified pH and temperature ranges. It addresses the bottleneck of collecting and curating kcat data, which are scattered across databases and often missing. The tool was demonstrated on the E. coli model iML1515, showing its utility for building enzyme-constrained models.</p>
+            <div class="paper-tags"><span class="tag">tool</span><span class="tag">systems-biology</span><span class="tag">database</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Journal of biomedical informatics</span>
@@ -211,17 +328,98 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.jbi.2026.105080" target="_blank" rel="noopener">Causal intervention validation of gene regulatory signals in scGPT.</a></h3>
-            <p class="paper-summary">This study tests whether scGPT, a single-cell foundation model, can recover gene regulatory relationships through causal interventions on its gene tokens, rather than relying on correlational attention weights. The authors find that these model-internal interventions do align with curated transcription factor-target dependencies and transfer to real perturbation responses, providing a more rigorous validation of regulatory signal in scGPT.</p>
+            <p class="paper-summary">This study tests whether causal interventions on scGPT's gene tokens can recover transcription factor-target gene dependencies that match curated references and real perturbation responses, moving beyond correlational attention weights. The findings provide a rigorous validation framework for assessing regulatory signals in single-cell foundation models.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">EBioMedicine</span>
+                <span class="date">2026-Aug-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.ebiom.2026.106406" target="_blank" rel="noopener">Urinary proteomic signature of exercise intolerance in patients at risk of heart failure: evidence from the HOMAGE trial.</a></h3>
+            <p class="paper-summary">This study used urinary proteomic profiling to investigate the biological basis of exercise intolerance in patients at risk of heart failure, identifying a proteomic signature associated with reduced exercise capacity. The findings provide new insights into the molecular mechanisms underlying exercise intolerance and may aid in risk stratification.</p>
+            <div class="paper-tags"><span class="tag">proteomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Biomedicine & pharmacotherapy = Biomedecine & pharmacotherapie</span>
+                <span class="date">2026-Aug-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.biopha.2026.119758" target="_blank" rel="noopener">Aerobic conditioning and ginsenoside modulation modify molecular resilience in middle-aged rats: Differential effects of individual and combined interventions.</a></h3>
+            <p class="paper-summary">This study in middle-aged rats shows that aerobic exercise and ginseng supplementation, alone or combined, can modulate molecular markers of hippocampal aging, including redox homeostasis and amyloid processing, with differential effects depending on the intervention. The findings suggest that lifestyle and dietary interventions may help preserve cognitive function during aging.</p>
+            <div class="paper-tags"><span class="tag">aging</span><span class="tag">neuroscience</span><span class="tag">transcriptomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Plant-environment interactions (Hoboken, N.J.)</span>
+                <span class="date">2026-Aug-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1002%2Fpei3.70183" target="_blank" rel="noopener">Rhizospheric Microbes and Nanoparticles Synergize to Enhance Plant Immune Responses.</a></h3>
+            <p class="paper-summary">This review introduces the concept of 'nanobiotic synergies,' where nanoparticles and beneficial rhizosphere microbes are combined to boost plant immunity and stress tolerance, offering a sustainable alternative to synthetic agrochemicals. It highlights recent advances in nanotechnology and microbiome research that enable this integrated approach for crop production.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">plants</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">The Journal of pathology</span>
+                <span class="date">2026-Aug-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1002%2Fpath.70073" target="_blank" rel="noopener">Testican-1-MMP axis in tumour extracellular matrix (ECM) remodelling: interaction dynamics analysis and an in silico perspective.</a></h3>
+            <p class="paper-summary">This study computationally analyzes the interaction between Testican-1 (SPOCK1) and matrix metalloproteases (MMPs), revealing structural mechanisms that may drive tumor-promoting extracellular matrix remodeling. The findings provide an in silico perspective on how this axis could facilitate cancer progression and invasion.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">cancer</span><span class="tag">systems-biology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Human mutation</span>
                 <span class="date">2026--01</span>
-                <span class="sig sig-high">High</span>
+                <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1155%2Fhumu%2F2370955" target="_blank" rel="noopener">Multiomics Analysis Reveals CTHRC1+ CAFs Drive Immunosuppressive Niches and Predict Immunotherapy Resistance in Gastric Cancer.</a></h3>
             <p class="paper-summary">This study integrates single-cell RNA sequencing, spatial transcriptomics, and bulk transcriptomic data to construct a comprehensive atlas of the gastric cancer tumor microenvironment, identifying eight distinct cancer-associated fibroblast (CAF) subpopulations. Among these, CTHRC1+ CAFs are selectively enriched in tumors and strongly associated with T cell exclusion, and they predict immunotherapy resistance, highlighting their role in creating immunosuppressive niches.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">spatial-omics</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1831494" target="_blank" rel="noopener">Metabolic reprogramming orchestrates microglial fate in cerebral ischemia-reperfusion injury: a spatiotemporal immunometabolic perspective.</a></h3>
+            <p class="paper-summary">This review examines how metabolic reprogramming in microglia—shifts in glucose, TCA cycle, and fatty acid metabolism—drives their pro- or anti-inflammatory states during cerebral ischemia-reperfusion injury. It proposes a spatiotemporal immunometabolic perspective to understand microglial fate and highlights potential therapeutic targets for stroke.</p>
+            <div class="paper-tags"><span class="tag">immunology</span><span class="tag">metabolomics</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PloS one</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pone.0354961" target="_blank" rel="noopener">Uncovering the molecular landscape of young-onset diffuse gastric cancer: A relieff-based feature selection analysis on RNA-Seq data.</a></h3>
+            <p class="paper-summary">This study uses RNA-seq data and a ReliefF-based feature selection method to identify key molecular drivers of young-onset diffuse gastric cancer (DGC), a subtype with poor prognosis and few biomarkers. The analysis reveals potential gene signatures and pathways that could serve as biomarkers or therapeutic targets, addressing a critical unmet need in oncology.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">cancer</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in oncology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffonc.2026.1879586" target="_blank" rel="noopener">Integrative precision oncology in neuroblastoma: multi-omics biomarkers, molecular targets, and immunotherapeutic strategies.</a></h3>
+            <p class="paper-summary">This review synthesizes recent multi-omics findings in neuroblastoma, covering genomic, epigenetic, and tumor microenvironment contributions to disease pathogenesis and therapeutic resistance. It highlights how these advances are enabling precision diagnostic and prognostic tools, as well as novel immunotherapeutic strategies for this pediatric cancer.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">multi-omics</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in bioinformatics</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffbinf.2026.1876523" target="_blank" rel="noopener">Radiation-induced network rewiring in cancer: systems-level insights into environmental radioactivity and precision oncology.</a></h3>
+            <p class="paper-summary">This review discusses how ionizing radiation (IR) from environmental and therapeutic sources rewires cancer regulatory networks, including transcription factors, microRNAs, and signaling cascades, beyond direct DNA damage. It argues that systems biology approaches are needed to understand the emergent properties of these dynamic networks and their implications for cancer susceptibility, progression, and treatment response.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">cancer</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PloS one</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pone.0352167" target="_blank" rel="noopener">A systems biology approach to find representative genes in Acute Myeloid Leukemia.</a></h3>
+            <p class="paper-summary">This study applies a systems biology approach to gene expression data from AML patients and healthy controls, identifying differentially expressed genes and transcription factors, and revealing a shared metabolic pathway region between AML and Tuberculosis that validates their methodology.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">transcriptomics</span><span class="tag">cancer</span></div>
         </article>
 </div>
 <footer class="site-footer">
