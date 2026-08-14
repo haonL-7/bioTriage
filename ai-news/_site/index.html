@@ -7,43 +7,44 @@
     <meta name="description" content="BioTriage delivers AI-evaluated, evidence-structured literature monitoring across microbiome research, bioinformatics, genomics, experimental biology, and drug discovery. Daily automated updates from PubMed, bioRxiv, Europe PMC, Semantic Scholar, and arXiv.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           BioTriage — ASHA design system (transplanted 2026-08)
-           Palette: academic blue + gold; glass cards; soft auras
+           BioTriage — restrained top-journal style (2026-08)
+           White ground, near-black ink, single deep accent,
+           hairline borders, serif display type
            ============================================================ */
         :root {
-            --primary: #2b43be;
-            --primary-lt: #3d56d4;
-            --primary-md: #1e3096;
-            --primary-rgb: 43 67 190;
-            --accent: #3869D4;
-            --accent-lt: #5a82e0;
+            --primary: #1a4d80;
+            --primary-lt: #24567a;
+            --primary-md: #123a63;
+            --primary-rgb: 26 77 128;
+            --accent: #1a4d80;
+            --accent-lt: #24567a;
             --gold: #b08d2f;
-            --gold-lt: #c4a747;
+            --gold-lt: #8f7020;
             --gold-pale: #f7f3e8;
             --white: #ffffff;
-            --bg: #f6f8fb;
-            --bg-alt: #eef1f6;
-            --ink: #1a1f2e;
-            --ink-md: #3a4558;
-            --ink-lt: #5a6878;
-            --ink-xlt: #8596a8;
-            --border: #e2e8f0;
-            --border-lt: #edf2f7;
+            --bg: #ffffff;
+            --bg-alt: #f7f8fa;
+            --ink: #16181c;
+            --ink-md: #4a5058;
+            --ink-lt: #6a727c;
+            --ink-xlt: #8a9199;
+            --border: #e3e6ea;
+            --border-lt: #eceef1;
             --font-zh: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
             --font-en: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-            --font-display: "Playfair Display", "Georgia", "Times New Roman", serif;
+            --font-display: "Georgia", "Times New Roman", "Songti SC", serif;
             --max-width: 1120px;
-            --radius-sm: 6px;
-            --radius: 10px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-            --shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --radius-sm: 4px;
+            --radius: 6px;
+            --radius-lg: 10px;
+            --radius-xl: 16px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.03);
+            --shadow: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 1px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 2px 8px rgba(0,0,0,0.08);
             --ease: cubic-bezier(0.4, 0, 0.2, 1);
             --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -60,25 +61,6 @@
             overflow-x: hidden;
             position: relative;
         }
-        /* Ambient auras */
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(110px);
-            z-index: 0;
-            pointer-events: none;
-        }
-        body::before {
-            width: 640px; height: 640px;
-            top: -220px; left: -160px;
-            background: rgba(43, 67, 190, 0.07);
-        }
-        body::after {
-            width: 520px; height: 520px;
-            top: 320px; right: -200px;
-            background: rgba(196, 167, 71, 0.08);
-        }
         h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
         a { color: var(--accent); text-decoration: none; transition: color 0.2s var(--ease); }
         a:hover { color: var(--primary-lt); }
@@ -93,10 +75,8 @@
             align-items: center;
             padding: 0 24px;
             height: 60px;
-            background: rgba(255, 255, 255, 0.86);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
             font-family: var(--font-en);
             font-size: 12.5px;
             letter-spacing: 0.3px;
@@ -112,7 +92,7 @@
         .top-bar .tb-brand .mini-logo {
             font-family: var(--font-display);
             font-size: 15px;
-            color: var(--primary);
+            color: var(--ink);
         }
         .top-bar .tb-brand .mini-logo em { font-style: normal; color: var(--gold-lt); }
         .top-bar .tb-right { display: flex; align-items: center; gap: 10px; color: var(--ink-xlt); }
@@ -122,7 +102,7 @@
             padding: 4px 12px;
             border: 1px solid var(--border);
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--white);
             color: var(--ink-md);
             cursor: pointer;
             transition: all 0.2s var(--ease);
@@ -146,7 +126,7 @@
             letter-spacing: -0.01em;
             line-height: 1.1;
         }
-        .site-header .logo .pipe { color: var(--gold-lt); font-weight: 400; }
+        .site-header .logo .pipe { color: var(--gold); font-weight: 400; }
         .site-header .tagline {
             font-size: 16px;
             color: var(--ink-md);
@@ -180,7 +160,7 @@
             letter-spacing: 1.6px;
             margin: 48px 0 18px;
             padding-bottom: 8px;
-            border-bottom: 2px solid var(--primary);
+            border-bottom: 1px solid var(--primary);
         }
 
         /* ---- Featured card (glass) ---- */
@@ -188,21 +168,17 @@
             display: block;
             text-decoration: none;
             color: inherit;
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-left: 4px solid var(--primary);
-            border-radius: var(--radius-lg);
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius-sm);
             padding: 28px 32px;
             margin-bottom: 16px;
-            box-shadow: var(--shadow-md);
-            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), background 0.3s var(--ease);
+            box-shadow: none;
+            transition: border-color 0.2s var(--ease);
         }
         .featured-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-            background: rgba(255, 255, 255, 0.88);
+            border-color: var(--primary);
         }
         .featured-card .fc-flag {
             font-family: var(--font-en);
@@ -225,8 +201,9 @@
         .featured-card .fc-meta { display: flex; gap: 8px; flex-wrap: wrap; }
         .fc-meta span {
             font-size: 11px;
-            color: var(--ink-lt);
-            background: rgba(238, 241, 246, 0.9);
+            color: var(--ink-md);
+            background: var(--bg-alt);
+            border: 1px solid var(--border-lt);
             padding: 4px 12px;
             border-radius: 999px;
             letter-spacing: 0.2px;
@@ -240,15 +217,13 @@
         }
         .channel-card {
             border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             background: var(--white);
             padding: 22px 24px;
-            transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+            transition: border-color 0.2s var(--ease);
         }
         .channel-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(43, 67, 190, 0.35);
-            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
         }
         .channel-card .cc-status {
             font-family: var(--font-en);
@@ -264,8 +239,9 @@
         .channel-card .cc-tags { display: flex; gap: 4px; flex-wrap: wrap; }
         .channel-card .cc-tags span {
             font-size: 10px;
-            color: var(--primary);
-            background: rgba(43, 67, 190, 0.07);
+            color: var(--ink-lt);
+            background: var(--bg-alt);
+            border: 1px solid var(--border-lt);
             padding: 2px 9px;
             border-radius: 999px;
             letter-spacing: 0.2px;
@@ -275,12 +251,10 @@
         .methodology {
             margin-top: 56px;
             padding: 30px 34px;
-            background: rgba(255, 255, 255, 0.66);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.75);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            box-shadow: none;
         }
         .methodology h3 { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
         .methodology p { font-size: 13px; color: var(--ink-md); line-height: 1.85; margin-bottom: 10px; }
@@ -298,11 +272,7 @@
         .methodology .ref strong { color: var(--ink); font-weight: 600; }
         .methodology .ref .star {
             font-style: normal;
-            background: linear-gradient(135deg, #e8c766 0%, #c4a747 45%, #9c7d24 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 12px rgba(196, 167, 71, 0.35);
+            color: var(--gold);
         }
         #starred-collection { margin-top: 20px; }
 
