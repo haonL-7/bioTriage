@@ -237,6 +237,7 @@
 
         state.filtered = items;
         renderFeed(items);
+        updateExportCount();
 
         // If local search returned 0 results and user typed a query, offer live search
         var liveOffer = document.getElementById('liveSearchOffer');
@@ -480,6 +481,54 @@
             });
         });
     });
+
+    // ---- CSV Export ----
+    function updateExportCount() {
+        var cnt = document.getElementById('exportCount');
+        if (cnt) cnt.textContent = state.filtered.length ? '(' + state.filtered.length + ' papers)' : '';
+    }
+
+    function exportCsv() {
+        var items = state.filtered;
+        if (!items.length) {
+            alert('No papers match the current filters.');
+            return;
+        }
+        var headers = [
+            'title', 'firstAuthor', 'journal', 'pubDate', 'doi', 'pmid',
+            'evidenceLevel', 'forwardPathway', 'reversePathway', 'couplingDepth',
+            'measurementDepth', 'totalScore', 'nodes', 'modelSystem',
+            'researchPriority', 'url', 'summary'
+        ];
+        var rows = [headers];
+        items.forEach(function (p) {
+            rows.push(headers.map(function (h) {
+                var v = p[h];
+                if (v === null || v === undefined) return '';
+                if (Array.isArray(v)) return v.join('; ');
+                return String(v);
+            }));
+        });
+        function esc(v) {
+            v = String(v).replace(/"/g, '""');
+            return '"' + v + '"';
+        }
+        var csv = rows.map(function (r) { return r.map(esc).join(','); }).join('\r\n');
+        var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'biotriage-evidence-' + new Date().toISOString().slice(0, 10) + '.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    }
+
+    var exportBtn = document.getElementById('exportCsvBtn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', exportCsv);
+    }
 
     // ---- Live External Search (rate-limited: 10/day) ----
     function getApiState() {
