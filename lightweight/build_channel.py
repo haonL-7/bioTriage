@@ -131,7 +131,7 @@ def generate_channel_html(channel_key: str, meta: dict, papers: list) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title} — bioHot</title>
+<title>{title} — BioTriage</title>
 <style>
 :root {{ --bg: #fff; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8c8c8c; --border: #d5d5d5; --accent: #1a5276; --max-width: 800px; --font-serif: 'Georgia','Times New Roman',serif; --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -164,16 +164,16 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 </style>
 </head>
 <body>
-<nav class="top-bar"><a href="../">bioHot</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
+<nav class="top-bar"><a href="../">BioTriage</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
 <div class="container">
-<a href="../" class="back-link">&larr; bioHot</a>
+<a href="../" class="back-link">&larr; BioTriage</a>
 <h1>{title}</h1>
 <p class="channel-desc">{desc}</p>
 <p class="channel-stats">{len(papers)} papers curated &middot; High: {sig_counts["High"]} &middot; Medium: {sig_counts["Medium"]} &middot; Low: {sig_counts["Low"]} &middot; Updated: {datetime.now().strftime("%Y-%m-%d")}</p>
 {cards}
 </div>
 <footer class="site-footer">
-<p>AI-curated by bioHot. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">bioHot Home</a></p>
+<p>AI-curated by BioTriage. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">BioTriage Home</a></p>
 </footer>
 </body>
 </html>'''

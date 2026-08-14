@@ -62,7 +62,7 @@ app = FastAPI(
 # ⚠️  CORS: Only allow your own domains, not "*"
 ALLOWED_ORIGINS = [
     "https://haonl-7.github.io",
-    "https://haonl-7.github.io/bioHot",
+    "https://haonl-7.github.io/bioTriage",
     "http://localhost:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",

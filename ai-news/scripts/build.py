@@ -187,7 +187,7 @@ def build_stats(papers: list[dict], eval_stats: dict) -> dict:
 
 
 def create_build_dir():
-    """创建构建输出目录。BioHot 首页在根目录，Evidence Monitor 在 /evidence/ 子目录。"""
+    """创建构建输出目录。BioTriage 首页在根目录，Evidence Monitor 在 /evidence/ 子目录。"""
     if os.path.exists(BUILD_DIR):
         shutil.rmtree(BUILD_DIR)
     os.makedirs(BUILD_DIR, exist_ok=True)
@@ -469,15 +469,15 @@ def main():
     write_news_json(all_papers, stats, evidence_dir)
     create_nojekyll()
 
-    # Deploy bioHot main page → /index.html
-    biohot_src = os.path.join(PROJECT_ROOT, "..", "biohot.html")
-    if not os.path.exists(biohot_src):
-        biohot_src = os.path.join(PROJECT_ROOT, "biohot.html")
-    if os.path.exists(biohot_src):
-        shutil.copy2(biohot_src, os.path.join(BUILD_DIR, "index.html"))
-        print(f"  Deployed bioHot homepage -> /index.html")
+    # Deploy BioTriage main page → /index.html
+    biotriage_src = os.path.join(PROJECT_ROOT, "..", "biotriage.html")
+    if not os.path.exists(biotriage_src):
+        biotriage_src = os.path.join(PROJECT_ROOT, "biotriage.html")
+    if os.path.exists(biotriage_src):
+        shutil.copy2(biotriage_src, os.path.join(BUILD_DIR, "index.html"))
+        print(f"  Deployed BioTriage homepage -> /index.html")
     else:
-        print(f"  WARNING: biohot.html not found at {biohot_src}")
+        print(f"  WARNING: biotriage.html not found at {biotriage_src}")
 
     # Deploy manuscript sub-pages
     for ms_dir in ["ms1", "ms2"]:

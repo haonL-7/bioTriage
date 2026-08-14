@@ -12,7 +12,7 @@ import feedparser
 from bs4 import BeautifulSoup
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ai-news", "data")
-HEADERS = {"User-Agent": "bioHot-Curator/1.0 (mailto:research@example.com)"}
+HEADERS = {"User-Agent": "BioTriage-Curator/1.0 (mailto:research@example.com)"}
 TIMEOUT = 30
 SEARCH_DAYS = 30
 
