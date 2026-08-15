@@ -37,6 +37,69 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---- Unified sidebar navigation (shared across all BioTriage pages) ---- */
+.layout {
+    display: flex;
+    max-width: calc(var(--max-width) + 240px);
+    margin: 0 auto;
+    align-items: flex-start;
+}
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    position: sticky;
+    top: 24px;
+    padding: 28px 20px 40px 24px;
+    font-family: var(--font-sans);
+}
+.side-nav { display: flex; flex-direction: column; gap: 2px; }
+.side-nav .side-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #8a9199;
+    padding: 0 12px 10px;
+}
+.side-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #4a5058;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.side-item:hover { background: #f7f8fa; color: #16181c; }
+.side-item.is-active { background: #1a4d80; color: #fff; font-weight: 600; }
+.side-item.is-active:hover { background: #1a4d80; color: #fff; }
+.side-item .badge-new {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #8f7020;
+    background: #f7f3e8;
+    border: 1px solid #8f7020;
+    border-radius: 999px;
+    padding: 1px 7px;
+    line-height: 1.5;
+}
+.side-item.is-active .badge-new { color: #fff; background: transparent; border-color: rgba(255,255,255,0.5); }
+.page { flex: 1; min-width: 0; }
+
+@media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .sidebar { position: static; width: 100%; padding: 10px 16px; border-bottom: 1px solid var(--border-light); }
+    .side-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+    .side-nav .side-label { display: none; }
+    .side-item { padding: 6px 12px; font-size: 12px; }
+}
+
 /* ---- Header ---- */
 .site-header {
     border-bottom: 1px solid var(--border);
