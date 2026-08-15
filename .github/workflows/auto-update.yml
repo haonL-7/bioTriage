@@ -17,6 +17,11 @@ on:
         default: false
         type: boolean
 
+  # 推送到 main 即触发"仅重建部署"：UI/内容改动立即上线（约 1-2 分钟），
+  # 跳过爬取/AI评估/轻频道策展，不必等每日 18:37 UTC 的定时任务。
+  push:
+    branches: [ main ]
+
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -46,14 +51,14 @@ jobs:
 
       - name: Crawl news
         id: crawl
-        if: ${{ !inputs.build_only }}
+        if: ${{ !inputs.build_only && github.event_name != 'push' }}
         continue-on-error: true
         run: python scripts/crawler.py
         timeout-minutes: 5
 
       - name: AI evaluate
         id: evaluate
-        if: ${{ !inputs.build_only }}
+        if: ${{ !inputs.build_only && github.event_name != 'push' }}
         continue-on-error: true
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -67,8 +72,8 @@ jobs:
         run: python scripts/build.py
         timeout-minutes: 2
 
-      - name: Restore lightweight channel snapshots (build-only)
-        if: ${{ inputs.build_only }}
+      - name: Restore lightweight channel snapshots (build-only / push)
+        if: ${{ inputs.build_only || github.event_name == 'push' }}
         run: |
           for ch in computational-genomics metagenomics-informatics structural-bioinformatics systems-biology ml-biology single-cell-omics databases-knowledge-graphs ai-drug-discovery; do
             git checkout HEAD -- "_site/$ch" || true
@@ -76,7 +81,7 @@ jobs:
 
       - name: Lightweight curation — All channels
         id: curate-all
-        if: ${{ !inputs.build_only }}
+        if: ${{ !inputs.build_only && github.event_name != 'push' }}
         continue-on-error: true
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}

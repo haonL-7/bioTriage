@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starred Collection — BioTriage</title>
+    <meta name="description" content="BioTriage Starred Collection — the research group's shared starred list: the verified papers behind the Co-Metabolism Evidence Monitor programme.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           BioTriage Starred Collection — same restrained top-journal style
+           ============================================================ */
+        :root {
+            --primary: #1a4d80;
+            --primary-lt: #24567a;
+            --primary-md: #123a63;
+            --accent: #1a4d80;
+            --accent-lt: #24567a;
+            --gold: #b08d2f;
+            --gold-lt: #8f7020;
+            --gold-pale: #f7f3e8;
+            --white: #ffffff;
+            --bg: #ffffff;
+            --bg-alt: #f7f8fa;
+            --ink: #16181c;
+            --ink-md: #4a5058;
+            --ink-lt: #6a727c;
+            --ink-xlt: #8a9199;
+            --border: #e3e6ea;
+            --border-lt: #eceef1;
+            --font-zh: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+            --font-en: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+            --font-display: "Georgia", "Times New Roman", "Songti SC", serif;
+            --max-width: 1120px;
+            --radius-sm: 4px;
+            --radius: 6px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: var(--font-zh);
+            color: var(--ink);
+            background: var(--bg);
+            line-height: 1.7;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+        a { color: var(--accent); text-decoration: none; transition: color 0.2s var(--ease); }
+        a:hover { color: var(--primary-lt); }
+
+        /* ---- Top bar ---- */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-en);
+            font-size: 12.5px;
+            letter-spacing: 0.3px;
+            color: var(--ink-lt);
+        }
+        .top-bar .tb-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+        .top-bar .tb-brand .mini-logo {
+            font-family: var(--font-display);
+            font-size: 15px;
+            color: var(--ink);
+        }
+        .top-bar .tb-brand .mini-logo em { font-style: normal; color: var(--gold-lt); }
+        .top-bar .tb-right { display: flex; align-items: center; gap: 10px; color: var(--ink-xlt); }
+        .top-bar .tb-brand a { color: inherit; }
+        .lang-btn {
+            font-family: var(--font-en);
+            font-size: 11.5px;
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--white);
+            color: var(--ink-md);
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            letter-spacing: 0.3px;
+        }
+        .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ---- Layout with sidebar ---- */
+        .layout {
+            display: flex;
+            max-width: calc(var(--max-width) + 240px);
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            position: sticky;
+            top: 76px;
+            padding: 28px 20px 40px 24px;
+            font-family: var(--font-en);
+        }
+        .side-nav { display: flex; flex-direction: column; gap: 2px; }
+        .side-nav .side-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--ink-xlt);
+            padding: 0 12px 10px;
+        }
+        .side-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--ink-md);
+            letter-spacing: 0.2px;
+            transition: background 0.15s var(--ease), color 0.15s var(--ease);
+        }
+        .side-item:hover { background: var(--bg-alt); color: var(--ink); }
+        .side-item.is-active { background: var(--primary); color: #fff; font-weight: 600; }
+        .side-item.is-active:hover { background: var(--primary); color: #fff; }
+        .side-item .badge-new {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--gold-lt);
+            background: var(--gold-pale);
+            border: 1px solid var(--gold-lt);
+            border-radius: 999px;
+            padding: 1px 7px;
+            line-height: 1.5;
+        }
+        .side-item.is-active .badge-new { color: #fff; background: transparent; border-color: rgba(255,255,255,0.5); }
+        .page { flex: 1; min-width: 0; }
+
+        /* ---- Starred header ---- */
+        .starred-header {
+            padding: 56px 24px 20px;
+        }
+        .starred-eyebrow {
+            font-family: var(--font-en);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            margin-bottom: 12px;
+        }
+        .starred-title {
+            font-family: var(--font-display);
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+        .starred-tagline {
+            font-size: 14.5px;
+            color: var(--ink-md);
+            margin-top: 12px;
+            max-width: 640px;
+            line-height: 1.8;
+        }
+
+        /* ---- Starred list ---- */
+        .starred-main {
+            padding: 8px 24px 40px;
+        }
+        .starred-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .starred-item {
+            padding: 22px 24px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius-sm);
+        }
+        .starred-no {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold-lt);
+            letter-spacing: 0.6px;
+        }
+        .starred-cite {
+            font-size: 14.5px;
+            color: var(--ink);
+            line-height: 1.75;
+            margin-top: 6px;
+        }
+        .starred-cite em { color: var(--ink-md); font-style: italic; }
+        .starred-links {
+            margin-top: 8px;
+            font-family: var(--font-en);
+            font-size: 12.5px;
+        }
+        .starred-links a { color: var(--accent); }
+        .starred-links a:hover { color: var(--primary-lt); }
+        .starred-sum {
+            font-size: 12.5px;
+            color: var(--ink-md);
+            line-height: 1.75;
+            margin-top: 10px;
+            padding-left: 12px;
+            border-left: 2px solid var(--border);
+        }
+        .starred-close {
+            margin-top: 28px;
+            font-size: 12px;
+            color: var(--ink-xlt);
+            line-height: 1.8;
+            padding: 14px 18px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border-lt);
+            border-radius: var(--radius-sm);
+        }
+
+        /* ---- Footer ---- */
+        .site-footer {
+            padding: 28px 24px 48px;
+            border-top: 1px solid var(--border);
+            color: var(--ink-xlt);
+            font-size: 12px;
+            text-align: center;
+            line-height: 1.9;
+        }
+        .site-footer a { color: var(--accent); }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 900px) {
+            .layout { flex-direction: column; }
+            .sidebar { position: static; width: 100%; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+            .side-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .side-nav .side-label { display: none; }
+            .side-item { padding: 6px 12px; font-size: 12px; }
+        }
+        @media (max-width: 700px) {
+            .top-bar { flex-direction: column; height: auto; gap: 2px; padding: 10px 16px; text-align: center; }
+            .starred-header { padding: 40px 16px 16px; }
+            .starred-title { font-size: 32px; }
+            .starred-main { padding: 8px 16px 32px; }
+            .starred-item { padding: 18px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-bar">
+    <span class="tb-brand"><a href="../"><span class="mini-logo">bio<em>|</em>Triage</span></a><span data-i18n="nav-tagline">Evidence-structured literature intelligence</span></span>
+    <span class="tb-right"><button id="lang-toggle" type="button" class="lang-btn">中文</button></span>
+</nav>
+
+<div class="layout">
+    <aside class="sidebar">
+        <nav class="side-nav">
+            <span class="side-label" data-i18n="side-label">Navigate</span>
+            <a class="side-item" href="../" data-i18n="nav-home">Home</a>
+            <a class="side-item" href="../evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
+            <a class="side-item" href="../daily/"><span data-i18n="nav-daily">Literature Daily</span><span class="badge-new" data-i18n="badge-new">New</span></a>
+            <a class="side-item" href="../ms1/" data-i18n="nav-method">Methodology</a>
+            <a class="side-item is-active" href="./" data-i18n="nav-starred">Starred</a>
+        </nav>
+    </aside>
+    <div class="page">
+
+        <header class="starred-header">
+            <div class="starred-eyebrow" data-i18n="star-eyebrow">Starred Collection</div>
+            <h1 class="starred-title" data-i18n="star-title">Starred Collection</h1>
+            <p class="starred-tagline" data-i18n="star-intro">The research group's shared starred list &mdash; the papers behind our current programme. Every entry links to its permanent PubMed record; all accessions re-verified (Aug 2026). Personal starring for individual users will follow in a later release.</p>
+        </header>
+
+        <main class="starred-main">
+            <ul class="starred-list">
+                <li class="starred-item">
+                    <div class="starred-no">★ 1</div>
+                    <p class="starred-cite">Lan Q, Liufu S, et al. &ldquo;Gut-resident <em>Phascolarctobacterium succinatutens</em> decreases fat accumulation via MYC-driven epigenetic regulation of arginine biosynthesis.&rdquo; npj Biofilms and Microbiomes, 2025.</p>
+                    <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/40753182/" target="_blank" rel="noopener">PMID&nbsp;40753182</a> &middot; <a href="https://doi.org/10.1038/s41522-025-00792-w" target="_blank" rel="noopener">DOI</a></p>
+                    <p class="starred-sum" data-i18n="star1-sum">&mdash; Establishes the succinate-utilizer &rarr; propionate &rarr; reduced backfat axis in living pigs, the direct precedent for guild-level phenotyping in livestock.</p>
+                </li>
+                <li class="starred-item">
+                    <div class="starred-no">★ 2</div>
+                    <p class="starred-cite">Gardiner GE, Casey PG, et al. &ldquo;Relative ability of orally administered <em>Lactobacillus murinus</em> to predominate and persist in the porcine gastrointestinal tract.&rdquo; Applied and Environmental Microbiology, 2004.</p>
+                    <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/15066778/" target="_blank" rel="noopener">PMID&nbsp;15066778</a></p>
+                    <p class="starred-sum" data-i18n="star2-sum">&mdash; Classic evidence for transient (peak-then-decline) colonization of probiotic lactobacilli in the pig gut; a key design reference for sampling timepoints.</p>
+                </li>
+                <li class="starred-item">
+                    <div class="starred-no">★ 3</div>
+                    <p class="starred-cite">Suo C, et al. &ldquo;Effects of <em>Lactobacillus plantarum</em> ZJ316 on pig growth and pork quality.&rdquo; BMC Veterinary Research, 2012.</p>
+                    <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/22731747/" target="_blank" rel="noopener">PMID&nbsp;22731747</a></p>
+                    <p class="starred-sum" data-i18n="star3-sum">&mdash; 150 weaned piglets, 60 days, 1&times;10<sup>9</sup> CFU/d; dose&ndash;response benchmark for <em>L. plantarum</em> feeding trials.</p>
+                </li>
+                <li class="starred-item">
+                    <div class="starred-no">★ 4</div>
+                    <p class="starred-cite">Zhang D, Liu H, et al. &ldquo;Fecal microbiota and its correlation with fatty acids and free amino acids metabolism in piglets after a <em>Lactobacillus</em> strain oral administration.&rdquo; Frontiers in Microbiology, 2019.</p>
+                    <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/31040835/" target="_blank" rel="noopener">PMID&nbsp;31040835</a></p>
+                    <p class="starred-sum" data-i18n="star4-sum">&mdash; <em>L. reuteri</em> ZLR003 in piglets (V3&ndash;V4 16S); a worked example of microbiota&ndash;SCFA&ndash;serum-metabolite correlation analysis.</p>
+                </li>
+                <li class="starred-item">
+                    <div class="starred-no">★ 5</div>
+                    <p class="starred-cite">Yu J, et al. &ldquo;Dietary supplementation with <em>Lactiplantibacillus plantarum</em> P-8 improves the growth performance and gut microbiome of weaned piglets.&rdquo; Microbiology Spectrum, 2024.</p>
+                    <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/38169289/" target="_blank" rel="noopener">PMID&nbsp;38169289</a></p>
+                    <p class="starred-sum" data-i18n="star5-sum">&mdash; Recent commercial-strain trial data; current growth-performance and microbiome benchmarks for <em>L. plantarum</em> in piglets.</p>
+                </li>
+                <li class="starred-item">
+                    <div class="starred-no">★ 6</div>
+                    <p class="starred-cite">Kim D, Min Y, et al. &ldquo;Multi-Probiotic <em>Lactobacillus</em> Supplementation Improves Liver Function and Reduces Cholesterol Levels in Jeju Native Pigs.&rdquo; Animals, 2021.</p>
+                    <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/34438766/" target="_blank" rel="noopener">PMID&nbsp;34438766</a> &middot; <a href="https://doi.org/10.3390/ani11082309" target="_blank" rel="noopener">DOI</a></p>
+                    <p class="starred-sum" data-i18n="star6-sum">&mdash; Three months of multi-probiotic <em>Lactobacillus</em> feeding in local-breed pigs: ALP, GGT and BUN decreased, ALT unchanged, tissue sections normal &mdash; the safety endorsement for <em>Lactobacillus</em> in local pig breeds.</p>
+                </li>
+                <li class="starred-item">
+                    <div class="starred-no">★ 7</div>
+                    <p class="starred-cite">Hou CL, Ji HF, Zhou YX. &ldquo;Effects of <em>Lactobacillus plantarum</em> preparations on growth performance and biochemical indices in weaned piglets.&rdquo; (in Chinese). Feed Research, 2011(12): 14&ndash;16.</p>
+                    <p class="starred-links"><a href="https://xueshu.baidu.com/s?wd=%E6%A4%8D%E7%89%A9%E4%B9%B3%E6%9D%86%E8%8F%8C%E5%AF%B9%E6%96%AD%E5%A5%B6%E4%BB%94%E7%8C%AA%E7%94%9F%E4%BA%A7%E6%80%A7%E8%83%BD%E5%92%8C%E7%94%9F%E5%8C%96%E6%8C%87%E6%A0%87%E7%9A%84%E5%BD%B1%E5%93%8D" target="_blank" rel="noopener">Baidu Scholar</a></p>
+                    <p class="starred-sum" data-i18n="star7-sum">&mdash; Pig-source <em>L. plantarum</em> in 72 weaned piglets: growth, gut microbiota and serum biochemistry &mdash; domestic safety evidence complementing Kim 2021.</p>
+                </li>
+            </ul>
+            <p class="starred-close" data-i18n="star-close">The selection reflects the evidence priorities of the Co-Metabolism Evidence Monitor. Citations in any external material should be drawn from verified records; unverifiable references are excluded by policy.</p>
+        </main>
+
+        <footer class="site-footer">
+            <p data-i18n-html="footer1">BioTriage &mdash; a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
+            <p>&copy; 2026 Liu Haoan &amp; Feng Wen, Yulin University &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
+        </footer>
+
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    var I18N = {
+        en: {
+            'nav-tagline': 'Evidence-structured literature intelligence',
+            'side-label': 'Navigate',
+            'nav-home': 'Home',
+            'nav-evidence': 'Evidence Monitor',
+            'nav-daily': 'Literature Daily',
+            'nav-method': 'Methodology',
+            'nav-starred': 'Starred',
+            'badge-new': 'New',
+            'star-eyebrow': 'Starred Collection',
+            'star-title': 'Starred Collection',
+            'star-intro': 'The research group\'s shared starred list — the papers behind our current programme. Every entry links to its permanent record (PubMed/DOI where available); all accessions re-verified (Aug 2026). Personal starring for individual users will follow in a later release.',
+            'star1-sum': '— Establishes the succinate-utilizer → propionate → reduced backfat axis in living pigs, the direct precedent for guild-level phenotyping in livestock.',
+            'star2-sum': '— Classic evidence for transient (peak-then-decline) colonization of probiotic lactobacilli in the pig gut; a key design reference for sampling timepoints.',
+            'star3-sum': '— 150 weaned piglets, 60 days, 1×10⁹ CFU/d; dose–response benchmark for <em>L. plantarum</em> feeding trials.',
+            'star4-sum': '— <em>L. reuteri</em> ZLR003 in piglets (V3–V4 16S); a worked example of microbiota–SCFA–serum-metabolite correlation analysis.',
+            'star5-sum': '— Recent commercial-strain trial data; current growth-performance and microbiome benchmarks for <em>L. plantarum</em> in piglets.',
+            'star6-sum': '— Three months of multi-probiotic <em>Lactobacillus</em> feeding in local-breed pigs: ALP, GGT and BUN decreased, ALT unchanged, tissue sections normal — the safety endorsement for <em>Lactobacillus</em> in local pig breeds.',
+            'star7-sum': '— Pig-source <em>L. plantarum</em> in 72 weaned piglets: growth, gut microbiota and serum biochemistry — domestic safety evidence complementing Kim 2021.',
+            'star-close': 'The selection reflects the evidence priorities of the Co-Metabolism Evidence Monitor. Citations in any external material should be drawn from verified records; unverifiable references are excluded by policy.',
+            'footer1': 'BioTriage — a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
+            title: 'Starred Collection — BioTriage'
+        },
+        zh: {
+            'nav-tagline': '证据结构化文献智能',
+            'side-label': '导航',
+            'nav-home': '首页',
+            'nav-evidence': '证据监测器',
+            'nav-daily': '文献日报',
+            'nav-method': '方法学',
+            'nav-starred': '星级收藏',
+            'badge-new': '新',
+            'star-eyebrow': '星级收藏',
+            'star-title': '星级收藏',
+            'star-intro': '研究组的共享星级收藏——当前研究计划背后的论文。每条均链接至其永久记录（PubMed/DOI，有则链接）；全部编号已于 2026 年 8 月复核。面向个人用户的收藏功能将在后续版本开放。',
+            'star1-sum': '—— 在活体猪上确立了琥珀酸利用菌 → 丙酸 → 背膘下降这一轴线，是家畜 guild 层面表型研究的直接先例。',
+            'star2-sum': '—— 益生乳酸菌在猪肠道短暂定植（先升后降）的经典证据；采样时间点设计的关键参考。',
+            'star3-sum': '—— 150 头断奶仔猪、60 天、每日 1×10⁹ CFU；<em>植物乳杆菌</em>饲喂试验的剂量–效应基准。',
+            'star4-sum': '—— 仔猪中的 <em>L. reuteri</em> ZLR003（V3–V4 16S）；菌群–SCFA–血清代谢物关联分析的范例。',
+            'star5-sum': '—— 商品菌株的最新试验数据；<em>植物乳杆菌</em>在仔猪中生长性能与菌群效应的当前基准。',
+            'star6-sum': '—— 地方猪种复合乳酸菌饲喂 3 个月：ALP、GGT、BUN 下降，ALT 无显著变化，组织切片无异常——乳酸菌在地方猪种中安全性的背书研究。',
+            'star7-sum': '—— 猪源植物乳杆菌制剂在 72 头断奶仔猪中的生产性能、肠道菌群与血清生化指标——与 Kim 2021 互补的国内安全性证据。',
+            'star-close': '本列表反映共代谢证据监测器的证据优先级。任何对外材料中的引用均应取自经核验的记录；无法核验的引用按政策一律排除。',
+            'footer1': 'BioTriage —— 面向生命科学共同体的研究基础设施项目。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
+            title: '星级收藏 — BioTriage'
+        }
+    };
+
+    var currentLang = 'en';
+
+    function applyLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            var k = el.getAttribute('data-i18n');
+            if (I18N[lang][k] !== undefined) el.textContent = I18N[lang][k];
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+            var k = el.getAttribute('data-i18n-html');
+            if (I18N[lang][k] !== undefined) el.innerHTML = I18N[lang][k];
+        });
+        document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+        document.title = I18N[lang].title;
+        var btn = document.getElementById('lang-toggle');
+        if (btn) btn.textContent = (lang === 'zh') ? 'EN' : '中文';
+        try { localStorage.setItem('bt-lang', lang); } catch (e) { /* ignore */ }
+    }
+
+    function detectLang() {
+        try {
+            var s = localStorage.getItem('bt-lang');
+            if (s === 'zh' || s === 'en') return s;
+        } catch (e) { /* ignore */ }
+        return ((navigator.language || 'en').toLowerCase().indexOf('zh') === 0) ? 'zh' : 'en';
+    }
+
+    applyLang(detectLang());
+    var btn = document.getElementById('lang-toggle');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            applyLang(currentLang === 'zh' ? 'en' : 'zh');
+        });
+    }
+})();
+</script>
+
+</body>
+</html>

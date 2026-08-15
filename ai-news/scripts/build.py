@@ -673,6 +673,17 @@ def main():
         shutil.copytree(daily_src, daily_dst)
         print("  Deployed /daily/ literature daily page")
 
+    # Deploy starred collection page
+    starred_src = os.path.join(PROJECT_ROOT, "..", "starred")
+    if not os.path.exists(starred_src):
+        starred_src = os.path.join(PROJECT_ROOT, "starred")
+    if os.path.exists(starred_src):
+        starred_dst = os.path.join(BUILD_DIR, "starred")
+        if os.path.exists(starred_dst):
+            shutil.rmtree(starred_dst)
+        shutil.copytree(starred_src, starred_dst)
+        print("  Deployed /starred/ starred collection page")
+
     # Deploy lightweight curation channels (already built by lightweight/build_channel.py)
     lightweight_dir = os.path.join(PROJECT_ROOT, "..", "lightweight")
     if not os.path.exists(lightweight_dir):
