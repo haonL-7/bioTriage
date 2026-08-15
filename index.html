@@ -110,6 +110,60 @@
         }
         .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
 
+        /* ---- Layout with sidebar ---- */
+        .layout {
+            display: flex;
+            max-width: calc(var(--max-width) + 240px);
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            position: sticky;
+            top: 76px;
+            padding: 28px 20px 40px 24px;
+            font-family: var(--font-en);
+        }
+        .side-nav { display: flex; flex-direction: column; gap: 2px; }
+        .side-nav .side-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--ink-xlt);
+            padding: 0 12px 10px;
+        }
+        .side-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--ink-md);
+            letter-spacing: 0.2px;
+            transition: background 0.15s var(--ease), color 0.15s var(--ease);
+        }
+        .side-item:hover { background: var(--bg-alt); color: var(--ink); }
+        .side-item.is-active { background: var(--primary); color: #fff; font-weight: 600; }
+        .side-item.is-active:hover { background: var(--primary); color: #fff; }
+        .side-item .badge-new {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--gold-lt);
+            background: var(--gold-pale);
+            border: 1px solid var(--gold-lt);
+            border-radius: 999px;
+            padding: 1px 7px;
+            line-height: 1.5;
+        }
+        .side-item.is-active .badge-new { color: #fff; background: transparent; border-color: rgba(255,255,255,0.5); }
+        .page { flex: 1; min-width: 0; }
+
         /* ---- Header ---- */
         .site-header {
             position: relative;
@@ -300,6 +354,13 @@
             .featured-card, .methodology { padding: 20px; }
             .featured-card .fc-title { font-size: 18px; }
         }
+        @media (max-width: 900px) {
+            .layout { flex-direction: column; }
+            .sidebar { position: static; width: 100%; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+            .side-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .side-nav .side-label { display: none; }
+            .side-item { padding: 6px 12px; font-size: 12px; }
+        }
     </style>
 </head>
 <body>
@@ -308,6 +369,19 @@
     <span class="tb-brand"><span class="mini-logo">bio<em>|</em>Triage</span><span data-i18n="nav-tagline">Evidence-structured literature intelligence</span></span>
     <span class="tb-right"><button id="lang-toggle" type="button" class="lang-btn">中文</button><span>2026</span></span>
 </nav>
+
+<div class="layout">
+    <aside class="sidebar">
+        <nav class="side-nav">
+            <span class="side-label" data-i18n="side-label">Navigate</span>
+            <a class="side-item is-active" href="./" data-i18n="nav-home">Home</a>
+            <a class="side-item" href="evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
+            <a class="side-item" href="daily/"><span data-i18n="nav-daily">Literature Daily</span><span class="badge-new" data-i18n="badge-new">New</span></a>
+            <a class="side-item" href="ms1/" data-i18n="nav-method">Methodology</a>
+            <a class="side-item" href="#starred-collection" data-i18n="nav-starred">Starred</a>
+        </nav>
+    </aside>
+    <div class="page">
 
 <header class="site-header">
     <div class="logo">bio<span class="pipe">|</span>Triage</div>
@@ -434,12 +508,22 @@
     <p>&copy; 2026 Liu Haoan &amp; Feng Wen, Yulin University &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
 </footer>
 
+    </div>
+</div>
+
 <script>
 (function () {
     'use strict';
     var I18N = {
         en: {
             'nav-tagline': 'Evidence-structured literature intelligence',
+            'side-label': 'Navigate',
+            'nav-home': 'Home',
+            'nav-evidence': 'Evidence Monitor',
+            'nav-daily': 'Literature Daily',
+            'nav-method': 'Methodology',
+            'nav-starred': 'Starred',
+            'badge-new': 'New',
             'tagline': 'AI-curated literature intelligence for the life sciences. Daily selection and significance assessment from open-access journals, preprints, and databases across bioinformatics and experimental biology.',
             'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · All open-access content',
             'sec-active': 'Active Channels',
@@ -526,6 +610,13 @@
         },
         zh: {
             'nav-tagline': '证据结构化文献智能',
+            'side-label': '导航',
+            'nav-home': '首页',
+            'nav-evidence': '证据监测器',
+            'nav-daily': '文献日报',
+            'nav-method': '方法学',
+            'nav-starred': '星级收藏',
+            'badge-new': '新',
             'tagline': '面向生命科学的 AI 策展文献智能。每日从开放获取期刊、预印本与数据库中遴选文献并评估其意义，覆盖生物信息学与实验生物学。',
             'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 全部为开放获取内容',
             'sec-active': '活跃频道',

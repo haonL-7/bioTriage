@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literature Daily — BioTriage</title>
+    <meta name="description" content="BioTriage Literature Daily — the cream of each day's crawl: the highest-evidence, highest-scoring new life-sciences literature, ranked.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           BioTriage Literature Daily — same restrained top-journal style
+           ============================================================ */
+        :root {
+            --primary: #1a4d80;
+            --primary-lt: #24567a;
+            --primary-md: #123a63;
+            --accent: #1a4d80;
+            --accent-lt: #24567a;
+            --gold: #b08d2f;
+            --gold-lt: #8f7020;
+            --gold-pale: #f7f3e8;
+            --white: #ffffff;
+            --bg: #ffffff;
+            --bg-alt: #f7f8fa;
+            --ink: #16181c;
+            --ink-md: #4a5058;
+            --ink-lt: #6a727c;
+            --ink-xlt: #8a9199;
+            --border: #e3e6ea;
+            --border-lt: #eceef1;
+            --font-zh: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+            --font-en: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+            --font-display: "Georgia", "Times New Roman", "Songti SC", serif;
+            --max-width: 1120px;
+            --radius-sm: 4px;
+            --radius: 6px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: var(--font-zh);
+            color: var(--ink);
+            background: var(--bg);
+            line-height: 1.7;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+        a { color: var(--accent); text-decoration: none; transition: color 0.2s var(--ease); }
+        a:hover { color: var(--primary-lt); }
+
+        /* ---- Top bar ---- */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-en);
+            font-size: 12.5px;
+            letter-spacing: 0.3px;
+            color: var(--ink-lt);
+        }
+        .top-bar .tb-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+        .top-bar .tb-brand .mini-logo {
+            font-family: var(--font-display);
+            font-size: 15px;
+            color: var(--ink);
+        }
+        .top-bar .tb-brand .mini-logo em { font-style: normal; color: var(--gold-lt); }
+        .top-bar .tb-right { display: flex; align-items: center; gap: 10px; color: var(--ink-xlt); }
+        .top-bar .tb-brand a { color: inherit; }
+        .lang-btn {
+            font-family: var(--font-en);
+            font-size: 11.5px;
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--white);
+            color: var(--ink-md);
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            letter-spacing: 0.3px;
+        }
+        .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* ---- Layout with sidebar ---- */
+        .layout {
+            display: flex;
+            max-width: calc(var(--max-width) + 240px);
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            position: sticky;
+            top: 76px;
+            padding: 28px 20px 40px 24px;
+            font-family: var(--font-en);
+        }
+        .side-nav { display: flex; flex-direction: column; gap: 2px; }
+        .side-nav .side-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--ink-xlt);
+            padding: 0 12px 10px;
+        }
+        .side-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--ink-md);
+            letter-spacing: 0.2px;
+            transition: background 0.15s var(--ease), color 0.15s var(--ease);
+        }
+        .side-item:hover { background: var(--bg-alt); color: var(--ink); }
+        .side-item.is-active { background: var(--primary); color: #fff; font-weight: 600; }
+        .side-item.is-active:hover { background: var(--primary); color: #fff; }
+        .side-item .badge-new {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--gold-lt);
+            background: var(--gold-pale);
+            border: 1px solid var(--gold-lt);
+            border-radius: 999px;
+            padding: 1px 7px;
+            line-height: 1.5;
+        }
+        .page { flex: 1; min-width: 0; }
+
+        /* ---- Daily header ---- */
+        .daily-header {
+            padding: 56px 24px 20px;
+        }
+        .daily-eyebrow {
+            font-family: var(--font-en);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            margin-bottom: 12px;
+        }
+        .daily-title {
+            font-family: var(--font-display);
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+        .daily-tagline {
+            font-size: 14.5px;
+            color: var(--ink-md);
+            margin-top: 12px;
+            max-width: 640px;
+            line-height: 1.8;
+        }
+        .daily-metrics {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .daily-metrics .metric {
+            min-width: 120px;
+            padding: 14px 18px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+        .daily-metrics .m-value {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.2;
+        }
+        .daily-metrics .m-label {
+            font-family: var(--font-en);
+            font-size: 11px;
+            color: var(--ink-lt);
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+        }
+
+        /* ---- Rank list ---- */
+        .daily-main {
+            padding: 8px 24px 40px;
+        }
+        .rank-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .rank-item {
+            display: flex;
+            gap: 18px;
+            padding: 20px 22px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+        .rank-item.rank-1 { border-left-color: var(--primary); }
+        .rank-item.rank-2 { border-left-color: var(--gold); }
+        .rank-item.rank-3 { border-left-color: var(--gold-lt); }
+        .rank-no {
+            flex-shrink: 0;
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--ink-xlt);
+            line-height: 1;
+            min-width: 30px;
+            text-align: center;
+        }
+        .rank-item.rank-1 .rank-no { color: var(--primary); }
+        .rank-item.rank-2 .rank-no { color: var(--gold); }
+        .rank-item.rank-3 .rank-no { color: var(--gold-lt); }
+        .rank-body { flex: 1; min-width: 0; }
+        .rank-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .level-badge {
+            font-family: var(--font-en);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            color: var(--primary);
+            background: rgba(26, 77, 128, 0.08);
+            border: 1px solid rgba(26, 77, 128, 0.2);
+        }
+        .heat-badge {
+            font-family: var(--font-en);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            color: var(--gold-lt);
+            background: var(--gold-pale);
+            border: 1px solid rgba(143, 112, 32, 0.28);
+        }
+        .level-l4, .level-l3_5 { color: var(--primary-md); background: rgba(18, 58, 99, 0.1); border-color: rgba(18, 58, 99, 0.25); }
+        .level-l2b, .level-l2a, .level-l2 { color: var(--gold-lt); background: var(--gold-pale); border-color: rgba(143, 112, 32, 0.25); }
+        .rank-journal { font-size: 12px; color: var(--ink-md); }
+        .rank-source {
+            font-family: var(--font-en);
+            font-size: 10px;
+            color: var(--ink-xlt);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        .rank-date { font-family: var(--font-en); font-size: 11px; color: var(--ink-xlt); }
+        .rank-score { font-family: var(--font-en); font-size: 11px; color: var(--ink-lt); margin-left: auto; }
+        .rank-title {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.35;
+        }
+        .rank-title a { color: inherit; }
+        .rank-title a:hover { color: var(--primary); }
+        .rank-abstract {
+            font-size: 13px;
+            color: var(--ink-md);
+            line-height: 1.75;
+            margin-top: 8px;
+        }
+        .rank-foot {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .node-tag {
+            font-size: 10px;
+            color: var(--ink-lt);
+            background: var(--bg-alt);
+            border: 1px solid var(--border-lt);
+            padding: 2px 9px;
+            border-radius: 999px;
+            letter-spacing: 0.2px;
+        }
+        .rank-link {
+            font-family: var(--font-en);
+            font-size: 11px;
+            padding: 2px 9px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--accent);
+        }
+        .rank-link:hover { border-color: var(--primary); color: var(--primary); }
+        .rank-empty {
+            padding: 40px;
+            text-align: center;
+            color: var(--ink-xlt);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+        }
+        .rule-note {
+            margin-top: 28px;
+            font-size: 12px;
+            color: var(--ink-xlt);
+            line-height: 1.8;
+            padding: 14px 18px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border-lt);
+            border-radius: var(--radius-sm);
+        }
+
+        /* ---- Footer ---- */
+        .site-footer {
+            padding: 28px 24px 48px;
+            border-top: 1px solid var(--border);
+            color: var(--ink-xlt);
+            font-size: 12px;
+            text-align: center;
+            line-height: 1.9;
+        }
+        .site-footer a { color: var(--accent); }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 900px) {
+            .layout { flex-direction: column; }
+            .sidebar { position: static; width: 100%; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+            .side-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .side-nav .side-label { display: none; }
+            .side-item { padding: 6px 12px; font-size: 12px; }
+        }
+        @media (max-width: 700px) {
+            .top-bar { flex-direction: column; height: auto; gap: 2px; padding: 10px 16px; text-align: center; }
+            .daily-header { padding: 40px 16px 16px; }
+            .daily-title { font-size: 32px; }
+            .daily-main { padding: 8px 16px 32px; }
+            .rank-item { padding: 16px; gap: 12px; }
+            .rank-no { font-size: 22px; min-width: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-bar">
+    <span class="tb-brand"><a href="../"><span class="mini-logo">bio<em>|</em>Triage</span></a><span data-i18n="nav-tagline">Evidence-structured literature intelligence</span></span>
+    <span class="tb-right"><button id="lang-toggle" type="button" class="lang-btn">中文</button></span>
+</nav>
+
+<div class="layout">
+    <aside class="sidebar">
+        <nav class="side-nav">
+            <span class="side-label" data-i18n="side-label">Navigate</span>
+            <a class="side-item" href="../" data-i18n="nav-home">Home</a>
+            <a class="side-item" href="../evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
+            <a class="side-item is-active" href="./"><span data-i18n="nav-daily">Literature Daily</span><span class="badge-new" data-i18n="badge-new">New</span></a>
+            <a class="side-item" href="../ms1/" data-i18n="nav-method">Methodology</a>
+            <a class="side-item" href="../#starred-collection" data-i18n="nav-starred">Starred</a>
+        </nav>
+    </aside>
+    <div class="page">
+
+        <header class="daily-header">
+            <div class="daily-eyebrow" data-i18n="daily-eyebrow">Literature Daily</div>
+            <h1 class="daily-title" data-i18n="daily-title">Daily Highlights</h1>
+            <p class="daily-tagline" data-i18n="daily-tagline">The cream of each day&rsquo;s crawl &mdash; papers with real source-site heat (citations) go straight to the top, no fixed count.</p>
+            <div class="daily-metrics">
+                <div class="metric"><div class="m-value" id="m-total">&mdash;</div><div class="m-label" data-i18n="m-total-label">Recent papers</div></div>
+                <div class="metric"><div class="m-value" id="m-featured">&mdash;</div><div class="m-label" data-i18n="m-featured-label">Featured</div></div>
+                <div class="metric"><div class="m-value" id="m-updated">&mdash;</div><div class="m-label" data-i18n="m-updated-label">Updated</div></div>
+            </div>
+        </header>
+
+        <main class="daily-main">
+            <ol class="rank-list" id="rank-list"></ol>
+            <p class="rule-note" data-i18n-html="rule-note">The daily is an independent sub-filter (a small funnel) over the evidence-monitor corpus: papers with source-site heat (at least one citation) qualify, ranked by heat then evidence score &mdash; no fixed count.</p>
+        </main>
+
+        <footer class="site-footer">
+            <p data-i18n-html="footer1">BioTriage &mdash; a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
+            <p>&copy; 2026 Liu Haoan &amp; Feng Wen, Yulin University &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
+        </footer>
+
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    var I18N = {
+        en: {
+            'nav-tagline': 'Evidence-structured literature intelligence',
+            'side-label': 'Navigate',
+            'nav-home': 'Home',
+            'nav-evidence': 'Evidence Monitor',
+            'nav-daily': 'Literature Daily',
+            'nav-method': 'Methodology',
+            'nav-starred': 'Starred',
+            'badge-new': 'New',
+            'daily-eyebrow': 'Literature Daily',
+            'daily-title': 'Daily Highlights',
+            'daily-tagline': 'The cream of each day\'s crawl — papers with real source-site heat (citations) go straight to the top, no fixed count.',
+            'm-total-label': 'Recent papers',
+            'm-featured-label': 'Featured',
+            'm-updated-label': 'Updated',
+            'heat-label': 'Cited',
+            'rule-note': 'The daily is an independent sub-filter (a small funnel) over the evidence-monitor corpus: papers with source-site heat (at least one citation) qualify, ranked by heat then evidence score — no fixed count.',
+            'empty': 'No hot papers yet — source-site heat (citations) is captured at crawl time and appears after the next daily crawl.',
+            'load-error': 'Unable to load literature data. This page reads the deployed data file, so preview locally after a build or visit the live site.',
+            'footer1': 'BioTriage — a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
+            title: 'Literature Daily — BioTriage'
+        },
+        zh: {
+            'nav-tagline': '证据结构化文献智能',
+            'side-label': '导航',
+            'nav-home': '首页',
+            'nav-evidence': '证据监测器',
+            'nav-daily': '文献日报',
+            'nav-method': '方法学',
+            'nav-starred': '星级收藏',
+            'badge-new': '新',
+            'daily-eyebrow': '文献日报',
+            'daily-title': '今日精选',
+            'daily-tagline': '每日抓取文献中的精选 —— 有源站热度（引用）的文献直接入选，不设固定数量。',
+            'm-total-label': '近期文献',
+            'm-featured-label': '入选精选',
+            'm-updated-label': '更新时间',
+            'heat-label': '引用',
+            'rule-note': '文献日报是证据监测器语料（大漏斗）之上的独立筛选层（小漏斗）：抓取时记录的源站热度（引用数 ≥ 1）即入选，按热度降序、再按证据评分排序，不设数量上限。',
+            'empty': '暂无高热文献 —— 源站热度（引用数）在抓取时采集，将在下一次每日抓取后显示。',
+            'load-error': '文献数据加载失败。本页读取部署后的数据文件，请在构建后预览或访问线上站点。',
+            'footer1': 'BioTriage —— 面向生命科学共同体的研究基础设施项目。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
+            title: '文献日报 — BioTriage'
+        }
+    };
+
+    var currentLang = 'en';
+
+    function applyLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            var k = el.getAttribute('data-i18n');
+            if (I18N[lang][k] !== undefined) el.textContent = I18N[lang][k];
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+            var k = el.getAttribute('data-i18n-html');
+            if (I18N[lang][k] !== undefined) el.innerHTML = I18N[lang][k];
+        });
+        document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+        document.title = I18N[lang].title;
+        var btn = document.getElementById('lang-toggle');
+        if (btn) btn.textContent = (lang === 'zh') ? 'EN' : '中文';
+        try { localStorage.setItem('bt-lang', lang); } catch (e) { /* ignore */ }
+    }
+
+    function detectLang() {
+        try {
+            var s = localStorage.getItem('bt-lang');
+            if (s === 'zh' || s === 'en') return s;
+        } catch (e) { /* ignore */ }
+        return ((navigator.language || 'en').toLowerCase().indexOf('zh') === 0) ? 'zh' : 'en';
+    }
+
+    applyLang(detectLang());
+    var btn = document.getElementById('lang-toggle');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            applyLang(currentLang === 'zh' ? 'en' : 'zh');
+        });
+    }
+
+    // ==================== Daily selection ====================
+    function isDailyPaper(p) {
+        return p.source !== 'knowledge_base' && p.type !== 'knowledge_base';
+    }
+
+    function heatOf(p) {
+        return Number(p.heat) || 0;
+    }
+
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    function setText(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = val;
+    }
+
+    function render(papers) {
+        var ol = document.getElementById('rank-list');
+        if (!papers.length) {
+            ol.innerHTML = '<li class="rank-empty">' + esc(I18N[currentLang].empty) + '</li>';
+            return;
+        }
+        ol.innerHTML = papers.map(function (p, i) {
+            var cls = 'rank-item' + (i < 3 ? ' rank-' + (i + 1) : '');
+            var lv = p.evidenceLevel || '';
+            var lvCls = 'level-' + String(lv).toLowerCase().replace(/\./g, '_');
+
+            var meta = '';
+            if (heatOf(p) > 0) meta += '<span class="heat-badge">' + esc(I18N[currentLang]['heat-label']) + ' ' + heatOf(p) + '</span>';
+            meta += '<span class="level-badge ' + lvCls + '">' + esc(lv) + '</span>';
+            if (p.journal) meta += '<span class="rank-journal">' + esc(p.journal) + '</span>';
+            if (p.source) meta += '<span class="rank-source">' + esc(p.source) + '</span>';
+            if (p.pubDate) meta += '<span class="rank-date">' + esc(p.pubDate) + '</span>';
+            if (p.totalScore != null) meta += '<span class="rank-score">Score ' + esc(p.totalScore) + '</span>';
+
+            var links = (p.links || []).map(function (l) {
+                return '<a class="rank-link" href="' + esc(l.url) + '" target="_blank" rel="noopener noreferrer">' + esc(l.label || 'Link') + '</a>';
+            }).join(' ');
+            if (!links && p.url) {
+                links = '<a class="rank-link" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer">Source</a>';
+            }
+
+            var nodes = (p.nodes || []).map(function (n) {
+                return '<span class="node-tag">' + esc(n) + '</span>';
+            }).join('');
+
+            var href = p.url || '#';
+
+            return '<li class="' + cls + '">'
+                + '<div class="rank-no">' + (i + 1) + '</div>'
+                + '<div class="rank-body">'
+                +   '<div class="rank-meta">' + meta + '</div>'
+                +   '<h2 class="rank-title"><a href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' + esc(p.title) + '</a></h2>'
+                +   (p.abstract ? '<p class="rank-abstract">' + esc(p.abstract) + '</p>' : '')
+                +   '<div class="rank-foot">' + nodes + links + '</div>'
+                + '</div>'
+                + '</li>';
+        }).join('');
+    }
+
+    fetch('../evidence/data/news.json')
+        .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        })
+        .then(function (data) {
+            var papers = (data.papers || []).filter(isDailyPaper);
+            var byId = {};
+            papers.forEach(function (p) { if (p.id) byId[p.id] = p; });
+            var order = (data.daily && data.daily.order) || [];
+            var featured = order.map(function (id) { return byId[id]; }).filter(Boolean);
+            render(featured);
+
+            setText('m-total', papers.length);
+            setText('m-featured', (data.daily && data.daily.count) != null ? data.daily.count : featured.length);
+            var st = data.stats || {};
+            var updated = st.updated_at_human || (st.updated_at || '').slice(0, 10) || '—';
+            setText('m-updated', updated);
+        })
+        .catch(function () {
+            var ol = document.getElementById('rank-list');
+            ol.innerHTML = '<li class="rank-empty">' + esc(I18N[currentLang]['load-error']) + '</li>';
+            setText('m-total', '—');
+            setText('m-featured', '—');
+            setText('m-updated', '—');
+        });
+})();
+</script>
+
+</body>
+</html>
