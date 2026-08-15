@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-每日文献爬虫 — 五个代谢物节点 (Butyrate, Bile Acids, Tryptophan, Polyamines, B12)
-数据源: PubMed (E-utilities API) + bioRxiv (API)
-过滤: 排除预警期刊/普刊，仅保留权威学术来源
+每日文献爬虫 — 共代谢节点（SCFA/胆汁酸/色氨酸/多胺/维生素）+ 肠道菌株
+数据源: PubMed (E-utilities) + bioRxiv (RSS) + Europe PMC + Semantic Scholar + arXiv
+过滤: 排除预警期刊/普刊，仅保留权威学术来源；采集原站热度（被引数）
 """
 
 import json
@@ -522,6 +522,7 @@ def fetch_europepmc() -> list[dict]:
                     "first_author": item.get("authorString", "").split(",")[0].strip() if item.get("authorString") else "",
                     "url": url, "title": title, "abstract": abstract,
                     "pub_date": pub_date, "source": "Europe PMC",
+                    "heat": int(item.get("citedByCount") or 0),
                     "links": links,
                 })
         except Exception as e:
@@ -536,7 +537,7 @@ def fetch_semantic_scholar() -> list[dict]:
     """Fetch papers from Semantic Scholar API (free tier, 100 req/5min without key)"""
     articles = []
     base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
-    fields = "title,abstract,year,externalIds,journal,publicationDate,authors"
+    fields = "title,abstract,year,externalIds,journal,publicationDate,authors,citationCount"
     broad_queries = [
         "gut microbiome butyrate propionate co-metabolism",
         "gut microbiome bile acid host signaling",
@@ -577,6 +578,7 @@ def fetch_semantic_scholar() -> list[dict]:
                     "first_author": first_author,
                     "url": url, "title": title, "abstract": abstract,
                     "pub_date": pub_date, "source": "Semantic Scholar",
+                    "heat": int(item.get("citationCount") or 0),
                     "links": links,
                 })
         except Exception as e:
@@ -722,6 +724,7 @@ def main():
             "first_author": art.get("first_author", ""),
             "pub_date": art.get("pub_date", ""),
             "source": art.get("source", ""),
+            "heat": int(art.get("heat") or 0),
             "nodes": add_parent_nodes(nodes),
             "crawled_at": datetime.now().isoformat(),
         })

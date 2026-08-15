@@ -6,9 +6,13 @@
 
 import json
 import os
+import re
 import sys
 import shutil
+import time
 from datetime import datetime
+
+import requests
 
 # ==================== 配置 ====================
 
@@ -20,6 +24,9 @@ BUILD_DIR = os.path.join(PROJECT_ROOT, "_site")
 RAW_ARTICLES_FILE = os.path.join(DATA_DIR, "raw_articles.json")
 SCORED_ARTICLES_FILE = os.path.join(DATA_DIR, "scored_articles.json")
 NEWS_JSON_FILE = os.path.join(DATA_DIR, "news.json")
+
+# 统一补热度的请求头（Semantic Scholar）
+HEADERS = {"User-Agent": "AcademicLiteratureCrawler/1.0 (mailto:research@example.com)"}
 
 # 父级分组（与 crawler.py 保持一致）
 NODE_GROUPS = {
@@ -104,6 +111,7 @@ def build_news_data(scored_articles: list[dict]) -> list[dict]:
             "pubDate": art.get("pub_date", ""),
             "links": art.get("links", []),
             "source": art.get("source", ""),
+            "heat": int(art.get("heat") or 0),
             # Evidence framework — unified names
             "evidenceLevel": ev.get("evidence_level", "L1a"),
             "evidenceJustification": ev.get("evidence_justification", ""),
@@ -142,6 +150,155 @@ def build_news_data(scored_articles: list[dict]) -> list[dict]:
         -p["totalScore"],
     ))
     return papers
+
+
+# ==================== 每日精选（大漏斗下的小漏斗）====================
+
+DAILY_FILTER = {
+    "name": "literature_daily",
+    "min_heat": 1,
+}
+
+
+def _is_kb(p: dict) -> bool:
+    return p.get("source") == "knowledge_base" or p.get("type") == "knowledge_base"
+
+
+def _heat(p: dict) -> int:
+    try:
+        return int(p.get("heat") or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _score(p: dict) -> float:
+    try:
+        return float(p.get("totalScore") or 0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _extract_doi(url: str) -> str:
+    """从 bioRxiv/DOI 链接提取 DOI（去掉版本号 vN）。"""
+    if not url:
+        return ""
+    m = re.search(r"10\.\d{4,9}/[^\s\"'<>]+", url)
+    if not m:
+        return ""
+    return re.sub(r"v\d+$", "", m.group(0).rstrip(".,;"))
+
+
+def _extract_arxiv_id(p: dict) -> str:
+    for l in p.get("links", []):
+        if (l.get("type") or "").lower() == "arxiv":
+            return re.sub(r"v\d+$", "", (l.get("url") or "").split("/abs/")[-1])
+    return ""
+
+
+def _chunks(seq, n):
+    for i in range(0, len(seq), n):
+        yield seq[i:i + n]
+
+
+def _enrich_heat(papers: list[dict]) -> None:
+    """小漏斗内部：用 Semantic Scholar 批量接口补全缺失的原站热度（引用数）。
+
+    对 heat 缺失/为 0 的新文献，按 DOI → PMID → arXiv 构造批量查询，把引用数写回 heat。
+    爬虫阶段未原生返回热度的源（PubMed/bioRxiv/arXiv）由此得到统一热度信号。
+    best-effort：查不到就保持 0。
+    """
+    if not papers:
+        return
+
+    by_doi, by_pmid, by_arxiv = {}, {}, {}
+    for p in papers:
+        if _is_kb(p) or _heat(p) > 0:
+            continue
+
+        doi = (p.get("doi") or "").strip().lower()
+        if not doi:  # bioRxiv 等 DOI 未落库：从 URL/链接提取
+            doi = _extract_doi(p.get("url") or "").lower()
+            if not doi:
+                for l in p.get("links", []):
+                    doi = _extract_doi(l.get("url") or "").lower()
+                    if doi:
+                        break
+        if doi:
+            by_doi[doi] = p
+            continue
+
+        pmid = str(p.get("pmid") or "").strip()
+        if pmid and pmid.isdigit():
+            by_pmid[pmid] = p
+            continue
+
+        arxiv_id = _extract_arxiv_id(p)
+        if arxiv_id:
+            by_arxiv[arxiv_id] = p
+
+    ids = ([f"DOI:{d}" for d in by_doi]
+           + [f"PMID:{pm}" for pm in by_pmid]
+           + [f"ARXIV:{a}" for a in by_arxiv])
+    if not ids:
+        return
+
+    enriched = 0
+    for chunk in _chunks(ids, 500):
+        for attempt in range(3):
+            try:
+                resp = requests.post(
+                    "https://api.semanticscholar.org/graph/v1/paper/batch",
+                    params={"fields": "citationCount,externalIds"},
+                    json={"ids": chunk},
+                    headers=HEADERS,
+                    timeout=30,
+                )
+                if resp.status_code == 429:
+                    time.sleep(6 * (attempt + 1))
+                    continue
+                resp.raise_for_status()
+                data = resp.json()
+                if not isinstance(data, list):
+                    break
+                for item in data:
+                    cc = int(item.get("citationCount") or 0)
+                    if cc <= 0:
+                        continue
+                    ext = item.get("externalIds") or {}
+                    rd = (ext.get("DOI") or "").strip().lower()
+                    rp = str(ext.get("PubMed") or "").strip()
+                    ra = (ext.get("ArXiv") or "").strip()
+                    target = None
+                    if rd and rd in by_doi:
+                        target = by_doi[rd]
+                    elif rp and rp in by_pmid:
+                        target = by_pmid[rp]
+                    elif ra and ra in by_arxiv:
+                        target = by_arxiv[ra]
+                    if target is not None:
+                        target["heat"] = cc
+                        enriched += 1
+                break
+            except Exception as e:
+                print(f"    Semantic Scholar heat enrich error (attempt {attempt + 1}): {e}")
+                time.sleep(2)
+    print(f"    Heat enrich: {enriched} papers filled via Semantic Scholar")
+
+
+def select_daily_featured(papers: list[dict]) -> list[dict]:
+    """每日精选 = 证据监测器语料（大漏斗）之上的独立筛选层（小漏斗）。
+
+    与主频道筛选（证据等级 / 期刊 / 节点匹配）完全解耦：
+    - 只应用每日精选自己的条件：原站热度门槛（heat >= min_heat）
+    - 排除知识库条目（策展语料不属于"每日新文献"）
+    返回按热度降序、再按总分降序的精选列表，不设数量上限。
+    """
+    featured = [
+        p for p in papers
+        if not _is_kb(p) and _heat(p) >= DAILY_FILTER["min_heat"]
+    ]
+    featured.sort(key=lambda p: (-_heat(p), -_score(p)))
+    return featured
 
 
 def build_stats(papers: list[dict], eval_stats: dict) -> dict:
@@ -212,9 +369,20 @@ def copy_frontend_files(evidence_dir: str):
 
 def write_news_json(news_list: list[dict], stats: dict, evidence_dir: str):
     """将新闻数据和统计写入 /evidence/ 构建目录"""
+    # 独立小漏斗：在完整语料（大漏斗）上应用每日精选的独立筛选条件
+    featured = select_daily_featured(news_list)
+    featured_ids = {p["id"] for p in featured}
+    for p in news_list:
+        p["featured"] = p.get("id") in featured_ids
+
     payload = {
         "stats": stats,
         "papers": news_list,
+        "daily": {
+            "criteria": DAILY_FILTER,
+            "order": [p["id"] for p in featured],
+            "count": len(featured),
+        },
     }
 
     # 写入 /evidence/data/news.json（供 gh-pages 部署）
@@ -434,6 +602,9 @@ def main():
     all_papers = kb_entries + fresh_papers
     print(f"  Total entries: {len(all_papers)} ({len(kb_entries)} curated + {len(fresh_papers)} new)")
 
+    # 统一补热度（每日精选小漏斗的信号源），放在统计/静态页生成之前，保证 heat 全站一致
+    _enrich_heat(all_papers)
+
     # Load eval stats
     eval_stats = {}
     stats_file = os.path.join(DATA_DIR, "eval_stats.txt")
@@ -490,6 +661,17 @@ def main():
                 shutil.rmtree(ms_dst)
             shutil.copytree(ms_src, ms_dst)
             print(f"  Deployed /{ms_dir}/ manuscript page")
+
+    # Deploy literature daily page
+    daily_src = os.path.join(PROJECT_ROOT, "..", "daily")
+    if not os.path.exists(daily_src):
+        daily_src = os.path.join(PROJECT_ROOT, "daily")
+    if os.path.exists(daily_src):
+        daily_dst = os.path.join(BUILD_DIR, "daily")
+        if os.path.exists(daily_dst):
+            shutil.rmtree(daily_dst)
+        shutil.copytree(daily_src, daily_dst)
+        print("  Deployed /daily/ literature daily page")
 
     # Deploy lightweight curation channels (already built by lightweight/build_channel.py)
     lightweight_dir = os.path.join(PROJECT_ROOT, "..", "lightweight")
