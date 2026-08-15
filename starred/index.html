@@ -139,19 +139,6 @@
         .side-item:hover { background: var(--bg-alt); color: var(--ink); }
         .side-item.is-active { background: var(--primary); color: #fff; font-weight: 600; }
         .side-item.is-active:hover { background: var(--primary); color: #fff; }
-        .side-item .badge-new {
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            color: var(--gold-lt);
-            background: var(--gold-pale);
-            border: 1px solid var(--gold-lt);
-            border-radius: 999px;
-            padding: 1px 7px;
-            line-height: 1.5;
-        }
-        .side-item.is-active .badge-new { color: #fff; background: transparent; border-color: rgba(255,255,255,0.5); }
         .page { flex: 1; min-width: 0; }
 
         /* ---- Starred header ---- */
@@ -281,7 +268,7 @@
             <span class="side-label" data-i18n="side-label">Navigate</span>
             <a class="side-item" href="../" data-i18n="nav-home">Home</a>
             <a class="side-item" href="../evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
-            <a class="side-item" href="../daily/"><span data-i18n="nav-daily">Literature Daily</span><span class="badge-new" data-i18n="badge-new">New</span></a>
+            <a class="side-item" href="../daily/" data-i18n="nav-daily">Literature Daily</a>
             <a class="side-item" href="../ms1/" data-i18n="nav-method">Methodology</a>
             <a class="side-item is-active" href="./" data-i18n="nav-starred">Starred</a>
         </nav>
@@ -363,7 +350,6 @@
             'nav-daily': 'Literature Daily',
             'nav-method': 'Methodology',
             'nav-starred': 'Starred',
-            'badge-new': 'New',
             'star-eyebrow': 'Starred Collection',
             'star-title': 'Starred Collection',
             'star-intro': 'The research group\'s shared starred list — the papers behind our current programme. Every entry links to its permanent record (PubMed/DOI where available); all accessions re-verified (Aug 2026). Personal starring for individual users will follow in a later release.',
@@ -386,7 +372,6 @@
             'nav-daily': '文献日报',
             'nav-method': '方法学',
             'nav-starred': '星级收藏',
-            'badge-new': '新',
             'star-eyebrow': '星级收藏',
             'star-title': '星级收藏',
             'star-intro': '研究组的共享星级收藏——当前研究计划背后的论文。每条均链接至其永久记录（PubMed/DOI，有则链接）；全部编号已于 2026 年 8 月复核。面向个人用户的收藏功能将在后续版本开放。',

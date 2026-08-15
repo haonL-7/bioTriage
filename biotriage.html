@@ -149,19 +149,6 @@
         .side-item:hover { background: var(--bg-alt); color: var(--ink); }
         .side-item.is-active { background: var(--primary); color: #fff; font-weight: 600; }
         .side-item.is-active:hover { background: var(--primary); color: #fff; }
-        .side-item .badge-new {
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            color: var(--gold-lt);
-            background: var(--gold-pale);
-            border: 1px solid var(--gold-lt);
-            border-radius: 999px;
-            padding: 1px 7px;
-            line-height: 1.5;
-        }
-        .side-item.is-active .badge-new { color: #fff; background: transparent; border-color: rgba(255,255,255,0.5); }
         .page { flex: 1; min-width: 0; }
 
         /* ---- Header ---- */
@@ -371,7 +358,7 @@
             <span class="side-label" data-i18n="side-label">Navigate</span>
             <a class="side-item is-active" href="./" data-i18n="nav-home">Home</a>
             <a class="side-item" href="evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
-            <a class="side-item" href="daily/"><span data-i18n="nav-daily">Literature Daily</span><span class="badge-new" data-i18n="badge-new">New</span></a>
+            <a class="side-item" href="daily/" data-i18n="nav-daily">Literature Daily</a>
             <a class="side-item" href="ms1/" data-i18n="nav-method">Methodology</a>
             <a class="side-item" href="starred/" data-i18n="nav-starred">Starred</a>
         </nav>
@@ -471,7 +458,6 @@
             'nav-daily': 'Literature Daily',
             'nav-method': 'Methodology',
             'nav-starred': 'Starred',
-            'badge-new': 'New',
             'tagline': 'AI-curated literature intelligence for the life sciences. Daily selection and significance assessment from open-access journals, preprints, and databases across bioinformatics and experimental biology.',
             'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · All open-access content',
             'sec-active': 'Active Channels',
@@ -554,7 +540,6 @@
             'nav-daily': '文献日报',
             'nav-method': '方法学',
             'nav-starred': '星级收藏',
-            'badge-new': '新',
             'tagline': '面向生命科学的 AI 策展文献智能。每日从开放获取期刊、预印本与数据库中遴选文献并评估其意义，覆盖生物信息学与实验生物学。',
             'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 全部为开放获取内容',
             'sec-active': '活跃频道',
