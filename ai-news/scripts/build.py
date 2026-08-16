@@ -10,7 +10,7 @@ import re
 import sys
 import shutil
 import time
-from datetime import datetime
+from datetime import datetime, date
 
 import requests
 
@@ -178,6 +178,74 @@ def _score(p: dict) -> float:
         return 0.0
 
 
+def _parse_date(s: str):
+    """把各源不一致的日期字符串归一化为 date；无法解析返回 None。
+
+    支持：ISO(2024-01-15) / PubMed(2024-Jan-01) / 年月(2024-01) / 年份(2024) / RFC2822(bioRxiv·arXiv)。
+    """
+    if not s:
+        return None
+    s = str(s).strip()
+    m = re.match(r"(\d{4})-(\d{1,2})-(\d{1,2})\b", s)
+    if m:
+        try:
+            return date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        except ValueError:
+            pass
+    m = re.match(r"(\d{4})-([A-Za-z]{3,9})-(\d{1,2})", s)
+    if m:
+        try:
+            month = datetime.strptime(m.group(2)[:3], "%b").month
+            return date(int(m.group(1)), month, int(m.group(3)))
+        except (ValueError, AttributeError):
+            pass
+    m = re.match(r"(\d{4})-(\d{1,2})\b", s)
+    if m:
+        return date(int(m.group(1)), int(m.group(2)), 1)
+    m = re.match(r"(19|20)\d{2}", s)
+    if m:
+        return date(int(m.group(0)), 1, 1)
+    try:
+        from email.utils import parsedate_to_datetime
+        return parsedate_to_datetime(s).date()
+    except Exception:
+        pass
+    return None
+
+
+def _age_days(p: dict):
+    """发表至今的天数；无日期返回 None。"""
+    d = _parse_date(p.get("pubDate") or p.get("pub_date") or "")
+    if not d:
+        return None
+    return max(0, (datetime.now().date() - d).days)
+
+
+def _citation_rate(p: dict) -> float:
+    """平均引用 = 引用数 / 发表月数（不足 1 个月按 1 个月算，避免刚发表被夸大）。"""
+    age = _age_days(p)
+    if age is None:
+        return 0.0
+    months = max(age / 30.0, 1.0)
+    return _heat(p) / months
+
+
+def _recency_tier(p: dict) -> int:
+    """时效分档（日报排序第一键）：越新越小，无日期排最后。"""
+    age = _age_days(p)
+    if age is None:
+        return 99
+    if age <= 30:
+        return 0
+    if age <= 90:
+        return 1
+    if age <= 180:
+        return 2
+    if age <= 365:
+        return 3
+    return 4
+
+
 def _extract_doi(url: str) -> str:
     """从 bioRxiv/DOI 链接提取 DOI（去掉版本号 vN）。"""
     if not url:
@@ -285,19 +353,95 @@ def _enrich_heat(papers: list[dict]) -> None:
     print(f"    Heat enrich: {enriched} papers filled via Semantic Scholar")
 
 
+def _openalex_lookup(field: str, values: list[str], target_map: dict) -> int:
+    """OpenAlex 批量查询（DOI/PMID），把 cited_by_count 写回 target_map 里对应文献的 heat。"""
+    url = "https://api.openalex.org/works"
+    params = {
+        "filter": f"{field}:" + "|".join(values),
+        "select": "ids,cited_by_count",
+        "per-page": 25,
+        "mailto": "research@example.com",
+    }
+    for attempt in range(3):
+        try:
+            resp = requests.get(url, params=params, headers=HEADERS, timeout=30)
+            if resp.status_code == 429:
+                time.sleep(4 * (attempt + 1))
+                continue
+            resp.raise_for_status()
+            filled = 0
+            for w in resp.json().get("results", []):
+                cc = int(w.get("cited_by_count") or 0)
+                if cc <= 0:
+                    continue
+                ids = w.get("ids") or {}
+                doi = (ids.get("doi") or "").replace("https://doi.org/", "").strip().lower()
+                pmid = str(ids.get("pmid") or "").strip()
+                target = None
+                if field == "doi" and doi in target_map:
+                    target = target_map[doi]
+                elif field == "pmid" and pmid in target_map:
+                    target = target_map[pmid]
+                if target is not None and _heat(target) == 0:
+                    target["heat"] = cc
+                    filled += 1
+            return filled
+        except Exception as e:
+            print(f"    OpenAlex lookup error ({field}, attempt {attempt + 1}): {e}")
+            time.sleep(2)
+    return 0
+
+
+def _enrich_heat_openalex(papers: list[dict]) -> None:
+    """小漏斗内部：用 OpenAlex（免费无 key，含预印本）补全缺失的引用数。
+
+    对 heat 缺失/为 0 的新文献，按 DOI → PMID 批量查询 cited_by_count 写回 heat。
+    作为 Semantic Scholar 之前的首选来源，之后 Semantic Scholar 兜底 arXiv 等漏网之鱼。
+    """
+    if not papers:
+        return
+
+    by_doi, by_pmid = {}, {}
+    for p in papers:
+        if _is_kb(p) or _heat(p) > 0:
+            continue
+        doi = (p.get("doi") or "").strip().lower()
+        if not doi:
+            doi = _extract_doi(p.get("url") or "").lower()
+            if not doi:
+                for l in p.get("links", []):
+                    doi = _extract_doi(l.get("url") or "").lower()
+                    if doi:
+                        break
+        if doi:
+            by_doi[doi] = p
+            continue
+        pmid = str(p.get("pmid") or "").strip()
+        if pmid and pmid.isdigit():
+            by_pmid[pmid] = p
+
+    enriched = 0
+    for chunk in _chunks(list(by_doi.keys()), 20):
+        enriched += _openalex_lookup("doi", chunk, by_doi)
+    for chunk in _chunks(list(by_pmid.keys()), 20):
+        enriched += _openalex_lookup("pmid", chunk, by_pmid)
+    print(f"    OpenAlex heat enrich: {enriched} papers filled via OpenAlex")
+
+
 def select_daily_featured(papers: list[dict]) -> list[dict]:
     """每日精选 = 证据监测器语料（大漏斗）之上的独立筛选层（小漏斗）。
 
     与主频道筛选（证据等级 / 期刊 / 节点匹配）完全解耦：
     - 只应用每日精选自己的条件：原站热度门槛（heat >= min_heat）
     - 排除知识库条目（策展语料不属于"每日新文献"）
-    返回按热度降序、再按总分降序的精选列表，不设数量上限。
+    排序口径：优先最新发表（时效分档），再按平均引用（引用/月）降序，最后总分降序。
+    不设数量上限。
     """
     featured = [
         p for p in papers
         if not _is_kb(p) and _heat(p) >= DAILY_FILTER["min_heat"]
     ]
-    featured.sort(key=lambda p: (-_heat(p), -_score(p)))
+    featured.sort(key=lambda p: (_recency_tier(p), -_citation_rate(p), -_heat(p), -_score(p)))
     return featured
 
 
@@ -603,7 +747,14 @@ def main():
     print(f"  Total entries: {len(all_papers)} ({len(kb_entries)} curated + {len(fresh_papers)} new)")
 
     # 统一补热度（每日精选小漏斗的信号源），放在统计/静态页生成之前，保证 heat 全站一致
+    # 先 OpenAlex（免费无 key、含预印本），再用 Semantic Scholar 兜底 arXiv 等
+    _enrich_heat_openalex(all_papers)
     _enrich_heat(all_papers)
+
+    # 计算时效与平均引用（日报排序口径：优先最新发表，再按平均引用降序）
+    for _p in all_papers:
+        _p["ageDays"] = _age_days(_p)
+        _p["citationRate"] = round(_citation_rate(_p), 1)
 
     # Load eval stats
     eval_stats = {}
