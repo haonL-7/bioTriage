@@ -353,6 +353,9 @@
             border: 1px solid var(--border-lt);
             border-radius: var(--radius-sm);
         }
+        .scoring-note {
+            margin-top: 12px;
+        }
 
         /* ---- Footer ---- */
         .site-footer {
@@ -417,6 +420,7 @@
         <main class="daily-main">
             <ol class="rank-list" id="rank-list"></ol>
             <p class="rule-note" data-i18n-html="rule-note">The daily is an independent sub-filter over the evidence-monitor corpus: papers with at least one citation qualify, ranked newest-first, then by average citations (citations per month) &mdash; no fixed count.</p>
+            <p class="rule-note scoring-note" data-i18n-html="scoring-note">On each card: <strong>Score</strong> is the MS1 four-dimensional matrix total (0&ndash;14); the <strong>level badge</strong> is the MS2 evidence tier (L1a&ndash;L4); <strong>Cited</strong> is the citation count, <strong>avg</strong> its per-month rate. Rating basis: <a href="../ms1/#references">MS1</a> &middot; <a href="../ms2/#references">MS2</a> Methodology References.</p>
         </main>
 
         <footer class="site-footer">
@@ -450,6 +454,7 @@
             'rate-label': 'avg',
             'rate-unit': '/mo',
             'rule-note': 'The daily is an independent sub-filter over the evidence-monitor corpus: papers with at least one citation qualify, ranked newest-first, then by average citations (citations per month) — no fixed count.',
+            'scoring-note': 'On each card: <strong>Score</strong> is the MS1 four-dimensional matrix total (0–14); the <strong>level badge</strong> is the MS2 evidence tier (L1a–L4); <strong>Cited</strong> is the citation count, <strong>avg</strong> its per-month rate. Rating basis: <a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a> Methodology References.',
             'empty': 'No cited papers yet — citations are captured at crawl time and appear after the next daily crawl.',
             'load-error': 'Unable to load literature data. This page reads the deployed data file, so preview locally after a build or visit the live site.',
             'footer1': 'BioTriage — a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
@@ -476,6 +481,7 @@
             'rate-label': '平均',
             'rate-unit': '/月',
             'rule-note': '文献日报是证据监测器语料之上的独立筛选层：有引用（≥ 1）的文献入选，优先最新发表，再按平均引用（引用数/月）降序，不设数量上限。',
+            'scoring-note': '每张卡片上：<strong>评分</strong>为 MS1 四维矩阵总分（0–14）；<strong>等级徽章</strong>为 MS2 证据层级（L1a–L4）；<strong>引用</strong>为引用数，<strong>平均</strong>为每月引用率。评级依据：<a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a> 方法学参考文献。',
             'empty': '暂无有引用的文献 —— 引用数在抓取时采集，将在下一次每日抓取后显示。',
             'load-error': '文献数据加载失败。本页读取部署后的数据文件，请在构建后预览或访问线上站点。',
             'footer1': 'BioTriage —— 面向生命科学共同体的研究基础设施项目。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
