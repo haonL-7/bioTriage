@@ -188,6 +188,15 @@
             font-weight: 700;
             color: var(--ink);
             line-height: 1.2;
+            font-variant-numeric: tabular-nums;
+        }
+        .daily-metrics .m-value-ts {
+            font-family: var(--font-en);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink-md);
+            font-variant-numeric: tabular-nums;
+            line-height: 26px;
         }
         .daily-metrics .m-label {
             font-family: var(--font-en);
@@ -408,7 +417,7 @@
             <div class="daily-metrics">
                 <div class="metric"><div class="m-value" id="m-total">&mdash;</div><div class="m-label" data-i18n="m-total-label">Recent papers</div></div>
                 <div class="metric"><div class="m-value" id="m-featured">&mdash;</div><div class="m-label" data-i18n="m-featured-label">Featured</div></div>
-                <div class="metric"><div class="m-value" id="m-updated">&mdash;</div><div class="m-label" data-i18n="m-updated-label">Updated</div></div>
+                <div class="metric"><div class="m-value m-value-ts" id="m-updated">&mdash;</div><div class="m-label" data-i18n="m-updated-label">Updated</div></div>
             </div>
         </header>
 
