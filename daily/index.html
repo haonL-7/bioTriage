@@ -256,6 +256,8 @@
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 0.4px;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.2;
             padding: 2px 8px;
             border-radius: 999px;
             color: var(--gold-lt);
@@ -267,11 +269,18 @@
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 0.4px;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.2;
             padding: 2px 8px;
             border-radius: 999px;
             color: var(--primary);
             background: rgba(26, 77, 128, 0.08);
             border: 1px solid rgba(26, 77, 128, 0.2);
+        }
+        .heat-badge b, .rate-badge b {
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0;
         }
         .level-l4, .level-l3_5 { color: var(--primary-md); background: rgba(18, 58, 99, 0.1); border-color: rgba(18, 58, 99, 0.25); }
         .level-l2b, .level-l2a, .level-l2 { color: var(--gold-lt); background: var(--gold-pale); border-color: rgba(143, 112, 32, 0.25); }
@@ -283,8 +292,8 @@
             text-transform: uppercase;
             letter-spacing: 0.6px;
         }
-        .rank-date { font-family: var(--font-en); font-size: 11px; color: var(--ink-xlt); }
-        .rank-score { font-family: var(--font-en); font-size: 11px; color: var(--ink-lt); margin-left: auto; }
+        .rank-date { font-family: var(--font-en); font-size: 11px; color: var(--ink-xlt); font-variant-numeric: tabular-nums; }
+        .rank-score { font-family: var(--font-en); font-size: 11px; color: var(--ink-lt); margin-left: auto; font-variant-numeric: tabular-nums; }
         .rank-title {
             font-family: var(--font-display);
             font-size: 17px;
@@ -513,6 +522,11 @@
         return Number(p.heat) || 0;
     }
 
+    function fmtRate(r) {
+        var n = Math.round((Number(r) || 0) * 10) / 10;
+        return (n % 1 === 0) ? String(n) : n.toFixed(1);
+    }
+
     function esc(s) {
         return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -536,8 +550,8 @@
             var lvCls = 'level-' + String(lv).toLowerCase().replace(/\./g, '_');
 
             var meta = '';
-            if (heatOf(p) > 0) meta += '<span class="heat-badge">' + esc(I18N[currentLang]['heat-label']) + ' ' + heatOf(p) + '</span>';
-            if (Number(p.citationRate) > 0) meta += '<span class="rate-badge">' + esc(I18N[currentLang]['rate-label']) + ' ' + Number(p.citationRate).toFixed(1) + ' ' + esc(I18N[currentLang]['rate-unit']) + '</span>';
+            if (heatOf(p) > 0) meta += '<span class="heat-badge">' + esc(I18N[currentLang]['heat-label']) + ' <b>' + heatOf(p) + '</b></span>';
+            if (Number(p.citationRate) > 0) meta += '<span class="rate-badge">' + esc(I18N[currentLang]['rate-label']) + ' <b>' + fmtRate(p.citationRate) + '</b>' + esc(I18N[currentLang]['rate-unit']) + '</span>';
             meta += '<span class="level-badge ' + lvCls + '">' + esc(lv) + '</span>';
             if (p.journal) meta += '<span class="rank-journal">' + esc(p.journal) + '</span>';
             if (p.source) meta += '<span class="rank-source">' + esc(p.source) + '</span>';
