@@ -13,6 +13,9 @@ body { font-family: var(--font-sans); background: var(--bg); color: var(--text);
 .top-bar .tb-brand a { color: inherit; text-decoration: none; }
 .top-bar .mini-logo { font-family: var(--font-serif); font-size: 15px; color: #16181c; }
 .top-bar .mini-logo em { font-style: normal; color: #8f7020; }
+.top-bar .tb-right { display: flex; align-items: center; gap: 10px; }
+.lang-btn { font-family: var(--font-sans); font-size: 11.5px; padding: 4px 12px; border: 1px solid #e3e6ea; border-radius: 999px; background: #fff; color: #4a5058; cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px; }
+.lang-btn:hover { border-color: #1a4d80; color: #1a4d80; }
 .layout { display: flex; max-width: calc(var(--max-width) + 240px); margin: 0 auto; align-items: flex-start; }
 .sidebar { width: 220px; flex-shrink: 0; align-self: flex-start; position: sticky; top: 76px; padding: 28px 20px 40px 24px; }
 .side-nav { display: flex; flex-direction: column; gap: 2px; }
@@ -48,17 +51,18 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 </head>
 <body>
 <nav class="top-bar">
-    <span class="tb-brand"><a href="../"><span class="mini-logo">bio<em>|</em>Triage</span></a><span>Evidence-structured literature intelligence</span></span>
+    <span class="tb-brand"><a href="../"><span class="mini-logo">bio<em>|</em>Triage</span></a><span data-i18n="nav-tagline">Evidence-structured literature intelligence</span></span>
+    <span class="tb-right"><button id="lang-toggle" type="button" class="lang-btn">中文</button></span>
 </nav>
 <div class="layout">
     <aside class="sidebar">
         <nav class="side-nav">
-            <span class="side-label">Navigate</span>
-            <a class="side-item" href="../">Home</a>
-            <a class="side-item" href="../evidence/">Evidence Monitor</a>
-            <a class="side-item" href="../daily/">Literature Daily</a>
-            <a class="side-item is-active" href="./">Methodology</a>
-            <a class="side-item" href="../starred/">Starred</a>
+            <span class="side-label" data-i18n="side-label">Navigate</span>
+            <a class="side-item" href="../" data-i18n="nav-home">Home</a>
+            <a class="side-item" href="../evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
+            <a class="side-item" href="../daily/" data-i18n="nav-daily">Literature Daily</a>
+            <a class="side-item is-active" href="./" data-i18n="nav-method">Methodology</a>
+            <a class="side-item" href="../starred/" data-i18n="nav-starred">Starred</a>
         </nav>
     </aside>
     <div class="page">
@@ -158,5 +162,64 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
         </div>
     </div>
 </div>
+<script>
+(function () {
+    'use strict';
+
+    var I18N = {
+        en: {
+            'nav-tagline': 'Evidence-structured literature intelligence',
+            'side-label': 'Navigate',
+            'nav-home': 'Home',
+            'nav-evidence': 'Evidence Monitor',
+            'nav-daily': 'Literature Daily',
+            'nav-method': 'Methodology',
+            'nav-starred': 'Starred',
+            title: 'MS1: Compartmentalized Co-metabolism in the Porcine Gut — BioTriage'
+        },
+        zh: {
+            'nav-tagline': '证据结构化文献智能',
+            'side-label': '导航',
+            'nav-home': '首页',
+            'nav-evidence': '证据监测器',
+            'nav-daily': '文献日报',
+            'nav-method': '方法学',
+            'nav-starred': '星级收藏',
+            title: 'MS1：猪肠道区室化共代谢 — BioTriage'
+        }
+    };
+
+    var currentLang = 'en';
+
+    function applyLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            var k = el.getAttribute('data-i18n');
+            if (I18N[lang][k] !== undefined) el.textContent = I18N[lang][k];
+        });
+        document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
+        document.title = I18N[lang].title;
+        var btn = document.getElementById('lang-toggle');
+        if (btn) btn.textContent = (lang === 'zh') ? 'EN' : '中文';
+        try { localStorage.setItem('bt-lang', lang); } catch (e) { /* ignore */ }
+    }
+
+    function detectLang() {
+        try {
+            var s = localStorage.getItem('bt-lang');
+            if (s === 'zh' || s === 'en') return s;
+        } catch (e) { /* ignore */ }
+        return ((navigator.language || 'en').toLowerCase().indexOf('zh') === 0) ? 'zh' : 'en';
+    }
+
+    applyLang(detectLang());
+    var btn = document.getElementById('lang-toggle');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            applyLang(currentLang === 'zh' ? 'en' : 'zh');
+        });
+    }
+})();
+</script>
 </body>
 </html>
