@@ -262,6 +262,17 @@
             background: var(--gold-pale);
             border: 1px solid rgba(143, 112, 32, 0.28);
         }
+        .rate-badge {
+            font-family: var(--font-en);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            color: var(--primary);
+            background: rgba(26, 77, 128, 0.08);
+            border: 1px solid rgba(26, 77, 128, 0.2);
+        }
         .level-l4, .level-l3_5 { color: var(--primary-md); background: rgba(18, 58, 99, 0.1); border-color: rgba(18, 58, 99, 0.25); }
         .level-l2b, .level-l2a, .level-l2 { color: var(--gold-lt); background: var(--gold-pale); border-color: rgba(143, 112, 32, 0.25); }
         .rank-journal { font-size: 12px; color: var(--ink-md); }
@@ -420,13 +431,15 @@
             'nav-starred': 'Starred',
             'daily-eyebrow': 'Literature Daily',
             'daily-title': 'Daily Highlights',
-            'daily-tagline': 'The cream of each day\'s crawl — papers with real source-site heat (citations) go straight to the top, no fixed count.',
+            'daily-tagline': 'The cream of each day\'s crawl — newest papers with the highest average citations rise to the top, no fixed count.',
             'm-total-label': 'Recent papers',
             'm-featured-label': 'Featured',
             'm-updated-label': 'Updated',
             'heat-label': 'Cited',
-            'rule-note': 'The daily is an independent sub-filter (a small funnel) over the evidence-monitor corpus: papers with source-site heat (at least one citation) qualify, ranked by heat then evidence score — no fixed count.',
-            'empty': 'No hot papers yet — source-site heat (citations) is captured at crawl time and appears after the next daily crawl.',
+            'rate-label': 'avg',
+            'rate-unit': '/mo',
+            'rule-note': 'The daily is an independent sub-filter over the evidence-monitor corpus: papers with at least one citation qualify, ranked newest-first, then by average citations (citations per month) — no fixed count.',
+            'empty': 'No cited papers yet — citations are captured at crawl time and appear after the next daily crawl.',
             'load-error': 'Unable to load literature data. This page reads the deployed data file, so preview locally after a build or visit the live site.',
             'footer1': 'BioTriage — a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
             title: 'Literature Daily — BioTriage'
@@ -441,13 +454,15 @@
             'nav-starred': '星级收藏',
             'daily-eyebrow': '文献日报',
             'daily-title': '今日精选',
-            'daily-tagline': '每日抓取文献中的精选 —— 有源站热度（引用）的文献直接入选，不设固定数量。',
+            'daily-tagline': '每日抓取文献中的精选 —— 最新发表且平均引用高的文献优先，不设固定数量。',
             'm-total-label': '近期文献',
             'm-featured-label': '入选精选',
             'm-updated-label': '更新时间',
             'heat-label': '引用',
-            'rule-note': '文献日报是证据监测器语料（大漏斗）之上的独立筛选层（小漏斗）：抓取时记录的源站热度（引用数 ≥ 1）即入选，按热度降序、再按证据评分排序，不设数量上限。',
-            'empty': '暂无高热文献 —— 源站热度（引用数）在抓取时采集，将在下一次每日抓取后显示。',
+            'rate-label': '平均',
+            'rate-unit': '/月',
+            'rule-note': '文献日报是证据监测器语料之上的独立筛选层：有引用（≥ 1）的文献入选，优先最新发表，再按平均引用（引用数/月）降序，不设数量上限。',
+            'empty': '暂无有引用的文献 —— 引用数在抓取时采集，将在下一次每日抓取后显示。',
             'load-error': '文献数据加载失败。本页读取部署后的数据文件，请在构建后预览或访问线上站点。',
             'footer1': 'BioTriage —— 面向生命科学共同体的研究基础设施项目。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
             title: '文献日报 — BioTriage'
@@ -522,6 +537,7 @@
 
             var meta = '';
             if (heatOf(p) > 0) meta += '<span class="heat-badge">' + esc(I18N[currentLang]['heat-label']) + ' ' + heatOf(p) + '</span>';
+            if (Number(p.citationRate) > 0) meta += '<span class="rate-badge">' + esc(I18N[currentLang]['rate-label']) + ' ' + Number(p.citationRate).toFixed(1) + ' ' + esc(I18N[currentLang]['rate-unit']) + '</span>';
             meta += '<span class="level-badge ' + lvCls + '">' + esc(lv) + '</span>';
             if (p.journal) meta += '<span class="rank-journal">' + esc(p.journal) + '</span>';
             if (p.source) meta += '<span class="rank-source">' + esc(p.source) + '</span>';
