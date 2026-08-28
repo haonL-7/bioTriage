@@ -109,6 +109,15 @@
             letter-spacing: 0.3px;
         }
         .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .tb-link {
+            color: var(--ink-md);
+            font-size: 12.5px;
+            letter-spacing: 0.3px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: color 0.2s var(--ease);
+        }
+        .tb-link:hover { color: var(--primary); }
 
         /* ---- Layout with sidebar ---- */
         .layout {
@@ -312,6 +321,73 @@
         .methodology .ref a { color: var(--accent); }
         .methodology .ref strong { color: var(--ink); font-weight: 600; }
 
+        /* ---- Academic Assistant ---- */
+        #academic-assistant { margin-top: 20px; scroll-margin-top: 80px; }
+        .aa-box { margin-top: 14px; }
+        .aa-input-row { display: flex; gap: 10px; }
+        .aa-input {
+            flex: 1;
+            font-family: var(--font-en);
+            font-size: 13.5px;
+            color: var(--ink);
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.2s var(--ease);
+        }
+        .aa-input:focus { border-color: var(--primary); }
+        .aa-send {
+            font-family: var(--font-en);
+            font-size: 12.5px;
+            font-weight: 600;
+            padding: 0 18px;
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-sm);
+            background: var(--primary);
+            color: #ffffff;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+        }
+        .aa-send:hover { background: var(--primary-md); border-color: var(--primary-md); }
+        .aa-send:disabled { opacity: 0.6; cursor: not-allowed; }
+        .aa-status { font-size: 12.5px; color: var(--ink-lt); margin-top: 12px; }
+        .aa-status.err { color: #a04a4a; }
+        .aa-answer {
+            margin-top: 14px;
+            padding: 16px 18px;
+            background: var(--bg-alt);
+            border: 1px solid var(--border-lt);
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            color: var(--ink);
+            line-height: 1.85;
+            white-space: pre-wrap;
+        }
+        .aa-sources { margin-top: 12px; }
+        .aa-sources-label {
+            font-family: var(--font-en);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .aa-sources .src {
+            display: block;
+            font-family: var(--font-en);
+            font-size: 12px;
+            color: var(--ink-md);
+            padding: 8px 0 8px 14px;
+            border-left: 2px solid var(--border);
+            margin: 4px 0;
+            line-height: 1.7;
+        }
+        .aa-sources .src a { color: var(--accent); }
+
         /* ---- Footer ---- */
         .site-footer {
             position: relative;
@@ -349,7 +425,7 @@
 
 <nav class="top-bar">
     <span class="tb-brand"><span class="mini-logo">bio<em>|</em>Triage</span><span data-i18n="nav-tagline">Evidence-structured literature intelligence</span></span>
-    <span class="tb-right"><button id="lang-toggle" type="button" class="lang-btn">中文</button><span>2026</span></span>
+    <span class="tb-right"><a href="#academic-assistant" class="tb-link" data-i18n="nav-aa">Academic Assistant</a><button id="lang-toggle" type="button" class="lang-btn">中文</button><span>2026</span></span>
 </nav>
 
 <div class="layout">
@@ -434,6 +510,25 @@
         <p data-i18n-html="meth-p2">
             Literature evaluation is powered by the <strong>DeepSeek API</strong>, with GLM-4-Flash as fallback and local rule-based heuristics as final backup. All AI-generated assessments include confidence indicators and evaluation method attribution. Independent verification is recommended before citing.
         </p>
+    </div>
+
+
+    <div class="methodology" id="academic-assistant">
+        <h3 data-i18n="aa-h">Academic Assistant</h3>
+        <p data-i18n="aa-intro">
+            Ask questions grounded in the group's starred foundational literature (7 verified papers). Answers are drawn only from this corpus and cite its sources.
+        </p>
+        <div class="aa-box">
+            <div class="aa-input-row">
+                <input type="text" id="aa-input" class="aa-input" data-i18n-placeholder="aa-placeholder" placeholder="e.g. succinate-utilizing bacteria, propionate and backfat">
+                <button type="button" id="aa-send" class="aa-send" data-i18n="aa-send">Ask</button>
+            </div>
+            <div id="aa-status" class="aa-status" hidden></div>
+            <div id="aa-result" class="aa-result" hidden>
+                <div id="aa-answer" class="aa-answer"></div>
+                <div id="aa-sources" class="aa-sources"></div>
+            </div>
+        </div>
     </div>
 
 </main>
@@ -528,6 +623,14 @@
             'meth-ms1': 'Defines the Compartmentalized Co-Metabolism Interaction Network Model and Four-Dimensional Matrix Rating System (Forward Pathway, Reverse Pathway, Coupling Verification Depth, Measurement Depth).',
             'meth-ms2': 'Defines the Six-Tier Evidence Framework (L1a–L4) with strain-specificity and target-host validation as core dimensions, and the novel L3.5 transitional tier.',
             'meth-p2': 'Literature evaluation is powered by the <strong>DeepSeek API</strong>, with GLM-4-Flash as fallback and local rule-based heuristics as final backup. All AI-generated assessments include confidence indicators and evaluation method attribution. Independent verification is recommended before citing.',
+            'nav-aa': 'Academic Assistant',
+            'aa-h': 'Academic Assistant',
+            'aa-intro': 'Ask questions grounded in the group\'s starred foundational literature (7 verified papers). Answers are drawn only from this corpus and cite its sources.',
+            'aa-placeholder': 'e.g. succinate-utilizing bacteria, propionate and backfat',
+            'aa-send': 'Ask',
+            'aa-loading': 'Searching the literature corpus…',
+            'aa-error': 'The assistant is unavailable right now. Please try again later.',
+            'aa-sources-label': 'Sources',
             'footer1': 'BioTriage — a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
             title: 'BioTriage — AI-Powered Life Sciences Literature Intelligence',
             metaDesc: 'BioTriage delivers AI-evaluated, evidence-structured literature monitoring across microbiome research, bioinformatics, genomics, experimental biology, and drug discovery. Daily automated updates from PubMed, bioRxiv, Europe PMC, Semantic Scholar, and arXiv.'
@@ -610,6 +713,14 @@
             'meth-ms1': '定义了分区共代谢互作网络模型与四维矩阵评分体系（正向通路、反向通路、耦合验证深度、测量深度）。',
             'meth-ms2': '定义了六层证据框架（L1a–L4），以菌株特异性与靶宿主验证为核心维度，并提出创新的 L3.5 过渡层级。',
             'meth-p2': '文献评估由 <strong>DeepSeek API</strong> 驱动，以 GLM-4-Flash 为兜底、本地规则启发式为最终备份。所有 AI 生成的评估均包含置信度指标与评估方法归属。引用前建议独立核实。',
+            'nav-aa': '学术助手',
+            'aa-h': '学术助手',
+            'aa-intro': '基于研究组星级收藏的奠基文献（7 篇已核验论文）提问。回答仅来自该语料，并标注其来源。',
+            'aa-placeholder': '例如：琥珀酸利用菌、丙酸与背膘',
+            'aa-send': '提问',
+            'aa-loading': '正在检索语料…',
+            'aa-error': '助手暂不可用，请稍后重试。',
+            'aa-sources-label': '信息来源',
             'footer1': 'BioTriage —— 面向生命科学共同体的研究基础设施项目。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
             title: 'BioTriage —— 生命科学 AI 文献智能',
             metaDesc: 'BioTriage 提供 AI 评估、证据结构化的文献监测，覆盖微生物组研究、生物信息学、基因组学、实验生物学与药物发现。每日自动更新，来源包括 PubMed、bioRxiv、Europe PMC、Semantic Scholar 与 arXiv。'
@@ -624,6 +735,10 @@
         document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
             var k = el.getAttribute('data-i18n-html');
             if (I18N[lang][k] !== undefined) el.innerHTML = I18N[lang][k];
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+            var k = el.getAttribute('data-i18n-placeholder');
+            if (I18N[lang][k] !== undefined) el.setAttribute('placeholder', I18N[lang][k]);
         });
         document.documentElement.lang = (lang === 'zh') ? 'zh-CN' : 'en';
         document.title = I18N[lang].title;
@@ -648,6 +763,79 @@
         btn.addEventListener('click', function () {
             var cur = (document.documentElement.lang === 'zh-CN') ? 'zh' : 'en';
             applyLang(cur === 'zh' ? 'en' : 'zh');
+        });
+    }
+
+    // ---- 学术助手 RAG 问答 ----
+    var API_BASE = 'http://127.0.0.1:8000/api'; // 本地测试；部署后改为生产后端基址（如 https://<your-deploy>/api）
+
+    var aaInput = document.getElementById('aa-input');
+    var aaSend = document.getElementById('aa-send');
+    var aaStatus = document.getElementById('aa-status');
+    var aaResult = document.getElementById('aa-result');
+    var aaAnswer = document.getElementById('aa-answer');
+    var aaSources = document.getElementById('aa-sources');
+
+    function aaLang() {
+        return (document.documentElement.lang === 'zh-CN') ? 'zh' : 'en';
+    }
+
+    function aaSetStatus(msg, isErr) {
+        if (!msg) { aaStatus.hidden = true; aaStatus.textContent = ''; return; }
+        aaStatus.hidden = false;
+        aaStatus.textContent = msg;
+        aaStatus.classList.toggle('err', !!isErr);
+    }
+
+    function aaShowSources(sources) {
+        aaSources.innerHTML = '';
+        if (!sources || !sources.length) return;
+        var label = document.createElement('div');
+        label.className = 'aa-sources-label';
+        label.textContent = I18N[aaLang()]['aa-sources-label'];
+        aaSources.appendChild(label);
+        sources.forEach(function (s) {
+            var el = document.createElement('span');
+            el.className = 'src';
+            var html = '<strong>' + (s.cite || s.title || '') + '</strong>';
+            if (s.pmid) html += ' <a href="https://pubmed.ncbi.nlm.nih.gov/' + s.pmid + '/" target="_blank" rel="noopener">PMID ' + s.pmid + '</a>';
+            if (s.doi) html += ' &middot; <a href="https://doi.org/' + s.doi + '" target="_blank" rel="noopener">DOI</a>';
+            el.innerHTML = html;
+            aaSources.appendChild(el);
+        });
+    }
+
+    function aaAsk() {
+        var q = aaInput.value.trim();
+        if (!q) return;
+        var lang = aaLang();
+        aaSend.disabled = true;
+        aaResult.hidden = true;
+        aaSetStatus(I18N[lang]['aa-loading'], false);
+        var url = API_BASE + '/rag_chat?q=' + encodeURIComponent(q);
+        fetch(url)
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                aaSend.disabled = false;
+                aaSetStatus('', false);
+                if (!data || data.success === false) {
+                    aaSetStatus((data && data.error) ? data.error : I18N[lang]['aa-error'], true);
+                    return;
+                }
+                aaAnswer.textContent = data.answer || '';
+                aaShowSources(data.sources || []);
+                aaResult.hidden = false;
+            })
+            .catch(function () {
+                aaSend.disabled = false;
+                aaSetStatus(I18N[lang]['aa-error'], true);
+            });
+    }
+
+    if (aaSend) {
+        aaSend.addEventListener('click', aaAsk);
+        aaInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); aaAsk(); }
         });
     }
 })();
