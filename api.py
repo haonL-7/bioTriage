@@ -77,6 +77,17 @@ app.add_middleware(
 )
 
 # ==================== 初始化 DeepSeek 客户端 ====================
+# 优先读环境变量；本地开发若未设置，则从同目录 .env 读取（.env 已被 .gitignore 忽略，不会提交）
+if not os.getenv("DEEPSEEK_API_KEY"):
+    _env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    if os.path.exists(_env_path):
+        with open(_env_path, "r", encoding="utf-8") as _f:
+            for _line in _f:
+                _line = _line.strip()
+                if _line.startswith("DEEPSEEK_API_KEY=") and not _line.startswith("#"):
+                    os.environ["DEEPSEEK_API_KEY"] = _line.split("=", 1)[1].strip()
+                    break
+
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 if not DEEPSEEK_API_KEY:
     raise RuntimeError(
@@ -105,6 +116,20 @@ except FileNotFoundError:
 except json.JSONDecodeError as e:
     print(f"[错误] 知识库 JSON 解析失败: {e}")
     KNOWLEDGE_BASE = {"probiotics": [], "metabolites": []}
+
+
+# ==================== 加载学术助手语料 ====================
+DOCS_PATH = os.path.join(BASE_DIR, "documents.json")
+try:
+    with open(DOCS_PATH, "r", encoding="utf-8") as f:
+        DOCUMENTS = json.load(f).get("documents", [])
+    print(f"[启动] 学术助手语料加载成功: {len(DOCUMENTS)} 篇文献")
+except FileNotFoundError:
+    print(f"[警告] 未找到语料文件 {DOCS_PATH}")
+    DOCUMENTS = []
+except json.JSONDecodeError as e:
+    print(f"[错误] 语料 JSON 解析失败: {e}")
+    DOCUMENTS = []
 
 
 # ==================== 工具函数 ====================
@@ -315,6 +340,150 @@ def analyze_with_deepseek(question: str, kb_context: str) -> dict:
             "confidence": "low",
             "error": str(e)
         }
+
+
+# ==================== 学术助手 RAG（检索 + DeepSeek 接地问答） ====================
+import re
+
+# 中文术语 → 英文同义词映射（轻量双语检索：中文提问也能命中英文摘要）
+_RAG_SYNONYMS = {
+    "琥珀酸利用菌": ["succinate-utilizer", "succinatutens", "phascolarctobacterium"],
+    "琥珀酸": ["succinate", "succinic"],
+    "丙酸": ["propionate", "propionic"],
+    "背膘": ["backfat", "fat accumulation", "fat deposition"],
+    "植物乳杆菌": ["lactobacillus plantarum", "l. plantarum", "lactiplantibacillus plantarum", "lactiplantibacillus"],
+    "乳酸菌": ["lactobacillus", "lactobacilli"],
+    "断奶": ["wean", "weaned", "weaning"],
+    "仔猪": ["piglet", "piglets"],
+    "猪": ["pig", "pigs", "porcine", "swine"],
+    "肠道": ["gut", "intestinal", "gastrointestinal"],
+    "定植": ["colonization", "colonisation", "persist", "predominate"],
+    "生长性能": ["growth performance", "average daily gain", "weight gain"],
+    "猪肉品质": ["pork quality", "meat quality"],
+    "肝脏": ["liver", "hepatic"],
+    "胆固醇": ["cholesterol"],
+    "饲喂": ["dietary", "feeding", "fed", "supplementation", "administered"],
+    "代谢": ["metabolism", "metabolic", "metabolite"],
+    "表观遗传": ["epigenetic"],
+    "炎症": ["inflammat", "tlr4"],
+    "脂肪酸": ["fatty acid", "scfa", "short-chain fatty acid"],
+    "氨基酸": ["amino acid", "arginine"],
+    "腹泻": ["diarrhea"],
+    "死亡率": ["mortality"],
+    "日增重": ["daily weight gain", "average daily gain"],
+    "饲料转化": ["feed conversion", "fcr", "food conversion"],
+}
+
+
+def _retrieve_chunks(query: str, top_k: int = 3) -> list:
+    """
+    轻量双语词频检索：对每篇 doc 的 cite+title+passage 做 token 重叠计数，取 top_k。
+    中文提问先经 _RAG_SYNONYMS 映射到英文同义词，英文提问直接用词级 token。
+    不引入 torch / sentence-transformers / 向量库。
+    """
+    if not DOCUMENTS:
+        return []
+    q = (query or "").strip().lower()
+    if not q:
+        return []
+
+    terms = set()
+    for cn, ens in _RAG_SYNONYMS.items():
+        if cn in q:
+            terms.update(ens)
+    for tok in re.findall(r"[a-z0-9][a-z0-9\-]*", q):
+        if len(tok) >= 3:
+            terms.add(tok)
+
+    if not terms:
+        return []
+
+    scored = []
+    for doc in DOCUMENTS:
+        blob = " ".join([
+            str(doc.get("cite", "")),
+            str(doc.get("title", "")),
+            str(doc.get("passage", "")),
+        ]).lower()
+        score = 0
+        for t in terms:
+            if t in blob:
+                score += max(1, len(t) // 4)
+        if score > 0:
+            scored.append((score, doc))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [doc for _, doc in scored[:top_k]]
+
+
+def _is_chinese(text: str) -> bool:
+    return any("一" <= ch <= "鿿" for ch in text)
+
+
+RAG_SYSTEM_PROMPT = """你是一个学术文献问答助手，服务于一个共享的科研课题组。你只能依据用户消息中提供的"检索片段"回答问题。
+
+## 硬性规则
+1. 只基于提供的检索片段回答；禁止编造任何数据、结论或参考文献。
+2. 如果检索片段中没有与问题相关的信息，直接回复"暂无相关资料"，不要延伸、猜测或补充。
+3. 不得自行生成参考文献；只能引用检索片段中出现的文献标题与来源。
+4. 回答语言必须与用户问题的语言一致（用户用中文则用中文，用英文则用英文）。
+5. 回答末尾用一行标注信息来源文献（作者 + 年份 + 期刊）。PMID/DOI 只在检索片段明确给出时才照抄，绝不编造。
+6. 回答要简洁、学术化；不要使用表情符号或多余的语气词。"""
+
+
+def rag_answer(question: str, chunks: list) -> tuple:
+    """调用 DeepSeek，基于检索片段生成带来源的答案。返回 (answer, sources)。"""
+    context_lines = []
+    for i, doc in enumerate(chunks, 1):
+        cite = doc.get("cite", "")
+        passage = doc.get("passage", "")
+        ids = []
+        if doc.get("pmid"):
+            ids.append(f"PMID: {doc['pmid']}")
+        if doc.get("doi"):
+            ids.append(f"DOI: {doc['doi']}")
+        id_str = (" | " + " | ".join(ids)) if ids else ""
+        context_lines.append(f"[{i}] {cite}{id_str}\n    {passage[:1600]}")
+    context = "\n\n".join(context_lines)
+
+    user_message = f"""## 用户问题
+{question}
+
+## 检索片段
+{context}
+
+请基于以上检索片段回答问题。"""
+
+    try:
+        response = deepseek_client.chat.completions.create(
+            model="deepseek-chat",
+            messages=[
+                {"role": "system", "content": RAG_SYSTEM_PROMPT},
+                {"role": "user", "content": user_message},
+            ],
+            temperature=0.2,
+            max_tokens=1024,
+        )
+        answer = response.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"[RAG] DeepSeek API 调用失败: {e}")
+        answer = f"AI 服务暂时不可用，请稍后重试。（错误：{e}）"
+
+    sources = []
+    for doc in chunks:
+        src = {
+            "cite": doc.get("cite", ""),
+            "title": doc.get("title", ""),
+            "year": doc.get("year", ""),
+            "journal": doc.get("journal", ""),
+        }
+        if doc.get("pmid"):
+            src["pmid"] = doc["pmid"]
+        if doc.get("doi"):
+            src["doi"] = doc["doi"]
+        sources.append(src)
+
+    return answer, sources
 
 
 # ==================== 全局中间件：通用速率限制 ====================
@@ -607,6 +776,66 @@ async def ai_analyze(request: Request, query: str = Query(..., description="需�
             "summary": (local_match.get("summary", "")[:300] + "...") if local_match else ""
         },
         "source": "DeepSeek AI + 本地知识库"
+    }
+
+
+@app.get("/api/rag_chat")
+async def rag_chat(request: Request, q: str = Query(..., description="用户提问")):
+    """
+    学术助手 RAG 问答接口
+    1. 从 documents.json 语料检索 top_k 相关片段
+    2. 注入 DeepSeek，返回带来源引用的回答
+    限流：复用 AI 限流（每 IP 每天 10 次，防刷 DeepSeek 额度）
+    """
+    ip = request.client.host if request.client else "unknown"
+
+    # AI 限流检查
+    allowed, remaining = _check_ai_rate(ip)
+    if not allowed:
+        return JSONResponse(
+            status_code=429,
+            content={
+                "success": False,
+                "error": f"学术助手已达到每日限额（{_ai_rate_limit} 次/天）。请明天再试。",
+                "remaining": 0,
+                "limit_per_day": _ai_rate_limit,
+            },
+        )
+
+    question = (q or "").strip()
+    if not question:
+        return JSONResponse(
+            status_code=400,
+            content={"success": False, "error": "问题不能为空"},
+        )
+
+    chunks = _retrieve_chunks(question, top_k=3)
+
+    # 语料无匹配：直接返回"暂无相关资料"，不调用 DeepSeek（不消耗额度）
+    if not chunks:
+        no_hit = "暂无相关资料" if _is_chinese(question) else "No relevant material found."
+        return {
+            "success": True,
+            "query": question,
+            "answer": no_hit,
+            "sources": [],
+            "retrieved": 0,
+            "rate_limit": {"remaining": remaining, "limit_per_day": _ai_rate_limit},
+        }
+
+    _record_ai_call(ip)
+    answer, sources = rag_answer(question, chunks)
+
+    return {
+        "success": True,
+        "query": question,
+        "answer": answer,
+        "sources": sources,
+        "retrieved": len(chunks),
+        "rate_limit": {
+            "remaining": remaining - 1,
+            "limit_per_day": _ai_rate_limit,
+        },
     }
 
 
