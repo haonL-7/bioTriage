@@ -35,6 +35,25 @@ def _record_ai_call(ip: str):
     _ai_usage[ip].append(time.time())
 
 
+# Per-IP 学术助手专用限流: 50 次/天/IP（相对 AI 分析更宽松，供课题组共享）
+_rag_rate_window = 86400  # 24 hours in seconds
+_rag_rate_limit = 50
+_rag_usage = defaultdict(list)  # IP → [timestamps]
+
+
+def _check_rag_rate(ip: str) -> tuple[bool, int]:
+    now = time.time()
+    window_start = now - _rag_rate_window
+    _rag_usage[ip] = [t for t in _rag_usage[ip] if t > window_start]
+    used = len(_rag_usage[ip])
+    remaining = max(0, _rag_rate_limit - used)
+    return (used < _rag_rate_limit, remaining)
+
+
+def _record_rag_call(ip: str):
+    _rag_usage[ip].append(time.time())
+
+
 # Per-IP general rate limiter: 60 requests per minute for all endpoints
 _general_rate_window = 60
 _general_rate_limit = 60
@@ -789,16 +808,16 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
     """
     ip = request.client.host if request.client else "unknown"
 
-    # AI 限流检查
-    allowed, remaining = _check_ai_rate(ip)
+    # 学术助手专用限流检查
+    allowed, remaining = _check_rag_rate(ip)
     if not allowed:
         return JSONResponse(
             status_code=429,
             content={
                 "success": False,
-                "error": f"学术助手已达到每日限额（{_ai_rate_limit} 次/天）。请明天再试。",
+                "error": f"学术助手已达到每日限额（{_rag_rate_limit} 次/天）。请明天再试。",
                 "remaining": 0,
-                "limit_per_day": _ai_rate_limit,
+                "limit_per_day": _rag_rate_limit,
             },
         )
 
@@ -820,10 +839,10 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
             "answer": no_hit,
             "sources": [],
             "retrieved": 0,
-            "rate_limit": {"remaining": remaining, "limit_per_day": _ai_rate_limit},
+            "rate_limit": {"remaining": remaining, "limit_per_day": _rag_rate_limit},
         }
 
-    _record_ai_call(ip)
+    _record_rag_call(ip)
     answer, sources = rag_answer(question, chunks)
 
     return {
@@ -834,7 +853,7 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
         "retrieved": len(chunks),
         "rate_limit": {
             "remaining": remaining - 1,
-            "limit_per_day": _ai_rate_limit,
+            "limit_per_day": _rag_rate_limit,
         },
     }
 
