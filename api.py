@@ -536,15 +536,15 @@ async def http_exception_handler(request, exc: HTTPException):
     )
 
 
-# 读取 index.html 内容（模块加载时缓存）
-INDEX_HTML_PATH = os.path.join(BASE_DIR, "index.html")
+# 读取前端主页 biotriage.html 内容（模块加载时缓存）
+INDEX_HTML_PATH = os.path.join(BASE_DIR, "biotriage.html")
 try:
     with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
         INDEX_HTML = f.read()
     print(f"[启动] 前端页面加载成功 ({len(INDEX_HTML)} 字符)")
 except FileNotFoundError:
     INDEX_HTML = None
-    print("[警告] 未找到 index.html，根路径将返回 JSON")
+    print("[警告] 未找到 biotriage.html，根路径将返回 JSON")
 
 # ==================== API 接口 ====================
 
