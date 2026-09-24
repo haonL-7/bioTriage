@@ -1,7 +1,7 @@
 {
   "channel": "systems-biology",
-  "generated_at": "2026-09-23T21:52:48.232963",
-  "count": 32,
+  "generated_at": "2026-09-24T21:53:37.441912",
+  "count": 35,
   "papers": [
     {
       "id": "9864dfa0bf42",
@@ -26,7 +26,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42750316/"
         }
       ],
-      "summary": "MAPA is a semantic network framework that combines module discovery with large language model-based annotation to identify and interpret functional modules in multi-omics data. It addresses the interpretability gap in existing module discovery methods and the redundancy problem in pathway-based approaches by producing coherent, biologically annotated modules. The framework aims to translate high-dimensional molecular signatures into interpretable functional insights.",
+      "summary": "MAPA is a semantic network framework that integrates multi-omics data with large language models to discover and interpret functional modules. It addresses the interpretability gap in existing module discovery methods and the redundancy problem in pathway-based approaches by providing phenotype-informed annotation of molecular modules. The tool aims to translate complex molecular alterations into coherent biological insights.",
       "significance": "Medium",
       "tags": [
         "multi-omics",
@@ -59,7 +59,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42748838/"
         }
       ],
-      "summary": "This study examined how expression of the protamine genes PRM1 and PRM2 relates to semen quality in rams, analyzing 15 ejaculates from five animals. Higher protamine expression was associated with better total sperm motility, and gene regulatory network analysis suggested potential upstream regulators of these genes.",
+      "summary": "This study examined how expression of the protamine genes PRM1 and PRM2 relates to semen quality in rams, analyzing 15 ejaculates from five animals. Higher protamine expression was associated with better total sperm motility, and gene regulatory network analysis was used to identify potential upstream regulators of these genes.",
       "significance": "Low",
       "tags": [
         "transcriptomics",
@@ -94,10 +94,10 @@
       "significance": "Medium",
       "tags": [
         "tool",
-        "systems-biology",
         "metagenomics",
         "microbiome",
-        "database"
+        "systems-biology",
+        "methodology"
       ]
     },
     {
@@ -123,7 +123,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42732001/"
         }
       ],
-      "summary": "This study used adaptive laboratory evolution of E. coli across different concentrations of the oxidative stressor paraquat to examine how bacteria tailor adaptive responses to stress magnitude. They found that selection favors adaptive mutational paths ordered by their fitness cost, and that this ordering depends on the strength of the stress. The work reveals how quantitative variation in a single stressor shapes the trajectory of adaptation.",
+      "summary": "This study used adaptive laboratory evolution of E. coli under different concentrations of the oxidative stressor paraquat to examine how stress magnitude shapes adaptive mutational paths. The authors found that selection favors cost-ordered mutational trajectories in a stress-magnitude-dependent manner, meaning the order in which beneficial mutations are acquired depends on how severe the stress is. This provides insight into how bacteria tailor evolutionary responses to quantitative variation in the same stressor.",
       "significance": "Medium",
       "tags": [
         "evolution",
@@ -154,12 +154,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42727749/"
         }
       ],
-      "summary": "This paper introduces a per-edge arbitration approach for gene regulatory network inference, using a gradient-boosted meta-classifier trained on the raw scores from ten different inference methods (e.g., GENIE3, GRNBoost2, CLR, ARACNe). Instead of choosing one method or averaging all, the classifier learns to weight each method differently for each candidate regulator-target pair, and the authors also provide a diagnostic typology of inter-method conflicts. Evaluated across six single-cell perturbation screens, the approach aims to improve edge-level accuracy by resolving disagreements.",
+      "summary": "The authors present a meta-classifier that arbitrates disagreements between ten gene regulatory network inference methods on a per-edge basis, using the raw scores each method assigns to regulator-target pairs as features for a gradient-boosted classifier. They also propose a diagnostic typology of inter-method conflicts to characterize when and why methods disagree. The approach is evaluated across six single-cell perturbation screens.",
       "significance": "Medium",
       "tags": [
-        "network-analysis",
         "single-cell",
-        "machine-learning"
+        "network-analysis",
+        "machine-learning",
+        "methodology",
+        "transcriptomics"
       ]
     },
     {
@@ -185,14 +187,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42727586/"
         }
       ],
-      "summary": "The authors introduce MNRS, a computational systems-biology method that leverages longitudinal blood transcriptomic data from six immune-mediated inflammatory diseases to prioritize combination therapies that could overcome primary non-response to targeted drugs. By identifying and reversing non-response signatures, the approach narrows the vast space of possible drug pairs into promising candidates for clinical testing.",
+      "summary": "The authors present MNRS, a systems biology computational method that leverages longitudinal blood transcriptomic data from six immune-mediated inflammatory diseases to prioritize promising combinations of targeted therapies. By identifying and mitigating non-response signatures, the approach narrows the vast space of possible drug pairs to those most likely to overcome primary non-response.",
       "significance": "Medium",
       "tags": [
         "systems-biology",
         "transcriptomics",
-        "clinical",
         "drug-discovery",
-        "immunology"
+        "clinical",
+        "methodology"
       ]
     },
     {
@@ -218,7 +220,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42716028/"
         }
       ],
-      "summary": "This study analyzes the AC-DC genetic circuit, a minimal three-gene network combining a toggle switch and a repressilator, to show that a single circuit can simultaneously exhibit multiple dynamical behaviors such as oscillations and multistability. Using thermodynamic modeling and Bayesian inference, the authors map a 'zoo' of emergent dynamics, classify them, and assess their robustness. The work challenges the traditional view that these behaviors are studied in isolation and suggests that multifunctionality may be a general feature of gene regulatory networks.",
+      "summary": "This study analyzes the AC-DC genetic circuit, a minimal three-gene network combining a toggle switch and a repressilator, to show that it can simultaneously exhibit multiple dynamical behaviors such as oscillations and multistability. Using thermodynamic modeling and Bayesian inference, the authors map a diverse 'zoo' of behaviors and assess their robustness, challenging the traditional separation of these dynamics in gene regulatory network studies.",
       "significance": "Medium",
       "tags": [
         "systems-biology",
@@ -249,7 +251,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42716018/"
         }
       ],
-      "summary": "The authors present scstruc, an R package for learning Bayesian gene regulatory networks from single-cell transcriptomic data and, crucially, for evaluating the structural accuracy of the inferred networks against known causal gene-gene relationships. This addresses a gap in available software for both Bayesian network inference and causal validation in single-cell GRN analysis.",
+      "summary": "The authors present scstruc, an R package for learning Bayesian gene regulatory networks from single-cell transcriptomic data and for evaluating how accurately the inferred network structures capture causal gene-gene relationships. This addresses a gap in widely available software for both Bayesian network inference and structural/causal accuracy assessment in single-cell GRN analysis.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -282,12 +284,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42710888/"
         }
       ],
-      "summary": "The authors present a Bayesian method for inferring gene regulatory network structure that explicitly models the underlying biochemical processes governing regulatory dynamics at stochastic steady state. This addresses a key limitation of existing statistical and deep learning approaches, which typically ignore the biochemical mechanisms that drive gene expression. The approach aims to improve the accuracy and interpretability of inferred regulatory interactions.",
+      "summary": "The authors present a Bayesian inference method for gene regulatory networks that explicitly models the underlying biochemical processes driving regulatory dynamics at stochastic steady state. Unlike most statistical and deep learning approaches that ignore these mechanistic details, this method aims to recover network structure more accurately by grounding inference in biophysical principles.",
       "significance": "Medium",
       "tags": [
+        "systems-biology",
         "network-analysis",
-        "methodology",
-        "systems-biology"
+        "methodology"
       ]
     },
     {
@@ -313,7 +315,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42716386/"
         }
       ],
-      "summary": "Researchers used adaptive laboratory evolution to improve Clostridium sp. JS66's ability to reassimilate CO2 during glucose fermentation, creating a strain (ALECO2) with a 9.5-fold higher CO2 uptake rate. This enables carbon-negative mixotrophic fermentation and enhanced chain elongation to hexanoic acid, improving carbon recovery in sugar fermentation.",
+      "summary": "Researchers used adaptive laboratory evolution to improve a Clostridium strain's ability to consume CO2 during sugar fermentation, creating a strain (ALECO2) with a 9.5-fold higher CO2 uptake rate. This enables carbon-negative mixotrophic fermentation and enhanced production of hexanoic acid via chain elongation, offering a route to recover carbon otherwise lost as CO2.",
       "significance": "Medium",
       "tags": [
         "synthetic-biology",
@@ -344,7 +346,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42692020/"
         }
       ],
-      "summary": "COAST is a new method that physically aligns consecutive tissue sections using only their associated images, without requiring shared molecular features or prior annotations. It enables unified multi-modal molecular datasets and performs comparably to established uni-modal alignment tools across different spatial transcriptomics technologies, tissues, and resolutions.",
+      "summary": "COAST is a new computational method that physically aligns consecutive tissue sections using only their associated images, enabling unified multi-modal spatial datasets without requiring shared molecular features or prior annotations. It performs comparably to established uni-modal alignment tools across different spatial transcriptomics technologies, tissues, and resolutions.",
       "significance": "Medium",
       "tags": [
         "spatial-omics",
@@ -370,14 +372,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42680482/"
         }
       ],
-      "summary": "This study applies SHARE-seq to simultaneously profile gene expression and chromatin accessibility during human iPSC-derived cardiomyocyte differentiation, resolving sequential developmental cell states from iPSCs through mesoderm and cardiac progenitors. The multimodal single-cell data reveal enhancer and transcription factor regulatory dynamics underlying cardiac differentiation, helping explain the heterogeneity of differentiated cardiomyocyte populations.",
+      "summary": "This study applies SHARE-seq to simultaneously profile gene expression and chromatin accessibility during human iPSC-derived cardiomyocyte differentiation, resolving sequential developmental cell states from iPSCs through mesoderm and cardiac progenitors. The multimodal single-cell data reveal enhancer and transcription factor regulatory dynamics underlying cardiac lineage commitment, providing a resource for understanding heterogeneous differentiation outcomes.",
       "significance": "Medium",
       "tags": [
         "single-cell",
         "epigenomics",
         "transcriptomics",
         "development",
-        "methodology"
+        "cardiovascular"
       ]
     },
     {
@@ -403,7 +405,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42737924/"
         }
       ],
-      "summary": "BioEMMA is a Python tool that automatically generates model-specific metabolic pathway maps in Escher JSON format by leveraging coordinate information from curated KEGG pathway maps. It parses KGML files, maps reaction and metabolite identifiers to model database namespaces, and filters pathway elements based on an input SBML model, enabling reproducible pathway-level visualization and comparison across genome-scale metabolic models.",
+      "summary": "BioEMMA is a Python tool that automatically generates model-specific metabolic pathway maps in Escher JSON format by leveraging coordinate information from curated KEGG pathway maps. It parses KGML files, maps reaction and metabolite identifiers to model database namespaces, and filters pathway elements based on an input SBML model, enabling reproducible pathway-level visualization and comparison of genome-scale metabolic models.",
       "significance": "Medium",
       "tags": [
         "metabolomics",
@@ -434,7 +436,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42752548/"
         }
       ],
-      "summary": "This study benchmarks eight mainstream computational methods for inferring transcription factor activity (TFA) from single-cell transcriptomic data, using large-scale perturbation sequencing datasets as ground truth. It provides a systematic, unified evaluation of how well these gene regulatory network-based approaches recover true TF activity, addressing a gap in the field where such methods had not been rigorously compared against experimental perturbation data.",
+      "summary": "This study benchmarks eight mainstream computational methods for inferring transcription factor activity (TFA) from single-cell transcriptomic data, using large-scale perturbation sequencing datasets as ground truth. The authors systematically evaluate these methods across different conditions, providing a unified assessment of their accuracy and robustness. The work highlights strengths and limitations of current TFA inference approaches and offers guidance for method selection.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -465,7 +467,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42429619/"
         }
       ],
-      "summary": "The paper introduces a method for exact stochastic simulation of continuous-time Markov chains that is compatible with gradient-based optimization. It decouples forward simulation (using hard categorical sampling for exact trajectories) from backward differentiation (using a continuous Gumbel-Softmax straight-through surrogate), enabling accurate optimization at parameter scales four orders of magnitude larger than previously possible.",
+      "summary": "This paper introduces a method for exact stochastic simulation of continuous-time Markov chains that is compatible with gradient-based deep learning. By decoupling forward simulation (using hard categorical sampling for exact trajectories) from backward differentiation (using a continuous Gumbel-Softmax straight-through surrogate), the approach enables accurate gradient optimization at parameter scales four orders of magnitude beyond existing methods. This bridges exact stochastic simulation with deep-learning-scale optimization.",
       "significance": "High",
       "tags": [
         "methodology",
@@ -496,12 +498,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42689713/"
         }
       ],
-      "summary": "This study uses AKAP79 as a model to show that cells actively regulate the size of nanoscale protein clusters at the plasma membrane, and that changing this nanoscale architecture directly alters cellular signaling function. Combining homo-FRET imaging, super-resolution microscopy, and computational modeling, the work establishes nanocluster size as a tunable control point for cellular behavior.",
+      "summary": "This study investigates how the size of nanoscale protein clusters on the cell membrane is regulated and whether changing cluster architecture affects cellular signaling. Using AKAP79 as a model scaffold protein and combining homo-FRET imaging, super-resolution microscopy, and computational modeling, the authors show that nanocluster size is dynamically controlled and that these architectural changes have functional consequences for signaling. The work establishes nanoscale organization as an active regulatory mechanism rather than a passive byproduct.",
       "significance": "Medium",
       "tags": [
+        "single-cell",
         "methodology",
-        "systems-biology",
-        "spatial-omics"
+        "systems-biology"
       ]
     },
     {
@@ -527,13 +529,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42678094/"
         }
       ],
-      "summary": "This study uses Boolean logical modeling combined with transcriptomic data to decipher the mechanisms of action of statin-ezetimibe drug combinations in hepatocyte-like cells and liver biopsies. The approach reveals how the two drugs interact at the molecular level, providing insights that could inform rational design of combination therapies. The work demonstrates the utility of integrating logical models with RNA-seq data to understand polypharmacology.",
+      "summary": "This study uses Boolean logical modeling combined with transcriptomic data to decipher the mechanisms of action of statin-ezetimibe drug combinations in human hepatocyte-like cells and liver biopsies. The approach reveals how these drugs interact at the molecular level to enhance therapeutic efficacy, providing a framework for understanding combination therapies.",
       "significance": "Medium",
       "tags": [
-        "systems-biology",
         "transcriptomics",
-        "drug-discovery",
-        "methodology"
+        "systems-biology",
+        "drug-discovery"
       ]
     },
     {
@@ -559,7 +560,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42630798/"
         }
       ],
-      "summary": "This study reanalyzed public transcriptomic data from a 28-day iPSC-to-motor-neuron differentiation protocol, building protein-protein interaction networks and identifying 15 hub genes (e.g., BUB1, TOP2A, AURKB, CCNA2) that may regulate this process. The hub genes point to cell-cycle and proliferation-related regulatory networks as key features of the mature Day 28 stage.",
+      "summary": "This study analyzed transcriptomic data from a 28-day human iPSC-to-motor-neuron differentiation protocol, building protein-protein interaction networks to identify 15 hub genes (including BUB1, TOP2A, AURKB, and CCNA2) that appear central to the differentiation process. The findings suggest these hub genes form complex regulatory networks that could serve as targets for improving motor neuron generation for disease modeling and regenerative medicine.",
       "significance": "Low",
       "tags": [
         "transcriptomics",
@@ -590,7 +591,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42594686/"
         }
       ],
-      "summary": "This study integrates bibliometric analysis, machine learning, molecular docking, and single-nucleus RNA sequencing to investigate whether the PFAS replacement chemical GenX (HFPO-DA) contributes to Alzheimer's disease risk. The authors identify MAPK-centered neuronal responses as a key mechanism linking GenX exposure to AD-relevant neurotoxicity, supported by in vivo behavioral and in vitro validation experiments.",
+      "summary": "This study integrates machine learning, network biology, and single-nucleus RNA sequencing to investigate whether exposure to the PFAS replacement chemical GenX (HFPO-DA) contributes to Alzheimer's disease risk. The authors identify MAPK-centered neuronal responses as a key mechanism linking GenX neurotoxicity to AD-related pathways, supported by in vivo behavioral tests, molecular docking, and in vitro validation. The work suggests GenX may pose underappreciated neurodegenerative risks as a legacy PFAS substitute.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -623,7 +624,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42163424/"
         }
       ],
-      "summary": "This study compared human and canine diffuse large B-cell lymphoma transcriptomes to identify a shared 409-gene module characterized by DNA replication, cell-cycle checkpoint, and DNA damage-response dysregulation. By mapping this conserved module onto pathway and protein-protein interaction networks, the authors propose it as a foundation for repurposing existing drugs to treat canine DLBCL.",
+      "summary": "This study compared human and canine diffuse large B-cell lymphoma transcriptomes to identify a conserved 409-gene module enriched for DNA replication, cell-cycle checkpoint, and DNA damage-response pathways. The authors project this module onto pathway and protein-protein interaction networks, proposing it as a basis for mechanism-driven drug repurposing in canine DLBCL.",
       "significance": "Medium",
       "tags": [
         "transcriptomics",
@@ -654,12 +655,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/41398403/"
         }
       ],
-      "summary": "This scoping review traces how perspectives on male fertility assessment and treatment have evolved across historical and contemporary paradigms, shaped by cultural, medical, and scientific frameworks. It highlights how historical observations laid the foundation for modern andrological science, despite male factor infertility contributing to up to 50% of couples' inability to conceive.",
+      "summary": "This scoping review traces how perspectives on male fertility assessment and treatment have evolved across historical and contemporary paradigms, noting that male factor infertility contributes to up to 50% of couples' inability to conceive. It synthesizes cultural, medical, and scientific frameworks to show how historical observations shaped modern andrological science.",
       "significance": "Low",
       "tags": [
-        "clinical",
         "review",
-        "population-genetics"
+        "clinical",
+        "evolution"
       ]
     },
     {
@@ -685,13 +686,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42484158/"
         }
       ],
-      "summary": "SignifiKANTE is a new tool that efficiently computes empirical P-values for gene regulatory networks inferred from gene expression data. It addresses the prohibitive computational cost of standard permutation-based methods, making statistical significance assessment practical for regression-based GRN inference on realistic datasets.",
+      "summary": "SignifiKANTE is a new tool that efficiently computes empirical P-values for gene regulatory networks inferred from gene expression data, addressing the prohibitive computational cost of standard permutation-based approaches. It makes statistical significance estimation practical for regression-based GRN inference on realistically sized datasets, where such estimates were previously often omitted.",
       "significance": "Medium",
       "tags": [
         "network-analysis",
         "transcriptomics",
-        "tool",
-        "methodology"
+        "tool"
       ]
     },
     {
@@ -717,7 +717,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42549893/"
         }
       ],
-      "summary": "This paper introduces a trans-dimensional Bayesian model averaging framework for 13C-metabolic flux analysis that explicitly accounts for uncertainty in the underlying biochemical network structure. By averaging flux estimates across multiple plausible network models weighted by their evidence, the method yields flux inferences that are robust to model misspecification rather than dependent on a single arbitrary network formulation.",
+      "summary": "This paper introduces a trans-dimensional Bayesian model averaging approach for 13C-metabolic flux analysis, which explicitly accounts for uncertainty in the underlying biochemical network structure. By averaging flux estimates across multiple plausible network models, the method provides more robust and evidence-based flux inference when isotope labeling data cannot uniquely identify a single network. This addresses a key limitation in metabolic flux quantification where results are otherwise model-dependent.",
       "significance": "Medium",
       "tags": [
         "metabolomics",
@@ -748,12 +748,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42737653/"
         }
       ],
-      "summary": "This study integrates multiple gene expression datasets to identify immune-inflammatory hub genes that overlap with a ferroptosis-associated gene set in patients with active tuberculosis. The authors use bioinformatics network analysis to pinpoint candidate biomarkers linking ferroptosis to host immune-inflammatory responses during active TB. The findings are validated across external datasets, suggesting these hub genes may serve as potential diagnostic or therapeutic targets.",
-      "significance": "Medium",
+      "summary": "This study integrates multiple gene expression datasets to identify immune-inflammatory hub genes that overlap with ferroptosis-related genes in patients with active tuberculosis. The authors use bioinformatics approaches to find candidate biomarkers linking ferroptosis to host immune responses during active TB. The findings highlight potential molecular signatures that could improve understanding of TB pathogenesis and suggest targets for further validation.",
+      "significance": "Low",
       "tags": [
         "transcriptomics",
-        "network-analysis",
-        "immunology"
+        "immunology",
+        "microbiology"
       ]
     },
     {
@@ -779,12 +779,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42740002/"
         }
       ],
-      "summary": "This paper introduces YOLOv11-MPD, an object detection algorithm adapted from YOLOv11n for detecting maize diseases across leaves, stalks, and ears in complex field environments. The method targets challenges like large-scale variation, weak fine-grained texture, and background interference by improving spatial position awareness and preserving shallow details. It aims to support intelligent agricultural monitoring for reducing yield and quality losses.",
+      "summary": "This paper introduces YOLOv11-MPD, an object detection algorithm adapted from YOLOv11n for identifying maize diseases across leaves, stalks, and ears in complex field environments. The method targets challenges like large-scale variation, weak fine-grained texture, and background interference through improvements to spatial position awareness and shallow detail preservation. It is an applied computer vision contribution aimed at intelligent agricultural monitoring.",
       "significance": "Low",
       "tags": [
         "machine-learning",
-        "plants",
-        "tool"
+        "deep-learning",
+        "plants"
       ]
     },
     {
@@ -810,12 +810,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42655912/"
         }
       ],
-      "summary": "This work presents a 4D (3D + time) whole-cell computational model of the marine cyanobacterium Prochlorococcus marinus MED4, integrating spatial organization, metabolism, and regulatory dynamics. The model reveals that central carbon metabolism is regulated locally by protein megacomplexes through post-translational modifications, particularly under fluctuating light conditions. This provides mechanistic insight into how photosynthetic microbes adapt to diel light cycles across multiple timescales.",
+      "summary": "This paper presents a whole-cell 4D (3D + time) computational model of the marine cyanobacterium Prochlorococcus marinus MED4, integrating spatial organization, metabolism, and regulatory dynamics. The model reveals that central carbon metabolism is regulated locally by protein megacomplexes through post-translational modifications in response to fluctuating light conditions. It demonstrates how rapid redox-dependent PTMs and slower expression changes coordinate to adapt metabolism across diel cycles.",
       "significance": "High",
       "tags": [
         "systems-biology",
         "metabolomics",
-        "microbiology"
+        "methodology"
       ]
     },
     {
@@ -850,6 +850,37 @@
       ]
     },
     {
+      "id": "5d8bb45f5392",
+      "title": "Integrated single cell transcriptomics analysis for unraveling heterogeneity and plasticity of root cells for sustainable and regenerative agriculture.",
+      "abstract": "The plant root system architecture (RSA) functions in anchorage, acquisition of water and mineral nutrients, and exhibits pronounced phenotypic plasticity in response to the spatiotemporal heterogeneity of the soil environment. Resolving the regulatory networks that underpin root development is therefore a prerequisite for improving stress tolerance and yield. Single-cell RNA sequencing (scRNA-seq) resolves transcriptional landscapes at cellular resolution, discriminating root zonation, lineage trajectories and cell-type-restricted responses to environmental signals. Coupling scRNA-seq to epig",
+      "journal": "Frontiers in plant science",
+      "doi": "10.3389/fpls.2026.1881910",
+      "pmid": "42774577",
+      "first_author": "Yasmeen E",
+      "pub_date": "2026--01",
+      "source": "PubMed",
+      "url": "https://doi.org/10.3389%2Ffpls.2026.1881910",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.3389%2Ffpls.2026.1881910"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42774577/"
+        }
+      ],
+      "summary": "This review synthesizes how single-cell RNA sequencing is being used to map the cellular heterogeneity and developmental plasticity of plant root systems, including root zonation, cell lineage trajectories, and cell-type-specific responses to environmental cues. It argues that resolving these regulatory networks is essential for engineering stress-tolerant, higher-yielding crops for sustainable and regenerative agriculture.",
+      "significance": "Medium",
+      "tags": [
+        "single-cell",
+        "transcriptomics",
+        "plants"
+      ]
+    },
+    {
       "id": "83ac7b6db22b",
       "title": "HSTXGB: a hyperparameter self-tuning XGBoost method integrating pre- and post-processing for gene regulatory network inference.",
       "abstract": "Clarifying gene regulatory networks (GRNs) remains one of the central challenges of systems biology and is crucial for elucidating pathogenesis and curing diseases. Various machine learning techniques have been developed for gene regulatory network inference, but identifying intricate interactions is still a fundamental problem. Here, we propose a network structure refinement scheme, termed HSTXGB (a hyperparameter self-tuning XGBoost method integrating pre- and post-processing), to infer GRNs from time-course expression data by leveraging the nonlinear modeling capability of XGBoost while int",
@@ -872,7 +903,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42757087/"
         }
       ],
-      "summary": "HSTXGB is a new method for inferring gene regulatory networks from time-course gene expression data. It combines XGBoost's nonlinear modeling with automated hyperparameter tuning and pre-/post-processing steps to refine network structure. The approach aims to improve accuracy in identifying gene-gene regulatory interactions compared to existing machine learning methods.",
+      "summary": "HSTXGB is a new method for inferring gene regulatory networks from time-course gene expression data. It combines XGBoost's nonlinear modeling with automated hyperparameter tuning and pre-/post-processing steps to refine the inferred network structure. The approach aims to improve accuracy in identifying regulatory interactions compared to existing machine learning methods.",
       "significance": "Medium",
       "tags": [
         "network-analysis",
@@ -903,12 +934,13 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42755753/"
         }
       ],
-      "summary": "This study builds a genome-scale metabolic model specifically for GABAergic neurons and uses it to identify metabolic changes that occur along the continuum from mild cognitive impairment to Alzheimer's disease. The work highlights how early metabolic dysfunction in these inhibitory neurons may contribute to neurodegeneration, offering a systems-level view of prodromal AD.",
+      "summary": "This study builds an integrative genome-scale metabolic model of GABAergic neurons to characterize metabolic changes along the continuum from mild cognitive impairment to Alzheimer's disease. It aims to reveal early metabolic signatures underlying neuronal dysfunction in these vulnerable inhibitory neurons.",
       "significance": "Medium",
       "tags": [
         "systems-biology",
         "metabolomics",
-        "neuroscience"
+        "neuroscience",
+        "aging"
       ]
     },
     {
@@ -934,7 +966,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42761794/"
         }
       ],
-      "summary": "This review discusses how combining artificial intelligence with sports genomics could enable personalized, predictive approaches to athletic training, performance enhancement, and injury prevention. It highlights how traditional generalized training protocols fail to account for individual genetic and physiological variation, and surveys recent advances in wearable sensors, multi-omics profiling, and machine learning that support precision sports medicine.",
+      "summary": "This review discusses how combining artificial intelligence with sports genomics could enable personalized, predictive approaches to athletic training and injury prevention. It highlights recent advances in wearable sensors, multi-omics profiling, and machine learning that move sports science beyond generalized training protocols toward precision sports medicine.",
       "significance": "Low",
       "tags": [
         "machine-learning",
@@ -965,12 +997,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42750854/"
         }
       ],
-      "summary": "This review synthesizes how integrating multiple omics layers (genomic, epigenomic, transcriptomic, proteomic, metabolic) with network biology can advance cardiovascular disease research beyond traditional reductionist approaches. It proposes a systems-level framework for translating these multi-omics insights into clinical and translational discoveries.",
+      "summary": "This review synthesizes how integrative multi-omics and network biology approaches can be applied to cardiovascular disease research, moving beyond reductionist single-molecule studies. It outlines a systems-level framework that combines genomic, epigenomic, transcriptomic, proteomic, and metabolic data with network analysis and AI to identify translational targets. The paper serves as a conceptual roadmap for researchers seeking to apply systems biology to cardiovascular discovery.",
       "significance": "Medium",
       "tags": [
         "systems-biology",
         "network-analysis",
-        "review"
+        "review",
+        "clinical",
+        "methodology"
       ]
     },
     {
@@ -996,12 +1030,64 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42715255/"
         }
       ],
-      "summary": "This study integrates computational toxicology with multi-omics data to investigate whether environmental exposure to PFOA contributes to the development of metabolic dysfunction-associated steatotic liver disease (MASLD). The authors use a systems biology approach to link PFOA exposure to molecular pathways and disease risk, suggesting PFOA may act as an environmental risk factor for MASLD.",
+      "summary": "This study integrates computational toxicology with multi-omics data to investigate whether environmental exposure to PFOA contributes to the development of metabolic dysfunction-associated steatotic liver disease (MASLD). By combining systems-level modeling with molecular profiling, the authors identify potential mechanisms linking PFOA exposure to liver metabolic dysfunction.",
       "significance": "Medium",
       "tags": [
         "metabolomics",
         "systems-biology",
-        "clinical"
+        "methodology"
+      ]
+    },
+    {
+      "id": "6e9aeb482edd",
+      "title": "Distinct stage-specific transcriptional states of B cells in human tonsillar tissue",
+      "abstract": "B cells within secondary lymphoid tissues encompass a diverse range of activation states and multiple maturation processes that reflect antigen recognition and transition through the germinal center (GC) reaction, in which mature B cells differentiate into memory and antibody-secreting cells (ASCs). Here, using single-cell RNA-seq, we identify distinct activation and maturation profiles of B cells within and outside the GC reaction in human secondary lymphoid tissue. In particular, we identify a distinct, previously uncharacterized CCL4/CCL3 chemokine-expressing B-cell population with an expre",
+      "journal": "bioRxiv",
+      "doi": "10.1101/2021.08.17.456535",
+      "pmid": "",
+      "first_author": "",
+      "pub_date": "2021",
+      "source": "Semantic Scholar",
+      "url": "https://doi.org/10.1101%2F2021.08.17.456535",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.1101%2F2021.08.17.456535"
+        }
+      ],
+      "summary": "Using single-cell RNA-seq on human tonsillar tissue, this study maps the diverse activation and maturation states of B cells inside and outside the germinal center reaction. It identifies a previously uncharacterized CCL4/CCL3 chemokine-expressing B-cell population, revealing stage-specific transcriptional programs that refine our understanding of B-cell differentiation into memory and antibody-secreting cells.",
+      "significance": "Medium",
+      "tags": [
+        "single-cell",
+        "transcriptomics",
+        "immunology"
+      ]
+    },
+    {
+      "id": "8825e54c2732",
+      "title": "Unbiased reconstruction of a mammalian transcriptional network mediating the differential response to pathogens",
+      "abstract": "Peeking at Pathogen Response Networks Networks controlling gene expression serve as key decision-making circuits in cells, but the regulatory networks that control dynamic and specific gene expression responses to stimuli are often not well understood. This is particularly true for immune dendritic cells (DCs), which respond to pathogens by mounting elaborate transcriptional responses, and are centrally involved in infectious diseases, autoimmunity, and vaccines. Amit et al. (p. 257, published online 3 September) explored the transcriptional response of dendritic cells to specific classes of p",
+      "journal": "Science (New York, N.Y.)",
+      "doi": "10.1126/science.1179050",
+      "pmid": "",
+      "first_author": "",
+      "pub_date": "2009",
+      "source": "Semantic Scholar",
+      "url": "https://doi.org/10.1126%2Fscience.1179050",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.1126%2Fscience.1179050"
+        }
+      ],
+      "summary": "The authors reconstruct the transcriptional regulatory network controlling how mouse dendritic cells respond to different pathogens, using an unbiased experimental approach. They identify key regulators and network motifs that drive pathogen-specific gene expression programs, revealing how immune cells tailor their responses to distinct microbial threats.",
+      "significance": "High",
+      "tags": [
+        "transcriptomics",
+        "network-analysis",
+        "immunology"
       ]
     }
   ]
