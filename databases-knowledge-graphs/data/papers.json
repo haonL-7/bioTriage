@@ -1,7 +1,7 @@
 {
   "channel": "databases-knowledge-graphs",
-  "generated_at": "2026-10-04T22:04:49.656165",
-  "count": 14,
+  "generated_at": "2026-10-06T00:29:25.568610",
+  "count": 16,
   "papers": [
     {
       "id": "aa6fa4c019a9",
@@ -26,7 +26,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42486102/"
         }
       ],
-      "summary": "HIT-MAP is an end-to-end framework that combines endogenous epitope tagging, optimized wide-field immunofluorescence imaging, and affinity purification-mass spectrometry to map subcellular protein organization. By reducing per-target costs and eliminating reliance on target-specific antibodies or tagged cDNA libraries, it makes multimodal subcellular mapping feasible for individual labs rather than only large consortia. The approach was piloted on 16 targets, demonstrating a scalable pipeline for coordinated imaging and interaction proteomics.",
+      "summary": "HIT-MAP is an end-to-end framework that combines endogenous epitope tagging, optimized wide-field immunofluorescence imaging, and affinity purification-mass spectrometry to map subcellular protein organization in a coordinated, scalable way. By avoiding target-specific antibodies and cDNA libraries, it lowers the cost and complexity that previously restricted multimodal subcellular mapping to large consortia. The authors demonstrate the approach on a pilot set of 16 targets.",
       "significance": "Medium",
       "tags": [
         "proteomics",
@@ -57,12 +57,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42779801/"
         }
       ],
-      "summary": "This preprint applies the ClinGen gene-disease validity framework to primary immune regulatory disorders (PIRDs), a growing subset of inborn errors of immunity. The authors systematically evaluate published evidence to classify the strength of gene-disease relationships, addressing inconsistencies and data limitations in the existing literature. The result is a standardized, expert-curated landscape of genetic and phenotypic features for PIRDs.",
+      "summary": "This study applies the ClinGen gene-disease validity framework to systematically classify the strength of evidence linking genes to primary immune regulatory disorders (PIRDs), a growing subset of inborn errors of immunity. By standardizing how published data are evaluated, the work clarifies which gene-disease relationships are well-supported versus those limited by insufficient or conflicting evidence. The result is a curated landscape of genetic and phenotypic features that can guide clinical interpretation and future research in immune dysregulation.",
       "significance": "Medium",
       "tags": [
         "immunology",
-        "clinical",
-        "database"
+        "genomics",
+        "clinical"
       ]
     },
     {
@@ -88,12 +88,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/41506317/"
         }
       ],
-      "summary": "The CFDE Workbench is a web-based data portal that integrates harmonized metadata and processed data from multiple NIH Common Fund programs, enabling cross-program data discovery and interoperability. It provides an Information Portal for program details and a Data Portal for querying contributed datasets, aiming to accelerate discoveries by combining diverse data types.",
+      "summary": "The CFDE Workbench is a web-based data portal that integrates harmonized metadata and processed data from multiple NIH Common Fund programs, enabling cross-program data discovery and interoperability. It provides a unified interface for researchers to access and combine diverse data types contributed by participating Data Coordination Centers.",
       "significance": "Medium",
       "tags": [
         "database",
-        "tool",
-        "genomics"
+        "genomics",
+        "tool"
       ]
     },
     {
@@ -119,12 +119,43 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/41456847/"
         }
       ],
-      "summary": "PDBe-KB Complexes is a new resource that groups equivalent macromolecular assemblies from the PDB into unified complex-level records, consolidating data on component identity, stoichiometry, symmetry, ligands, and PISA-derived assembly properties. It also links related complexes by comparing their compositions, capturing subcomplex relationships. This provides a consistent framework for gaining functional insight from experimentally determined macromolecular complexes.",
+      "summary": "PDBe-KB Complexes is a new resource that aggregates experimentally determined macromolecular assemblies from the PDB into unique complex-level records, unifying equivalent biological assemblies and consolidating information on components, stoichiometry, symmetry, ligands, and assembly properties. It also captures relationships between complexes by comparing their compositions, including subcomplex relationships, enabling functional insight at the level of whole complexes rather than individual structures.",
       "significance": "Medium",
       "tags": [
         "database",
         "structural-biology",
         "protein-structure"
+      ]
+    },
+    {
+      "id": "b6c11fe9f791",
+      "title": "HemOncAgent: an artificial intelligence system for retrieving structured and narrative oncology knowledge.",
+      "abstract": "Oncology knowledge spans structured and unstructured datasets of drugs, regimens, conditions, and identifiers, as well as clinician-authored narratives describing treatment sequencing across disease settings. Answering clinical questions may require accessing both databases and free-text narratives, but existing intelligent retrieval systems favor either relational facts or narrative context. We developed HemOncAgent, an artificial intelligence agent that selects among retrieval tools for the HemOnc knowledge ecosystem: HemOncKB, a curated knowledge graph for pharmacologic relationships, and H",
+      "journal": "medRxiv : the preprint server for health sciences",
+      "doi": "10.64898/2026.09.09.26362651",
+      "pmid": "42818887",
+      "first_author": "Yang AJ",
+      "pub_date": "2026-Sep-11",
+      "source": "PubMed",
+      "url": "https://doi.org/10.64898%2F2026.09.09.26362651",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.64898%2F2026.09.09.26362651"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42818887/"
+        }
+      ],
+      "summary": "HemOncAgent is an AI agent that answers oncology questions by dynamically choosing between a curated structured knowledge graph (HemOncKB) and free-text clinical narratives. This hybrid retrieval approach addresses the gap left by existing systems that handle either relational facts or narrative context, but not both. The system aims to support clinicians in navigating complex treatment sequencing and drug-regimen information.",
+      "significance": "Medium",
+      "tags": [
+        "clinical",
+        "LLM",
+        "database"
       ]
     },
     {
@@ -150,7 +181,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42728344/"
         }
       ],
-      "summary": "The paper introduces a semi-supervised machine learning framework for inducing financial ontologies across multiple languages from noisy, partially labeled documents. It uses confidence-based filtering, multi-view distillation, and uncertainty-aware contrastive learning to align financial entities across languages despite unreliable data. The result is a more noise-robust multilingual ontology induction method.",
+      "summary": "The paper introduces a noise-robust machine learning framework for inducing financial ontologies across multiple languages from noisy, partially labeled documents. It uses confidence-based filtering, multi-view distillation, and uncertainty-aware contrastive learning to align financial entities across languages. The resulting ontology supports adaptive multilingual document recognition.",
       "significance": "Low",
       "tags": [
         "machine-learning",
@@ -181,12 +212,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42806342/"
         }
       ],
-      "summary": "This review discusses how combining molecular imaging (such as PET/CT, SPECT/CT, and novel radiotracers) with genomic profiling can improve diagnosis and personalized treatment of thyroid cancer, especially for aggressive or radioiodine-refractory subtypes. It highlights that integrating imaging and genomic data through bioinformatics supports more precise therapeutic decision-making across diverse thyroid cancer types.",
+      "summary": "This review discusses how combining molecular imaging (such as PET/CT, SPECT/CT, and novel radiotracers) with genomic profiling and bioinformatics can improve the diagnosis and personalized treatment of thyroid cancer. It highlights that while radioiodine remains standard for differentiated thyroid cancers, integrating imaging and genomics may help overcome challenges like treatment resistance and heterogeneous iodine uptake in aggressive subtypes.",
       "significance": "Medium",
       "tags": [
-        "cancer",
         "clinical",
-        "genomics"
+        "genomics",
+        "cancer"
       ]
     },
     {
@@ -212,7 +243,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42797954/"
         }
       ],
-      "summary": "This study compared two recombinant rabies viruses differing only in their glycoprotein G, finding that the G protein from the virulent CVS11 strain increased early neuronal infectivity and neurovirulence after direct CNS injection in mice, and was linked to reduced Vamp2 abundance. The results suggest that glycoprotein G variation contributes to rabies neurovirulence, potentially through disruption of synaptic vesicle machinery.",
+      "summary": "The study generated two recombinant rabies viruses differing only in their glycoprotein G (from attenuated SAD-B19 or virulent CVS11 strains) and compared their effects in mouse neurons and mice. The virulent G variant increased early neuronal infectivity and neurovirulence after direct CNS injection, and was linked to reduced abundance of the synaptic protein Vamp2. This suggests glycoprotein G variation contributes to rabies neurovirulence partly through disruption of synaptic vesicle machinery.",
       "significance": "Medium",
       "tags": [
         "neuroscience",
@@ -243,12 +274,43 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42737863/"
         }
       ],
-      "summary": "This study integrates multiple public single-cell RNA-seq datasets to reconstruct the transcriptional landscape of rare mouse double negative T (DNT) cells across tissues. By analyzing 7,984 DNT cells, the authors reveal previously unappreciated transcriptional heterogeneity within this rare immune population. The work provides a framework for systematically characterizing low-abundance cell types using existing single-cell data.",
+      "summary": "This study integrates multiple public single-cell RNA sequencing datasets to reconstruct the transcriptional landscape of rare mouse double negative T (DNT) cells across tissues. The authors identify 7,984 DNT cells and characterize their transcriptional heterogeneity, providing a systematic resource for understanding this poorly studied immune population.",
       "significance": "Medium",
       "tags": [
         "single-cell",
         "transcriptomics",
         "immunology"
+      ]
+    },
+    {
+      "id": "0ebcb5054c35",
+      "title": "MTB-KB: A Curated Knowledgebase of Mycobacterium tuberculosis Related Studies.",
+      "abstract": "Tuberculosis (TB), caused by Mycobacterium tuberculosis (MTB), has regained its position as the world's leading killer among infectious diseases. Despite extensive research progress across epidemiology, diagnosis, drug development, treatment regimens, vaccines, drug resistance, virulence factors, and immune mechanisms, MTB-related knowledge remains fragmented across thousands of publications, limiting its application in research and clinical practice. To address this gap, we present MTB-KB, a literature-curated knowledgebase that systematically integrates high-impact findings from eight major ",
+      "journal": "Genomics, proteomics & bioinformatics",
+      "doi": "10.1093/gpbjnl/qzag102",
+      "pmid": "42820792",
+      "first_author": "Li P",
+      "pub_date": "2026-Oct-01",
+      "source": "PubMed",
+      "url": "https://doi.org/10.1093%2Fgpbjnl%2Fqzag102",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.1093%2Fgpbjnl%2Fqzag102"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42820792/"
+        }
+      ],
+      "summary": "MTB-KB is a manually curated knowledgebase that consolidates high-impact findings on Mycobacterium tuberculosis from thousands of publications, covering areas such as epidemiology, diagnosis, drug development, vaccines, drug resistance, virulence, and immune mechanisms. It aims to overcome the fragmentation of TB-related knowledge and make it more accessible for both research and clinical applications.",
+      "significance": "Medium",
+      "tags": [
+        "database",
+        "microbiology",
+        "clinical"
       ]
     },
     {
@@ -274,7 +336,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42597903/"
         }
       ],
-      "summary": "This study identifies DHX15, an RNA helicase involved in splicing regulation, as a potential immune-related prognostic biomarker in breast cancer. Using integrated bioinformatics analysis combined with in vitro functional validation, the authors show that DHX15 expression is associated with breast cancer prognosis and immune features. The work suggests DHX15 may serve as a candidate therapeutic target, though the mechanistic details remain to be fully established.",
+      "summary": "This study identifies DHX15, an RNA helicase involved in splicing regulation, as a potential immune-related prognostic biomarker in breast cancer. Using integrated bioinformatics analysis combined with in vitro functional validation, the authors show that DHX15 expression is associated with tumorigenic potential and clinical outcomes. The work suggests DHX15 may serve as a novel therapeutic target, though validation remains preliminary.",
       "significance": "Low",
       "tags": [
         "cancer",
@@ -305,7 +367,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42190950/"
         }
       ],
-      "summary": "This scoping review maps the methods currently used to systematically determine the indication for antibiotic prescriptions, which is essential for effective antimicrobial stewardship. It highlights the need for accurate indication data to design targeted interventions that improve guideline adherence.",
+      "summary": "This scoping review maps existing methods for systematically determining the indication behind antibiotic prescriptions, a prerequisite for effective antimicrobial stewardship programs. It catalogs approaches used to capture prescribing rationale, aiming to inform targeted interventions that improve guideline adherence. The review highlights the current landscape and gaps in indication-tracking methodology.",
       "significance": "Medium",
       "tags": [
         "clinical",
@@ -336,7 +398,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42727023/"
         }
       ],
-      "summary": "This review synthesizes evidence on the re-emergence of Marburg virus disease across Africa, framing it as an ecological-emergence system driven by reservoir-host biology, environmental change, human exposure, health-system readiness, and mobility rather than isolated outbreaks. It highlights expanding ecological suitability, repeated spillovers, and uneven surveillance capacity as key determinants of contemporary emergence.",
+      "summary": "This review synthesizes evidence on the re-emergence of Marburg virus disease across Africa, framing outbreaks as an ecological-emergence system driven by reservoir-host biology, environmental change, human exposure, health-system readiness, and mobility rather than isolated events. It highlights expanding ecological suitability, repeated spillovers, and uneven surveillance capacity as key determinants of contemporary emergence.",
       "significance": "Medium",
       "tags": [
         "microbiology",
@@ -367,11 +429,42 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42769957/"
         }
       ],
-      "summary": "This paper argues that human subjectivity is not solely an autonomous, human-centered phenomenon but can be constituted through relationships with water systems, territory, and nonhuman entities. Drawing on qualitative fieldwork in the Peruvian Andes, it develops the concept of a 'relational hydrosocial self' shaped by ecological and nonhuman relations in the context of a water-related conflict.",
+      "summary": "This qualitative sociological study examines how human subjectivity is shaped through relationships with water systems, territory, and nonhuman entities in the Razuhuillca micro-watershed of the Peruvian Andes. Using interviews, walking ethnography, and field observation, it argues against autonomous, human-centered models of the self, proposing instead a 'relational hydrosocial self' constituted through ecological relations. The work is a theoretical and ethnographic contribution to social theory rather than a data-driven or computational study.",
       "significance": "Low",
       "tags": [
         "review",
         "population-genetics"
+      ]
+    },
+    {
+      "id": "5bc39b84a4d0",
+      "title": "ApoA2 isoforms as blood-based biomarkers reflecting pancreatic exocrine dysfunction for risk stratification and perioperative management of pancreatic cancer.",
+      "abstract": "Apolipoprotein A2 isoforms (apoA2‑i) are clinically validated blood‑based biomarkers for the auxiliary diagnosis of pancreatic cancer. Emerging evidence also suggests that apoA2‑i may contribute to the detection of early‑stage pancreatic cancer, particularly in cohorts where CA19‑9 shows limited sensitivity, although these applications remain investigational and require prospective validation. Beyond diagnostic applications, apoA2‑i reflect pancreatic exocrine physiology, linking biomarker biology with perioperative outcomes such as postoperative pancreatic fistula and steatotic liver disease.",
+      "journal": "Frontiers in oncology",
+      "doi": "10.3389/fonc.2026.1902440",
+      "pmid": "42824914",
+      "first_author": "Matsushita A",
+      "pub_date": "2026--01",
+      "source": "PubMed",
+      "url": "https://doi.org/10.3389%2Ffonc.2026.1902440",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.3389%2Ffonc.2026.1902440"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42824914/"
+        }
+      ],
+      "summary": "This review discusses apolipoprotein A2 isoforms (apoA2-i) as blood-based biomarkers for pancreatic cancer, highlighting their potential to detect early-stage disease where CA19-9 sensitivity is limited. It also proposes that apoA2-i reflect pancreatic exocrine function, making them useful for predicting perioperative complications like postoperative pancreatic fistula and steatotic liver disease.",
+      "significance": "Medium",
+      "tags": [
+        "clinical",
+        "cancer",
+        "proteomics"
       ]
     },
     {
@@ -397,43 +490,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42780330/"
         }
       ],
-      "summary": "This paper frames the recovery of the microbiome as a coherent system—rather than a collection of isolated taxa—as a grand challenge for microbiome data science. It argues that current analytical approaches often fail to capture the ecological and functional interdependencies that define microbial communities, and it outlines the methodological and conceptual advances needed to move toward a systems-level understanding.",
+      "summary": "This perspective piece frames the recovery of the microbiome as an integrated system—rather than a collection of taxa—as a grand challenge for microbiome data science. It argues that current analytical approaches often reduce complex community data to descriptive taxonomic profiles, and calls for new computational frameworks that capture ecological interactions, dynamics, and functional interdependence. The paper outlines conceptual and methodological directions needed to move the field toward systems-level understanding.",
       "significance": "Medium",
       "tags": [
         "microbiome",
         "systems-biology",
         "methodology"
-      ]
-    },
-    {
-      "id": "f7a275a65dc1",
-      "title": "Artificial intelligence and sports genomics: advancing precision sports science and athletic performance.",
-      "abstract": "The integration of artificial intelligence (AI) and genomics in sports science has immense potential in the field by enabling personalised, predictive, and data-driven approaches to enhance athletes' performance and mitigate injury risk. Traditional training models based on generalised protocols may overlook individual variations in training adaptation, recovery, and injury susceptibility. Recent breakthroughs in genomics, wearable technologies, multi-omics profiling, and machine learning have produced new possibilities for precision sports medicine. This review explores the molecular and phys",
-      "journal": "Frontiers in sports and active living",
-      "doi": "10.3389/fspor.2026.1906206",
-      "pmid": "42761794",
-      "first_author": "Patani A",
-      "pub_date": "2026--01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.3389%2Ffspor.2026.1906206",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.3389%2Ffspor.2026.1906206"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42761794/"
-        }
-      ],
-      "summary": "This review discusses how combining artificial intelligence with sports genomics could enable personalized, predictive approaches to athletic training, injury prevention, and performance optimization. It surveys recent advances in genomics, wearables, multi-omics profiling, and machine learning that support precision sports medicine, arguing that traditional generalized training protocols miss individual variation.",
-      "significance": "Low",
-      "tags": [
-        "genomics",
-        "machine-learning",
-        "review"
       ]
     }
   ]
