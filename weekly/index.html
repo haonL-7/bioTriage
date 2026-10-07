@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Literature Daily — bioTriage-Open</title>
-    <meta name="description" content="bioTriage-Open Literature Daily — the cream of each day's crawl: the highest-evidence, highest-scoring new life-sciences literature, ranked.">
+    <title>Literature Weekly — bioTriage-Open</title>
+    <meta name="description" content="bioTriage-Open Literature Weekly — the week's highest-evidence, highest-scoring life-sciences literature, ranked.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -399,8 +399,8 @@
             <span class="side-label" data-i18n="side-label">Navigate</span>
             <a class="side-item" href="../" data-i18n="nav-home">Home</a>
             <a class="side-item" href="../evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
-            <a class="side-item is-active" href="./" data-i18n="nav-daily">Literature Daily</a>
-            <a class="side-item" href="../weekly/" data-i18n="nav-weekly">Literature Weekly</a>
+            <a class="side-item" href="../daily/" data-i18n="nav-daily">Literature Daily</a>
+            <a class="side-item is-active" href="./" data-i18n="nav-weekly">Literature Weekly</a>
             <a class="side-item" href="../ms1/" data-i18n="nav-method">Methodology</a>
             <a class="side-item" href="../starred/" data-i18n="nav-starred">Starred</a>
             <a class="side-item" href="../#academic-assistant" data-i18n="nav-aa">Academic Assistant</a>
@@ -409,19 +409,19 @@
     <div class="page">
 
         <header class="daily-header">
-            <div class="daily-eyebrow" data-i18n="daily-eyebrow">Literature Daily</div>
-            <h1 class="daily-title" data-i18n="daily-title">Daily Highlights</h1>
-            <p class="daily-tagline" data-i18n="daily-tagline">Each day&rsquo;s newest papers, ranked by citations.</p>
+            <div class="daily-eyebrow" data-i18n="weekly-eyebrow">Literature Weekly</div>
+            <h1 class="daily-title" data-i18n="weekly-title">Weekly Highlights</h1>
+            <p class="daily-tagline" data-i18n="weekly-tagline">The week&rsquo;s highest-evidence papers.</p>
             <div class="daily-metrics">
                 <div class="metric"><div class="m-value" id="m-total">&mdash;</div><div class="m-label" data-i18n="m-total-label">Recent papers</div></div>
-                <div class="metric"><div class="m-value" id="m-featured">&mdash;</div><div class="m-label" data-i18n="m-featured-label">Featured</div></div>
+                <div class="metric"><div class="m-value" id="m-featured">&mdash;</div><div class="m-label" data-i18n="m-featured-label">This week</div></div>
                 <div class="metric"><div class="m-value" id="m-updated">&mdash;</div><div class="m-label" data-i18n="m-updated-label">Updated</div></div>
             </div>
         </header>
 
         <main class="daily-main">
             <ol class="rank-list" id="rank-list"></ol>
-            <p class="rule-note" data-i18n-html="rule-note">Newest cited papers, ranked by citations per month.</p>
+            <p class="rule-note" data-i18n-html="rule-note">Past seven days, ranked by evidence tier, then score, then citations.</p>
             <p class="rule-note scoring-note" data-i18n-html="scoring-note">Score = MS1 matrix (0&ndash;14) &middot; Level = MS2 tier (L1a&ndash;L4) &middot; Cited = count &middot; avg = per month. Basis: <a href="../ms1/#references">MS1</a> &middot; <a href="../ms2/#references">MS2</a>.</p>
         </main>
 
@@ -450,22 +450,25 @@
             'nav-aa': 'Academic Assistant',
             'daily-eyebrow': 'Literature Daily',
             'daily-title': 'Daily Highlights',
-            'daily-tagline': 'Each day\'s newest papers, ranked by citations.',
+            'daily-tagline': 'The cream of each day\'s crawl — newest papers with the highest average citations rise to the top, no fixed count.',
+            'weekly-eyebrow': 'Literature Weekly',
+            'weekly-title': 'Weekly Highlights',
+            'weekly-tagline': 'The week\'s highest-evidence papers.',
             'm-total-label': 'Recent papers',
-            'm-featured-label': 'Featured',
+            'm-featured-label': 'This week',
             'm-updated-label': 'Updated',
             'heat-label': 'Cited',
             'rate-label': 'avg',
             'rate-unit': '/mo',
-            'rule-note': 'Newest cited papers, ranked by citations per month.',
+            'rule-note': 'Past seven days, ranked by evidence tier, then score, then citations.',
             'scoring-note': 'Score = MS1 matrix (0–14) · Level = MS2 tier (L1a–L4) · Cited = count · avg = per month. Basis: <a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a>.',
-            'empty': 'No cited papers yet — appears after the next crawl.',
+            'empty': 'No papers yet — appears after the next build.',
             'load-error': 'Couldn\'t load literature data. Preview after a build, or visit the live site.',
             'footer1': 'bioTriage-Open — life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
             'score-label': 'Score',
             'link-label': 'Link',
             'source-label': 'Source',
-            title: 'Literature Daily — bioTriage-Open'
+            title: 'Literature Weekly — bioTriage-Open'
         },
         zh: {
             'nav-tagline': '证据结构化文献智能',
@@ -479,22 +482,25 @@
             'nav-aa': '学术助手',
             'daily-eyebrow': '文献日报',
             'daily-title': '今日精选',
-            'daily-tagline': '每日最新文献，按引用排序。',
+            'daily-tagline': '每日抓取文献中的精选 —— 最新发表且平均引用高的文献优先，不设固定数量。',
+            'weekly-eyebrow': '文献周报',
+            'weekly-title': '本周精选',
+            'weekly-tagline': '本周最高证据等级文献。',
             'm-total-label': '近期文献',
-            'm-featured-label': '入选精选',
+            'm-featured-label': '本周',
             'm-updated-label': '更新时间',
             'heat-label': '引用',
             'rate-label': '平均',
             'rate-unit': '/月',
-            'rule-note': '最新且被引用的文献，按每月引用排序。',
+            'rule-note': '过去七天文献，按证据层级、评分、引用排序。',
             'scoring-note': '评分 = MS1 矩阵（0–14）· 等级 = MS2 层级（L1a–L4）· 引用 = 篇数 · 平均 = 每月。依据：<a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a>。',
-            'empty': '暂无有引用的文献 —— 将在下一次抓取后显示。',
+            'empty': '暂无文献 —— 将在下一次构建后显示。',
             'load-error': '文献数据加载失败。请构建后预览，或访问线上站点。',
             'footer1': 'bioTriage-Open —— 生命科学文献智能。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
             'score-label': '评分',
             'link-label': '链接',
             'source-label': '来源',
-            title: '文献日报 — bioTriage-Open'
+            title: '文献周报 — bioTriage-Open'
         }
     };
 
@@ -612,12 +618,13 @@
             var papers = (data.papers || []).filter(isDailyPaper);
             var byId = {};
             papers.forEach(function (p) { if (p.id) byId[p.id] = p; });
-            var order = (data.daily && data.daily.order) || [];
+            var weekly = data.weekly || {};
+            var order = weekly.order || [];
             var featured = order.map(function (id) { return byId[id]; }).filter(Boolean);
             render(featured);
 
             setText('m-total', papers.length);
-            setText('m-featured', (data.daily && data.daily.count) != null ? data.daily.count : featured.length);
+            setText('m-featured', weekly.count != null ? weekly.count : featured.length);
             var st = data.stats || {};
             var updated = st.updated_at_human || (st.updated_at || '').slice(0, 10) || '—';
             setText('m-updated', updated);

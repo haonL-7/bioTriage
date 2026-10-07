@@ -435,6 +435,7 @@
             <a class="side-item is-active" href="./" data-i18n="nav-home">Home</a>
             <a class="side-item" href="evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
             <a class="side-item" href="daily/" data-i18n="nav-daily">Literature Daily</a>
+            <a class="side-item" href="weekly/" data-i18n="nav-weekly">Literature Weekly</a>
             <a class="side-item" href="ms1/" data-i18n="nav-method">Methodology</a>
             <a class="side-item" href="starred/" data-i18n="nav-starred">Starred</a>
             <a class="side-item" href="#academic-assistant" data-i18n="nav-aa">Academic Assistant</a>
@@ -444,8 +445,8 @@
 
 <header class="site-header">
     <div class="logo">bioTriage<span class="pipe">-Open</span></div>
-    <p class="tagline" data-i18n="tagline">AI-curated literature intelligence for the life sciences. Daily selection and significance assessment from open-access journals, preprints, and databases across bioinformatics and experimental biology.</p>
-    <p class="meta" data-i18n="meta">Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv &middot; All open-access content</p>
+    <p class="tagline" data-i18n="tagline">AI-curated literature intelligence for the life sciences &mdash; daily selection and assessment from open-access journals, preprints, and databases.</p>
+    <p class="meta" data-i18n="meta">Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv &middot; Open access</p>
 </header>
 
 <main class="main-content">
@@ -517,7 +518,7 @@
     <div class="methodology" id="academic-assistant">
         <h3 data-i18n="aa-h">Academic Assistant</h3>
         <p data-i18n="aa-intro">
-            Ask questions grounded in the group's verified literature corpus (26 papers: 7 starred + 19 background). Answers are drawn only from this corpus and cite its sources.
+            Ask questions grounded in the group's verified literature corpus (26 papers). Answers cite their sources.
         </p>
         <div class="aa-box">
             <div class="aa-input-row">
@@ -535,7 +536,7 @@
 </main>
 
 <footer class="site-footer">
-    <p data-i18n-html="footer1">bioTriage-Open &mdash; a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
+    <p data-i18n-html="footer1">bioTriage-Open &mdash; life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
     <p>&copy; 2026 Liu Haoan &amp; Feng Wen, Yulin University &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
 </footer>
 
@@ -552,10 +553,11 @@
             'nav-home': 'Home',
             'nav-evidence': 'Evidence Monitor',
             'nav-daily': 'Literature Daily',
+            'nav-weekly': 'Literature Weekly',
             'nav-method': 'Methodology',
             'nav-starred': 'Starred',
-            'tagline': 'AI-curated literature intelligence for the life sciences. Daily selection and significance assessment from open-access journals, preprints, and databases across bioinformatics and experimental biology.',
-            'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · All open-access content',
+            'tagline': 'AI-curated literature intelligence for the life sciences — daily selection and assessment from open-access journals, preprints, and databases.',
+            'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · Open access',
             'sec-active': 'Active Channels',
             'fc-flag': 'Live — Updated Daily',
             'fc-title': 'Gut Microbiome Co-Metabolism Evidence Monitor',
@@ -626,13 +628,13 @@
             'meth-p2': 'Literature evaluation is powered by the <strong>DeepSeek API</strong>, with GLM-4-Flash as fallback and local rule-based heuristics as final backup. All AI-generated assessments include confidence indicators and evaluation method attribution. Independent verification is recommended before citing.',
             'nav-aa': 'Academic Assistant',
             'aa-h': 'Academic Assistant',
-            'aa-intro': 'Ask questions grounded in the group\'s verified literature corpus (26 papers: 7 starred + 19 background). Answers are drawn only from this corpus and cite its sources.',
+            'aa-intro': 'Ask questions grounded in the group\'s verified literature corpus (26 papers). Answers cite their sources.',
             'aa-placeholder': 'e.g. succinate-utilizing bacteria, propionate and backfat',
             'aa-send': 'Ask',
             'aa-loading': 'Searching the literature corpus…',
             'aa-error': 'The assistant is unavailable right now. Please try again later.',
             'aa-sources-label': 'Sources',
-            'footer1': 'bioTriage-Open — a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
+            'footer1': 'bioTriage-Open — life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
             title: 'bioTriage-Open — AI-Powered Life Sciences Literature Intelligence',
             metaDesc: 'bioTriage-Open delivers AI-evaluated, evidence-structured literature monitoring across microbiome research, bioinformatics, genomics, experimental biology, and drug discovery. Daily automated updates from PubMed, bioRxiv, Europe PMC, Semantic Scholar, and arXiv.'
         },
@@ -642,10 +644,11 @@
             'nav-home': '首页',
             'nav-evidence': '证据监测器',
             'nav-daily': '文献日报',
+            'nav-weekly': '文献周报',
             'nav-method': '方法学',
             'nav-starred': '星级收藏',
-            'tagline': '面向生命科学的 AI 策展文献智能。每日从开放获取期刊、预印本与数据库中遴选文献并评估其意义，覆盖生物信息学与实验生物学。',
-            'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 全部为开放获取内容',
+            'tagline': '面向生命科学的 AI 文献智能——每日从开放获取期刊、预印本与数据库遴选并评估。',
+            'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 开放获取',
             'sec-active': '活跃频道',
             'fc-flag': '实时 · 每日更新',
             'fc-title': '肠道微生物组共代谢证据监测器',
@@ -716,13 +719,13 @@
             'meth-p2': '文献评估由 <strong>DeepSeek API</strong> 驱动，以 GLM-4-Flash 为兜底、本地规则启发式为最终备份。所有 AI 生成的评估均包含置信度指标与评估方法归属。引用前建议独立核实。',
             'nav-aa': '学术助手',
             'aa-h': '学术助手',
-            'aa-intro': '基于研究组已核验文献语料（26 篇：7 篇星级 + 19 篇背景）提问。回答仅来自该语料，并标注其来源。',
+            'aa-intro': '基于研究组已核验的文献库（26 篇）提问。回答仅来自该语料并注明出处。',
             'aa-placeholder': '例如：琥珀酸利用菌、丙酸与背膘',
             'aa-send': '提问',
             'aa-loading': '正在检索语料…',
             'aa-error': '助手暂不可用，请稍后重试。',
             'aa-sources-label': '信息来源',
-            'footer1': 'bioTriage-Open —— 面向生命科学共同体的研究基础设施项目。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
+            'footer1': 'bioTriage-Open —— 生命科学文献智能。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
             title: 'bioTriage-Open —— 生命科学 AI 文献智能',
             metaDesc: 'bioTriage-Open 提供 AI 评估、证据结构化的文献监测，覆盖微生物组研究、生物信息学、基因组学、实验生物学与药物发现。每日自动更新，来源包括 PubMed、bioRxiv、Europe PMC、Semantic Scholar 与 arXiv。'
         }
@@ -755,7 +758,7 @@
             var s = localStorage.getItem('bt-lang');
             if (s === 'zh' || s === 'en') return s;
         } catch (e) { /* ignore */ }
-        return ((navigator.language || 'en').toLowerCase().indexOf('zh') === 0) ? 'zh' : 'en';
+        return 'en';
     }
 
     applyLang(detectLang());
