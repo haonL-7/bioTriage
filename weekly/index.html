@@ -411,7 +411,7 @@
         <header class="daily-header">
             <div class="daily-eyebrow" data-i18n="weekly-eyebrow">Literature Weekly</div>
             <h1 class="daily-title" data-i18n="weekly-title">Weekly Highlights</h1>
-            <p class="daily-tagline" data-i18n="weekly-tagline">The week&rsquo;s highest-evidence literature, ranked by evidence tier, then score, then citations.</p>
+            <p class="daily-tagline" data-i18n="weekly-tagline">The week&rsquo;s highest-evidence papers.</p>
             <div class="daily-metrics">
                 <div class="metric"><div class="m-value" id="m-total">&mdash;</div><div class="m-label" data-i18n="m-total-label">Recent papers</div></div>
                 <div class="metric"><div class="m-value" id="m-featured">&mdash;</div><div class="m-label" data-i18n="m-featured-label">This week</div></div>
@@ -421,12 +421,12 @@
 
         <main class="daily-main">
             <ol class="rank-list" id="rank-list"></ol>
-            <p class="rule-note" data-i18n-html="rule-note">The weekly is a rolling window over the evidence-monitor corpus: papers from the past seven days, ranked by evidence tier, then by the MS1 four-dimensional matrix score, then citations &mdash; capped at the configured Top-N.</p>
-            <p class="rule-note scoring-note" data-i18n-html="scoring-note">On each card: <strong>Score</strong> is the MS1 four-dimensional matrix total (0&ndash;14); the <strong>level badge</strong> is the MS2 evidence tier (L1a&ndash;L4); <strong>Cited</strong> is the citation count, <strong>avg</strong> its per-month rate. Rating basis: <a href="../ms1/#references">MS1</a> &middot; <a href="../ms2/#references">MS2</a> Methodology References.</p>
+            <p class="rule-note" data-i18n-html="rule-note">Past seven days, ranked by evidence tier, then score, then citations.</p>
+            <p class="rule-note scoring-note" data-i18n-html="scoring-note">Score = MS1 matrix (0&ndash;14) &middot; Level = MS2 tier (L1a&ndash;L4) &middot; Cited = count &middot; avg = per month. Basis: <a href="../ms1/#references">MS1</a> &middot; <a href="../ms2/#references">MS2</a>.</p>
         </main>
 
         <footer class="site-footer">
-            <p data-i18n-html="footer1">bioTriage-Open &mdash; a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
+            <p data-i18n-html="footer1">bioTriage-Open &mdash; life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
             <p>&copy; 2026 Liu Haoan &amp; Feng Wen, Yulin University &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
         </footer>
 
@@ -453,18 +453,18 @@
             'daily-tagline': 'The cream of each day\'s crawl — newest papers with the highest average citations rise to the top, no fixed count.',
             'weekly-eyebrow': 'Literature Weekly',
             'weekly-title': 'Weekly Highlights',
-            'weekly-tagline': 'The week\'s highest-evidence literature, ranked by evidence tier, then score, then citations.',
+            'weekly-tagline': 'The week\'s highest-evidence papers.',
             'm-total-label': 'Recent papers',
             'm-featured-label': 'This week',
             'm-updated-label': 'Updated',
             'heat-label': 'Cited',
             'rate-label': 'avg',
             'rate-unit': '/mo',
-            'rule-note': 'The weekly is a rolling window over the evidence-monitor corpus: papers from the past seven days, ranked by evidence tier, then by the MS1 four-dimensional matrix score, then citations — capped at the configured Top-N.',
-            'scoring-note': 'On each card: <strong>Score</strong> is the MS1 four-dimensional matrix total (0–14); the <strong>level badge</strong> is the MS2 evidence tier (L1a–L4); <strong>Cited</strong> is the citation count, <strong>avg</strong> its per-month rate. Rating basis: <a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a> Methodology References.',
-            'empty': 'No papers yet — literature is captured at crawl time and appears after the next build.',
-            'load-error': 'Unable to load literature data. This page reads the deployed data file, so preview locally after a build or visit the live site.',
-            'footer1': 'bioTriage-Open — a research infrastructure project for the life sciences community. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
+            'rule-note': 'Past seven days, ranked by evidence tier, then score, then citations.',
+            'scoring-note': 'Score = MS1 matrix (0–14) · Level = MS2 tier (L1a–L4) · Cited = count · avg = per month. Basis: <a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a>.',
+            'empty': 'No papers yet — appears after the next build.',
+            'load-error': 'Couldn\'t load literature data. Preview after a build, or visit the live site.',
+            'footer1': 'bioTriage-Open — life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.',
             'score-label': 'Score',
             'link-label': 'Link',
             'source-label': 'Source',
@@ -485,18 +485,18 @@
             'daily-tagline': '每日抓取文献中的精选 —— 最新发表且平均引用高的文献优先，不设固定数量。',
             'weekly-eyebrow': '文献周报',
             'weekly-title': '本周精选',
-            'weekly-tagline': '本周最高证据等级文献，按证据层级、评分、引用依次排序。',
+            'weekly-tagline': '本周最高证据等级文献。',
             'm-total-label': '近期文献',
             'm-featured-label': '本周',
             'm-updated-label': '更新时间',
             'heat-label': '引用',
             'rate-label': '平均',
             'rate-unit': '/月',
-            'rule-note': '文献周报是证据监测器语料之上的滚动窗口：过去七天的文献入选，按证据层级、MS1 四维矩阵评分、引用依次降序，取配置的 Top-N。',
-            'scoring-note': '每张卡片上：<strong>评分</strong>为 MS1 四维矩阵总分（0–14）；<strong>等级徽章</strong>为 MS2 证据层级（L1a–L4）；<strong>引用</strong>为引用数，<strong>平均</strong>为每月引用率。评级依据：<a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a> 方法学参考文献。',
-            'empty': '暂无文献 —— 文献在抓取时采集，将在下一次构建后显示。',
-            'load-error': '文献数据加载失败。本页读取部署后的数据文件，请在构建后预览或访问线上站点。',
-            'footer1': 'bioTriage-Open —— 面向生命科学共同体的研究基础设施项目。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
+            'rule-note': '过去七天文献，按证据层级、评分、引用排序。',
+            'scoring-note': '评分 = MS1 矩阵（0–14）· 等级 = MS2 层级（L1a–L4）· 引用 = 篇数 · 平均 = 每月。依据：<a href="../ms1/#references">MS1</a> · <a href="../ms2/#references">MS2</a>。',
+            'empty': '暂无文献 —— 将在下一次构建后显示。',
+            'load-error': '文献数据加载失败。请构建后预览，或访问线上站点。',
+            'footer1': 'bioTriage-Open —— 生命科学文献智能。方法学受 <a href="https://aihot.virxact.com/" target="_blank">AIHot</a> 启发。',
             'score-label': '评分',
             'link-label': '链接',
             'source-label': '来源',
@@ -528,7 +528,7 @@
             var s = localStorage.getItem('bt-lang');
             if (s === 'zh' || s === 'en') return s;
         } catch (e) { /* ignore */ }
-        return ((navigator.language || 'en').toLowerCase().indexOf('zh') === 0) ? 'zh' : 'en';
+        return 'en';
     }
 
     applyLang(detectLang());
