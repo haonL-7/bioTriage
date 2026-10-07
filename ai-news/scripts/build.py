@@ -10,7 +10,8 @@ import re
 import sys
 import shutil
 import time
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
+from email.utils import format_datetime
 
 import requests
 
@@ -158,6 +159,15 @@ DAILY_FILTER = {
     "name": "literature_daily",
     "min_heat": 1,
 }
+
+# ==================== AIHOT 移植（路线 B）新增配置 ====================
+# 站点公开基址（用于 feed.xml 的 <link>，可被 CI/环境覆盖）
+SITE_BASE_URL = os.environ.get("SITE_BASE_URL", "https://haonl-7.github.io/bioTriage")
+# 日报编排：当日最高证据 Top-N（与既有热度精选并行，作为证据编辑榜）
+DAILY_TOP_N = int(os.environ.get("DAILY_TOP_N", "10"))
+# 周报聚合窗口与 Top-N
+WEEKLY_WINDOW_DAYS = int(os.environ.get("WEEKLY_WINDOW_DAYS", "7"))
+WEEKLY_TOP_N = int(os.environ.get("WEEKLY_TOP_N", "20"))
 
 
 def _is_kb(p: dict) -> bool:
@@ -445,6 +455,136 @@ def select_daily_featured(papers: list[dict]) -> list[dict]:
     return featured
 
 
+# ==================== 事件归并（AIHOT：同一论文多来源合成一条）====================
+
+def _canonical_key(p: dict):
+    """同一论文的归并主键：DOI → PMID → 归一化标题。"""
+    doi = (p.get("doi") or "").strip().lower()
+    if doi:
+        return ("doi", doi)
+    pmid = str(p.get("pmid") or "").strip()
+    if pmid and pmid.isdigit():
+        return ("pmid", pmid)
+    title = "".join(c.lower() for c in (p.get("title") or "") if c.isalnum())[:80]
+    return ("title", title)
+
+
+def _source_rank(p: dict) -> int:
+    """来源优先级：已发表（有 PMID/DOI）高于预印本，用于挑事件主条目。"""
+    if p.get("pmid"):
+        return 5
+    if p.get("doi"):
+        return 4
+    s = (p.get("source") or "").lower()
+    if "semantic" in s:
+        return 3
+    if "biorxiv" in s:
+        return 2
+    if "arxiv" in s:
+        return 1
+    return 2
+
+
+def merge_multi_source_events(papers: list[dict]) -> list[dict]:
+    """事件归并：把同一篇论文的 PubMed/bioRxiv/Europe PMC/Semantic Scholar/arXiv
+    多来源版本合成一条事件，保留最佳来源 + 合并多备份链接 + 取最高热度/证据。
+
+    判定依据：DOI 相同，或 PMID 相同，或归一化标题一致。
+    """
+    if not papers:
+        return []
+    groups: dict[tuple, list[dict]] = {}
+    order: list[tuple] = []
+    for p in papers:
+        k = _canonical_key(p)
+        if k not in groups:
+            groups[k] = []
+            order.append(k)
+        groups[k].append(p)
+
+    merged: list[dict] = []
+    for k in order:
+        group = groups[k]
+        if len(group) == 1:
+            merged.append(group[0])
+            continue
+
+        primary = max(group, key=lambda p: (_source_rank(p), _score(p), _heat(p)))
+        best_ev = max(group, key=lambda p: (_score(p), _heat(p)))
+
+        # 合并多备份链接（按 url 去重）
+        links = []
+        seen_urls = set()
+        for p in group:
+            for l in p.get("links", []):
+                u = (l.get("url") or "").strip()
+                if u and u not in seen_urls:
+                    seen_urls.add(u)
+                    links.append(l)
+
+        # 来源清单（保留溯源）
+        sources = []
+        for p in group:
+            s = p.get("source", "")
+            if s and s not in sources:
+                sources.append(s)
+
+        out = dict(primary)
+        out["links"] = links
+        out["sources"] = sources
+        out["source"] = primary.get("source", "")
+        out["heat"] = max(_heat(p) for p in group)
+        out["abstract"] = max(((p.get("abstract") or "") for p in group), key=len)
+        # 取组内最高证据（等级 + 分数）
+        for f in ["evidenceLevel", "evidenceJustification", "forwardPathway", "reversePathway",
+                  "couplingDepth", "measurementDepth", "totalScore", "summary",
+                  "forwardJustification", "reverseJustification", "journalQuality",
+                  "modelSystem", "porcineRelevant", "keyLimitation", "researchPriority",
+                  "frameworkAlignment", "compartmentsCovered"]:
+            v = best_ev.get(f)
+            if v not in (None, "", []):
+                out[f] = v
+        out["mergedSources"] = len(group)
+        merged.append(out)
+    return merged
+
+
+def _level_rank(level: str) -> int:
+    return {"L4": 9, "L3.5": 8, "L3": 7, "L2b": 6, "L2a": 5,
+            "L1b": 4, "L1a": 3, "L1": 2, "L0": 1}.get(level, 2)
+
+
+def select_daily_evidence_top(papers: list[dict], n: int = None) -> list[dict]:
+    """日报编排的「当日最高证据 Top-N」：证据等级 → 总分 → 热度。
+    与 select_daily_featured（热度门槛 + 时效 + 引用率）并行，作为日报的编辑精选口径。
+    """
+    n = n or DAILY_TOP_N
+    cands = [p for p in papers if not _is_kb(p)]
+    cands.sort(key=lambda p: (-_level_rank(p.get("evidenceLevel", "L1a")), -_score(p), -_heat(p)))
+    return cands[:n]
+
+
+def select_weekly(papers: list[dict]) -> dict:
+    """周报聚合：过去 WEEKLY_WINDOW_DAYS 天内的文献，按证据等级 → 总分 → 热度编排 Top-N。
+    若近期文献过少（<3）则回退到全语料，避免空周报。
+    """
+    cands = [p for p in papers if not _is_kb(p)]
+    recent = [p for p in cands if (_age_days(p) is not None and _age_days(p) <= WEEKLY_WINDOW_DAYS)]
+    pool = recent if len(recent) >= 3 else cands
+    pool.sort(key=lambda p: (-_level_rank(p.get("evidenceLevel", "L1a")), -_score(p), -_heat(p)))
+    top = pool[:WEEKLY_TOP_N]
+    today = datetime.now().date()
+    return {
+        "window_days": WEEKLY_WINDOW_DAYS,
+        "week_start": (today - timedelta(days=WEEKLY_WINDOW_DAYS)).isoformat(),
+        "week_end": today.isoformat(),
+        "order": [p["id"] for p in top],
+        "count": len(top),
+        "top_n": WEEKLY_TOP_N,
+        "fell_back_to_all": len(recent) < 3,
+    }
+
+
 def build_stats(papers: list[dict], eval_stats: dict) -> dict:
     """Generate stats from paper list, using unified field names"""
     now = datetime.now()
@@ -519,6 +659,10 @@ def write_news_json(news_list: list[dict], stats: dict, evidence_dir: str):
     for p in news_list:
         p["featured"] = p.get("id") in featured_ids
 
+    # AIHOT 移植：日报证据榜 + 周报聚合
+    evidence_top = select_daily_evidence_top(news_list)
+    weekly = select_weekly(news_list)
+
     payload = {
         "stats": stats,
         "papers": news_list,
@@ -526,7 +670,11 @@ def write_news_json(news_list: list[dict], stats: dict, evidence_dir: str):
             "criteria": DAILY_FILTER,
             "order": [p["id"] for p in featured],
             "count": len(featured),
+            "evidence_top": [p["id"] for p in evidence_top],
+            "evidence_top_count": len(evidence_top),
+            "top_n": DAILY_TOP_N,
         },
+        "weekly": weekly,
     }
 
     # 写入 /evidence/data/news.json（供 gh-pages 部署）
@@ -547,6 +695,108 @@ def write_news_json(news_list: list[dict], stats: dict, evidence_dir: str):
     stats_path = os.path.join(DATA_DIR, "stats.json")
     with open(stats_path, "w", encoding="utf-8") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)
+
+
+# ==================== 公开层：feed.xml + /api/v1/ 静态 JSON（AIHOT 公开出口）====================
+
+def _rfc822_from_date(d: date) -> str:
+    return format_datetime(datetime(d.year, d.month, d.day, 0, 0, 0))
+
+
+def build_feed_xml(papers: list[dict]) -> str:
+    """把每日精选（featured）导出为 RSS 2.0 feed。"""
+    import xml.sax.saxutils as sx
+
+    featured = select_daily_featured(papers)
+    # 热度补全未跑通（离线/失败）时，回退到证据榜，避免空 feed
+    if not featured:
+        featured = select_daily_evidence_top(papers)
+    items = []
+    for p in featured:
+        title = sx.escape(p.get("title") or "")
+        link = sx.escape(p.get("url") or "")
+        guid = sx.escape(p.get("doi") or p.get("url") or "")
+        desc = sx.escape((p.get("abstract") or "")[:500])
+        d = _parse_date(p.get("pubDate") or p.get("pub_date") or "")
+        pub = _rfc822_from_date(d) if d else ""
+        lv = sx.escape(p.get("evidenceLevel", ""))
+        items.append(
+            "  <item>\n"
+            f"    <title>{title}</title>\n"
+            f"    <link>{link}</link>\n"
+            f'    <guid isPermaLink="false">{guid}</guid>\n'
+            f"    <pubDate>{pub}</pubDate>\n"
+            f"    <description>{desc}</description>\n"
+            f"    <category>{lv}</category>\n"
+            "  </item>"
+        )
+    now = _rfc822_from_date(datetime.now().date())
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0">\n'
+        "  <channel>\n"
+        "    <title>bioTriage-Open Literature Daily</title>\n"
+        f"    <link>{SITE_BASE_URL}/daily/</link>\n"
+        "    <description>Highest-evidence life-sciences literature from the bioTriage-Open evidence monitor.</description>\n"
+        f"    <lastBuildDate>{now}</lastBuildDate>\n"
+        + "".join(items)
+        + "  </channel>\n"
+        "</rss>\n"
+    )
+
+
+def build_api_v1(papers: list[dict], stats: dict) -> None:
+    """预计算 /api/v1/ 静态 JSON（GitHub Pages 上模拟 AIHOT 的公开 API 出口）。"""
+    featured = select_daily_featured(papers)
+    evidence_top = select_daily_evidence_top(papers)
+    weekly = select_weekly(papers)
+
+    api_dir = os.path.join(BUILD_DIR, "api", "v1")
+    os.makedirs(api_dir, exist_ok=True)
+
+    def dump(name: str, obj) -> None:
+        with open(os.path.join(api_dir, name), "w", encoding="utf-8") as f:
+            json.dump(obj, f, ensure_ascii=False, indent=2)
+
+    daily_payload = {
+        "criteria": DAILY_FILTER,
+        "order": [p["id"] for p in featured],
+        "count": len(featured),
+        "evidence_top": [p["id"] for p in evidence_top],
+        "evidence_top_count": len(evidence_top),
+        "top_n": DAILY_TOP_N,
+    }
+
+    dump("stats.json", stats)
+    dump("featured.json", {"count": len(featured), "papers": featured})
+    dump("daily.json", daily_payload)
+    dump("weekly.json", weekly)
+    dump("news.json", {"stats": stats, "papers": papers, "daily": daily_payload, "weekly": weekly})
+    dump("index.json", {
+        "name": "bioTriage-Open Evidence Monitor API",
+        "version": "v1",
+        "updated_at": stats.get("updated_at", ""),
+        "base_url": SITE_BASE_URL,
+        "endpoints": [
+            "/api/v1/news.json",
+            "/api/v1/featured.json",
+            "/api/v1/daily.json",
+            "/api/v1/weekly.json",
+            "/api/v1/stats.json",
+        ],
+    })
+    print(f"  Generated /api/v1/ static JSON ({len(os.listdir(api_dir))} files)")
+
+
+def write_feed_xml(papers: list[dict]) -> None:
+    """把 feed.xml 写到 _site 根与 /evidence/ 两个位置。"""
+    xml = build_feed_xml(papers)
+    for sub in ["", "evidence"]:
+        d = BUILD_DIR if sub == "" else os.path.join(BUILD_DIR, "evidence")
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "feed.xml"), "w", encoding="utf-8") as f:
+            f.write(xml)
+    print(f"  Generated feed.xml ({len(xml) / 1024:.1f} KB)")
 
 
 def generate_static_html(papers: list[dict], stats: dict):
@@ -725,6 +975,11 @@ def main():
     # Convert crawled papers to frontend format
     new_papers = build_news_data(scored)
 
+    # AIHOT 移植：事件归并 —— 同一论文的多来源版本（PubMed/bioRxiv/Europe PMC/S2/arXiv）合成一条事件
+    n_before_merge = len(new_papers)
+    new_papers = merge_multi_source_events(new_papers)
+    print(f"  Event merge: {n_before_merge} papers -> {len(new_papers)} events")
+
     # Deduplicate against knowledge base
     fresh_papers = []
     dup_count = 0
@@ -789,6 +1044,9 @@ def main():
     print(f"  Generated /evidence/index.html with {len(all_papers)} pre-rendered papers")
 
     write_news_json(all_papers, stats, evidence_dir)
+    # AIHOT 移植：预计算公开层 feed.xml + /api/v1/ 静态 JSON
+    write_feed_xml(all_papers)
+    build_api_v1(all_papers, stats)
     create_nojekyll()
 
     # Deploy BioTriage main page → /index.html
@@ -823,6 +1081,17 @@ def main():
             shutil.rmtree(daily_dst)
         shutil.copytree(daily_src, daily_dst)
         print("  Deployed /daily/ literature daily page")
+
+    # Deploy literature weekly page (AIHOT 移植：周报，复用 daily 样式)
+    weekly_src = os.path.join(PROJECT_ROOT, "..", "weekly")
+    if not os.path.exists(weekly_src):
+        weekly_src = os.path.join(PROJECT_ROOT, "weekly")
+    if os.path.exists(weekly_src):
+        weekly_dst = os.path.join(BUILD_DIR, "weekly")
+        if os.path.exists(weekly_dst):
+            shutil.rmtree(weekly_dst)
+        shutil.copytree(weekly_src, weekly_dst)
+        print("  Deployed /weekly/ literature weekly page")
 
     # Deploy starred collection page
     starred_src = os.path.join(PROJECT_ROOT, "..", "starred")

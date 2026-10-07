@@ -30,6 +30,10 @@ GLM_MODEL = "glm-4-flash"
 
 MAX_ARTICLES_PER_RUN = int(os.environ.get("MAX_ARTICLES", "30"))
 
+# 第二次独立评分（AIHOT 思路：两次独立评分、取和过门槛）。
+# 两次 total_score 之和低于此值 → 判定 should_include=False。
+SECOND_OPINION_MIN_SUM = int(os.environ.get("SECOND_OPINION_MIN_SUM", "6"))
+
 # ==================== 评估 Prompt ====================
 
 EVALUATION_PROMPT = """You are a senior researcher in gut microbiome and host-microbe co-metabolism. Evaluate the following research paper using a rigorous, publication-aligned evidence evaluation framework.
@@ -206,6 +210,43 @@ Query Node: {query_node}
 """
 
 
+# ==================== 第二次独立评分 Prompt ====================
+# AIHOT 思路：两次独立评分、取和过门槛。用不同提示词 + 更高温度（或换备用模型），
+# 降低单次 LLM 打分幻觉/不一致。第一轮完整证据框架是"主评"（决定等级/理由/摘要），
+# 第二轮换成更窄的"入选可信度复核"，只重新判四维 + 一个 include 结论 + 置信度。
+
+SECOND_OPINION_PROMPT = """You are an independent, skeptical peer reviewer doing a SECOND, deliberately re-worded pass on a paper that has already been scored once. Do NOT assume the first score is correct — re-assess from scratch, narrowly focused on inclusion confidence.
+
+Re-score the SAME four dimensions on the SAME scale as the primary review:
+- forward_pathway (0-4): strength of microbe/metabolite -> host causal evidence.
+- reverse_pathway (0-4): strength of host -> microbiome causal evidence.
+- coupling_depth (0-4): whether forward AND reverse are verified in the SAME experimental system.
+- measurement_depth (0-2): compartment x timepoint coverage.
+
+Also give:
+- confidence (0.0-1.0): how sure you are of this second score.
+- include (true/false): your independent judgment on whether this paper genuinely advances mechanistic understanding of microbial metabolite-host interactions in the gut.
+- one_line: one sentence of independent rationale.
+
+Return ONLY valid JSON (no fences, no other text):
+{
+  "forward_pathway": 0, "reverse_pathway": 0, "coupling_depth": 0, "measurement_depth": 0,
+  "total_score": 0, "confidence": 0.0, "include": true, "one_line": "..."
+}
+
+total_score = forward_pathway + reverse_pathway + coupling_depth + measurement_depth (max 14).
+
+---
+
+## Paper to re-review
+Title: {title}
+Journal: {journal}
+Source: {source}
+First author: {first_author}
+Abstract: {abstract}
+"""
+
+
 # ==================== API 调用 ====================
 
 def evaluate_with_deepseek(article: dict, retries: int = 3) -> Optional[dict]:
@@ -356,6 +397,146 @@ def evaluate_local(article: dict) -> dict:
     }
 
 
+# ==================== 第二次独立评分：API 调用 ====================
+
+def _second_opinion_call(client, model: str, prompt: str, temperature: float, retries: int = 2) -> Optional[dict]:
+    """对某个 OpenAI 兼容 client 发起第二轮独立评分调用。"""
+    for attempt in range(retries + 1):
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": "You are an independent skeptical reviewer. Output ONLY valid JSON."},
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=temperature,
+                max_tokens=600,
+            )
+            return _parse_json(response.choices[0].message.content.strip())
+        except Exception as e:
+            msg = str(e)
+            if any(kw in msg.lower() for kw in ["rate_limit", "429", "503", "overloaded"]):
+                time.sleep((attempt + 1) * 3)
+            elif attempt < retries:
+                time.sleep(1)
+            else:
+                print(f"    Second-opinion call failed: {msg[:100]}")
+                return None
+    return None
+
+
+def evaluate_second_deepseek(article: dict) -> Optional[dict]:
+    """第二轮独立评分（DeepSeek：换 prompt + 更高温度 0.7）。"""
+    if not DEEPSEEK_API_KEY:
+        return None
+    from openai import OpenAI
+    client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
+    prompt = SECOND_OPINION_PROMPT.format(
+        title=article.get("title", ""),
+        journal=article.get("journal", ""),
+        source=article.get("source", ""),
+        first_author=article.get("first_author", ""),
+        abstract=article.get("abstract", ""),
+    )
+    return _second_opinion_call(client, DEEPSEEK_MODEL, prompt, temperature=0.7)
+
+
+def evaluate_second_glm(article: dict) -> Optional[dict]:
+    """第二轮独立评分（GLM 备用，与主评可能用不同模型，天然独立性）。"""
+    if not GLM_API_KEY:
+        return None
+    from openai import OpenAI
+    client = OpenAI(api_key=GLM_API_KEY, base_url=GLM_BASE_URL)
+    prompt = SECOND_OPINION_PROMPT.format(
+        title=article.get("title", ""),
+        journal=article.get("journal", ""),
+        source=article.get("source", ""),
+        first_author=article.get("first_author", ""),
+        abstract=article.get("abstract", ""),
+    )
+    return _second_opinion_call(client, GLM_MODEL, prompt, temperature=0.7)
+
+
+def evaluate_second_local(article: dict) -> dict:
+    """第二轮本地降级：更严苛的"怀疑审稿人"启发式，与 evaluate_local 使用不同的信号源。
+
+    主评（evaluate_local）用期刊档位定基，这里改用显式的「因果语言 vs 关联语言」证据强度，
+    反向命中要求更保守（≥2 才给分），从而给出真正独立的第二意见。
+    """
+    abstract = article.get("abstract", "") or ""
+    abstract_lower = abstract.lower()
+    title_lower = (article.get("title", "") or "").lower()
+    text = abstract_lower + " " + title_lower
+
+    causal_kw = ["mono-colonization", "monocolonization", "knockout", "gene deletion",
+                 "intervention", "causal", "causality", "mechanism", "mechanistic",
+                 "colonized with", "gnotobiotic", "germ-free"]
+    assoc_kw = ["association", "associated", "correlation", "correlat", "cohort",
+                "observational", "cross-sectional", "predicted", "inferred", "linked to"]
+    has_causal = any(k in text for k in causal_kw)
+    has_assoc = any(k in text for k in assoc_kw)
+
+    if has_causal and not has_assoc:
+        fwd2 = 3
+    elif has_causal:
+        fwd2 = 2
+    elif has_assoc:
+        fwd2 = 1
+    else:
+        fwd2 = 0
+
+    rev_kw = ["host immune", "host genetics", "diet-induced", "host-microbe", "epithelial signaling",
+              "amp secretion", "antimicrobial peptide", "defensin", "reg3",
+              "bile acid synthesis", "fxr", "tgr5", "vdr", "vitamin d receptor",
+              "hdac inhibitor", "methyl-donor", "sirt1", "tet2", "kdm5", "germ-free"]
+    rev_hits = sum(1 for k in rev_kw if k in text)
+    rev2 = min(3, rev_hits) if rev_hits >= 2 else (1 if rev_hits == 1 else 0)
+
+    coup2 = 1 if (fwd2 >= 2 and rev2 >= 1) else 0
+
+    depth2 = 1 if any(k in text for k in ["time-series", "longitudinal", "multi-compartment", "multi-timepoint"]) else 0
+
+    total2 = fwd2 + rev2 + coup2 + depth2
+
+    alen = len(abstract)
+    confidence = min(0.7, 0.3 + alen / 2000.0)
+
+    return {
+        "forward_pathway": fwd2, "reverse_pathway": rev2,
+        "coupling_depth": coup2, "measurement_depth": depth2,
+        "total_score": total2, "confidence": round(confidence, 2),
+        "include": total2 >= 3,
+        "one_line": f"Independent local re-review: fwd {fwd2}/4, rev {rev2}/4, coup {coup2}/4, depth {depth2}/2 (confidence {confidence:.2f}).",
+        "eval_method": "local",
+    }
+
+
+def combine_scores(primary: dict, second: Optional[dict]) -> dict:
+    """AIHOT 思路：两次独立评分取和过门槛，把第二意见与合成分挂回评估结果。
+
+    仅当第二意见可用时才施加门槛；第二意见缺失（API 全部不可用）时跳过，避免误伤。
+    """
+    if not second:
+        primary["scoring_gate"] = {"status": "second_opinion_unavailable"}
+        return primary
+    p_total = int(primary.get("total_score") or 0)
+    s_total = int(second.get("total_score") or 0)
+    combined = p_total + s_total
+    passed = combined >= SECOND_OPINION_MIN_SUM
+    primary["second_opinion"] = second
+    primary["combined_score"] = combined
+    primary["scoring_gate"] = {
+        "min_sum": SECOND_OPINION_MIN_SUM,
+        "primary_total": p_total,
+        "second_total": s_total,
+        "combined": combined,
+        "passed": bool(passed),
+    }
+    if not passed:
+        primary["should_include"] = False
+    return primary
+
+
 # ==================== 工具函数 ====================
 
 def _parse_json(text: str) -> Optional[dict]:
@@ -414,6 +595,7 @@ def main():
 
     scored = []
     ds_count, glm_count, local_count = 0, 0, 0
+    second_ds, second_glm, second_local, gated_out = 0, 0, 0, 0
 
     for i, article in enumerate(to_evaluate, 1):
         title_short = article.get("title", "")[:70]
@@ -438,6 +620,25 @@ def main():
             scores = evaluate_local(article)
             local_count += 1
 
+        # 第二次独立评分（AIHOT：换 prompt/温度/模型），取两次之和过门槛
+        second = None
+        if DEEPSEEK_API_KEY:
+            second = evaluate_second_deepseek(article)
+            if second:
+                second_ds += 1
+        if not second and GLM_API_KEY:
+            second = evaluate_second_glm(article)
+            if second:
+                second_glm += 1
+        if not second:
+            second = evaluate_second_local(article)
+            second_local += 1
+
+        gate_before = bool(scores.get("should_include", True))
+        scores = combine_scores(scores, second)
+        if gate_before and not scores.get("should_include", True):
+            gated_out += 1
+
         scored.append({**article, "evaluation": scores})
         if i < len(to_evaluate):
             time.sleep(0.3)
@@ -454,7 +655,9 @@ def main():
     ))
 
     print(f"\n  === Evaluation Summary ===")
-    print(f"  DeepSeek: {ds_count}  |  GLM: {glm_count}  |  Local: {local_count}")
+    print(f"  Primary     : DeepSeek {ds_count} | GLM {glm_count} | Local {local_count}")
+    print(f"  2nd opinion : DeepSeek {second_ds} | GLM {second_glm} | Local {second_local}")
+    print(f"  Gated out (sum-of-two below threshold): {gated_out}")
 
     level_counts = {}
     for a in scored:
@@ -465,7 +668,11 @@ def main():
     save_scored(scored, SCORED_ARTICLES_FILE)
 
     with open(os.path.join(DATA_DIR, "eval_stats.txt"), "w") as f:
-        f.write(f"total={len(scored)},deepseek={ds_count},glm={glm_count},local={local_count}")
+        f.write(
+            f"total={len(scored)},deepseek={ds_count},glm={glm_count},local={local_count},"
+            f"second_deepseek={second_ds},second_glm={second_glm},second_local={second_local},"
+            f"gated_out={gated_out}"
+        )
 
     return len(scored)
 
