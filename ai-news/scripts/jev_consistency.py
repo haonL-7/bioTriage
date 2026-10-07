@@ -37,6 +37,8 @@ import ai_evaluator  # noqa: E402  （仅复用 evaluate_second_local 作 dry-ru
 JEV_ENDPOINT = "https://api.typesafe.ai/v1/systemone"
 JEV_MODEL = os.environ.get("JEV_MODEL", "jev-latest")
 TYPESAFE_API_KEY = os.environ.get("TYPESAFE_API_KEY", "")
+# 直连计费需要此请求头；设为空串可关闭（例如走网关时）
+TYPESAFE_BILLING = os.environ.get("TYPESAFE_BILLING", "enabled")
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 SCORED_ARTICLES_FILE = os.path.join(DATA_DIR, "scored_articles.json")
@@ -145,14 +147,17 @@ def build_jev_payload(article: dict) -> dict:
 
 
 def call_jev(payload: dict, api_key: str) -> dict:
-    """POST /v1/systemone，返回原始 JSON。"""
-    resp = requests.post(
-        JEV_ENDPOINT,
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json=payload,
-        timeout=60,
-    )
-    resp.raise_for_status()
+    """POST /v1/systemone，返回原始 JSON。
+
+    直连计费需带 X-Typesafe-Billing 请求头（TYPESAFE_BILLING 设为空可关闭）。
+    4xx/5xx 抛带响应体的错误，便于看清「余额不足 / 未启用计费」等原因。
+    """
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    if TYPESAFE_BILLING:
+        headers["X-Typesafe-Billing"] = TYPESAFE_BILLING
+    resp = requests.post(JEV_ENDPOINT, headers=headers, json=payload, timeout=60)
+    if resp.status_code >= 400:
+        raise RuntimeError(f"HTTP {resp.status_code}: {(resp.text or '')[:200]}")
     return resp.json()
 
 
@@ -352,13 +357,15 @@ def main():
     method = "Jev (POST /v1/systemone)" if use_jev else "dry-run 占位本地基线（Jev 未调用，无 TYPESAFE_API_KEY）"
 
     ai_rows, jev_rows, details = [], [], []
+    jev_ok = 0
     for art in sample:
         ai_row = normalize_ai_scores(art)
         if use_jev:
             try:
                 jev_row = jev_evaluate(art, TYPESAFE_API_KEY)
+                jev_ok += 1
             except Exception as e:
-                print(f"    Jev 调用失败（回退本地基线）：{str(e)[:100]}")
+                print(f"    Jev 调用失败（回退本地基线）：{str(e)[:160]}")
                 jev_row = local_baseline(art)
         else:
             jev_row = local_baseline(art)
@@ -370,6 +377,12 @@ def main():
             "ai_evaluator": ai_row,
             "jev": jev_row,
         })
+
+    if use_jev and jev_ok == 0:
+        method += "（⚠ 全部调用失败，已回退本地基线；请检查 key 余额/计费）"
+        print("\n  ⚠ Jev 全部调用失败，已回退本地基线。请检查 key 余额或是否启用计费。\n")
+    elif use_jev:
+        print(f"    Jev 成功调用 {jev_ok}/{len(sample)} 条")
 
     metrics = compute_metrics(ai_rows, jev_rows)
 
