@@ -258,6 +258,100 @@
         el.hidden = !text;
     }
 
+    /* ---------------- toast + 读屏播报 ---------------- */
+    // 视觉反馈走右下角 toast；播报走独立的 aria-live 区域，
+    // toast 2.5 秒后自动消失，Esc 或点 × 立即关闭。
+    var TOAST_MS = 2500;
+    var toastSeq = 0;
+
+    function announce(message) {
+        var live = byId("liveRegion");
+        if (!live) return;
+        var text = message ? String(message) : "";
+        // 同一句话连续播报时先清空，否则部分读屏器不重读
+        live.textContent = "";
+        live.textContent = text;
+    }
+
+    function removeToast(node) {
+        if (node && node.parentNode) node.parentNode.removeChild(node);
+    }
+
+    function dismissToasts() {
+        var host = byId("toastHost");
+        if (!host) return;
+        while (host.firstChild) host.removeChild(host.firstChild);
+    }
+
+    function showToast(message, kind) {
+        var text = message ? String(message) : "";
+        if (!text) return null;
+        announce(text);
+
+        var host = byId("toastHost");
+        if (!host) return null;
+
+        var toast = document.createElement("div");
+        toast.className = "toast" + (kind === "err" ? " is-err" : "");
+        toast.setAttribute("data-toast-id", String(++toastSeq));
+
+        var msg = document.createElement("span");
+        msg.className = "toast-msg";
+        msg.textContent = text;
+        toast.appendChild(msg);
+
+        var close = document.createElement("button");
+        close.type = "button";
+        close.className = "toast-close";
+        close.setAttribute("aria-label", "关闭提示");
+        close.textContent = "×";
+        toast.appendChild(close);
+
+        var timer = null;
+
+        function stop() {
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
+            }
+        }
+
+        function hide() {
+            stop();
+            removeToast(toast);
+        }
+
+        function arm() {
+            stop();
+            timer = setTimeout(function () {
+                timer = null;
+                // 焦点还在 toast 里就先别抽走，否则键盘用户会丢焦点
+                if (toast.contains(document.activeElement)) {
+                    arm();
+                    return;
+                }
+                removeToast(toast);
+            }, TOAST_MS);
+        }
+
+        close.addEventListener("click", hide);
+        toast.addEventListener("focusout", function () { arm(); });
+
+        host.appendChild(toast);
+        arm();
+        return toast;
+    }
+
+    function bindToastEsc() {
+        document.addEventListener("keydown", function (event) {
+            var key = event.key;
+            if (key !== "Escape" && key !== "Esc") return;
+            var host = byId("toastHost");
+            if (!host || !host.firstChild) return;
+            dismissToasts();
+        });
+    }
+
     /* ---------------- 加载态 ---------------- */
     function stopLoadingHint() {
         if (loadingHintTimer) {
@@ -337,6 +431,18 @@
         if (byId("nameText")) byId("nameText").textContent = name ? String(name) : "未提供";
     }
 
+    function tierLabel(tier) {
+        var map = { user: "实名用户", anon: "匿名访客", admin: "管理员" };
+        var key = String(tier || "").toLowerCase();
+        return map[key] || String(tier);
+    }
+
+    function quotaFigure(value) {
+        var el = document.createElement("strong");
+        el.textContent = value === null ? "—" : String(value);
+        return el;
+    }
+
     function renderQuota(quota) {
         var q = quota || {};
         var tier = pick(q, ["tier", "plan", "level"]);
@@ -347,19 +453,45 @@
             remaining = Math.max(limit - used, 0);
         }
 
-        if (byId("tierText")) byId("tierText").textContent = tier ? String(tier) : "未提供";
-        if (byId("quotaUsed")) byId("quotaUsed").textContent = used === null ? "—" : String(used);
-        if (byId("quotaLimit")) byId("quotaLimit").textContent = limit === null ? "—" : String(limit);
-        if (byId("quotaRemaining")) {
-            byId("quotaRemaining").textContent = remaining === null ? "—" : String(remaining);
+        if (byId("tierText")) byId("tierText").textContent = tier ? tierLabel(tier) : "未提供";
+
+        // 一句话说清「今日已用 / 上限 · 剩余」
+        var summary = byId("quotaSummary");
+        if (summary) {
+            summary.textContent = "";
+            summary.appendChild(document.createTextNode("今日已用 "));
+            summary.appendChild(quotaFigure(used));
+            summary.appendChild(document.createTextNode(" / " + (limit === null ? "—" : String(limit))));
+            var sep = document.createElement("span");
+            sep.className = "qs-sep";
+            sep.textContent = " · ";
+            summary.appendChild(sep);
+            summary.appendChild(document.createTextNode("剩余 "));
+            summary.appendChild(quotaFigure(remaining));
+        }
+
+        // 进度条：同时作为 role=progressbar 的可读数值来源
+        var max = (limit === null || limit <= 0) ? 0 : limit;
+        var now = (used === null || used < 0) ? 0 : used;
+        if (max > 0 && now > max) now = max;
+
+        var bar = byId("quotaBar");
+        if (bar) {
+            bar.setAttribute("aria-valuemin", "0");
+            bar.setAttribute("aria-valuemax", String(max));
+            bar.setAttribute("aria-valuenow", String(now));
+            bar.setAttribute("aria-valuetext",
+                "今日已用 " + (used === null ? "未知" : String(used)) +
+                " / " + (limit === null ? "未知" : String(limit)) +
+                " 次，剩余 " + (remaining === null ? "未知" : String(remaining)) + " 次");
         }
 
         var fill = byId("quotaFill");
         if (fill) {
-            fill.style.width = (limit && limit > 0 && used !== null)
-                ? Math.min(Math.max(used / limit, 0), 1) * 100 + "%"
-                : "0";
+            fill.style.width = max > 0 ? Math.min(Math.max(now / max, 0), 1) * 100 + "%" : "0";
+            fill.className = "quota-fill" + (remaining === 0 && used !== null ? " is-full" : "");
         }
+
         var resets = fmtDate(q.resets_at || q.reset_at);
         if (byId("quotaReset")) {
             byId("quotaReset").textContent = resets
@@ -435,6 +567,8 @@
 
         var row = btn.closest ? btn.closest(".item") : null;
         var note = row ? row.querySelector(".item-note") : null;
+        var titleEl = row ? row.querySelector(".item-title") : null;
+        var starTitle = titleEl ? String(titleEl.textContent || "") : "";
         var original = btn.textContent;
 
         btn.disabled = true;
@@ -445,6 +579,7 @@
             if (res.ok) {
                 if (row && row.parentNode) row.parentNode.removeChild(row);
                 refreshStarCount();
+                showToast(starTitle ? "已移除收藏：" + starTitle : "已移除收藏。");
                 return;
             }
             btn.disabled = false;
@@ -565,6 +700,7 @@
                 if (res.ok || res.kind === "unauth") {
                     dropToken();
                     showGuest("");
+                    showToast("已登出当前账户。");
                     return;
                 }
                 // 服务端没确认撤销：本机先退出，并如实告知
@@ -582,11 +718,13 @@
         overview: API_BASE + "/api/admin/overview",
         users: API_BASE + "/api/admin/users"
     };
-    var ADMIN_PAGE_SIZE = 50;
+    // 一轮 20 条：超过 20 条时列表尾部出现“载入更多”，按 limit/offset 追加
+    var ADMIN_PAGE_SIZE = 20;
     var QUOTA_MIN = 1;
     var QUOTA_MAX = 1000;
     var adminRows = [];
     var adminTotal = 0;
+    var adminQuery = "";
 
     function makeEl(tag, cls, text) {
         var el = document.createElement(tag);
@@ -609,6 +747,19 @@
         box.appendChild(val);
         box.appendChild(makeEl("div", "quota-label", label));
         return box;
+    }
+
+    function adminLabel(en, zh, countId, labelId) {
+        var label = makeEl("span", "section-label");
+        label.id = labelId;
+        label.appendChild(document.createTextNode(en));
+        label.appendChild(makeEl("span", "sl-zh", zh));
+        if (countId) {
+            var count = makeEl("span", "count");
+            count.id = countId;
+            label.appendChild(count);
+        }
+        return label;
     }
 
     function setFigure(id, value) {
@@ -643,7 +794,8 @@
 
         // 概览
         var overviewCard = makeEl("section", "card");
-        overviewCard.appendChild(makeEl("div", "card-header", "管理员 · 概览"));
+        overviewCard.setAttribute("aria-labelledby", "adminOverviewLabel");
+        overviewCard.appendChild(adminLabel("OVERVIEW", "管理员概览", null, "adminOverviewLabel"));
         var overviewBody = makeEl("div", "card-body");
         var figures = makeEl("div", "quota-figures");
         figures.appendChild(adminFigure("adminTotalUsers", "总用户"));
@@ -658,19 +810,32 @@
 
         // 用户管理
         var usersCard = makeEl("section", "card");
-        var usersHeader = makeEl("div", "card-header");
-        usersHeader.appendChild(makeEl("span", "", "用户管理"));
-        var countEl = makeEl("span", "count");
-        countEl.id = "adminUserCount";
-        usersHeader.appendChild(countEl);
-        var reloadBtn = makeBtn("btn btn-ghost btn-sm admin-header-btn", "刷新", function () {
-            loadAdminOverview();
-            loadAdminUsers(true);
-        });
-        usersHeader.appendChild(reloadBtn);
-        usersCard.appendChild(usersHeader);
+        usersCard.setAttribute("aria-labelledby", "adminUsersLabel");
+        usersCard.appendChild(adminLabel("USERS", "用户管理", "adminUserCount", "adminUsersLabel"));
 
         var usersBody = makeEl("div", "card-body");
+
+        // 纯前端过滤：只筛已载入的行，不改任何请求参数
+        var toolbar = makeEl("div", "admin-toolbar");
+        var search = document.createElement("input");
+        search.type = "search";
+        search.className = "admin-search";
+        search.id = "adminSearch";
+        search.setAttribute("placeholder", "搜索 ORCID 或姓名…");
+        search.setAttribute("aria-label", "按 ORCID 或姓名过滤用户列表");
+        search.setAttribute("autocomplete", "off");
+        search.addEventListener("input", applyAdminFilter);
+        toolbar.appendChild(search);
+        toolbar.appendChild(makeBtn("btn btn-ghost btn-sm admin-refresh", "刷新", function () {
+            loadAdminOverview();
+            loadAdminUsers(true);
+        }));
+        usersBody.appendChild(toolbar);
+        var filterNote = makeEl("p", "admin-filter-note");
+        filterNote.id = "adminFilterNote";
+        filterNote.setAttribute("aria-live", "polite");
+        usersBody.appendChild(filterNote);
+
         var statusEl = makeEl("p", "empty", "正在读取用户列表…");
         statusEl.id = "adminStatus";
         usersBody.appendChild(statusEl);
@@ -732,6 +897,7 @@
         row.input.placeholder = effective === null ? "默认" : "默认 " + effective;
         row.banBtn.textContent = banned ? "解封" : "封禁";
         row.banBtn.className = "btn btn-sm " + (banned ? "btn-ghost" : "btn-danger-ghost");
+        row.banBtn.setAttribute("aria-label", (banned ? "解封 " : "封禁 ") + (row.orcid || "该用户"));
     }
 
     function adminUserRow(item) {
@@ -761,6 +927,7 @@
         input.setAttribute("max", String(QUOTA_MAX));
         input.setAttribute("step", "1");
         input.setAttribute("inputmode", "numeric");
+        input.setAttribute("aria-label", "每日 AI 分析配额（" + QUOTA_MIN + "–" + QUOTA_MAX + " 的整数，用户 " + (orcid || "未知") + "）");
         quotaRow.appendChild(input);
 
         var note = makeEl("p", "admin-note");
@@ -779,7 +946,9 @@
         };
 
         var saveBtn = makeBtn("btn btn-ghost btn-sm", "保存", function () { saveQuota(row, false); });
+        saveBtn.setAttribute("aria-label", "保存 " + (orcid || "该用户") + " 的每日配额");
         var resetBtn = makeBtn("btn btn-ghost btn-sm", "恢复默认", function () { saveQuota(row, true); });
+        resetBtn.setAttribute("aria-label", "把 " + (orcid || "该用户") + " 的配额恢复为全局默认");
         quotaRow.appendChild(saveBtn);
         quotaRow.appendChild(resetBtn);
         node.appendChild(quotaRow);
@@ -787,6 +956,7 @@
         var actions = makeEl("div", "admin-actions");
         var banBtn = makeBtn("btn btn-sm", "封禁", function () { toggleBan(row); });
         var revokeBtn = makeBtn("btn btn-ghost btn-sm", "撤销会话", function () { revokeTokens(row); });
+        revokeBtn.setAttribute("aria-label", "撤销 " + (orcid || "该用户") + " 的全部登录会话");
         actions.appendChild(banBtn);
         actions.appendChild(revokeBtn);
         node.appendChild(actions);
@@ -838,6 +1008,9 @@
                 }
                 refreshRow(row);
                 rowNote(row, useDefault ? "已恢复全局默认配额。" : "配额已保存。", true);
+                showToast(useDefault
+                    ? "已恢复全局默认配额：" + row.orcid
+                    : "配额已保存：" + row.orcid + " 每日 " + payload.quota_limit + " 次");
                 return;
             }
             if (res.kind === "unauth") {
@@ -882,6 +1055,9 @@
                 if (row.data.is_banned !== true && row.data.banned !== true) row.data.is_banned = !banned;
                 refreshRow(row);
                 rowNote(row, banned ? "已解封。" : "已封禁，并撤销该用户全部会话。", true);
+                showToast(banned
+                    ? "已解封：" + row.orcid
+                    : "已封禁 " + row.orcid + "，并撤销其全部登录会话");
                 return;
             }
             if (res.kind === "unauth") {
@@ -909,6 +1085,9 @@
             if (res.ok) {
                 var revoked = num(res.data ? res.data.revoked : null);
                 rowNote(row, revoked === null ? "已撤销该用户的全部会话。" : "已撤销 " + revoked + " 个会话。", true);
+                showToast(revoked === null
+                    ? "已撤销全部登录会话：" + row.orcid
+                    : "已撤销 " + revoked + " 个登录会话：" + row.orcid);
                 return;
             }
             if (res.kind === "unauth") {
@@ -924,15 +1103,60 @@
         });
     }
 
-    function updateAdminCount() {
+    function updateAdminCount(shown) {
         var countEl = byId("adminUserCount");
         if (countEl) {
-            countEl.textContent = adminRows.length
-                ? "已显示 " + adminRows.length + " / " + adminTotal
-                : "";
+            if (!adminRows.length) {
+                countEl.textContent = "";
+            } else if (adminQuery && typeof shown === "number") {
+                countEl.textContent = "匹配 " + shown + " / 已载入 " + adminRows.length + " / 共 " + adminTotal;
+            } else {
+                countEl.textContent = "已载入 " + adminRows.length + " / 共 " + adminTotal;
+            }
         }
         var moreBtn = byId("adminMore");
-        if (moreBtn) moreBtn.hidden = adminRows.length === 0 || adminRows.length >= adminTotal;
+        if (moreBtn) {
+            var rest = adminTotal - adminRows.length;
+            var hasMore = adminRows.length > 0 && rest > 0;
+            moreBtn.hidden = !hasMore;
+            moreBtn.setAttribute("aria-label", hasMore
+                ? "载入更多用户，还有 " + rest + " 条未载入"
+                : "载入更多用户");
+        }
+    }
+
+    function rowMatchesQuery(row, query) {
+        if (!query) return true;
+        var orcid = String(row.orcid || "").toLowerCase();
+        var data = row.data || {};
+        var name = String(String(pick(data, ["name", "display_name"]) || "")).toLowerCase();
+        return orcid.indexOf(query) !== -1 || name.indexOf(query) !== -1;
+    }
+
+    // 只过滤已载入的行：不发额外请求、不改 API 契约
+    function applyAdminFilter() {
+        var input = byId("adminSearch");
+        adminQuery = input ? String(input.value || "").trim().toLowerCase() : "";
+
+        var shown = 0;
+        for (var i = 0; i < adminRows.length; i++) {
+            var match = rowMatchesQuery(adminRows[i], adminQuery);
+            adminRows[i].node.hidden = !match;
+            if (match) shown++;
+        }
+
+        var note = byId("adminFilterNote");
+        if (note) {
+            if (!adminRows.length) {
+                note.textContent = "";
+            } else if (adminQuery && shown === 0) {
+                note.textContent = "没有匹配「" + adminQuery + "」的用户；搜索只覆盖已载入的 " +
+                    adminRows.length + " 条，可先载入更多。";
+            } else {
+                note.textContent = "";
+            }
+        }
+        updateAdminCount(shown);
     }
 
     function loadAdminOverview() {
@@ -1016,7 +1240,7 @@
                     statusEl.textContent = adminRows.length ? "" : "暂无用户。";
                     statusEl.hidden = adminRows.length > 0;
                 }
-                updateAdminCount();
+                applyAdminFilter();
             });
     }
 
@@ -1066,6 +1290,8 @@
     }
 
     function boot() {
+        bindToastEsc();
+
         var loading = byId("loadingBox");
         if (loading && !loading.hidden) startLoadingHint();
 

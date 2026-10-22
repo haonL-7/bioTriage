@@ -419,6 +419,82 @@
             .side-nav .side-label { display: none; }
             .side-item { padding: 6px 12px; font-size: 12px; }
         }
+
+        /* ==== interaction polish (batch 1) ==== */
+
+        /* 1) unified interaction feedback: 150ms ease-out, subtle press state */
+        a,
+        button,
+        .lang-btn,
+        .side-item,
+        .featured-card,
+        .channel-card {
+            transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+            transition-duration: 150ms;
+            transition-timing-function: ease-out;
+        }
+        a:active { opacity: 0.72; }
+        button:active,
+        .lang-btn:active,
+        .side-item:active,
+        .featured-card:active,
+        .channel-card:active { transform: translateY(1px); }
+
+        /* 1b) live-page controls: top-bar nav link + Academic Assistant input/send */
+        .tb-link,
+        .aa-input,
+        .aa-send {
+            transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+            transition-duration: 150ms;
+            transition-timing-function: ease-out;
+        }
+        .tb-link:active,
+        .aa-send:active { transform: translateY(1px); }
+        .aa-input:focus-visible,
+        .aa-send:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* 2) keyboard-visible focus ring; mouse clicks stay clean */
+        a:focus-visible,
+        button:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        a:focus:not(:focus-visible),
+        button:focus:not(:focus-visible) { outline: none; }
+
+        /* 3) in-page anchors stop clear of the 60px sticky top bar */
+        :target { scroll-margin-top: 76px; }
+        @media (max-width: 700px) { :target { scroll-margin-top: 96px; } }
+
+        /* 4) link underline: hover/focus only, so the resting look is unchanged */
+        p a:hover,
+        p a:focus-visible,
+        li a:hover,
+        li a:focus-visible {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+            text-decoration-skip-ink: auto;
+        }
+
+        /* 5) respect reduced-motion preference (kept last so it wins the cascade) */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+            a:active { opacity: 1; }
+            button:active,
+            .lang-btn:active,
+            .side-item:active,
+            .featured-card:active,
+            .channel-card:active { transform: none; }
+        }
     </style>
 </head>
 <body>
@@ -438,6 +514,7 @@
             <a class="side-item" href="weekly/" data-i18n="nav-weekly">Literature Weekly</a>
             <a class="side-item" href="ms1/" data-i18n="nav-method">Methodology</a>
             <a class="side-item" href="starred/" data-i18n="nav-starred">Starred</a>
+            <a class="side-item" href="account/" data-i18n="nav-account">My Account</a>
             <a class="side-item" href="#academic-assistant" data-i18n="nav-aa">Academic Assistant</a>
         </nav>
     </aside>
@@ -556,6 +633,7 @@
             'nav-weekly': 'Literature Weekly',
             'nav-method': 'Methodology',
             'nav-starred': 'Starred',
+            'nav-account': 'My Account',
             'tagline': 'AI-curated literature intelligence for the life sciences — daily selection and assessment from open-access journals, preprints, and databases.',
             'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · Open access',
             'sec-active': 'Active Channels',
@@ -647,6 +725,7 @@
             'nav-weekly': '文献周报',
             'nav-method': '方法学',
             'nav-starred': '星级收藏',
+            'nav-account': '我的账户',
             'tagline': '面向生命科学的 AI 文献智能——每日从开放获取期刊、预印本与数据库遴选并评估。',
             'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 开放获取',
             'sec-active': '活跃频道',

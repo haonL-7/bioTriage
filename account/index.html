@@ -3,94 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的账户 · 益生菌/代谢物证据评估系统</title>
+<title>我的账户 · bio|Triage</title>
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
 </head>
 <body>
-<div class="wrap">
-    <div class="page-bar"><a href="../">← 返回首页</a></div>
 
-    <header class="header">
-        <h1>我的账户</h1>
-        <p class="subtitle">ORCID 登录 · 我的收藏 · 评估历史 · 配额余量</p>
-    </header>
+<a class="skip-link" href="#mainContent">跳到主要内容</a>
 
-    <!-- 读取中 -->
-    <div class="loading" id="loadingBox"><span class="spinner"></span><span id="loadingText">正在读取账户信息…</span></div>
+<nav class="top-bar" aria-label="站点顶栏">
+    <span class="tb-brand">
+        <span class="mini-logo">bio<em>|</em>Triage</span>
+        <span class="tb-tagline">Evidence-structured literature intelligence</span>
+    </span>
+    <span class="tb-right">
+        <span class="tb-aux">Academic Assistant</span>
+        <span class="tb-year">2026</span>
+    </span>
+</nav>
 
-    <!-- 未登录：只给登录引导 -->
-    <section class="card" id="guestBox" hidden>
-        <div class="card-body guest">
-            <p class="guest-title">尚未登录</p>
-            <p class="guest-text">登录后可查看我的收藏与评估历史，并同步当前账户的评估配额余量。</p>
-            <a class="btn btn-primary" id="loginBtn" href="https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/login?mode=pages">使用 ORCID 登录</a>
-            <p class="guest-note" id="guestNote" hidden></p>
+<div class="layout">
+    <aside class="sidebar">
+        <nav class="side-nav" aria-label="主导航">
+            <span class="side-label">Navigate</span>
+            <a class="side-item" href="../">首页</a>
+            <a class="side-item" href="../evidence/">证据监测</a>
+            <a class="side-item" href="../daily/">文献日报</a>
+            <a class="side-item" href="../weekly/">文献周报</a>
+            <a class="side-item" href="../ms1/">方法学</a>
+            <a class="side-item" href="../starred/">星级收藏</a>
+            <a class="side-item" href="../#academic-assistant">学术助手</a>
+            <a class="side-item is-active" href="./" aria-current="page">我的账户</a>
+        </nav>
+    </aside>
+
+    <div class="page">
+    <main id="mainContent">
+
+        <header class="page-header">
+            <h1>我的账户 <span class="h1-accent">Account</span></h1>
+            <p class="tagline">用 ORCID 登录，统一管理你的 AI 分析配额、收藏条目与评估历史。</p>
+            <p class="meta">每日 5 次 AI 分析 · 收藏跨设备同步 · 评估历史留档</p>
+        </header>
+
+        <!-- 读取中 -->
+        <div class="loading" id="loadingBox" role="status" aria-live="polite">
+            <span class="spinner" aria-hidden="true"></span><span id="loadingText">正在读取账户信息…</span>
         </div>
-    </section>
 
-    <!-- 已登录 -->
-    <div id="authedBox" hidden>
-        <section class="card">
-            <div class="card-header">账户信息</div>
-            <div class="card-body">
-                <dl class="kv">
-                    <dt>ORCID iD</dt><dd id="orcidText">—</dd>
-                    <dt>显示名</dt><dd id="nameText">—</dd>
-                    <dt>配额档位</dt><dd id="tierText">—</dd>
-                </dl>
-                <div class="account-actions">
-                    <button type="button" class="btn btn-ghost" id="logoutBtn">登出</button>
-                    <span class="inline-error" id="logoutNote" hidden></span>
+        <!-- 未登录：登录卡 + 价值卡 -->
+        <div id="guestBox" hidden>
+            <section class="card" aria-labelledby="guestLabel">
+                <span class="section-label" id="guestLabel">SIGN IN<span class="sl-zh">登录</span></span>
+                <div class="card-body guest">
+                    <p class="guest-title" id="guestTitle">用 ORCID 登录，解锁账户能力</p>
+                    <p class="guest-text">登录后本站以你的 ORCID iD 作为唯一身份；凭据只保存在当前标签页。登录后可获得每日 5 次 AI 分析、收藏跨设备同步与可回看的评估历史。</p>
+                    <a class="btn btn-primary" id="loginBtn" href="https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/login?mode=pages">使用 ORCID 登录</a>
+                    <p class="guest-note" id="guestNote" hidden></p>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="card">
-            <div class="card-header">配额余量</div>
-            <div class="card-body">
-                <div class="quota-figures">
-                    <div class="quota-item">
-                        <div class="quota-val" id="quotaUsed">—</div>
-                        <div class="quota-label">已用 used</div>
-                    </div>
-                    <div class="quota-item">
-                        <div class="quota-val" id="quotaLimit">—</div>
-                        <div class="quota-label">上限 limit</div>
-                    </div>
-                    <div class="quota-item">
-                        <div class="quota-val" id="quotaRemaining">—</div>
-                        <div class="quota-label">剩余 remaining</div>
+            <section class="card" aria-labelledby="afterLoginLabel">
+                <span class="section-label" id="afterLoginLabel">AFTER LOGIN<span class="sl-zh">登录后你可以</span></span>
+                <div class="card-body">
+                    <ul class="value-list">
+                        <li class="value-item">
+                            <span class="value-k">每日 5 次 AI 分析</span>
+                            <span class="value-d">按 ORCID 计次发放，每天自动重置；用完后次日恢复。</span>
+                        </li>
+                        <li class="value-item">
+                            <span class="value-k">收藏跨设备同步</span>
+                            <span class="value-d">收藏的论文与条目跟随账户，换设备登录同样能找回。</span>
+                        </li>
+                        <li class="value-item">
+                            <span class="value-k">评估历史可回看</span>
+                            <span class="value-d">每次 AI 证据评估都会留档，结论、评分与层级随时复查。</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- 已登录 -->
+        <div id="authedBox" hidden>
+            <section class="card" aria-labelledby="accountLabel">
+                <span class="section-label" id="accountLabel">ACCOUNT<span class="sl-zh">账户信息</span></span>
+                <div class="card-body">
+                    <dl class="kv">
+                        <dt>ORCID iD</dt><dd id="orcidText">—</dd>
+                        <dt>显示名</dt><dd id="nameText">—</dd>
+                        <dt>配额档位</dt><dd id="tierText">—</dd>
+                    </dl>
+                    <div class="account-actions">
+                        <button type="button" class="btn btn-ghost" id="logoutBtn">登出</button>
+                        <span class="inline-error" id="logoutNote" hidden></span>
                     </div>
                 </div>
-                <div class="quota-track"><div class="quota-fill" id="quotaFill"></div></div>
-                <p class="quota-meta" id="quotaReset">—</p>
-            </div>
-        </section>
+            </section>
 
-        <section class="card">
-            <div class="card-header">我的收藏 <span class="count" id="starCount"></span></div>
-            <div class="card-body">
-                <ul class="item-list" id="starList"></ul>
-                <p class="empty" id="starEmpty" hidden>暂无收藏。</p>
-                <p class="inline-error" id="starError" hidden></p>
-            </div>
-        </section>
+            <section class="card" aria-labelledby="quotaLabel">
+                <span class="section-label" id="quotaLabel">QUOTA<span class="sl-zh">今日配额</span></span>
+                <div class="card-body">
+                    <p class="quota-summary" id="quotaSummary">今日已用 — / — · 剩余 —</p>
+                    <div class="quota-track"
+                         id="quotaBar"
+                         role="progressbar"
+                         aria-labelledby="quotaLabel"
+                         aria-valuemin="0"
+                         aria-valuemax="0"
+                         aria-valuenow="0">
+                        <div class="quota-fill" id="quotaFill"></div>
+                    </div>
+                    <p class="quota-meta" id="quotaReset">—</p>
+                </div>
+            </section>
 
-        <section class="card">
-            <div class="card-header">评估历史 <span class="count" id="evalCount"></span></div>
-            <div class="card-body">
-                <ul class="item-list" id="evalList"></ul>
-                <p class="empty" id="evalEmpty" hidden>暂无评估记录。</p>
-                <p class="inline-error" id="evalError" hidden></p>
-            </div>
-        </section>
+            <section class="card" aria-labelledby="starLabel">
+                <span class="section-label" id="starLabel">STARRED<span class="sl-zh">我的收藏</span><span class="count" id="starCount"></span></span>
+                <div class="card-body">
+                    <ul class="item-list" id="starList"></ul>
+                    <div class="empty-state" id="starEmpty" hidden>
+                        <p class="empty-title">还没有收藏</p>
+                        <p class="empty-text">在证据监测或文献日报里点条目上的 ★ 收藏，之后在任何设备登录都能看到。</p>
+                        <a class="empty-link" href="../evidence/">去证据监测挑几条 →</a>
+                    </div>
+                    <p class="inline-error" id="starError" hidden></p>
+                </div>
+            </section>
+
+            <section class="card" aria-labelledby="evalLabel">
+                <span class="section-label" id="evalLabel">HISTORY<span class="sl-zh">评估历史</span><span class="count" id="evalCount"></span></span>
+                <div class="card-body">
+                    <ul class="item-list" id="evalList"></ul>
+                    <div class="empty-state" id="evalEmpty" hidden>
+                        <p class="empty-title">暂无评估记录</p>
+                        <p class="empty-text">在证据监测页发起一次 AI 分析后，结论会留在这里，随时可以回看。</p>
+                        <a class="empty-link" href="../evidence/">去发起一次 AI 分析 →</a>
+                    </div>
+                    <p class="inline-error" id="evalError" hidden></p>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footnote">
+            <p class="footnote-plain">登录状态只在本标签页有效，关闭标签页后需要重新登录。</p>
+            <details class="footnote-more">
+                <summary>技术说明</summary>
+                <p>凭据仅存放在当前标签页的 sessionStorage 中，关闭标签页即失效；本页只把它作为 Bearer 头发送给本站后端，不会发送给其他地址。</p>
+            </details>
+        </footer>
+
+    </main>
     </div>
-
-    <p class="footnote">登录凭据仅保存在当前标签页的 sessionStorage 中，关闭标签页即失效；本页不把它发送给本站之外的地址。</p>
 </div>
+
+<!-- 视觉 toast（右下角）与读屏播报区（aria-live） -->
+<div class="toast-host" id="toastHost"></div>
+<div class="sr-only" id="liveRegion" role="status" aria-live="polite" aria-atomic="true"></div>
+
 <noscript>
-    <p class="empty" style="text-align:center">需要启用 JavaScript 才能显示账户信息。<a href="https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/login?mode=pages">直接前往 ORCID 登录</a></p>
+    <div class="layout"><div class="page">
+    <p class="empty">需要启用 JavaScript 才能显示账户信息。<a href="https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/login?mode=pages">直接前往 ORCID 登录</a></p>
+    </div></div>
 </noscript>
 </body>
 </html>

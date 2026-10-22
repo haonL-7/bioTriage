@@ -38,7 +38,7 @@ BUILD_DIR="$SCRIPT_DIR/build"
 PKG_DIR="$BUILD_DIR/pkg"
 [ -n "$OUTPUT" ] || OUTPUT="$REPO_ROOT/dist/scf-biotriage-py${PYTHON_VERSION//./}.zip"
 
-INCLUDE_FILES="api.py account.html index.html knowledge_base.json precomputed_ai.json requirements.txt"
+INCLUDE_FILES="api.py account.html index.html knowledge_base.json precomputed_ai.json requirements.txt documents.json"
 INCLUDE_DIRS="accounts assets"
 EXCLUDES='-x */__pycache__/* -x */.venv/* -x *.db -x *.pyc -x *.db-journal -x pkg/bin/* -x *.exe'
 

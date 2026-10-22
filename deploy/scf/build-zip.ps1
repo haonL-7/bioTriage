@@ -44,7 +44,7 @@ if ([string]::IsNullOrWhiteSpace($Output)) {
 }
 
 # api.py 运行时要读的同目录文件（index.html 缺了 / 只能返回 JSON 兜底）
-$IncludeFiles = @('api.py', 'account.html', 'index.html', 'knowledge_base.json', 'precomputed_ai.json', 'requirements.txt')
+$IncludeFiles = @('api.py', 'account.html', 'index.html', 'knowledge_base.json', 'precomputed_ai.json', 'requirements.txt', 'documents.json')
 $IncludeDirs = @('accounts', 'assets')
 $ExcludeDirs = @('__pycache__', '.venv', '.git', 'tests', 'deploy')
 $ExcludeExt = @('.pyc', '.db', '.db-journal', '.db-wal', '.db-shm', '.pyd', '.dll', '.pdb', '.exe')

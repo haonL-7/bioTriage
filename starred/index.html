@@ -253,6 +253,100 @@
             .starred-main { padding: 8px 16px 32px; }
             .starred-item { padding: 18px 16px; }
         }
+
+        /* ==== interaction polish (batch 1) ==== */
+
+        /* 1) unified interaction feedback: 150ms ease-out, subtle press state */
+        a,
+        button,
+        .lang-btn,
+        .side-item,
+        .featured-card,
+        .channel-card {
+            transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+            transition-duration: 150ms;
+            transition-timing-function: ease-out;
+        }
+        a:active { opacity: 0.72; }
+        button:active,
+        .lang-btn:active,
+        .side-item:active,
+        .featured-card:active,
+        .channel-card:active { transform: translateY(1px); }
+
+        /* 2) keyboard-visible focus ring; mouse clicks stay clean */
+        a:focus-visible,
+        button:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        a:focus:not(:focus-visible),
+        button:focus:not(:focus-visible) { outline: none; }
+
+        /* 3) in-page anchors stop clear of the 60px sticky top bar */
+        :target { scroll-margin-top: 76px; }
+        @media (max-width: 700px) { :target { scroll-margin-top: 96px; } }
+
+        /* 4) link underline: hover/focus only, so the resting look is unchanged */
+        p a:hover,
+        p a:focus-visible,
+        li a:hover,
+        li a:focus-visible {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+            text-decoration-skip-ink: auto;
+        }
+
+        /* 5) respect reduced-motion preference (kept last so it wins the cascade) */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+            a:active { opacity: 1; }
+            button:active,
+            .lang-btn:active,
+            .side-item:active,
+            .featured-card:active,
+            .channel-card:active { transform: none; }
+        }
+
+        /* ==== design language (batch 2) ==== */
+
+        /* list page: hairline separators instead of cards, tabular numbering */
+        .starred-eyebrow { letter-spacing: 0.08em; }
+        .starred-eyebrow::after {
+            content: "";
+            display: block;
+            width: 34px;
+            height: 2px;
+            background: var(--primary);
+            margin-top: 10px;
+        }
+        .starred-list { gap: 0; border-top: 1px solid #e2e8f0; }
+        .starred-item {
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 0;
+            padding: 20px 0;
+        }
+        .starred-no {
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            font-variant-numeric: tabular-nums;
+        }
+        .starred-cite { font-family: var(--font-display); font-size: 15px; line-height: 1.7; }
+        .starred-sum {
+            font-family: var(--font-display);
+            font-size: 13.5px;
+            line-height: 1.75;
+            border-left-color: #e2e8f0;
+        }
+        .starred-links { font-variant-numeric: tabular-nums; }
     </style>
 </head>
 <body>

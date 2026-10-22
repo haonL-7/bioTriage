@@ -44,6 +44,101 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 .ref-list { list-style: none; padding: 0; }
 .ref-list li { font-size: 12px; color: var(--text-muted); padding: 3px 0; }
 @media (max-width: 640px) { h1 { font-size: 18px; } .compartments { grid-template-columns: 1fr; } }
+
+/* ==== interaction polish (batch 1) ==== */
+
+/* 1) unified interaction feedback: 150ms ease-out, subtle press state */
+a,
+.side-item {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+}
+a:active { opacity: 0.72; }
+.side-item:active { transform: translateY(1px); }
+
+/* 2) keyboard-visible focus ring; mouse clicks stay clean */
+a:focus-visible,
+.side-item:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+a:focus:not(:focus-visible) { outline: none; }
+
+/* 3) in-page anchors: smooth jump, stopping clear of the 60px sticky top bar */
+html { scroll-behavior: smooth; }
+:target { scroll-margin-top: 76px; }
+
+/* 4) link underline: hover/focus only, so the resting look is unchanged */
+p a:hover,
+p a:focus-visible,
+li a:hover,
+li a:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-skip-ink: auto;
+}
+
+/* 5) respect reduced-motion preference (kept last so it wins the cascade) */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+    a:active { opacity: 1; }
+    .side-item:active { transform: none; }
+}
+
+/* ==== design language (batch 2) ==== */
+
+/* 1) paper page: narrow serif measure (42rem), larger display heading */
+.container { max-width: 42rem; padding: 44px 20px 64px; }
+h1 { font-size: 27px; line-height: 1.3; letter-spacing: -0.005em; }
+.authors { font-family: var(--font-serif); font-size: 14px; }
+.affil { font-size: 11.5px; }
+p, li { font-family: var(--font-serif); font-size: 15.5px; line-height: 1.75; }
+.abstract { font-family: var(--font-serif); font-size: 15.5px; line-height: 1.75; }
+
+/* 2) section labels: 11-12px caps, .08em tracking, 34px rule */
+h2 {
+    font-family: var(--font-en);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin: 40px 0 16px;
+}
+h2::after {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 2px;
+    background: var(--accent);
+    margin-top: 9px;
+}
+
+/* 3) wide tables scroll inside their own frame, never the page */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 14px 0 22px; }
+.table-scroll .tier-table { margin: 0; }
+.tier-table { font-variant-numeric: tabular-nums; }
+.tier-table th { letter-spacing: 0.08em; }
+.tier-table td { border-bottom: 1px solid var(--border-light); }
+
+/* the column layout uses align-items:flex-start, so .page must be told to
+   fill the viewport width, otherwise the wide table's min-content widens it */
+@media (max-width: 900px) {
+    .page { width: 100%; }
+}
+@media (max-width: 640px) {
+    h1 { font-size: 21px; }
+    .container { padding: 32px 18px 52px; }
+}
 </style>
 </head>
 <body>
@@ -101,6 +196,7 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 <h2>2. Four-Dimensional Matrix Rating System</h2>
 <p>All operational definitions below are reproduced from <strong>Supplementary Table S3</strong>. Dimensions I&ndash;III are scored Level 0&ndash;4 (five levels); Dimension IV is scored Level 0&ndash;2 (three levels), reflecting the current technological ceiling.</p>
 
+<div class="table-scroll">
 <table class="tier-table">
 <tr><th>Dimension</th><th>Level</th><th>Operational Definition</th></tr>
 <tr><td class="lvl" rowspan="7">I. Forward Pathway<br>(Microbe &rarr; Host)</td><td class="lvl">0</td><td>No study has tested whether microbial metabolites regulate host epigenetic marks in any model system.</td></tr>
@@ -127,6 +223,7 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 <tr><td class="lvl">1</td><td>Multiple compartments measured OR multiple timepoints sampled.</td></tr>
 <tr><td class="lvl">2</td><td>Multiple compartments measured AND multiple timepoints sampled within a single experimental system.</td></tr>
 </table>
+</div>
 
 <h2>3. Key Findings</h2>
 
@@ -140,12 +237,14 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 
 <h2>4. Research Priority Matrix &amp; Falsifiable Predictions</h2>
 
+<div class="table-scroll">
 <table class="tier-table">
 <tr><th>Priority</th><th>Node</th><th>Feasibility</th><th>Importance</th><th>Key Experiment</th><th>Timeline</th></tr>
 <tr><td class="lvl">P1</td><td>Butyrate (lumen&ndash;epithelium interface)</td><td>High</td><td>High</td><td>Intracellular butyrate &rarr; HDAC &rarr; histone acetylation, with simultaneous luminal + epithelial + microenvironment sampling</td><td>2&ndash;3 yr</td></tr>
 <tr><td class="lvl">P2</td><td>Bile acids; Tryptophan metabolites</td><td>Medium</td><td>High</td><td>FXR/TGR5 and AhR pathway validation with multi-compartment sampling</td><td>&mdash;</td></tr>
 <tr><td class="lvl">P3</td><td>Polyamines; Vitamin B12</td><td>Low</td><td>Medium</td><td>Cross-species extrapolation needed; porcine models absent at any level for polyamines and B12</td><td>&mdash;</td></tr>
 </table>
+</div>
 
 <div class="callout">
 <strong>Falsifiable prediction (core):</strong> Intracellular butyrate concentration is a better predictor of host epigenetic changes than luminal butyrate concentration. Specifically: (a) intracellular butyrate concentration is predicted to correlate with H3K9 acetylation at r &ge; 0.7, while (b) luminal butyrate concentration is predicted to correlate with H3K9 acetylation at r &le; 0.3. The core claim&mdash;that intracellular concentration is the better predictor&mdash;survives the failure of any specific numerical threshold; the thresholds are empirically informed benchmarks (Xiong et al. 2016 effect sizes) proposed as testable hypotheses.
