@@ -43,6 +43,101 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 .ref-list { list-style: none; padding: 0; }
 .ref-list li { font-size: 12px; color: var(--text-muted); padding: 3px 0; }
 @media (max-width: 640px) { h1 { font-size: 18px; } .result-grid { grid-template-columns: 1fr; } }
+
+/* ==== interaction polish (batch 1) ==== */
+
+/* 1) unified interaction feedback: 150ms ease-out, subtle press state */
+a,
+.side-item {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+}
+a:active { opacity: 0.72; }
+.side-item:active { transform: translateY(1px); }
+
+/* 2) keyboard-visible focus ring; mouse clicks stay clean */
+a:focus-visible,
+.side-item:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+a:focus:not(:focus-visible) { outline: none; }
+
+/* 3) in-page anchors: smooth jump, stopping clear of the 60px sticky top bar */
+html { scroll-behavior: smooth; }
+:target { scroll-margin-top: 76px; }
+
+/* 4) link underline: hover/focus only, so the resting look is unchanged */
+p a:hover,
+p a:focus-visible,
+li a:hover,
+li a:focus-visible {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-skip-ink: auto;
+}
+
+/* 5) respect reduced-motion preference (kept last so it wins the cascade) */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+    a:active { opacity: 1; }
+    .side-item:active { transform: none; }
+}
+
+/* ==== design language (batch 2) ==== */
+
+/* 1) paper page: narrow serif measure (42rem), larger display heading */
+.container { max-width: 42rem; padding: 44px 20px 64px; }
+h1 { font-size: 27px; line-height: 1.3; letter-spacing: -0.005em; }
+.authors { font-family: var(--font-serif); font-size: 14px; }
+.affil { font-size: 11.5px; }
+p, li { font-family: var(--font-serif); font-size: 15.5px; line-height: 1.75; }
+.abstract { font-family: var(--font-serif); font-size: 15.5px; line-height: 1.75; }
+
+/* 2) section labels: 11-12px caps, .08em tracking, 34px rule */
+h2 {
+    font-family: var(--font-en);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin: 40px 0 16px;
+}
+h2::after {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 2px;
+    background: var(--accent);
+    margin-top: 9px;
+}
+
+/* 3) wide tables scroll inside their own frame, never the page */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 14px 0 22px; }
+.table-scroll .tier-table { margin: 0; }
+.tier-table { font-variant-numeric: tabular-nums; }
+.tier-table th { letter-spacing: 0.08em; }
+.tier-table td { border-bottom: 1px solid var(--border-light); }
+
+/* the column layout uses align-items:flex-start, so .page must be told to
+   fill the viewport width, otherwise the wide table's min-content widens it */
+@media (max-width: 900px) {
+    .page { width: 100%; }
+}
+@media (max-width: 640px) {
+    h1 { font-size: 21px; }
+    .container { padding: 32px 18px 52px; }
+}
 </style>
 </head>
 <body>
@@ -79,6 +174,7 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 
 <h2>1. Six-Tier Evidence Assessment Framework</h2>
 
+<div class="table-scroll">
 <table class="tier-table">
 <tr><th>Tier</th><th>Name</th><th>Definition</th><th>Question Addressed</th></tr>
 <tr><td class="lvl">L1a</td><td>Mechanistic evidence</td><td>In vitro pure-culture metabolic assays, ex vivo tissue or cell-based experiments, and indirect mechanistic evidence from heterologous species within the same genus. <em>Example: in vitro demonstration that P. succinatutens converts succinate to propionate via the methylmalonyl-CoA pathway.</em></td><td>Does this bacterium have the biochemical capacity to perform the claimed function under controlled conditions?</td></tr>
@@ -88,6 +184,7 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 <tr><td class="lvl" style="background:#f0fff4; border-left:3px solid #2e7d32;">L3.5</td><td style="background:#f0fff4;">Transitional validation <span style="font-size:10px;color:#2e7d32;font-weight:600;">[NOVEL TIER]</span></td><td style="background:#f0fff4;">Mono-colonization using <strong>human-derived strains</strong> in a <strong>porcine model</strong>. Deconvolves host-species transfer from strain-origin transfer. <em>Example: gnotobiotic piglet mono-colonized with the human-derived P. succinatutens strain used in the L3 murine study.</em></td><td style="background:#f0fff4;">Does the mechanism transfer across host species?</td></tr>
 <tr><td class="lvl">L4</td><td>Established evidence</td><td>Mono-colonization in <strong>weaned piglets</strong> using a <strong>porcine-derived strain</strong>, with independent replication. For metabolically dependent taxa (e.g., <em>P. succinatutens</em> requiring exogenous succinate), requires demonstration of adequate substrate availability; defined co-colonization with a succinate-producing consortium may supplement mono-colonization designs.</td><td>Does the mechanism operate in the target host under ecologically realistic conditions?</td></tr>
 </table>
+</div>
 
 <div class="callout">
 <strong>Critical epistemological distinction.</strong> Levels 1&ndash;3 address <em>mechanistic plausibility under controlled conditions</em>, whereas Level 4 addresses <em>translational efficacy under ecologically realistic conditions</em>. These are qualitatively different scientific questions, not merely points on a continuum of increasing evidential strength. A candidate that achieves L3 in murine models may fail at L4 not because the mechanism is wrong, but because ecological factors in the porcine gut&mdash;substrate availability, microbial competition, immunological context&mdash;differ fundamentally from the gnotobiotic murine environment.
@@ -131,12 +228,14 @@ p, li { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-
 <p>The framework includes a provisional mechanism for dynamic evidence updating (detailed in Additional File 7). Recognizing that evidence tiers are static snapshots at a single point in time, an <strong>evidence challenge principle</strong> is proposed: any tier assignment may be challenged by new experimental data, and a provisional workflow defines how evidence upgrades and downgrades should be adjudicated. A formal Bayesian belief-updating extension is deferred to future work. This principle ensures the framework remains a living tool rather than a static classification.</p>
 
 <h2>5. Comparator Analysis</h2>
+<div class="table-scroll">
 <table class="tier-table">
 <tr><th>Candidate</th><th>Porcine Evidence</th><th>Murine Evidence</th><th>L3.5</th><th>L4</th><th>Assessment Scope</th></tr>
 <tr><td class="lvl"><em>P. succinatutens</em></td><td>L1b&ndash;L2</td><td>L3</td><td style="color:#e53e3e;">Vacant</td><td style="color:#e53e3e;">Vacant</td><td>Systematic (PRISMA-ScR)</td></tr>
 <tr><td class="lvl"><em>F. prausnitzii</em></td><td>L1b</td><td>L3 (human)</td><td style="color:#e53e3e;">Vacant</td><td style="color:#e53e3e;">Vacant</td><td>Illustrative</td></tr>
 <tr><td class="lvl"><em>Roseburia</em> spp.</td><td>L1b</td><td>L3 (human)</td><td style="color:#e53e3e;">Vacant</td><td style="color:#e53e3e;">Vacant</td><td>Illustrative</td></tr>
 </table>
+</div>
 
 <h2>6. Scope and Limitations</h2>
 <p>The framework has been formally applied to one candidate (<em>P. succinatutens</em>) with two illustrative comparators. Broader validation across a larger panel of candidates is needed to establish generalizability. Tier assignments reflect the highest experimental design type available, not study quality within a tier (a murine mono-colonization study with n = 3 receives the same L3 classification as one with n = 30, though they carry different statistical weight). The framework evaluates functional claims; it does not assess safety, which requires independent toxicological and microbiological evaluation.</p>

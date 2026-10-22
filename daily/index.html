@@ -384,6 +384,123 @@
             .rank-item { padding: 16px; gap: 12px; }
             .rank-no { font-size: 22px; min-width: 22px; }
         }
+
+        /* ==== interaction polish (batch 1) ==== */
+
+        /* 1) unified interaction feedback: 150ms ease-out, subtle press state */
+        a,
+        button,
+        .lang-btn,
+        .side-item,
+        .featured-card,
+        .channel-card {
+            transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+            transition-duration: 150ms;
+            transition-timing-function: ease-out;
+        }
+        a:active { opacity: 0.72; }
+        button:active,
+        .lang-btn:active,
+        .side-item:active,
+        .featured-card:active,
+        .channel-card:active { transform: translateY(1px); }
+
+        /* 2) keyboard-visible focus ring; mouse clicks stay clean */
+        a:focus-visible,
+        button:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        a:focus:not(:focus-visible),
+        button:focus:not(:focus-visible) { outline: none; }
+
+        /* 3) in-page anchors stop clear of the 60px sticky top bar */
+        :target { scroll-margin-top: 76px; }
+        @media (max-width: 700px) { :target { scroll-margin-top: 96px; } }
+
+        /* 4) link underline: hover/focus only, so the resting look is unchanged */
+        p a:hover,
+        p a:focus-visible,
+        li a:hover,
+        li a:focus-visible {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+            text-decoration-skip-ink: auto;
+        }
+
+        /* 5) respect reduced-motion preference (kept last so it wins the cascade) */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+            a:active { opacity: 1; }
+            button:active,
+            .lang-btn:active,
+            .side-item:active,
+            .featured-card:active,
+            .channel-card:active { transform: none; }
+        }
+
+        /* ==== design language (batch 2) ==== */
+
+        /* data page: hairline rules, small caps labels, low-saturation badges */
+        .daily-eyebrow { letter-spacing: 0.08em; }
+        .daily-eyebrow::after {
+            content: "";
+            display: block;
+            width: 34px;
+            height: 2px;
+            background: var(--primary);
+            margin-top: 10px;
+        }
+        .daily-metrics .metric {
+            background: transparent;
+            border: 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 0;
+            padding: 12px 20px 12px 0;
+        }
+        .daily-metrics .m-label {
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .rank-list { gap: 0; border-top: 1px solid #e2e8f0; }
+        .rank-item {
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 0;
+            padding: 16px 0;
+        }
+        .level-badge, .heat-badge, .rate-badge, .node-tag, .rank-link { border-radius: 4px; }
+        .level-badge, .rate-badge {
+            background: rgba(26, 77, 128, 0.1);
+            border-color: rgba(26, 77, 128, 0.18);
+            color: var(--primary-md);
+        }
+        .heat-badge {
+            background: rgba(26, 107, 60, 0.1);
+            border-color: rgba(26, 107, 60, 0.18);
+            color: #1a6b3c;
+        }
+        .level-l4, .level-l3_5 {
+            background: rgba(18, 58, 99, 0.1);
+            border-color: rgba(18, 58, 99, 0.18);
+            color: var(--primary-md);
+        }
+        .level-l2b, .level-l2a, .level-l2 {
+            background: rgba(143, 112, 32, 0.1);
+            border-color: rgba(143, 112, 32, 0.18);
+            color: var(--gold-lt);
+        }
+        .node-tag { background: var(--bg-alt); border-color: #e2e8f0; color: var(--ink-lt); }
+        .rank-source { letter-spacing: 0.08em; }
     </style>
 </head>
 <body>

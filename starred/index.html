@@ -253,6 +253,100 @@
             .starred-main { padding: 8px 16px 32px; }
             .starred-item { padding: 18px 16px; }
         }
+
+        /* ==== interaction polish (batch 1) ==== */
+
+        /* 1) unified interaction feedback: 150ms ease-out, subtle press state */
+        a,
+        button,
+        .lang-btn,
+        .side-item,
+        .featured-card,
+        .channel-card {
+            transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+            transition-duration: 150ms;
+            transition-timing-function: ease-out;
+        }
+        a:active { opacity: 0.72; }
+        button:active,
+        .lang-btn:active,
+        .side-item:active,
+        .featured-card:active,
+        .channel-card:active { transform: translateY(1px); }
+
+        /* 2) keyboard-visible focus ring; mouse clicks stay clean */
+        a:focus-visible,
+        button:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        a:focus:not(:focus-visible),
+        button:focus:not(:focus-visible) { outline: none; }
+
+        /* 3) in-page anchors stop clear of the 60px sticky top bar */
+        :target { scroll-margin-top: 76px; }
+        @media (max-width: 700px) { :target { scroll-margin-top: 96px; } }
+
+        /* 4) link underline: hover/focus only, so the resting look is unchanged */
+        p a:hover,
+        p a:focus-visible,
+        li a:hover,
+        li a:focus-visible {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+            text-decoration-skip-ink: auto;
+        }
+
+        /* 5) respect reduced-motion preference (kept last so it wins the cascade) */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+            a:active { opacity: 1; }
+            button:active,
+            .lang-btn:active,
+            .side-item:active,
+            .featured-card:active,
+            .channel-card:active { transform: none; }
+        }
+
+        /* ==== design language (batch 2) ==== */
+
+        /* list page: hairline separators instead of cards, tabular numbering */
+        .starred-eyebrow { letter-spacing: 0.08em; }
+        .starred-eyebrow::after {
+            content: "";
+            display: block;
+            width: 34px;
+            height: 2px;
+            background: var(--primary);
+            margin-top: 10px;
+        }
+        .starred-list { gap: 0; border-top: 1px solid #e2e8f0; }
+        .starred-item {
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 0;
+            padding: 20px 0;
+        }
+        .starred-no {
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            font-variant-numeric: tabular-nums;
+        }
+        .starred-cite { font-family: var(--font-display); font-size: 15px; line-height: 1.7; }
+        .starred-sum {
+            font-family: var(--font-display);
+            font-size: 13.5px;
+            line-height: 1.75;
+            border-left-color: #e2e8f0;
+        }
+        .starred-links { font-variant-numeric: tabular-nums; }
     </style>
 </head>
 <body>
@@ -301,31 +395,31 @@
                     <div class="starred-no">★ 3</div>
                     <p class="starred-cite">Suo C, et al. &ldquo;Effects of <em>Lactobacillus plantarum</em> ZJ316 on pig growth and pork quality.&rdquo; BMC Veterinary Research, 2012.</p>
                     <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/22731747/" target="_blank" rel="noopener">PMID&nbsp;22731747</a></p>
-                    <p class="starred-sum" data-i18n="star3-sum">&mdash; 150 weaned piglets, 60 days, 1&times;10<sup>9</sup> CFU/d; dose&ndash;response benchmark for <em>L. plantarum</em> feeding trials.</p>
+                    <p class="starred-sum" data-i18n-html="star3-sum">&mdash; 150 weaned piglets, 60 days, 1&times;10<sup>9</sup> CFU/d; dose&ndash;response benchmark for <em>L. plantarum</em> feeding trials.</p>
                 </li>
                 <li class="starred-item">
                     <div class="starred-no">★ 4</div>
                     <p class="starred-cite">Zhang D, Liu H, et al. &ldquo;Fecal microbiota and its correlation with fatty acids and free amino acids metabolism in piglets after a <em>Lactobacillus</em> strain oral administration.&rdquo; Frontiers in Microbiology, 2019.</p>
                     <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/31040835/" target="_blank" rel="noopener">PMID&nbsp;31040835</a></p>
-                    <p class="starred-sum" data-i18n="star4-sum">&mdash; <em>L. reuteri</em> ZLR003 in piglets (V3&ndash;V4 16S); a worked example of microbiota&ndash;SCFA&ndash;serum-metabolite correlation analysis.</p>
+                    <p class="starred-sum" data-i18n-html="star4-sum">&mdash; <em>L. reuteri</em> ZLR003 in piglets (V3&ndash;V4 16S); a worked example of microbiota&ndash;SCFA&ndash;serum-metabolite correlation analysis.</p>
                 </li>
                 <li class="starred-item">
                     <div class="starred-no">★ 5</div>
                     <p class="starred-cite">Yu J, et al. &ldquo;Dietary supplementation with <em>Lactiplantibacillus plantarum</em> P-8 improves the growth performance and gut microbiome of weaned piglets.&rdquo; Microbiology Spectrum, 2024.</p>
                     <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/38169289/" target="_blank" rel="noopener">PMID&nbsp;38169289</a></p>
-                    <p class="starred-sum" data-i18n="star5-sum">&mdash; Recent commercial-strain trial data; current growth-performance and microbiome benchmarks for <em>L. plantarum</em> in piglets.</p>
+                    <p class="starred-sum" data-i18n-html="star5-sum">&mdash; Recent commercial-strain trial data; current growth-performance and microbiome benchmarks for <em>L. plantarum</em> in piglets.</p>
                 </li>
                 <li class="starred-item">
                     <div class="starred-no">★ 6</div>
                     <p class="starred-cite">Kim D, Min Y, et al. &ldquo;Multi-Probiotic <em>Lactobacillus</em> Supplementation Improves Liver Function and Reduces Cholesterol Levels in Jeju Native Pigs.&rdquo; Animals, 2021.</p>
                     <p class="starred-links"><a href="https://pubmed.ncbi.nlm.nih.gov/34438766/" target="_blank" rel="noopener">PMID&nbsp;34438766</a> &middot; <a href="https://doi.org/10.3390/ani11082309" target="_blank" rel="noopener">DOI</a></p>
-                    <p class="starred-sum" data-i18n="star6-sum">&mdash; Three months of multi-probiotic <em>Lactobacillus</em> feeding in local-breed pigs: ALP, GGT and BUN decreased, ALT unchanged, tissue sections normal &mdash; the safety endorsement for <em>Lactobacillus</em> in local pig breeds.</p>
+                    <p class="starred-sum" data-i18n-html="star6-sum">&mdash; Three months of multi-probiotic <em>Lactobacillus</em> feeding in local-breed pigs: ALP, GGT and BUN decreased, ALT unchanged, tissue sections normal &mdash; the safety endorsement for <em>Lactobacillus</em> in local pig breeds.</p>
                 </li>
                 <li class="starred-item">
                     <div class="starred-no">★ 7</div>
                     <p class="starred-cite">Hou CL, Ji HF, Zhou YX. &ldquo;Effects of <em>Lactobacillus plantarum</em> preparations on growth performance and biochemical indices in weaned piglets.&rdquo; (in Chinese). Feed Research, 2011(12): 14&ndash;16.</p>
                     <p class="starred-links"><a href="https://xueshu.baidu.com/s?wd=%E6%A4%8D%E7%89%A9%E4%B9%B3%E6%9D%86%E8%8F%8C%E5%AF%B9%E6%96%AD%E5%A5%B6%E4%BB%94%E7%8C%AA%E7%94%9F%E4%BA%A7%E6%80%A7%E8%83%BD%E5%92%8C%E7%94%9F%E5%8C%96%E6%8C%87%E6%A0%87%E7%9A%84%E5%BD%B1%E5%93%8D" target="_blank" rel="noopener">Baidu Scholar</a></p>
-                    <p class="starred-sum" data-i18n="star7-sum">&mdash; Pig-source <em>L. plantarum</em> in 72 weaned piglets: growth, gut microbiota and serum biochemistry &mdash; domestic safety evidence complementing Kim 2021.</p>
+                    <p class="starred-sum" data-i18n-html="star7-sum">&mdash; Pig-source <em>L. plantarum</em> in 72 weaned piglets: growth, gut microbiota and serum biochemistry &mdash; domestic safety evidence complementing Kim 2021.</p>
                 </li>
             </ul>
             <p class="starred-close" data-i18n="star-close">Selection reflects the Co-Metabolism Evidence Monitor's priorities. Cite from verified records only.</p>
