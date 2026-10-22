@@ -456,6 +456,14 @@
             outline-offset: 2px;
         }
 
+        /* 1c) 360px fix: the column layout uses align-items:flex-start, so .page
+           takes its fit-content (min-content) width and overflows narrow viewports
+           with the longer English strings; pin it to the viewport width instead
+           of clipping or force-breaking words. */
+        @media (max-width: 900px) {
+            .page { width: 100%; }
+        }
+
         /* 2) keyboard-visible focus ring; mouse clicks stay clean */
         a:focus-visible,
         button:focus-visible,

@@ -317,8 +317,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
     min-height: 108px;
     background: var(--bg-alt);
     border: 1px solid var(--border-lt);
-    border-left: 3px solid var(--primary);
     border-radius: var(--radius-sm);
+}
+/* 顶部 28x2px 蓝色短横线：沿用 .section-label::after 的同款母题，替掉原左侧 3px 竖条 */
+.value-item::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 2px;
+    margin: 0 0 12px;
+    background: var(--primary);
 }
 .value-k {
     display: block;
