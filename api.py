@@ -494,7 +494,7 @@ def rag_answer(question: str, chunks: list) -> tuple:
 请基于以上检索片段回答问题。"""
 
     try:
-        response = deepseek_client.chat.completions.create(
+        response = get_deepseek_client().chat.completions.create(
             model="deepseek-chat",
             messages=[
                 {"role": "system", "content": RAG_SYSTEM_PROMPT},
