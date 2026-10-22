@@ -1,48 +1,45 @@
-﻿# Python 铏氭嫙鐜
+# Python 虚拟环境
 venv/
 env/
 .venv/
 
-# Python 缂撳瓨
+# Python 缓存
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# 鐜鍙橀噺锛堚殸锔?鍖呭惈 API Key锛岀粷涓嶈兘鎻愪氦锛?
+# 环境变量（⚠️ 包含 API Key，绝不能提交）
 .env
 .env.local
 .env.*.local
 .env.production
 .env.development
 
-# 鈿狅笍 涓嶆彁浜?.env.example 浠ュ鐨勪换浣?.env 鏂囦欢
-# .env.example 鏄敮涓€鍏佽鎻愪氦鐨勬ā鏉挎枃浠?
+# ⚠️ 不提交 .env.example 以外的任何 .env 文件
+# .env.example 是唯一允许提交的模板文件
 
-# IDE 閰嶇疆
+# IDE 配置
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# 绯荤粺鏂囦欢
+# 系统文件
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# 鏃ュ織
+# 日志
 *.log
 
-# 鍒嗗彂/鎵撳寘
+# 分发/打包
 dist/
 build/
 *.egg-info/
 
-# 浜戝嚱鏁伴儴缃蹭骇鐗╋紙鏈湴鎵撳寘锛屼笉涓婁紶 GitHub锛?
-scf_deploy/
-scf_deploy.zip
-# 鏈湴 SQLite 鏁版嵁搴擄紙杩愯鏃剁敱 accounts 寤鸿〃锛涙祴璇曠敤涓存椂搴撲篃涓€骞跺拷鐣ワ級
+# 本地 SQLite 数据库（运行时由 accounts 建表；测试用临时库也一并忽略）
 *.db
 *.db-journal
 *.db-wal
@@ -50,7 +47,3 @@ scf_deploy.zip
 *.sqlite
 *.sqlite3
 
-
-# 本地密钥，绝不入库
-key/
-*.pem

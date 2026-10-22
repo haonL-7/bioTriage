@@ -94,6 +94,7 @@ userinfo_endpoint     = <ORCID_BASE_URL>/oauth/userinfo     (Bearer)
 | `AI_DAILY_QUOTA_PER_USER` | 否 | `5` | 登录用户每天 `/api/ai_analyze` 次数 |
 | `AI_DAILY_QUOTA_ANON` | 否 | `1` | 匿名每 IP 每天次数 |
 | `SESSION_MAX_AGE` | 否 | `2592000` | 会话有效期（秒），30 天 |
+| `ADMIN_ORCIDS` | 否 | 空（无任何管理员） | 逗号分隔的 ORCID iD 白名单，决定谁能调 `/api/admin/*`；配置步骤与封禁/配额语义见 §14.2 |
 
 **全部缺失时必须能安全启动**（不崩溃）；此时登录端点返回明确错误信息，而不是抛 500 堆积栈。
 
@@ -403,3 +404,216 @@ uvicorn api:app --host 127.0.0.1 --port 8000 --proxy-headers --forwarded-allow-i
   `bt_session`）、Bearer 读写删收藏、伪造 / 过期 / 已撤销 token 的 401 `invalid_token`、CORS 预检，
   以及"不带 Authorization 时 cookie 流程照旧"的回归。
   跑法：`python -m pytest tests/test_bearer_auth.py -q`。
+---
+
+## 14. 管理员功能（ADMIN_ORCIDS 白名单 / 封禁 / 配额覆盖 / 概览）
+
+本节描述**已经落地并经过测试**的行为（实现：`accounts/router.py` 的 `/admin/*` 一组端点 + `accounts/db.py`
+的轻量迁移；测试：`tests/test_admin.py`）。§4 的环境变量表只列变量名与默认值，白名单的配置步骤、
+封禁与配额覆盖的完整语义以本节为准。
+
+### 14.1 谁是管理员：只认环境变量 `ADMIN_ORCIDS`
+
+* 值的语法：**逗号分隔的 ORCID iD 列表**。解析时逐项去前后空格、统一转大写、去重，因此
+  `0000-0002-1694-233x` 与 `0000-0002-1694-233X` 等价，`ADMIN_ORCIDS=" 0009-0008-1764-0908 , "` 也认。
+* **未设置或为空 ⇒ 没有任何管理员**：`admin_orcids()` 返回空列表，任何 `/api/admin/*` 都是 403。
+  这里不存在"没配就默认放行"的兜底分支。
+* 登录者是不是管理员看 `GET /api/auth/me` 新增的布尔字段 `is_admin`。它只是给前端画界面的提示，
+  **真正的门禁在服务端**：每一个 `/api/admin/*` 请求都会重新按当前环境变量判定身份，
+  伪造 `is_admin` 或改前端没有任何用处。
+* 身份只从两处取：`Authorization: Bearer` 或 `bt_session` 会话 cookie；**绝不**从请求体、查询参数、
+  自定义请求头里读身份（否则等于谁写个头谁就是管理员）。
+
+### 14.2 怎么配 `ADMIN_ORCIDS`
+
+本地开发（`.env` 或启动前 export）：
+
+```bash
+# bash / zsh
+export ADMIN_ORCIDS="0009-0008-1764-0908,0000-0002-1694-233X"
+```
+
+```powershell
+# Windows PowerShell（本次测试所在的机器）
+$env:ADMIN_ORCIDS = "0009-0008-1764-0908"
+```
+
+Render（`render.yaml` 的 `envVars`）：加一条 `key: ADMIN_ORCIDS`，建议 `sync: false` 由控制台手填，
+不要把真实 ORCID 名单提交进仓库。
+
+**腾讯云 SCF Web 函数（生产实际环境，见 §11）控制台操作：**
+
+1. 云函数控制台 → 函数管理 → 选中函数 → 「函数配置」→ 「环境变量」→ 编辑；
+2. 新增一行：键 `ADMIN_ORCIDS`，值形如 `0009-0008-1764-0908`（多个用英文逗号分隔，逗号后不要留空格更稳）；
+   其余变量（`DEEPSEEK_API_KEY`、`DATABASE_URL`、`SESSION_SECRET`、`ORCID_*`、`APP_BASE_URL`）保持原样；
+3. 保存。**环境变量改动不会热更新到已经在跑的实例**：Web 函数实例常驻，要等实例回收、
+   或重新发布一个版本、或在控制台「测试」里触发一次冷启动，新值才生效；
+4. 验证：用白名单里的 ORCID 登录，`GET /api/auth/me` 应出现 `is_admin: true`，
+   随后 `GET /api/admin/overview` 应 200。
+
+`tccli` 等价操作（注意 `UpdateFunctionConfiguration` 的 `--Environment` 是**整体替换** Variables，
+必须把其余变量一起带上，否则会被清空）：
+
+```bash
+tccli scf UpdateFunctionConfiguration \
+  --FunctionName <函数名> --Namespace default \
+  --Environment '{"Variables":[
+      {"Key":"DEEPSEEK_API_KEY","Value":"..."},
+      {"Key":"DATABASE_URL","Value":"postgresql://..."},
+      {"Key":"SESSION_SECRET","Value":"..."},
+      {"Key":"ADMIN_ORCIDS","Value":"0009-0008-1764-0908"}
+   ]}'
+```
+
+> SCF 上 SQLite 不可用（§11）：管理员功能依赖 `users` 表，所以这条路必须配外部 Postgres。
+
+**拿不到管理员能力时按顺序查这四条**：① 变量名必须全大写 `ADMIN_ORCIDS`；
+② 当前实例是否还在用旧配置（重新部署 / 等冷启动）；③ 登录的 ORCID 与名单是否逐字符一致
+（`-` 不能少，校验位 X 的大小写无所谓）；④ 库里的 `users` 表有没有 `is_banned`/`quota_limit` 两列
+（没有就是迁移没跑成功，日志里会有一行 `[警告] users 表轻量迁移失败`，多半是数据库账号没有 ALTER 权限）。
+
+### 14.3 数据模型变更与轻量迁移
+
+| 表 | 新增列 | 类型 | 语义 |
+| --- | --- | --- | --- |
+| `users` | `is_banned` | `BOOLEAN NOT NULL DEFAULT false` | 是否封禁 |
+| `users` | `quota_limit` | `INTEGER NULL` | 个人 AI 每日上限；NULL = 用全局默认 `AI_DAILY_QUOTA_PER_USER` |
+
+迁移在启动时随 `ensure_schema()` 执行（`accounts/db.py::migrate_user_columns`）：
+
+* 用 SQLAlchemy `inspect(engine).get_columns("users")` 检查列，**缺哪个补哪个**（`ALTER TABLE users ADD COLUMN ...`）；
+* 列 DDL 由 ORM 定义编译成当前方言（SQLite 得到 `DEFAULT 0`，Postgres 得到 `DEFAULT false`），
+  所以 **SQLite 与 Postgres 都能执行**，且与模型不会各写一份、两边打架；
+* **幂等**：列已存在就跳过；同一进程只跑一次；
+* **失败只打一行警告**，不阻止启动、不碰既有数据——代价是管理员功能不可用，其余功能照常；
+* 不引 Alembic：本地 SQLite + 云函数冷启动的场景下，一条 `ADD COLUMN` 比迁移框架可靠（两列都可空或带默认值，
+  也没有回滚需求）。
+
+证据在 `tests/test_admin.py::test_migration_upgrades_legacy_sqlite_schema_without_losing_data`：
+手工构造"改动前"的库（`users` 只有 `orcid_id/name/created_at` 三列且已有 1 条数据），启动两次，断言两列被补齐、
+`is_banned` 为 `NOT NULL`、`quota_limit` 可空、旧数据与默认值不变、两次启动后的列集合一致。
+
+### 14.4 四个功能（全部要求管理员身份）
+
+未授权的统一响应（未登录、不在白名单、token 失效、已封禁都算未授权）：
+
+```json
+403 {"detail": "需要管理员权限", "auth": "forbidden"}
+```
+
+| 端点 | 作用 | 成功响应 |
+| --- | --- | --- |
+| `GET /api/admin/users?limit=50&offset=0` | 分页列出用户 + 各自今日用量与生效上限 | `{"items": [...], "total": N}` |
+| `PATCH /api/admin/users/{orcid_id}` | 改个人配额 / 封禁与解封 | `{"ok": true, "user": {...}}` |
+| `POST /api/admin/users/{orcid_id}/revoke-tokens` | 撤销该用户全部未撤销 token | `{"ok": true, "revoked": N}` |
+| `GET /api/admin/overview` | 站点概览 | `{"total_users","banned_users","ai_calls_today","admins","now_utc"}` |
+
+**用户条目**（`items[]` 与 PATCH 返回的 `user` 同构）：
+
+```json
+{"orcid_id": "0000-0002-1825-0097", "name": "Josiah Carberry", "created_at": "2024-01-01T00:00:00",
+ "is_banned": false, "quota_limit": null, "used_today": 3, "effective_limit": 5}
+```
+
+* `used_today` = 该用户今日（UTC，计数键 `user:<orcid_id>` + 当天日期）已用 AI 次数，来自 `usage_counters`；
+* `effective_limit` = `quota_limit` 非 NULL 时用它，否则全局默认（见 14.6）；
+* `limit` 按 1..200 截断，`offset` 小于 0 视为 0；`total` 是库内用户总数，**不受 limit 影响**（分页用）。
+
+**PATCH 的 body**：`{"quota_limit": 20 | null, "banned": true | false}`，两个字段都可选，**只改传入的**：
+
+* `quota_limit` 必须是 `null` 或 `1..1000` 的整数，否则 **400**（`0`、`1001`、`true`、@"abc"` 全部 400——
+  注意不是 422：body 按字典解析后自己校验）；
+* `banned` 必须是布尔，否则 400；用户不存在 → 404 `{"detail": "用户不存在"}`。
+
+**revoke-tokens**：撤销该用户所有 `revoked_at IS NULL` 的 token（Pages 用的 Bearer token 就是这张表），
+返回撤销条数；重复调用第二次返回 `revoked: 0`。它不动会话 cookie（cookie 是无状态 HMAC，靠数据库里的
+`is_banned`/用户存在性失效，见 14.5）。
+
+**overview**：`ai_calls_today` 是**全站**今日计数总和（`usage_counters` 当天所有 key 求和，含匿名与登录）；
+`admins` 是白名单解析结果（大写形式，与登录 ORCID 比较时按大写对齐）；`now_utc` 形如 `2025-01-01T00:00:00Z`。
+
+### 14.5 封禁的语义与影响
+
+* **一个事务**：`PATCH banned=true` 在同一次 commit 里把 `is_banned` 置真，并给该用户全部未撤销 token
+  写 `revoked_at`——不存在"人已经封了、旧 token 还能用"的窗口。
+* 封禁后，携带旧 token **或**旧会话 cookie 访问 `/api/auth/me` 与所有 `/api/me/*` →
+  `401 {"detail": "...", "auth": "invalid_token"}`（**不是** 200 + `authenticated:false`）。
+  cookie 也被按"令牌无效"处理，否则浏览器里残留的 cookie 能绕过封禁。
+* 被封禁用户再走登录回调 → `403 {"detail": "账号已被封禁", "auth": "banned"}`，
+  **不签发任何 token / 会话 cookie**（响应里没有 `Set-Cookie: bt_session`，也没有 `#t=` 片段）。
+* 解封（`PATCH banned=false`）后可正常登录；但**旧 token 不会复活**（`revoked_at` 不可逆），
+  用户必须重新登录一次。
+* 影响面仅限于这一个 ORCID 的登录态和它自己的 `/api/me/*`：公开只读接口（`/`、`/api/knowledge_base`、
+  `/api/evaluate*`）照常，匿名配额与其它用户不受影响。
+* **封禁不是删除**：`users`/`stars`/`evaluations` 全部保留，解封即恢复原样；真要删数据只能手工处理。
+
+### 14.6 配额覆盖优先级
+
+个人上限的计算只有一层覆盖（`_user_quota_limit`）：
+
+```text
+effective_limit = users.quota_limit  (非 NULL)
+                = AI_DAILY_QUOTA_PER_USER  (quota_limit 为 NULL，默认 5)
+```
+
+| 场景 | 生效上限 |
+| --- | --- |
+| 没设置 `quota_limit`（默认） | `AI_DAILY_QUOTA_PER_USER`（默认 5） |
+| `quota_limit = 20` | 20 |
+| `quota_limit = null`（PATCH 置空） | 回落到全局默认 |
+| 匿名（未登录） | `AI_DAILY_QUOTA_ANON`（默认 1），不受本功能影响 |
+
+要点：
+
+* 覆盖只改**上限**，不改**已用量**：今天已经用了 3 次，把上限从 5 降到 2，下一次请求立刻 429（`used 3 >= limit 2`），
+  要等 UTC 零点重置；
+* 同一个上限会同时出现在三处：`/api/auth/me` 的 `quota`、`/api/me/quota` 的 `limit`、
+  `/api/ai_analyze` 的 429 错误体（`limit/used/remaining/resets_at`）；
+* 合法区间硬编码 1..1000：想"暂时关掉某人的 AI"请用封禁，而不是把配额设成 0。
+
+### 14.7 为什么管理员判定放在环境变量而不是数据库
+
+1. **鸡生蛋（bootstrap）**：管理员标记若存在库里，就得先有人能写库才能产生第一个管理员；
+   环境变量不依赖任何前置数据。
+2. **权限自举风险**：库里能写 `is_admin`，就说明"能 PATCH 用户的人也能给自己发权限"，
+   而这类人恰恰是最该被审计的。名单放在部署配置里，改它需要控制台/仓库权限，与"改代码"同级。
+3. **默认安全的方向不同**：漏配 `ADMIN_ORCIDS` 的结果是"没有管理员（403）"，失败即关闭；
+   而库里的布尔列一旦漏写默认值/漏迁移，常见后果是"有人意外拿到了管理员"。
+4. **语义归属**：管理员是**运维事实**（"这几个 ORCID 是我"），不是业务数据。换人走配置变更单，
+   在 SCF 控制台或仓库 diff 里天然留痕；不需要为它写端点、写迁移、做权限继承。
+5. **成本最低**：一次读环境变量的字符串比较即可，没有额外查询、没有缓存失效问题。
+
+代价（必须接受，别假装没有）：改名单要改配置并让新实例生效，**不是即时生效**；只有"是/不是管理员"两档，
+没有角色与细粒度授权；环境变量在个别平台会出现在实例描述里，**不要**往这个变量里放密钥以外认为敏感的东西
+（ORCID iD 本身是公开标识，可以接受）。真需要多角色时，再加"角色表 + 环境变量指定初始管理员"的组合，
+而不是把判定整体搬进数据库。
+
+### 14.8 回归测试
+
+`tests/test_admin.py`（13 例，黑盒 `TestClient`，沿用 `tests/conftest.py` 的隔离与 `BT_FAKE_ORCID` 登录）：
+
+```bash
+python -m pytest tests/test_admin.py -q
+# Windows 终端把中文失败信息显示成乱码时，强制 UTF-8 输出：
+PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python -m pytest tests/test_admin.py -q
+```
+
+覆盖清单：
+
+* `ADMIN_ORCIDS` 未设置 → 四个管理员端点全 403；设置了但当前用户不在名单 → 403；未登录 → 403；
+* 白名单解析容忍前后空格与大小写（`0000-0002-1694-233x` 认 `...-233X`）；
+* 列用户 + `used_today`/`effective_limit`/`total` 与 `limit` 分页口径；
+* `PATCH quota_limit=2` → 第 3 次 `/api/ai_analyze` 429（错误体 `limit=2`），置 `null` 后回落默认并恢复可用；
+* 配额非法值 `0 / 1001 / "abc"` → 400，`1000` 边界可用；
+* 封禁 → 旧 token 与旧 cookie 立即 401 `invalid_token`、重新登录回调 403 `auth=banned` 且不下发 cookie、
+  解封后可重新登录，且**封禁前签发的 token 解封后仍然无效**（证明封禁时确实撤销了它，而不是靠 is_banned 临时挡）；
+* 测试自身用 6 个"突变"验证过断言不是摆设（把 used_today 写死 0、让迁移不补列、封禁不撤销 token、
+  封禁不拦 cookie、个人配额覆盖失效、白名单不做大小写归一，六种改动都会让对应用例变红）；
+* `revoke-tokens` 撤销全部 token（含重复调用返回 0）；
+* `overview` 的 `total_users`/`banned_users`/`ai_calls_today`/`admins`/`now_utc`；
+* 回归：非管理员的 `/api/auth/me`（`is_admin:false`）与 `/api/me/*` 行为不变；
+* 轻量迁移（14.3 那条）。
+
+已知局限（如实写明）：迁移用例只跑 SQLite 方言（Postgres 走同一段 inspector + `ALTER TABLE` 代码路径，
+但本机没有可连的 Postgres 实例）；并发封禁/撤销未做压测。环境变量清单方面，`.env.example`、`render.yaml`、
+`deploy/scf/README.md` 与本文档 §4 均已列出 `ADMIN_ORCIDS`。

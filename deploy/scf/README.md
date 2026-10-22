@@ -118,8 +118,12 @@ unzip -l dist/scf-biotriage-py310.zip | head -30
 | `SESSION_MAX_AGE` | 否 | `2592000` | accounts/session.py:26 | 会话有效期（秒） |
 | `AI_DAILY_QUOTA_PER_USER` | 否 | `5` | accounts/router.py:58 | 登录用户每天 AI 分析次数 |
 | `AI_DAILY_QUOTA_ANON` | 否 | `1` | accounts/router.py:59 | 匿名每 IP 每天次数 |
+| `ADMIN_ORCIDS` | 否 | 未设置（= 没有任何管理员） | accounts/router.py:595 | 逗号分隔的 ORCID iD 白名单，容忍前后空格与大小写；`/api/admin/*` 要求命中名单，未授权一律 403；改动后需重新部署/等新实例，详见 docs/ORCID账号系统.md §14 |
 | `BT_TESTING` | **生产禁止设置** | 未设置 | accounts/orcid.py:42 | 测试钩子；设为 `1` 配合下一项可伪造登录 |
 | `BT_FAKE_ORCID` | **生产禁止设置** | 未设置 | accounts/orcid.py:44 | 测试用假 profile |
+
+> ⚠️ 在腾讯云控制台改环境变量是**整体替换** Variables：保存前把其它变量（尤其 `DEEPSEEK_API_KEY` / `DATABASE_URL` /
+> `SESSION_SECRET`）一起带上；用 `tccli scf UpdateFunctionConfiguration --Environment` 时同理，否则会把它们清空。
 
 另需在 ORCID 开发者后台把 Redirect URI 登记为 `APP_BASE_URL + /api/auth/callback`
 （本函数即 `https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/callback`），逐字符匹配。
@@ -184,6 +188,7 @@ unzip -l dist/scf-biotriage-py310.zip | head -30
 | 所有匿名用户共用 1 次额度 | 前置代理终结 TLS，没开 `--proxy-headers` | 本目录 scf_bootstrap 已内置（原理见 docs/ORCID账号系统.md §10） |
 | 数据重启就没了 | 用了 SQLite | 换外部 Postgres（第 5 节） |
 | 启动即 ModuleNotFoundError: exceptiongroup（其它本不该缺的包同理） | pip 的 --python-version 不改变环境标记解析，python_version < 3.11 这类条件依赖被静默跳过 | 见 **第 10 节**（补丁依赖 + 打包后依赖审计） |
+| 打包时 `ERROR: Could not find a version that satisfies the requirement fastapi>=0.104.0 (from versions: none)` | pip 一个 wheel 都下载不到：本机到 PyPI 不可达/超时（多数情况），或该版本没有目标平台的 wheel | 见下面 **8.2**：先 `curl pypi.org/simple/<包名>/` 分开因，确认不可达再换镜像 |
 
 ---
 
@@ -238,6 +243,77 @@ SyntaxError: future feature annotations is not defined
   脚本会立刻报错退出，**不会**偷偷换用别的解释器 —— 这样"我明明指定了却没生效"不会发生。
 
 **别搞错方向**：这个错不是"包打坏了"，重打包解决不了；先确认运行时版本，再确认包是用 `-PythonVersion 3.10` 打的。
+
+---
+
+### 8.2 打包时 Could not find a version that satisfies the requirement ...（from versions: none）—— PyPI 不可达
+
+`build-zip.ps1` 在交叉安装阶段报（原文，两条一起出现）：
+
+~~~text
+ERROR: Could not find a version that satisfies the requirement fastapi>=0.104.0 (from versions: none)
+ERROR: No matching distribution found for fastapi>=0.104.0
+~~~
+
+脚本此时的行为是**正确的**：报错即中止、不产出 zip（不会给你一个缺依赖的包）。问题出在下载源，不在脚本。
+
+**先分成因，再动手**（两种成因的处理完全不同）：
+
+| 成因 | 判据 | 处理 |
+| --- | --- | --- |
+| 这台机器到 `pypi.org` 不可达 / 超时 | `curl -sS -o /dev/null --max-time 20 -w '%{http_code} %{time_total}s\n' https://pypi.org/simple/fastapi/` 重试 2~3 次都拿到 `000` 或几十秒超时 | 换镜像（本节办法） |
+| 该版本确实没有目标平台的 wheel | 同一 curl 返回 `200`，但仍然匹配不到 | 换版本，或自己提供 manylinux wheel；换镜像没用 |
+
+本次故障现场的实测对照：
+
+~~~text
+https://pypi.org/simple/fastapi/                  -> 000（20s 超时，不可达）
+https://pypi.tuna.tsinghua.edu.cn/simple/fastapi/ -> 200（3s，可用）
+https://mirrors.aliyun.com/pypi/simple/fastapi/   -> 000（超时）
+~~~
+
+> 可达性会波动：写这份文档时同一组 curl 又出现过 `pypi.org -> 200`。所以判据是「重试 2~3 次仍失败」，
+> 而不是一次结果。
+
+**解决办法：在跑打包脚本的那个终端里设环境变量，不要改脚本**。镜像地址是这台机器的网络现实，不属于仓库；
+写进脚本会让别人的构建也绑死同一个镜像。
+
+PowerShell：
+
+~~~powershell
+$env:PIP_INDEX_URL    = "https://pypi.tuna.tsinghua.edu.cn/simple"
+$env:PIP_TRUSTED_HOST = "pypi.tuna.tsinghua.edu.cn"
+pwsh -File deploy/scf/build-zip.ps1 -PythonVersion 3.10
+~~~
+
+bash / WSL / Git Bash：
+
+~~~bash
+export PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+export PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/scf/build-zip.ps1 -PythonVersion 3.10
+~~~
+
+> `PIP_INDEX_URL` 对进程内所有 pip 调用生效（脚本里的 `pip install --target ... --platform ... --only-binary` 也是 pip），
+> 设一次就够，不必逐个命令补 `-i`。
+
+同一条命令带镜像后成功（本次实测：74 秒，退出码 0），末尾原文：
+
+~~~text
+[scf] 依赖审计通过：检查 36 个包，条件依赖 146 条，缺失 0（目标 Python 3.10，其中成立 6 条）
+[scf] 完成：...\dist\scf-biotriage-py310.zip
+[scf] 条目 3463 个，体积 21.36 MB
+[scf] 下一步：控制台上传 zip，并配置环境变量（清单见 deploy/scf/README.md）
+~~~
+
+（另用标准库 `zipfile` 独立核对这个 zip：3463 个条目、21.36 MB、含 `accounts/router.py`。）
+
+**换镜像不会改变 wheel 的平台标签**：`--platform manylinux*_x86_64` 与 `--only-binary=:all:` 都没动，
+换的只是下载源，进 `pkg/` 的仍是 manylinux 轮子。但这**不是**跳过冒烟的理由——上传后仍按第 2 节发布，
+并实际打一次 `/api/auth/me`（顺手看一眼 `/api/admin/overview`）。
+
+**镜像可能同步滞后**：刚发布的版本镜像上可能还没同步（表现同样是 `from versions: none`，但 curl 是 `200`）。
+这时先等同步，或临时切回官方源：`$env:PIP_INDEX_URL = "https://pypi.org/simple"`。
 
 ---
 

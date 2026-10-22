@@ -1,7 +1,7 @@
 """账户系统 ORM 模型：users / stars / evaluations / usage_counters。"""
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Integer, String, Text, UniqueConstraint
+from sqlalchemy import Boolean, DateTime, Integer, String, Text, UniqueConstraint, false
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .db import Base
@@ -17,6 +17,17 @@ class User(Base):
     orcid_id: Mapped[str] = mapped_column(String(64), primary_key=True)
     name: Mapped[str] = mapped_column(String(255), default="")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    # 管理员能力：封禁标记 + 个人配额覆盖（NULL = 用全局默认 AI_DAILY_QUOTA_PER_USER）
+    is_banned: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default=false())
+    quota_limit: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+
+# 旧库的 users 表没有这两列：db.migrate_user_columns() 依赖这份定义生成 ALTER TABLE 的列 DDL，
+# 与模型同源，避免迁移用的类型/默认值和 ORM 漂移。
+USER_ADDED_COLUMNS = {
+    "is_banned": User.__table__.c.is_banned,
+    "quota_limit": User.__table__.c.quota_limit,
+}
 
 
 class Star(Base):

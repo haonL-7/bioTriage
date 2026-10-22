@@ -11,10 +11,10 @@ import secrets
 import time
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, Request, Response
+from fastapi import APIRouter, Body, Depends, Query, Request, Response
 from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel
-from sqlalchemy import select
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from . import orcid, session
@@ -25,6 +25,9 @@ router = APIRouter(prefix="/api")
 
 DEFAULT_QUOTA_ANON = 1
 DEFAULT_QUOTA_PER_USER = 5
+# 管理员 PATCH quota_limit 的合法区间（NULL 表示回退全局默认）
+QUOTA_LIMIT_MIN = 1
+QUOTA_LIMIT_MAX = 1000
 STAR_LIST_LIMIT = 200
 EVALUATION_LIST_LIMIT = 50
 
@@ -59,9 +62,17 @@ def _resets_at() -> str:
     return f"{tomorrow.isoformat()}T00:00:00Z"
 
 
+def _user_quota_limit(user: User) -> int:
+    """个人上限：users.quota_limit 非 NULL 时覆盖全局默认（AI_DAILY_QUOTA_PER_USER）。"""
+    limit = getattr(user, "quota_limit", None)
+    if limit is not None:
+        return int(limit)
+    return _int_env("AI_DAILY_QUOTA_PER_USER", DEFAULT_QUOTA_PER_USER)
+
+
 def _quota_identity(request: Request, user: User | None) -> tuple[str, str, int]:
     if user is not None:
-        return f"{TIER_USER}:{user.orcid_id}", TIER_USER, _int_env("AI_DAILY_QUOTA_PER_USER", DEFAULT_QUOTA_PER_USER)
+        return f"{TIER_USER}:{user.orcid_id}", TIER_USER, _user_quota_limit(user)
     return f"{TIER_ANON}:{_client_ip(request)}", TIER_ANON, _int_env("AI_DAILY_QUOTA_ANON", DEFAULT_QUOTA_ANON)
 
 
@@ -133,15 +144,21 @@ def reserve_ai_quota(db: Session | None, request: Request) -> tuple[User | None,
 
 # ==================== 会话 ====================
 
+def _is_banned(user: User | None) -> bool:
+    """封禁用户一律按"无身份"处理（管理员能力、配额、/api/me/* 全部随之失效）。"""
+    return bool(user is not None and getattr(user, "is_banned", False))
+
+
 def _user_from_bearer(db: Session, token: str) -> User | None:
-    """按 sha256(token) 查表：已撤销/已过期/用户已删除一律视为未登录。"""
+    """按 sha256(token) 查表：已撤销/已过期/用户已删除/已封禁一律视为未登录。"""
     digest = session.hash_token(token)
     row = db.scalar(select(AuthToken).where(AuthToken.token_hash == digest))
     if row is None or not session.token_matches(row.token_hash, token):
         return None
     if row.revoked_at is not None or session.token_expired(row.expires_at):
         return None
-    return db.get(User, row.user_orcid)
+    user = db.get(User, row.user_orcid)
+    return None if _is_banned(user) else user
 
 
 def resolve_user(request: Request, db: Session) -> tuple[User | None, bool]:
@@ -157,7 +174,11 @@ def resolve_user(request: Request, db: Session) -> tuple[User | None, bool]:
     orcid_id = session.read_session_token(request.cookies.get(session.COOKIE_NAME))
     if not orcid_id:
         return None, False
-    return db.get(User, orcid_id), False
+    user = db.get(User, orcid_id)
+    if _is_banned(user):
+        # 封禁后 cookie 会话同样按"令牌无效"处理，避免封禁被浏览器残留 cookie 绕过
+        return None, True
+    return user, False
 
 
 def load_user(request: Request, db: Session) -> User | None:
@@ -371,6 +392,11 @@ async def auth_callback(
             raise RuntimeError(f"写入用户失败（{type(exc).__name__}）") from exc
         _log_auth_step(step, True, started)
 
+        # 封禁用户不得再拿到任何凭据：既不签 Bearer，也不下发会话 cookie
+        if _is_banned(user):
+            print("[auth] step=ban_check ok=0 banned=1")
+            return JSONResponse(status_code=403, content={"detail": "账号已被封禁", "auth": "banned"})
+
         step = "session"
         started = time.perf_counter()
         if pages:
@@ -420,6 +446,7 @@ async def auth_me(request: Request, db: Session = Depends(get_db)):
         return _unauthorized(True)
     return {
         "authenticated": user is not None,
+        "is_admin": is_admin(user),
         "user": _public_user(user) if user is not None else None,
         "quota": describe_quota(db, request, user),
     }
@@ -552,3 +579,176 @@ async def list_evaluations(request: Request, db: Session = Depends(get_db)):
         .limit(EVALUATION_LIST_LIMIT)
     ).all()
     return {"items": [_public_evaluation(row) for row in rows]}
+
+
+# ==================== 管理员 ====================
+# 身份只认两处：ADMIN_ORCIDS 白名单 + 已认证会话（Bearer / bt_session）。
+# 绝不从请求体、查询参数或自定义请求头读取身份。
+
+
+def admin_orcids() -> list[str]:
+    """ADMIN_ORCIDS：逗号分隔的 ORCID iD 白名单，容忍前后空格与大小写。
+
+    未设置或为空 => 返回空列表，即没有任何管理员（绝不默认放行任何人）。
+    """
+    seen: list[str] = []
+    for part in (os.getenv("ADMIN_ORCIDS") or "").split(","):
+        value = part.strip().upper()
+        if value and value not in seen:
+            seen.append(value)
+    return seen
+
+
+def is_admin(user: User | None) -> bool:
+    if user is None or not user.orcid_id:
+        return False
+    return user.orcid_id.strip().upper() in admin_orcids()
+
+
+def _admin_forbidden() -> JSONResponse:
+    return JSONResponse(status_code=403, content={"detail": "需要管理员权限", "auth": "forbidden"})
+
+
+def _admin_gate(request: Request, db: Session) -> JSONResponse | None:
+    """管理员身份校验：未登录、令牌失效、已封禁、非白名单一律 403（JSON，不带堆栈）。"""
+    user, _invalid_token = resolve_user(request, db)
+    return None if is_admin(user) else _admin_forbidden()
+
+
+def _bad_admin_request(detail: str) -> JSONResponse:
+    return JSONResponse(status_code=400, content={"detail": detail})
+
+
+def _admin_user_item(db: Session, user: User) -> dict:
+    """管理员用户项：封禁态、配额覆盖、今日用量与实际生效上限。"""
+    return {
+        "orcid_id": user.orcid_id,
+        "name": user.name or "",
+        "created_at": user.created_at.isoformat() if user.created_at else None,
+        "is_banned": bool(user.is_banned),
+        "quota_limit": user.quota_limit,
+        "used_today": _usage(db, f"{TIER_USER}:{user.orcid_id}", _current_day()),
+        "effective_limit": _user_quota_limit(user),
+    }
+
+
+def _revoke_user_tokens(db: Session, orcid_id: str) -> int:
+    """撤销该用户全部未撤销 token（不 commit，由调用方与封禁放进同一事务）。"""
+    result = db.execute(
+        update(AuthToken)
+        .where(AuthToken.user_orcid == orcid_id, AuthToken.revoked_at.is_(None))
+        .values(revoked_at=utcnow())
+    )
+    return int(result.rowcount or 0)
+
+
+def _admin_patch_changes(payload: dict) -> tuple[dict, JSONResponse | None]:
+    """归一化 PATCH body：只处理 body 里真的出现的字段；非法取值返回 400。"""
+    changes: dict = {}
+    if "quota_limit" in payload:
+        value = payload["quota_limit"]
+        if value is None:
+            changes["quota_limit"] = None
+        elif (
+            isinstance(value, bool)
+            or not isinstance(value, int)
+            or not (QUOTA_LIMIT_MIN <= value <= QUOTA_LIMIT_MAX)
+        ):
+            return {}, _bad_admin_request(
+                f"quota_limit 必须为 null 或 {QUOTA_LIMIT_MIN}-{QUOTA_LIMIT_MAX} 的整数"
+            )
+        else:
+            changes["quota_limit"] = value
+    if "banned" in payload:
+        value = payload["banned"]
+        if not isinstance(value, bool):
+            return {}, _bad_admin_request("banned 必须为布尔值")
+        changes["banned"] = value
+    return changes, None
+
+
+@router.get("/admin/users")
+@account_db_guard(503, DB_DOWN_NEEDS_WRITE)
+async def admin_list_users(
+    request: Request,
+    limit: int = Query(50, description="每页条数（按 1-200 截断）"),
+    offset: int = Query(0, description="跳过条数"),
+    db: Session = Depends(get_db),
+):
+    denied = _admin_gate(request, db)
+    if denied is not None:
+        return denied
+    size = max(1, min(int(limit), 200))
+    start = max(0, int(offset))
+    total = int(db.scalar(select(func.count()).select_from(User)) or 0)
+    rows = db.scalars(
+        select(User).order_by(User.created_at.asc(), User.orcid_id.asc()).offset(start).limit(size)
+    ).all()
+    return {"items": [_admin_user_item(db, user) for user in rows], "total": total}
+
+
+@router.patch("/admin/users/{orcid_id}")
+@account_db_guard(503, DB_DOWN_NEEDS_WRITE)
+async def admin_update_user(
+    orcid_id: str,
+    request: Request,
+    payload: dict | None = Body(default=None),
+    db: Session = Depends(get_db),
+):
+    denied = _admin_gate(request, db)
+    if denied is not None:
+        return denied
+    user = db.get(User, (orcid_id or "").strip())
+    if user is None:
+        return JSONResponse(status_code=404, content={"detail": "用户不存在"})
+    changes, error = _admin_patch_changes(payload if isinstance(payload, dict) else {})
+    if error is not None:
+        return error
+    if "quota_limit" in changes:
+        user.quota_limit = changes["quota_limit"]
+    if "banned" in changes:
+        user.is_banned = changes["banned"]
+        if changes["banned"]:
+            # 封禁与撤销令牌同一事务：下方一次 commit 同时生效
+            _revoke_user_tokens(db, user.orcid_id)
+    db.commit()
+    return {"ok": True, "user": _admin_user_item(db, user)}
+
+
+@router.post("/admin/users/{orcid_id}/revoke-tokens")
+@account_db_guard(503, DB_DOWN_NEEDS_WRITE)
+async def admin_revoke_user_tokens(orcid_id: str, request: Request, db: Session = Depends(get_db)):
+    denied = _admin_gate(request, db)
+    if denied is not None:
+        return denied
+    user = db.get(User, (orcid_id or "").strip())
+    if user is None:
+        return JSONResponse(status_code=404, content={"detail": "用户不存在"})
+    revoked = _revoke_user_tokens(db, user.orcid_id)
+    db.commit()
+    return {"ok": True, "revoked": revoked}
+
+
+@router.get("/admin/overview")
+@account_db_guard(503, DB_DOWN_NEEDS_WRITE)
+async def admin_overview(request: Request, db: Session = Depends(get_db)):
+    denied = _admin_gate(request, db)
+    if denied is not None:
+        return denied
+    total_users = int(db.scalar(select(func.count()).select_from(User)) or 0)
+    banned_users = int(
+        db.scalar(select(func.count()).select_from(User).where(User.is_banned.is_(True))) or 0
+    )
+    ai_calls_today = int(
+        db.scalar(
+            select(func.coalesce(func.sum(UsageCounter.count), 0)).where(UsageCounter.day == _current_day())
+        )
+        or 0
+    )
+    return {
+        "total_users": total_users,
+        "banned_users": banned_users,
+        "ai_calls_today": ai_calls_today,
+        "admins": admin_orcids(),
+        "now_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }

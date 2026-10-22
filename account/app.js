@@ -30,6 +30,7 @@
     var GENERIC_FAIL_TEXT = "账户信息读取失败，请稍后刷新重试。";
 
     var currentToken = "";
+    var accountOrcid = "";
     var loadingHintTimer = null;
     var watchdogTimer = null;
 
@@ -305,6 +306,7 @@
     /* ---------------- 视图切换 ---------------- */
     function showGuest(note) {
         hideLoading();
+        unmountAdmin();
         var authed = byId("authedBox");
         if (authed) authed.hidden = true;
         var guest = byId("guestBox");
@@ -330,6 +332,7 @@
     function renderUser(user) {
         var orcid = pick(user, ["orcid", "orcid_id", "orcidId", "orcid_uri"]);
         var name = pick(user, ["name", "display_name", "displayName", "full_name"]);
+        accountOrcid = orcid ? String(orcid) : "";
         if (byId("orcidText")) byId("orcidText").textContent = orcid ? String(orcid) : "未提供";
         if (byId("nameText")) byId("nameText").textContent = name ? String(name) : "未提供";
     }
@@ -574,6 +577,449 @@
         });
     }
 
+    /* ---------------- 管理员（仅 is_admin 为 true 时挂载 DOM） ---------------- */
+    var ADMIN_ENDPOINTS = {
+        overview: API_BASE + "/api/admin/overview",
+        users: API_BASE + "/api/admin/users"
+    };
+    var ADMIN_PAGE_SIZE = 50;
+    var QUOTA_MIN = 1;
+    var QUOTA_MAX = 1000;
+    var adminRows = [];
+    var adminTotal = 0;
+
+    function makeEl(tag, cls, text) {
+        var el = document.createElement(tag);
+        if (cls) el.className = cls;
+        if (text !== undefined && text !== null) el.textContent = String(text);
+        return el;
+    }
+
+    function makeBtn(cls, label, onClick) {
+        var btn = makeEl("button", cls, label);
+        btn.type = "button";
+        btn.addEventListener("click", onClick);
+        return btn;
+    }
+
+    function adminFigure(id, label) {
+        var box = makeEl("div", "quota-item");
+        var val = makeEl("div", "quota-val", "—");
+        val.id = id;
+        box.appendChild(val);
+        box.appendChild(makeEl("div", "quota-label", label));
+        return box;
+    }
+
+    function setFigure(id, value) {
+        var el = byId(id);
+        if (el) el.textContent = (value === null || value === undefined) ? "—" : String(value);
+    }
+
+    function mergeInto(base, extra) {
+        var target = (base && typeof base === "object") ? base : {};
+        if (!extra || typeof extra !== "object") return target;
+        for (var key in extra) {
+            if (Object.prototype.hasOwnProperty.call(extra, key)) target[key] = extra[key];
+        }
+        return target;
+    }
+
+    // 非管理员 / 凭据失效：整块从 DOM 移除，不留 display:none 的空壳
+    function unmountAdmin() {
+        var wrap = byId("adminWrap");
+        if (wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
+        adminRows = [];
+        adminTotal = 0;
+    }
+
+    function mountAdmin() {
+        if (byId("adminWrap")) return byId("adminWrap");
+        var host = byId("authedBox");
+        if (!host) return null;
+
+        var wrap = makeEl("div", "admin-wrap");
+        wrap.id = "adminWrap";
+
+        // 概览
+        var overviewCard = makeEl("section", "card");
+        overviewCard.appendChild(makeEl("div", "card-header", "管理员 · 概览"));
+        var overviewBody = makeEl("div", "card-body");
+        var figures = makeEl("div", "quota-figures");
+        figures.appendChild(adminFigure("adminTotalUsers", "总用户"));
+        figures.appendChild(adminFigure("adminBannedUsers", "封禁用户"));
+        figures.appendChild(adminFigure("adminAiToday", "今日 AI 调用"));
+        overviewBody.appendChild(figures);
+        var overviewMeta = makeEl("p", "quota-meta", "正在读取概览…");
+        overviewMeta.id = "adminOverviewMeta";
+        overviewBody.appendChild(overviewMeta);
+        overviewCard.appendChild(overviewBody);
+        wrap.appendChild(overviewCard);
+
+        // 用户管理
+        var usersCard = makeEl("section", "card");
+        var usersHeader = makeEl("div", "card-header");
+        usersHeader.appendChild(makeEl("span", "", "用户管理"));
+        var countEl = makeEl("span", "count");
+        countEl.id = "adminUserCount";
+        usersHeader.appendChild(countEl);
+        var reloadBtn = makeBtn("btn btn-ghost btn-sm admin-header-btn", "刷新", function () {
+            loadAdminOverview();
+            loadAdminUsers(true);
+        });
+        usersHeader.appendChild(reloadBtn);
+        usersCard.appendChild(usersHeader);
+
+        var usersBody = makeEl("div", "card-body");
+        var statusEl = makeEl("p", "empty", "正在读取用户列表…");
+        statusEl.id = "adminStatus";
+        usersBody.appendChild(statusEl);
+        var list = makeEl("ul", "item-list admin-user-list");
+        list.id = "adminUserList";
+        usersBody.appendChild(list);
+        var errorEl = makeEl("p", "inline-error");
+        errorEl.id = "adminUserError";
+        errorEl.hidden = true;
+        usersBody.appendChild(errorEl);
+        var moreBtn = makeBtn("btn btn-ghost btn-sm admin-more", "载入更多", function () {
+            loadAdminUsers(false);
+        });
+        moreBtn.id = "adminMore";
+        moreBtn.hidden = true;
+        usersBody.appendChild(moreBtn);
+        usersCard.appendChild(usersBody);
+        wrap.appendChild(usersCard);
+
+        host.appendChild(wrap);
+        return wrap;
+    }
+
+    function adminUserUrl(orcid) {
+        return ADMIN_ENDPOINTS.users + "/" + encodeURIComponent(orcid);
+    }
+
+    function rowNote(row, message, ok) {
+        var text = message ? String(message) : "";
+        row.note.textContent = text;
+        row.note.hidden = !text;
+        row.note.className = "admin-note" + (text ? (ok ? " is-ok" : " is-err") : "");
+    }
+
+    function setRowBusy(row, busy) {
+        row.busy = busy;
+        var disabled = busy || !row.orcid;
+        for (var i = 0; i < row.buttons.length; i++) {
+            row.buttons[i].disabled = disabled;
+        }
+        if (row.input) row.input.disabled = disabled;
+    }
+
+    function refreshRow(row) {
+        var data = row.data || {};
+        var banned = data.is_banned === true || data.banned === true;
+        var used = num(data.used_today);
+        var custom = num(data.quota_limit);
+        var effective = num(data.effective_limit);
+        if (effective === null && custom !== null) effective = custom;
+
+        row.node.className = "item admin-user" + (banned ? " is-banned" : "");
+        row.badge.textContent = banned ? "已封禁" : "正常";
+        row.badge.className = "badge admin-badge " + (banned ? "admin-badge-danger" : "admin-badge-ok");
+        row.metaUsage.textContent = "今日已用 " + (used === null ? "—" : String(used)) +
+            " / " + (effective === null ? "—" : String(effective)) +
+            " · 配额" + (custom === null ? "默认" : "自定义");
+        row.input.value = custom === null ? "" : String(custom);
+        row.input.placeholder = effective === null ? "默认" : "默认 " + effective;
+        row.banBtn.textContent = banned ? "解封" : "封禁";
+        row.banBtn.className = "btn btn-sm " + (banned ? "btn-ghost" : "btn-danger-ghost");
+    }
+
+    function adminUserRow(item) {
+        var data = (item && typeof item === "object") ? item : {};
+        var orcid = String(pick(data, ["orcid_id", "orcid", "orcidId"]) || "");
+        var name = pick(data, ["name", "display_name"]);
+        var created = fmtDate(pick(data, ["created_at", "createdAt"]));
+
+        var node = makeEl("li", "item admin-user");
+        var head = makeEl("div", "admin-user-head");
+        head.appendChild(makeEl("div", "item-title", name ? String(name) : "（未填写姓名）"));
+        var badge = makeEl("span", "badge admin-badge");
+        head.appendChild(badge);
+        node.appendChild(head);
+
+        node.appendChild(makeEl("p", "item-meta admin-orcid", "ORCID " + (orcid || "—")));
+        node.appendChild(makeEl("p", "item-meta", "注册时间 " + (created || "—")));
+        var metaUsage = makeEl("p", "item-meta");
+        node.appendChild(metaUsage);
+
+        var quotaRow = makeEl("div", "admin-quota");
+        quotaRow.appendChild(makeEl("span", "admin-quota-label", "每日配额"));
+        var input = document.createElement("input");
+        input.type = "number";
+        input.className = "admin-quota-input";
+        input.setAttribute("min", String(QUOTA_MIN));
+        input.setAttribute("max", String(QUOTA_MAX));
+        input.setAttribute("step", "1");
+        input.setAttribute("inputmode", "numeric");
+        quotaRow.appendChild(input);
+
+        var note = makeEl("p", "admin-note");
+        note.hidden = true;
+
+        var row = {
+            orcid: orcid,
+            data: data,
+            node: node,
+            badge: badge,
+            metaUsage: metaUsage,
+            input: input,
+            note: note,
+            busy: false,
+            buttons: []
+        };
+
+        var saveBtn = makeBtn("btn btn-ghost btn-sm", "保存", function () { saveQuota(row, false); });
+        var resetBtn = makeBtn("btn btn-ghost btn-sm", "恢复默认", function () { saveQuota(row, true); });
+        quotaRow.appendChild(saveBtn);
+        quotaRow.appendChild(resetBtn);
+        node.appendChild(quotaRow);
+
+        var actions = makeEl("div", "admin-actions");
+        var banBtn = makeBtn("btn btn-sm", "封禁", function () { toggleBan(row); });
+        var revokeBtn = makeBtn("btn btn-ghost btn-sm", "撤销会话", function () { revokeTokens(row); });
+        actions.appendChild(banBtn);
+        actions.appendChild(revokeBtn);
+        node.appendChild(actions);
+        node.appendChild(note);
+
+        row.banBtn = banBtn;
+        row.buttons = [saveBtn, resetBtn, banBtn, revokeBtn];
+
+        refreshRow(row);
+        setRowBusy(row, false);
+        return row;
+    }
+
+    // 返回 null 表示格式非法；空串也视为非法（“恢复默认”走另一个按钮）
+    function readQuotaInput(raw) {
+        var text = String(raw === null || raw === undefined ? "" : raw).replace(/^\s+|\s+$/g, "");
+        if (!/^[0-9]+$/.test(text)) return null;
+        var n = parseInt(text, 10);
+        if (!(n >= QUOTA_MIN && n <= QUOTA_MAX)) return null;
+        return n;
+    }
+
+    function saveQuota(row, useDefault) {
+        if (row.busy || !row.orcid) return;
+
+        var payload = {};
+        if (useDefault) {
+            payload.quota_limit = null;
+        } else {
+            var n = readQuotaInput(row.input.value);
+            if (n === null) {
+                rowNote(row, "配额需为 " + QUOTA_MIN + "–" + QUOTA_MAX + " 的整数；想回到全局默认请点“恢复默认”。", false);
+                return;
+            }
+            payload.quota_limit = n;
+        }
+
+        rowNote(row, "");
+        setRowBusy(row, true);
+        request(adminUserUrl(row.orcid), { method: "PATCH", body: JSON.stringify(payload) }).then(function (res) {
+            setRowBusy(row, false);
+            if (res.ok) {
+                var updated = res.data && res.data.user;
+                if (updated && typeof updated === "object") {
+                    row.data = mergeInto(row.data, updated);
+                } else {
+                    row.data.quota_limit = payload.quota_limit;
+                    if (payload.quota_limit !== null) row.data.effective_limit = payload.quota_limit;
+                }
+                refreshRow(row);
+                rowNote(row, useDefault ? "已恢复全局默认配额。" : "配额已保存。", true);
+                return;
+            }
+            if (res.kind === "unauth") {
+                unmountAdmin();
+                handleUnauth();
+                return;
+            }
+            if (res.status === 403) {
+                unmountAdmin();
+                return;
+            }
+            if (res.status === 400) {
+                rowNote(row, "保存失败：配额需为 " + QUOTA_MIN + "–" + QUOTA_MAX + " 的整数。", false);
+                return;
+            }
+            rowNote(row, retryText(res, "保存失败"), false);
+        });
+    }
+
+    function toggleBan(row) {
+        if (row.busy || !row.orcid) return;
+        var banned = row.data.is_banned === true || row.data.banned === true;
+        var who = row.orcid + (row.data.name ? "（" + row.data.name + "）" : "");
+        var ask = banned
+            ? "确定要解封 " + who + " 吗？解封后该账号可重新登录。"
+            : "确定要封禁 " + who + " 吗？\n封禁会同时撤销该用户的全部登录会话，之后无法登录。";
+        if (row.orcid === accountOrcid && !banned) {
+            ask += "\n注意：这是你自己的账号，封禁后你会立即失去访问权限。";
+        }
+        if (!window.confirm(ask)) return;
+
+        rowNote(row, "");
+        setRowBusy(row, true);
+        request(adminUserUrl(row.orcid), {
+            method: "PATCH",
+            body: JSON.stringify({ banned: !banned })
+        }).then(function (res) {
+            setRowBusy(row, false);
+            if (res.ok) {
+                var updated = res.data && res.data.user;
+                if (updated && typeof updated === "object") row.data = mergeInto(row.data, updated);
+                if (row.data.is_banned !== true && row.data.banned !== true) row.data.is_banned = !banned;
+                refreshRow(row);
+                rowNote(row, banned ? "已解封。" : "已封禁，并撤销该用户全部会话。", true);
+                return;
+            }
+            if (res.kind === "unauth") {
+                unmountAdmin();
+                handleUnauth();
+                return;
+            }
+            if (res.status === 403) {
+                unmountAdmin();
+                return;
+            }
+            rowNote(row, retryText(res, banned ? "解封失败" : "封禁失败"), false);
+        });
+    }
+
+    function revokeTokens(row) {
+        if (row.busy || !row.orcid) return;
+        var who = row.orcid + (row.data.name ? "（" + row.data.name + "）" : "");
+        if (!window.confirm("确定要撤销 " + who + " 的全部登录会话吗？对方需要重新登录。")) return;
+
+        rowNote(row, "");
+        setRowBusy(row, true);
+        request(adminUserUrl(row.orcid) + "/revoke-tokens", { method: "POST" }).then(function (res) {
+            setRowBusy(row, false);
+            if (res.ok) {
+                var revoked = num(res.data ? res.data.revoked : null);
+                rowNote(row, revoked === null ? "已撤销该用户的全部会话。" : "已撤销 " + revoked + " 个会话。", true);
+                return;
+            }
+            if (res.kind === "unauth") {
+                unmountAdmin();
+                handleUnauth();
+                return;
+            }
+            if (res.status === 403) {
+                unmountAdmin();
+                return;
+            }
+            rowNote(row, retryText(res, "撤销失败"), false);
+        });
+    }
+
+    function updateAdminCount() {
+        var countEl = byId("adminUserCount");
+        if (countEl) {
+            countEl.textContent = adminRows.length
+                ? "已显示 " + adminRows.length + " / " + adminTotal
+                : "";
+        }
+        var moreBtn = byId("adminMore");
+        if (moreBtn) moreBtn.hidden = adminRows.length === 0 || adminRows.length >= adminTotal;
+    }
+
+    function loadAdminOverview() {
+        var meta = byId("adminOverviewMeta");
+        if (!meta) return Promise.resolve();
+        meta.textContent = "正在读取概览…";
+
+        return request(ADMIN_ENDPOINTS.overview).then(function (res) {
+            if (!res.ok) {
+                if (res.kind === "unauth") {
+                    unmountAdmin();
+                    handleUnauth();
+                    return;
+                }
+                if (res.status === 403) {
+                    unmountAdmin();
+                    return;
+                }
+                meta.textContent = retryText(res, "概览读取失败");
+                return;
+            }
+            var data = res.data || {};
+            setFigure("adminTotalUsers", num(data.total_users));
+            setFigure("adminBannedUsers", num(data.banned_users));
+            setFigure("adminAiToday", num(data.ai_calls_today));
+            var admins = Array.isArray(data.admins) ? data.admins : [];
+            var bits = ["管理员：" + (admins.length ? admins.join("、") : "（无）")];
+            var nowText = fmtDate(data.now_utc);
+            if (nowText) bits.push("统计时间：" + nowText);
+            meta.textContent = bits.join(" · ");
+        });
+    }
+
+    function loadAdminUsers(reset) {
+        var list = byId("adminUserList");
+        if (!list) return Promise.resolve();
+
+        var statusEl = byId("adminStatus");
+        var moreBtn = byId("adminMore");
+        var offset = reset ? 0 : adminRows.length;
+
+        showNote(byId("adminUserError"), "");
+        if (statusEl) {
+            statusEl.hidden = false;
+            statusEl.textContent = reset ? "正在读取用户列表…" : "正在载入更多…";
+        }
+        if (moreBtn) moreBtn.disabled = true;
+
+        return request(ADMIN_ENDPOINTS.users + "?limit=" + ADMIN_PAGE_SIZE + "&offset=" + offset)
+            .then(function (res) {
+                if (moreBtn) moreBtn.disabled = false;
+                if (!res.ok) {
+                    if (statusEl) statusEl.hidden = true;
+                    if (res.kind === "unauth") {
+                        unmountAdmin();
+                        handleUnauth();
+                        return;
+                    }
+                    if (res.status === 403) {
+                        unmountAdmin();
+                        return;
+                    }
+                    showNote(byId("adminUserError"), retryText(res, "无法加载用户列表"));
+                    return;
+                }
+
+                var data = res.data || {};
+                var items = Array.isArray(data.items) ? data.items : [];
+                var total = num(data.total);
+                if (reset) {
+                    list.textContent = "";
+                    adminRows = [];
+                }
+                for (var i = 0; i < items.length; i++) {
+                    var row = adminUserRow(items[i]);
+                    list.appendChild(row.node);
+                    adminRows.push(row);
+                }
+                if (total !== null) adminTotal = total;
+                if (statusEl) {
+                    statusEl.textContent = adminRows.length ? "" : "暂无用户。";
+                    statusEl.hidden = adminRows.length > 0;
+                }
+                updateAdminCount();
+            });
+    }
+
     /* ---------------- 启动 ---------------- */
     function startAccountPage() {
         return request(ENDPOINTS.me).then(function (res) {
@@ -602,7 +1048,20 @@
             renderQuota(session.quota);
             bindLogout();
 
-            return Promise.all([loadStars(), loadEvaluations()]);
+            // 管理员区块：只有服务端明确 is_admin=true 才创建节点；其余情况连空壳都不插入
+            var isAdmin = session.is_admin === true ||
+                (session.user && session.user.is_admin === true);
+            var adminLoads = [];
+            if (isAdmin) {
+                if (mountAdmin()) {
+                    adminLoads.push(loadAdminOverview());
+                    adminLoads.push(loadAdminUsers(true));
+                }
+            } else {
+                unmountAdmin();
+            }
+
+            return Promise.all([loadStars(), loadEvaluations()].concat(adminLoads));
         });
     }
 

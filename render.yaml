@@ -49,6 +49,9 @@ services:
         value: "1"
       - key: SESSION_MAX_AGE
         value: "2592000"
+      # 管理员白名单（逗号分隔 ORCID iD）。sync: false = 只在控制台手填，不把真实名单写进仓库。
+      - key: ADMIN_ORCIDS
+        sync: false
 
 databases:
   - name: biotriage-db

@@ -7,8 +7,9 @@ import importlib.util
 import os
 from contextlib import contextmanager
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from sqlalchemy.schema import CreateColumn
 
 DEFAULT_DATABASE_URL = "sqlite:///./biotriage.db"
 
@@ -113,11 +114,49 @@ def ensure_schema() -> bool:
     _last_error_text = None
     _last_error_class = None
     _last_error_kind = None
+    # 建表成功后再补列：失败只警告，仍视为"库可用"（缺列查询会由账户端点降级成 503，
+    # 不会变成 500 堆栈；也不该让整站随一次 DDL 失败停摆）。
+    migrate_user_columns()
+    return True
+
+
+# ==================== 轻量迁移（users 新增列） ====================
+# create_all 只建缺失的表，不会给已存在的表补列；is_banned / quota_limit 因此靠这里补。
+# 三条要求：幂等（列已在就跳过）、进程内只跑一次、失败只打警告（不阻止启动、不丢既有数据）。
+_schema_migrated = False
+
+
+def migrate_user_columns(engine=None) -> bool:
+    """用 inspector 检查 users 列，缺则 ALTER TABLE ADD COLUMN；永不抛异常。"""
+    global _schema_migrated
+    if _schema_migrated:
+        return True
+    try:
+        from . import models  # noqa: F401  列定义与 ORM 同源
+
+        engine = engine if engine is not None else get_engine()
+        existing = {column["name"] for column in inspect(engine).get_columns("users")}
+        missing = [name for name in models.USER_ADDED_COLUMNS if name not in existing]
+        if missing:
+            with engine.begin() as connection:
+                for name in missing:
+                    # 用方言编译器生成列 DDL：SQLite 得 DEFAULT 0，Postgres 得 DEFAULT false
+                    ddl = str(CreateColumn(models.USER_ADDED_COLUMNS[name]).compile(dialect=engine.dialect))
+                    connection.execute(text(f"ALTER TABLE users ADD COLUMN {ddl}"))
+            print(f"[启动] users 表轻量迁移完成，已补列：{', '.join(missing)}（既有数据保持不变）")
+    except Exception as exc:  # noqa: BLE001 - 迁移失败不能阻止应用启动
+        print(
+            f"[警告] users 表轻量迁移失败（{type(exc).__name__}: {exc}）："
+            "is_banned / quota_limit 可能缺失，管理员功能因此不可用；"
+            "请确认数据库账号具备 ALTER TABLE 权限后重启。既有用户数据不受影响。"
+        )
+        return False
+    _schema_migrated = True
     return True
 
 
 def init_db() -> bool:
-    """建表（启动时调用）；失败返回 False，绝不抛出。"""
+    """建表 + 轻量迁移（启动时调用）；失败返回 False，绝不抛出。"""
     return ensure_schema()
 
 
