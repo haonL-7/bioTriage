@@ -2,8 +2,56 @@ services:
   - type: web
     name: evidence-app
     env: python
+    plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    # 与 Procfile 的 web 行必须逐字一致；--proxy-headers/--forwarded-allow-ips 见
+    # docs/ORCID账号系统.md §10（否则反向代理后匿名配额与通用限流退化成全站共享）
+    startCommand: 'uvicorn api:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips=*'
     envVars:
+      # ---------- 第三方模型（付费，务必用 sync: false 从 Dashboard 注入） ----------
       - key: DEEPSEEK_API_KEY
         sync: false
+      - key: GLM_API_KEY
+        sync: false
+
+      # ---------- ORCID OIDC 登录（注册免费，见 docs/ORCID账号系统.md） ----------
+      # Client ID / Secret 来自 https://orcid.org/developer-tools（沙箱见 sandbox.orcid.org）
+      - key: ORCID_CLIENT_ID
+        sync: false
+      - key: ORCID_CLIENT_SECRET
+        sync: false
+      # 生产=https://orcid.org；联调/验收改回 https://sandbox.orcid.org（非密钥，可直接写在仓库）
+      - key: ORCID_BASE_URL
+        value: https://orcid.org
+
+      # ---------- 站点地址与会话密钥 ----------
+      # 必填：正式域名，用于拼 redirect_uri 与判断 Secure cookie，
+      # 例：https://evidence-app.onrender.com
+      - key: APP_BASE_URL
+        sync: false
+      # 会话 cookie 的 HMAC 密钥：交给 Render 自动生成，不要手工粘贴明文
+      - key: SESSION_SECRET
+        generateValue: true
+
+      # ---------- 持久化 ----------
+      # 由下方 databases 段自动注入；本地/无 Postgres 时留空即回退 sqlite:///./biotriage.db
+      # ⚠️ DATABASE_URL 指向 postgres 时运行时需要 psycopg2 驱动（requirements.txt 用
+      #    psycopg2-binary，且必须保持惰性 import，SQLite 环境不得依赖它）
+      - key: DATABASE_URL
+        fromDatabase:
+          name: biotriage-db
+          property: connectionString
+
+      # ---------- 配额与会话时长（非密钥，可写在仓库） ----------
+      - key: AI_DAILY_QUOTA_PER_USER
+        value: "5"
+      - key: AI_DAILY_QUOTA_ANON
+        value: "1"
+      - key: SESSION_MAX_AGE
+        value: "2592000"
+
+databases:
+  - name: biotriage-db
+    plan: free
+    databaseName: biotriage
+    user: biotriage

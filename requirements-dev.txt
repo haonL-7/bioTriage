@@ -1,0 +1,20 @@
+# ============================================
+# 开发 / 测试依赖（Python 3.14）
+# 运行时依赖见 requirements.txt；本文件只补“跑测试”需要、且不产生费用的包。
+# 安装：
+#   python -m venv .venv
+#   .venv/Scripts/python -m pip install -r requirements-dev.txt   # Windows
+#   .venv/bin/python -m pip install -r requirements-dev.txt       # macOS / Linux
+# 跑测试：
+#   .venv/Scripts/python -m pytest tests -v
+# ⚠️ psycopg2 / psycopg2-binary 不在此列：它只在 DATABASE_URL 指向 postgres 时才需要，
+#    SQLite 测试与本地开发无需安装（契约：psycopg2 必须惰性依赖）。
+# ============================================
+
+pytest>=8.2.0
+# TestClient 的传输层依赖
+httpx>=0.27.0
+# api.py 的 /api/doi_abstract 等分支依赖（与 requirements.txt 同名，供纯测试环境使用）
+requests>=2.31.0
+# 账户系统的 ORM（测试内由被测应用自行 import）
+sqlalchemy>=2.0.30

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的账户 · 益生菌/代谢物证据评估系统</title>
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+    <div class="page-bar"><a href="../">← 返回首页</a></div>
+
+    <header class="header">
+        <h1>我的账户</h1>
+        <p class="subtitle">ORCID 登录 · 我的收藏 · 评估历史 · 配额余量</p>
+    </header>
+
+    <!-- 读取中 -->
+    <div class="loading" id="loadingBox"><span class="spinner"></span><span id="loadingText">正在读取账户信息…</span></div>
+
+    <!-- 未登录：只给登录引导 -->
+    <section class="card" id="guestBox" hidden>
+        <div class="card-body guest">
+            <p class="guest-title">尚未登录</p>
+            <p class="guest-text">登录后可查看我的收藏与评估历史，并同步当前账户的评估配额余量。</p>
+            <a class="btn btn-primary" id="loginBtn" href="https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/login?mode=pages">使用 ORCID 登录</a>
+            <p class="guest-note" id="guestNote" hidden></p>
+        </div>
+    </section>
+
+    <!-- 已登录 -->
+    <div id="authedBox" hidden>
+        <section class="card">
+            <div class="card-header">账户信息</div>
+            <div class="card-body">
+                <dl class="kv">
+                    <dt>ORCID iD</dt><dd id="orcidText">—</dd>
+                    <dt>显示名</dt><dd id="nameText">—</dd>
+                    <dt>配额档位</dt><dd id="tierText">—</dd>
+                </dl>
+                <div class="account-actions">
+                    <button type="button" class="btn btn-ghost" id="logoutBtn">登出</button>
+                    <span class="inline-error" id="logoutNote" hidden></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">配额余量</div>
+            <div class="card-body">
+                <div class="quota-figures">
+                    <div class="quota-item">
+                        <div class="quota-val" id="quotaUsed">—</div>
+                        <div class="quota-label">已用 used</div>
+                    </div>
+                    <div class="quota-item">
+                        <div class="quota-val" id="quotaLimit">—</div>
+                        <div class="quota-label">上限 limit</div>
+                    </div>
+                    <div class="quota-item">
+                        <div class="quota-val" id="quotaRemaining">—</div>
+                        <div class="quota-label">剩余 remaining</div>
+                    </div>
+                </div>
+                <div class="quota-track"><div class="quota-fill" id="quotaFill"></div></div>
+                <p class="quota-meta" id="quotaReset">—</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">我的收藏 <span class="count" id="starCount"></span></div>
+            <div class="card-body">
+                <ul class="item-list" id="starList"></ul>
+                <p class="empty" id="starEmpty" hidden>暂无收藏。</p>
+                <p class="inline-error" id="starError" hidden></p>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">评估历史 <span class="count" id="evalCount"></span></div>
+            <div class="card-body">
+                <ul class="item-list" id="evalList"></ul>
+                <p class="empty" id="evalEmpty" hidden>暂无评估记录。</p>
+                <p class="inline-error" id="evalError" hidden></p>
+            </div>
+        </section>
+    </div>
+
+    <p class="footnote">登录凭据仅保存在当前标签页的 sessionStorage 中，关闭标签页即失效；本页不把它发送给本站之外的地址。</p>
+</div>
+<noscript>
+    <p class="empty" style="text-align:center">需要启用 JavaScript 才能显示账户信息。<a href="https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/login?mode=pages">直接前往 ORCID 登录</a></p>
+</noscript>
+</body>
+</html>

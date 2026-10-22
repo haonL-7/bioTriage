@@ -932,6 +932,29 @@ def create_nojekyll():
     print("  Created .nojekyll")
 
 
+def resolve_repo_dir(name: str) -> str | None:
+    """仓库根下的子目录：PROJECT_ROOT 指向 ai-news/，仓库根是它的上一级（兼容两种布局）。"""
+    for base in (os.path.join(PROJECT_ROOT, ".."), PROJECT_ROOT):
+        candidate = os.path.join(base, name)
+        if os.path.isdir(candidate):
+            return candidate
+    return None
+
+
+def deploy_account_page(build_root: str = BUILD_DIR) -> bool:
+    """复制仓库根 account/ -> <build>/account/（GitHub Pages 账户页）。目录不存在只警告不失败。"""
+    account_src = resolve_repo_dir("account")
+    if account_src is None:
+        print("  WARNING: account/ not found (GitHub Pages 账户页未发布)")
+        return False
+    account_dst = os.path.join(build_root, "account")
+    if os.path.exists(account_dst):
+        shutil.rmtree(account_dst)
+    shutil.copytree(account_src, account_dst)
+    print(f"  Deployed /account/ GitHub Pages account page ({len(os.listdir(account_dst))} files)")
+    return True
+
+
 def print_summary(news_list: list[dict], stats: dict):
     """Print build summary"""
     print("\n" + "=" * 60)
@@ -1103,6 +1126,9 @@ def main():
             shutil.rmtree(starred_dst)
         shutil.copytree(starred_src, starred_dst)
         print("  Deployed /starred/ starred collection page")
+
+    # Deploy GitHub Pages account page (Bearer token 模式，见 docs/ORCID账号系统.md §13)
+    deploy_account_page()
 
     # Deploy lightweight curation channels (already built by lightweight/build_channel.py)
     lightweight_dir = os.path.join(PROJECT_ROOT, "..", "lightweight")

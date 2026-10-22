@@ -6,33 +6,27 @@ import json
 import os
 import time
 from collections import defaultdict
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
 from typing import Optional
 from openai import OpenAI
+from sqlalchemy.orm import Session
+
+from accounts import (
+    get_db,
+    init_db,
+    record_evaluation,
+    reserve_ai_quota,
+    router as accounts_router,
+)
 
 # ==================== 速率限制 ====================
 
-# Per-IP rate limiter: max 10 AI analysis calls per IP per day
-# (the expensive DeepSeek endpoint)
-_ai_rate_window = 86400  # 24 hours in seconds
-_ai_rate_limit = 10       # max calls per window
-_ai_usage = defaultdict(list)  # IP → [timestamps]
-
-
-def _check_ai_rate(ip: str) -> tuple[bool, int]:
-    """Returns (allowed, remaining_calls). Cleans expired entries."""
-    now = time.time()
-    window_start = now - _ai_rate_window
-    _ai_usage[ip] = [t for t in _ai_usage[ip] if t > window_start]
-    used = len(_ai_usage[ip])
-    remaining = max(0, _ai_rate_limit - used)
-    return (used < _ai_rate_limit, remaining)
-
-
-def _record_ai_call(ip: str):
-    _ai_usage[ip].append(time.time())
+# AI 分析配额（按账号分档）由 accounts 包实现：
+#   匿名 = AI_DAILY_QUOTA_ANON(默认 1) 次/IP/天
+#   ORCID 登录 = AI_DAILY_QUOTA_PER_USER(默认 5) 次/人/天
+# 通用限流（60 次/分钟/IP）仍由下方中间件负责。
 
 
 # Per-IP 学术助手专用限流: 50 次/天/IP（相对 AI 分析更宽松，供课题组共享）
@@ -79,6 +73,8 @@ app = FastAPI(
 )
 
 # ⚠️  CORS: Only allow your own domains, not "*"
+# 账户页发布在 GitHub Pages（跨站调用本后端），因此 origin 必须显式包含它；
+# 认证走 Authorization: Bearer，故方法/头按账户页实际用到的集合列出（GET 只读 + POST/DELETE 收藏）。
 ALLOWED_ORIGINS = [
     "https://haonl-7.github.io",
     "https://haonl-7.github.io/bioTriage",
@@ -91,9 +87,24 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["GET"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "Accept"],
 )
+
+# ==================== 个人账户系统 ====================
+# 建表（users / stars / evaluations / usage_counters）并挂载 /api/auth、/api/me 端点。
+# 数据库不可用（云函数冷启动挂起、网络不可达、口令错、缺驱动）不得让整站 import 失败：
+# / 与 /api/evaluate_*、/api/knowledge_base、/api/doi_abstract 都不碰数据库，
+# 账户端点各自降级（见 accounts/router.account_db_guard），首个账户请求会自动重试建表。
+try:
+    init_db()
+except Exception as exc:  # noqa: BLE001 - 账户库故障不能成为整站单点
+    print(
+        f"[警告] 账户数据库初始化失败（{type(exc).__name__}: {exc}）："
+        "账户功能不可用，首页与知识库等只读接口不受影响；"
+        "首个账户请求会再次尝试初始化。"
+    )
+app.include_router(accounts_router)
 
 # ==================== 初始化 DeepSeek 客户端 ====================
 # 优先读环境变量；本地开发若未设置，则从同目录 .env 读取（.env 已被 .gitignore 忽略，不会提交）
@@ -108,16 +119,23 @@ if not os.getenv("DEEPSEEK_API_KEY"):
                     break
 
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
-if not DEEPSEEK_API_KEY:
-    raise RuntimeError(
-        "DEEPSEEK_API_KEY environment variable is required. "
-        "Set it via: export DEEPSEEK_API_KEY=your-key-here"
-    )
+_deepseek_client = None
 
-deepseek_client = OpenAI(
-    api_key=DEEPSEEK_API_KEY,
-    base_url="https://api.deepseek.com",
-)
+
+def get_deepseek_client() -> OpenAI:
+    """惰性创建客户端：缺少 API Key 不再阻塞启动，只在真正调用 AI 分析时报错。"""
+    global _deepseek_client
+    if _deepseek_client is None:
+        if not DEEPSEEK_API_KEY:
+            raise RuntimeError(
+                "DEEPSEEK_API_KEY environment variable is required. "
+                "Set it via: export DEEPSEEK_API_KEY=your-key-here"
+            )
+        _deepseek_client = OpenAI(
+            api_key=DEEPSEEK_API_KEY,
+            base_url="https://api.deepseek.com",
+        )
+    return _deepseek_client
 
 # ==================== 加载本地知识库 ====================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -287,7 +305,7 @@ def analyze_with_deepseek(question: str, kb_context: str) -> dict:
 请基于以上本地知识库数据和你的专业知识，对该查询进行结构化证据评估。直接输出 JSON，不要包含任何其他文字。"""
 
     try:
-        response = deepseek_client.chat.completions.create(
+        response = get_deepseek_client().chat.completions.create(
             model="deepseek-chat",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
@@ -530,6 +548,29 @@ async def rate_limit_middleware(request: Request, call_next):
     return await call_next(request)
 
 
+# ==================== 全局中间件：Content-Disposition: inline ====================
+# 腾讯云 SCF 默认域名会给所有响应注入 Content-Disposition: attachment，浏览器因此把
+# /account 当成下载文件而不是渲染页面；代码里没有任何地方设置过这个头，属于平台层注入。
+# 平台会把应用层设置的响应头透传（旁证：响应里的 Vary: Origin 来自本应用的 CORSMiddleware），
+# 所以这里对所有响应显式声明 inline，用来前置/覆盖平台的 attachment。
+#
+# 为什么无条件设置：当前没有任何文件下载/导出路径，所有响应都应以 inline 展示。
+# 将来若新增导出接口，把判断改成"文件下载类路径 + 上游已显式给出 attachment 时放行"，例如：
+#   if (request.url.path in EXPORT_PATHS
+#           and response.headers.get("content-disposition", "").lower().startswith("attachment")):
+#       return response
+# 其余情况一律 inline。headers[...] = 是覆盖语义，同一响应只会出现一个 Content-Disposition。
+#
+# 注册顺序：必须在 CORSMiddleware 之后注册。后注册的中间件更靠外层，本中间件因此位于
+# CORS 之外——它在 CORS 已经写好响应头之后才执行，只追加自己这一个头，不会覆盖任何 CORS 头；
+# 同时因为它在最外层，限流提前返回的 429 响应也带得上这个头。
+@app.middleware("http")
+async def inline_disposition_middleware(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Content-Disposition"] = "inline"
+    return response
+
+
 # ==================== 全局异常处理 ====================
 
 @app.exception_handler(Exception)
@@ -565,6 +606,19 @@ except FileNotFoundError:
     INDEX_HTML = None
     print("[警告] 未找到 biotriage.html，根路径将返回 JSON")
 
+# 账户页（界面文件由前端交付；缺失时 /account 降级回首页，不影响启动）
+ACCOUNT_HTML_PATH = os.path.join(BASE_DIR, "account.html")
+
+# 静态资源：仅在 assets/ 目录存在时挂载，缺失不影响 import
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+if os.path.isdir(ASSETS_DIR):
+    from fastapi.staticfiles import StaticFiles
+
+    app.mount("/assets", StaticFiles(directory=ASSETS_DIR), name="assets")
+    print(f"[启动] 静态资源已挂载: {ASSETS_DIR}")
+else:
+    print("[警告] 未找到 assets/ 目录，/assets 路径不挂载")
+
 # ==================== API 接口 ====================
 
 @app.get("/")
@@ -583,6 +637,19 @@ async def root():
             "metabolites": len(KNOWLEDGE_BASE.get("metabolites", []))
         }
     }
+
+
+@app.get("/account")
+async def account_page():
+    """
+    账户页：每次请求读取 account.html（便于界面单独更新）；
+    文件缺失时 302 回首页，而不是 500。
+    """
+    try:
+        with open(ACCOUNT_HTML_PATH, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    except FileNotFoundError:
+        return RedirectResponse("/", status_code=302)
 
 
 @app.get("/api/evaluate_tier")
@@ -741,31 +808,37 @@ async def experiment_advice(query: str = Query(..., description="搜索关键词
 
 
 @app.get("/api/ai_analyze")
-async def ai_analyze(request: Request, query: str = Query(..., description="需要 AI 分析的关键词")):
+async def ai_analyze(
+    request: Request,
+    query: str = Query(..., description="需要 AI 分析的关键词"),
+    db: Session = Depends(get_db),
+):
     """
     AI 深度分析接口 — DeepSeek 增强
     1. 先查本地知识库
     2. 无论是否命中，都调用 DeepSeek 进行增强分析
     3. 返回结构化的证据评估 JSON
 
-    限流：每 IP 每天最多 10 次（DeepSeek API 调用费用较高）
+    配额：匿名 AI_DAILY_QUOTA_ANON(默认 1) 次/IP/天；
+          ORCID 登录 AI_DAILY_QUOTA_PER_USER(默认 5) 次/人/天。
     """
-    ip = request.client.host if request.client else "unknown"
-
-    # AI-specific rate check (10/day per IP)
-    allowed, remaining = _check_ai_rate(ip)
+    # 按档位扣减配额（超额返回 429，不计数）；账户库不可用时退回进程内按 IP 计数
+    user, allowed, quota = reserve_ai_quota(db, request)
     if not allowed:
         return JSONResponse(
             status_code=429,
             content={
+                "detail": f"AI 分析已达到每日配额上限（{quota['tier']}：{quota['limit']} 次/天），请明天再试。",
                 "success": False,
-                "error": f"AI 分析已达到每日限额（{_ai_rate_limit} 次/天）。请明天再试。",
-                "remaining": 0,
-                "limit_per_day": _ai_rate_limit,
+                "error": f"AI 分析已达到每日配额上限（{quota['tier']}：{quota['limit']} 次/天），请明天再试。",
+                "tier": quota["tier"],
+                "limit": quota["limit"],
+                "used": quota["used"],
+                "remaining": quota["remaining"],
+                "resets_at": quota["resets_at"],
+                "limit_per_day": quota["limit"],
             },
         )
-
-    _record_ai_call(ip)
 
     # Step 1: 查询本地知识库
     local_match = search_knowledge(query)
@@ -776,14 +849,21 @@ async def ai_analyze(request: Request, query: str = Query(..., description="需�
     # Step 3: 调用 DeepSeek
     ai_result = analyze_with_deepseek(query, kb_context)
 
-    # Step 4: 合并本地命中信息
+    # Step 4: 登录用户落一份评估历史（匿名不落库）
+    record_evaluation(db, user, {"endpoint": "/api/ai_analyze", "query": query}, ai_result)
+
+    # Step 5: 合并本地命中信息
     return {
         "success": True,
         "query": query,
         "ai_analysis": ai_result,
         "rate_limit": {
-            "remaining": remaining - 1,
-            "limit_per_day": _ai_rate_limit,
+            "remaining": quota["remaining"],
+            "limit_per_day": quota["limit"],
+            "tier": quota["tier"],
+            "limit": quota["limit"],
+            "used": quota["used"],
+            "resets_at": quota["resets_at"],
         },
         "local_match": {
             "found": local_match is not None,

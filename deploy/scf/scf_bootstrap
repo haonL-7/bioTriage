@@ -1,0 +1,224 @@
+#!/bin/bash
+# ============================================================================
+# 腾讯云 SCF Web 函数启动脚本（scf_bootstrap）
+# 平台约定：这个文件必须在代码包根目录、可执行（chmod +x）、行尾为 LF。
+# 平台会把它当作入口执行，由它拉起监听 0.0.0.0:9000 的 HTTP 服务。
+#
+# ⚠️ 为什么解释器要“版本感知”地挑：pkg/ 里的依赖是按 cp310 manylinux wheel 交叉安装的，
+#    uvicorn / pydantic 2 / SQLAlchemy 2 也都要求 3.7+。而 SCF 基础镜像里的
+#    /var/lang/python3 是系统 Python 3.6（不是函数运行时），用它必然报
+#    "future feature annotations is not defined" 或 invalid ELF header（线上已发生）。
+#
+# 选择顺序：
+#   0) 环境变量 SCF_PYTHON_BIN：最高优先级；指定了但不满足版本就硬失败（绝不静默换解释器）
+#   1) 常见带小版本的固定路径 / PATH 上的带版本命令
+#   2) 目录扫描兜底：/var/lang/python*/bin/python3、/var/lang/python3*/bin/python3、
+#      /opt/python*/bin/python3、/usr/local/bin/python3*、/usr/bin/python3.[0-9]*
+#      命中的候选按版本号从高到低排序后逐个检查
+#   3) 全都不满足：打印所有候选与被拒原因 + 可操作指令，非 0 退出
+# 每个候选都会打一行日志（含版本与被拒原因），最后打一行最终选用：
+#   [scf_bootstrap] using <path> <version>
+# ============================================================================
+set -u
+
+# 代码包解压目录（= scf_bootstrap 所在目录）；不写死本机路径，也不依赖 dirname
+case "$0" in
+  */*) APP_DIR_SRC="${0%/*}" ;;
+  *)   APP_DIR_SRC="." ;;
+esac
+APP_DIR="$(cd "$APP_DIR_SRC" && pwd)" || exit 1
+cd "$APP_DIR" || exit 1
+
+# 随包的第三方依赖装在 ./pkg（Linux manylinux wheel），必须进 PYTHONPATH
+export PYTHONPATH="$APP_DIR/pkg:$APP_DIR"
+export PYTHONUNBUFFERED=1
+export PYTHONDONTWRITEBYTECODE=1
+
+REQUIRED_MAJOR=3
+REQUIRED_MINOR=10
+REQUIRED="${REQUIRED_MAJOR}.${REQUIRED_MINOR}"
+
+# 扫描模式可用环境变量覆盖：仅用于非默认镜像布局或本地自测
+SCAN_PATTERNS="${SCF_PYTHON_SCAN_PATTERNS:-/var/lang/python*/bin/python3 /var/lang/python3*/bin/python3 /opt/python*/bin/python3 /usr/local/bin/python3* /usr/bin/python3.[0-9]*}"
+
+log() { echo "[scf_bootstrap] $*"; }
+
+die() {
+  echo "[scf_bootstrap] 错误：$*" >&2
+  exit 1
+}
+
+# 版本探针：刻意用 3.6 也能跑的语法（不用 f-string、不用 print(flush=True)）
+probe_version() {
+  "$1" -c 'import sys; print("%d.%d.%d" % sys.version_info[:3])' 2>/dev/null || true
+}
+
+# 版本字符串是否 >= REQUIRED（只比较 major/minor）
+version_ok() {
+  local v major rest minor
+  v="$1"
+  major="${v%%.*}"
+  rest="${v#*.}"
+  minor="${rest%%.*}"
+  case "$major" in ''|*[!0-9]*) return 1 ;; esac
+  case "$minor" in ''|*[!0-9]*) return 1 ;; esac
+  if [ "$major" -gt "$REQUIRED_MAJOR" ]; then return 0; fi
+  if [ "$major" -eq "$REQUIRED_MAJOR" ] && [ "$minor" -ge "$REQUIRED_MINOR" ]; then return 0; fi
+  return 1
+}
+
+# 解析候选：带 / 的按路径，否则去 PATH 里找；输出可执行路径（找不到则输出空）
+resolve_candidate() {
+  case "$1" in
+    */*) printf '%s' "$1" ;;
+    *)   command -v "$1" 2>/dev/null || true ;;
+  esac
+}
+
+PYTHON_BIN=""
+PYTHON_VERSION=""
+SEEN=" "
+
+# ---------- 0) 环境变量强制指定（不满足版本必须硬失败）----------
+if [ -n "${SCF_PYTHON_BIN:-}" ]; then
+  resolved="$(resolve_candidate "$SCF_PYTHON_BIN")"
+  if [ -z "$resolved" ] || [ ! -x "$resolved" ]; then
+    die "SCF_PYTHON_BIN=$SCF_PYTHON_BIN 不存在或不可执行；请改成该运行时里 Python 解释器的绝对路径。"
+  fi
+  forced_version="$(probe_version "$resolved")"
+  if [ -z "$forced_version" ]; then
+    die "SCF_PYTHON_BIN=$resolved 无法执行版本探针（它不是可用的 Python 解释器？）。"
+  fi
+  if ! version_ok "$forced_version"; then
+    die "SCF_PYTHON_BIN=$resolved 版本 $forced_version 不满足要求 >= $REQUIRED（pkg/ 里依赖按 cp310 安装）。已按你的指定硬失败，不会悄悄换用别的解释器。"
+  fi
+  PYTHON_BIN="$resolved"
+  PYTHON_VERSION="$forced_version"
+  SEEN="$SEEN$resolved "
+  log "候选 SCF_PYTHON_BIN=$resolved -> $forced_version 接受（强制指定，优先级最高）"
+fi
+
+# ---------- 1) 内置固定候选 ----------
+FIXED_CANDIDATES="/var/lang/python3.10/bin/python3 /var/lang/python3.9/bin/python3 python3.10 python3.9 python3 /var/lang/python3/bin/python3"
+if [ -z "$PYTHON_BIN" ]; then
+  log "开始选择解释器：要求 >= $REQUIRED"
+  for candidate in $FIXED_CANDIDATES; do
+    resolved="$(resolve_candidate "$candidate")"
+    if [ -z "$resolved" ] || [ ! -x "$resolved" ]; then
+      log "候选 $candidate -> 未找到或不可执行（跳过）"
+      continue
+    fi
+    case "$SEEN" in *" $resolved "*) log "候选 $candidate -> $resolved 前面已试过（跳过）"; continue ;; esac
+    SEEN="$SEEN$resolved "
+    candidate_version="$(probe_version "$resolved")"
+    if [ -z "$candidate_version" ]; then
+      log "候选 $resolved -> 版本探针执行失败（跳过）"
+      continue
+    fi
+    if version_ok "$candidate_version"; then
+      PYTHON_BIN="$resolved"
+      PYTHON_VERSION="$candidate_version"
+      log "候选 $resolved -> $candidate_version 接受"
+      break
+    fi
+    log "候选 $resolved -> $candidate_version 拒绝（要求 >= $REQUIRED）"
+  done
+fi
+
+# ---------- 2) 目录扫描兜底（按版本从高到低）----------
+if [ -z "$PYTHON_BIN" ]; then
+  log "固定候选都不满足，开始扫描：$SCAN_PATTERNS"
+  scan_paths=()
+  scan_versions=()
+  for pattern in $SCAN_PATTERNS; do
+    for match in $pattern; do
+      [ -e "$match" ] || continue
+      if [ ! -f "$match" ] || [ ! -x "$match" ]; then
+        log "扫描 $match -> 存在但不可执行（跳过）"
+        continue
+      fi
+      case "$SEEN" in *" $match "*) log "扫描 $match -> 前面已试过（跳过）"; continue ;; esac
+      SEEN="$SEEN$match "
+      match_version="$(probe_version "$match")"
+      if [ -z "$match_version" ]; then
+        log "扫描 $match -> 版本探针执行失败（跳过）"
+        continue
+      fi
+      log "扫描到 $match -> $match_version（候选，参与按版本从高到低排序）"
+      scan_paths[${#scan_paths[@]}]="$match"
+      scan_versions[${#scan_versions[@]}]="$match_version"
+    done
+  done
+
+  if [ "${#scan_paths[@]}" -eq 0 ]; then
+    log "扫描未命中任何可执行文件"
+  else
+    # 选择排序：版本号从高到低（纯 bash，不依赖 sort 命令）
+    total="${#scan_paths[@]}"
+    i=0
+    while [ "$i" -lt "$total" ]; do
+      best="$i"
+      j=0
+      while [ "$j" -lt "$total" ]; do
+        if [ "$j" -ge "$i" ]; then
+          a_major="${scan_versions[$j]%%.*}"
+          a_rest="${scan_versions[$j]#*.}"
+          a_minor="${a_rest%%.*}"
+          b_major="${scan_versions[$best]%%.*}"
+          b_rest="${scan_versions[$best]#*.}"
+          b_minor="${b_rest%%.*}"
+          if [ "$a_major" -gt "$b_major" ]; then
+            best="$j"
+          elif [ "$a_major" -eq "$b_major" ] && [ "$a_minor" -gt "$b_minor" ]; then
+            best="$j"
+          fi
+        fi
+        j=$((j + 1))
+      done
+      if [ "$best" -ne "$i" ]; then
+        tmp_path="${scan_paths[$i]}"; scan_paths[$i]="${scan_paths[$best]}"; scan_paths[$best]="$tmp_path"
+        tmp_ver="${scan_versions[$i]}"; scan_versions[$i]="${scan_versions[$best]}"; scan_versions[$best]="$tmp_ver"
+      fi
+      i=$((i + 1))
+    done
+
+    i=0
+    while [ "$i" -lt "$total" ]; do
+      candidate_version="${scan_versions[$i]}"
+      if version_ok "$candidate_version"; then
+        PYTHON_BIN="${scan_paths[$i]}"
+        PYTHON_VERSION="$candidate_version"
+        log "扫描 ${scan_paths[$i]} -> $candidate_version 接受"
+        break
+      fi
+      log "扫描 ${scan_paths[$i]} -> $candidate_version 拒绝（要求 >= $REQUIRED）"
+      i=$((i + 1))
+    done
+  fi
+fi
+
+# ---------- 3) 全失败：给可操作指令后非 0 退出 ----------
+if [ -z "$PYTHON_BIN" ]; then
+  {
+    echo "[scf_bootstrap] 错误：找不到 >= $REQUIRED 的 Python 解释器，函数无法启动。"
+    echo "[scf_bootstrap] 期望版本：>= $REQUIRED（pkg/ 里的依赖按 cp310 交叉安装；3.6 会报 future feature annotations is not defined）"
+    echo "[scf_bootstrap] 已尝试的候选见上面每一行日志（含各自版本与被拒原因）。"
+    echo "[scf_bootstrap] 可操作指令（二选一）："
+    echo "[scf_bootstrap]   1) 云函数控制台 -> 函数配置 -> 基本信息 -> 运行环境/运行时，改成 Python 3.10，保存后重新发布；"
+    echo "[scf_bootstrap]   2) 云函数控制台 -> 函数配置 -> 环境变量，新增 SCF_PYTHON_BIN=<上面日志里版本 >= $REQUIRED 的某个候选绝对路径>，保存后重新发布。"
+    echo "[scf_bootstrap] 若日志里没有任何 >= $REQUIRED 的候选，说明当前镜像里没有 3.10 解释器，只能走第 1 条。"
+  } >&2
+  exit 1
+fi
+
+log "using $PYTHON_BIN $PYTHON_VERSION"
+log "cwd=$APP_DIR PYTHONPATH=$PYTHONPATH"
+
+# 腾讯云 Web 函数固定监听 9000；--proxy-headers 用于拿到真实访客 IP
+# （原因与信任边界见 docs/ORCID账号系统.md §10）
+exec "$PYTHON_BIN" -m uvicorn api:app \
+  --host 0.0.0.0 \
+  --port 9000 \
+  --workers 1 \
+  --proxy-headers \
+  --forwarded-allow-ips="*"
