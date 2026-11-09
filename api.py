@@ -174,16 +174,21 @@ except json.JSONDecodeError as e:
 # ==================== 学术助手检索层（rag 包） ====================
 CORPUS_DIR = os.path.join(BASE_DIR, "corpus")
 _RAG_INDEX = None
+_RAG_FINGERPRINT = ""
 
 
 def _get_rag_index():
     """惰性构建 rag 索引；语料缺失或依赖异常时返回 False，自动回退旧词频检索。"""
-    global _RAG_INDEX
+    global _RAG_INDEX, _RAG_FINGERPRINT
     if _RAG_INDEX is not None:
         return _RAG_INDEX
     try:
         from rag.index import RagIndex, load_corpus
         docs = load_corpus(CORPUS_DIR)
+        if docs:
+            import hashlib
+            ids = "|".join(sorted(str(d.get("id", "")) for d in docs))
+            _RAG_FINGERPRINT = hashlib.sha1(ids.encode("utf-8")).hexdigest()[:16]
         _RAG_INDEX = RagIndex(docs) if docs else False
         print(f"[启动] rag 索引就绪: {len(docs)} 篇（{CORPUS_DIR}）")
     except Exception as e:
@@ -957,6 +962,20 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
         )
 
     domain_filter = [d.strip() for d in (domains or "").split(",") if d.strip()] or None
+    from rag.cache import get as cache_get, make_key
+    cache_key = make_key(question, domain_filter, _RAG_FINGERPRINT)
+    cached = cache_get(cache_key)
+    if cached:
+        return {
+            "success": True,
+            "query": question,
+            "answer": cached.get("answer", ""),
+            "sources": cached.get("sources", []),
+            "retrieved": cached.get("retrieved", 0),
+            "cached": True,
+            "domains": domain_filter or "all",
+            "rate_limit": {"remaining": remaining, "limit_per_day": _rag_rate_limit},
+        }
     chunks = _retrieve_chunks(question, top_k=6, domains=domain_filter)
 
     # 语料无匹配：直接返回"暂无相关资料"，不调用 DeepSeek（不消耗额度）
@@ -973,6 +992,11 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
 
     _record_rag_call(ip)
     answer, sources = rag_answer(question, chunks)
+    try:
+        from rag.cache import put as cache_put
+        cache_put(cache_key, question, domain_filter, answer, sources, _RAG_FINGERPRINT, len(chunks))
+    except Exception as e:
+        print(f"[RAG] 缓存写入跳过: {e}")
 
     return {
         "success": True,
@@ -980,6 +1004,8 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
         "answer": answer,
         "sources": sources,
         "retrieved": len(chunks),
+        "cached": False,
+        "domains": domain_filter or "all",
         "rate_limit": {
             "remaining": remaining - 1,
             "limit_per_day": _rag_rate_limit,
