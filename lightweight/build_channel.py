@@ -160,6 +160,18 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 .back-link {{ font-size: 12px; color: var(--accent); text-decoration: none; }}
 .site-footer {{ max-width: var(--max-width); margin: 0 auto; padding: 24px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; text-align: center; }}
 .site-footer a {{ color: var(--accent); }}
+.ask {{ margin: 32px 0 8px; padding: 20px; border: 1px solid var(--border); }}
+.ask h2 {{ font-family: var(--font-serif); font-size: 17px; font-weight: 400; margin-bottom: 4px; }}
+.ask-hint {{ font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }}
+.ask-row {{ display: flex; gap: 8px; }}
+.ask-row input {{ flex: 1; min-width: 0; font: inherit; font-size: 13px; padding: 8px 10px; border: 1px solid var(--border); background: #fff; color: var(--text); }}
+.ask-row button {{ font: inherit; font-size: 13px; padding: 8px 16px; border: 1px solid #1a1a1a; background: #1a1a1a; color: #fff; cursor: pointer; }}
+.ask-row button:disabled {{ opacity: .6; cursor: not-allowed; }}
+.ask-status {{ font-size: 12px; color: var(--text-muted); margin-top: 10px; }}
+.ask-answer {{ font-size: 13px; line-height: 1.75; margin-top: 12px; white-space: pre-wrap; }}
+.ask-sources {{ margin-top: 10px; }}
+.ask-sources .src {{ display: block; font-size: 11.5px; color: var(--text-secondary); margin-top: 6px; }}
+.ask-sources .src .dom {{ display: inline-block; font-size: 10px; letter-spacing: .4px; color: var(--text-muted); border: 1px solid var(--border); padding: 0 5px; margin-right: 6px; }}
 @media (max-width: 640px) {{ h1 {{ font-size: 20px; }} }}
 </style>
 </head>
@@ -171,6 +183,66 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 <p class="channel-desc">{desc}</p>
 <p class="channel-stats">{len(papers)} papers curated &middot; High: {sig_counts["High"]} &middot; Medium: {sig_counts["Medium"]} &middot; Low: {sig_counts["Low"]} &middot; Updated: {datetime.now().strftime("%Y-%m-%d")}</p>
 {cards}
+<section class="ask">
+<h2>Ask this channel</h2>
+<p class="ask-hint">Answers come only from bioTriage&rsquo;s indexed literature, scoped to this channel. Always verify before citing.</p>
+<form id="ask-form" class="ask-row">
+<input id="ask-input" type="text" placeholder="e.g. which binning tools beat the baseline?" autocomplete="off">
+<button type="submit">Ask</button>
+</form>
+<div id="ask-status" class="ask-status" hidden></div>
+<div id="ask-answer" class="ask-answer" hidden></div>
+<div id="ask-sources" class="ask-sources"></div>
+</section>
+<script>
+(function () {{
+  var API = 'https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api';
+  var DOMAIN = '{channel_key}';
+  var form = document.getElementById('ask-form');
+  if (!form) {{ return; }}
+  var input = document.getElementById('ask-input');
+  var button = form.querySelector('button');
+  var status = document.getElementById('ask-status');
+  var answer = document.getElementById('ask-answer');
+  var sources = document.getElementById('ask-sources');
+
+  function setStatus(msg) {{ status.hidden = !msg; status.textContent = msg || ''; }}
+
+  function renderSources(items) {{
+    sources.innerHTML = '';
+    (items || []).forEach(function (s) {{
+      var el = document.createElement('div');
+      el.className = 'src';
+      var html = '';
+      if (s.domain) {{
+        html += '<span class="dom">' + s.domain + (s.evidence_level ? ' &middot; ' + s.evidence_level : '') + '</span>';
+      }}
+      html += '<strong>' + (s.cite || s.title || '') + '</strong>';
+      if (s.url) {{ html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>'; }}
+      el.innerHTML = html;
+      sources.appendChild(el);
+    }});
+  }}
+
+  form.addEventListener('submit', function (e) {{
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) {{ return; }}
+    button.disabled = true;
+    answer.hidden = true;
+    setStatus('Searching the corpus...');
+    var url = API + '/rag_chat?q=' + encodeURIComponent(q) + '&domains=' + encodeURIComponent(DOMAIN);
+    fetch(url).then(function (r) {{ return r.json(); }}).then(function (data) {{
+      button.disabled = false;
+      if (!data || data.success === false) {{ setStatus((data && data.error) || 'Assistant unavailable.'); return; }}
+      setStatus('');
+      answer.textContent = data.answer || '';
+      answer.hidden = false;
+      renderSources(data.sources);
+    }}).catch(function () {{ button.disabled = false; setStatus('Assistant unavailable.'); }});
+  }});
+}})();
+</script>
 </div>
 <footer class="site-footer">
 <p>AI-curated by bioTriage-Open. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">bioTriage-Open Home</a></p>

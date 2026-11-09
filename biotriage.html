@@ -259,6 +259,20 @@
         /* ---- Academic Assistant ---- */
         #academic-assistant { margin-top: 20px; scroll-margin-top: 80px; }
         .aa-box { margin-top: 14px; }
+        .aa-domains { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+        .aa-domain {
+            font-family: var(--font-en); font-size: 12px; color: var(--ink-md);
+            background: var(--bg-alt); border: 1px solid var(--border-lt);
+            border-radius: 999px; padding: 5px 12px; cursor: pointer;
+            transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+        }
+        .aa-domain:hover { color: var(--primary); border-color: var(--primary); }
+        .aa-domain.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .aa-sources .src-dom {
+            display: inline-block; font-family: var(--font-en); font-size: 10.5px; letter-spacing: 0.4px;
+            color: var(--ink-xlt); border: 1px solid var(--border-lt); border-radius: 3px;
+            padding: 0 5px; margin-right: 6px; vertical-align: 1px;
+        }
         .aa-input-row { display: flex; gap: 10px; }
         .aa-input {
             flex: 1;
@@ -518,11 +532,23 @@
     <div class="methodology" id="academic-assistant">
         <h3 data-i18n="aa-h">Academic Assistant</h3>
         <p data-i18n="aa-intro">
-            Ask questions grounded in the group's verified literature corpus (26 papers). Answers cite their sources.
+            Ask across all live channels, or narrow to one. Answers cite the papers they came from.
         </p>
         <div class="aa-box">
+            <div class="aa-domains" id="aa-domains">
+                <button type="button" class="aa-domain is-active" data-domains="" data-i18n="aa-domain-all" aria-pressed="true">All channels</button>
+                <button type="button" class="aa-domain" data-domains="evidence,gut-legacy" data-i18n="ch-gut" aria-pressed="false">Gut Microbiome Co-Metabolism</button>
+                <button type="button" class="aa-domain" data-domains="computational-genomics" data-i18n="ch1-t" aria-pressed="false">Computational Genomics &amp; Epigenomics</button>
+                <button type="button" class="aa-domain" data-domains="metagenomics-informatics" data-i18n="ch2-t" aria-pressed="false">Metagenomics &amp; Microbiome Informatics</button>
+                <button type="button" class="aa-domain" data-domains="structural-bioinformatics" data-i18n="ch3-t" aria-pressed="false">Structural Bioinformatics &amp; Protein Science</button>
+                <button type="button" class="aa-domain" data-domains="systems-biology" data-i18n="ch4-t" aria-pressed="false">Systems Biology &amp; Network Analysis</button>
+                <button type="button" class="aa-domain" data-domains="ml-biology" data-i18n="ch5-t" aria-pressed="false">Machine Learning for Biological Data</button>
+                <button type="button" class="aa-domain" data-domains="single-cell-omics" data-i18n="ch6-t" aria-pressed="false">Single-Cell &amp; Spatial Omics</button>
+                <button type="button" class="aa-domain" data-domains="databases-knowledge-graphs" data-i18n="ch7-t" aria-pressed="false">Biological Databases &amp; Knowledge Graphs</button>
+                <button type="button" class="aa-domain" data-domains="ai-drug-discovery" data-i18n="ch8-t" aria-pressed="false">AI-Driven Drug Discovery</button>
+            </div>
             <div class="aa-input-row">
-                <input type="text" id="aa-input" class="aa-input" data-i18n-placeholder="aa-placeholder" placeholder="e.g. succinate-utilizing bacteria, propionate and backfat">
+                <input type="text" id="aa-input" class="aa-input" data-i18n-placeholder="aa-placeholder" placeholder="e.g. spatial deconvolution, protein language models, variant calling">
                 <button type="button" id="aa-send" class="aa-send" data-i18n="aa-send">Ask</button>
             </div>
             <div id="aa-status" class="aa-status" hidden></div>
@@ -592,8 +618,9 @@
             'attrib': 'AI assessment by DeepSeek, with GLM-4-Flash as fallback; independent verification recommended before citing.',
             'nav-aa': 'Academic Assistant',
             'aa-h': 'Academic Assistant',
-            'aa-intro': 'Ask questions grounded in the group\'s verified literature corpus (26 papers). Answers cite their sources.',
-            'aa-placeholder': 'e.g. succinate-utilizing bacteria, propionate and backfat',
+            'aa-intro': 'Ask across all live channels, or narrow to one. Answers cite the papers they came from.',
+            'aa-domain-all': 'All channels',
+            'aa-placeholder': 'e.g. spatial deconvolution, protein language models, variant calling',
             'aa-send': 'Ask',
             'aa-loading': 'Searching the literature corpus…',
             'aa-error': 'The assistant is unavailable right now. Please try again later.',
@@ -646,8 +673,9 @@
             'attrib': 'AI 评估由 DeepSeek 完成，GLM-4-Flash 作为兜底；引用前建议独立核实。',
             'nav-aa': '学术助手',
             'aa-h': '学术助手',
-            'aa-intro': '基于研究组已核验的文献库（26 篇）提问。回答仅来自该语料并注明出处。',
-            'aa-placeholder': '例如：琥珀酸利用菌、丙酸与背膘',
+            'aa-intro': '跨全部活跃频道提问，也可限定单个频道。回答只依据检索到的文献并标注出处。',
+            'aa-domain-all': '全部频道',
+            'aa-placeholder': '例如：空间转录组去卷积、蛋白语言模型、变异检测',
             'aa-send': '提问',
             'aa-loading': '正在检索语料…',
             'aa-error': '助手暂不可用，请稍后重试。',
@@ -706,6 +734,21 @@
     var aaResult = document.getElementById('aa-result');
     var aaAnswer = document.getElementById('aa-answer');
     var aaSources = document.getElementById('aa-sources');
+    var aaDomains = document.getElementById('aa-domains');
+    var aaDomain = '';
+
+    if (aaDomains) {
+        aaDomains.addEventListener('click', function (e) {
+            var btn = e.target.closest ? e.target.closest('.aa-domain') : null;
+            if (!btn) return;
+            aaDomain = btn.getAttribute('data-domains') || '';
+            Array.prototype.forEach.call(aaDomains.querySelectorAll('.aa-domain'), function (b) {
+                var on = (b === btn);
+                b.classList.toggle('is-active', on);
+                b.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+        });
+    }
 
     function aaLang() {
         return (document.documentElement.lang === 'zh-CN') ? 'zh' : 'en';
@@ -728,7 +771,12 @@
         sources.forEach(function (s) {
             var el = document.createElement('span');
             el.className = 'src';
-            var html = '<strong>' + (s.cite || s.title || '') + '</strong>';
+            var html = '';
+            if (s.domain) {
+                html += '<span class="src-dom">' + s.domain + (s.evidence_level ? ' &middot; ' + s.evidence_level : '') + '</span>';
+            }
+            html += '<strong>' + (s.cite || s.title || '') + '</strong>';
+            if (s.url) html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>';
             if (s.pmid) html += ' <a href="https://pubmed.ncbi.nlm.nih.gov/' + s.pmid + '/" target="_blank" rel="noopener">PMID ' + s.pmid + '</a>';
             if (s.doi) html += ' &middot; <a href="https://doi.org/' + s.doi + '" target="_blank" rel="noopener">DOI</a>';
             el.innerHTML = html;
@@ -744,6 +792,7 @@
         aaResult.hidden = true;
         aaSetStatus(I18N[lang]['aa-loading'], false);
         var url = API_BASE + '/rag_chat?q=' + encodeURIComponent(q);
+        if (aaDomain) { url += '&domains=' + encodeURIComponent(aaDomain); }
         fetch(url)
             .then(function (r) { return r.json(); })
             .then(function (data) {

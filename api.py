@@ -171,6 +171,44 @@ except json.JSONDecodeError as e:
     DOCUMENTS = []
 
 
+# ==================== 学术助手检索层（rag 包） ====================
+CORPUS_DIR = os.path.join(BASE_DIR, "corpus")
+_RAG_INDEX = None
+
+
+def _get_rag_index():
+    """惰性构建 rag 索引；语料缺失或依赖异常时返回 False，自动回退旧词频检索。"""
+    global _RAG_INDEX
+    if _RAG_INDEX is not None:
+        return _RAG_INDEX
+    try:
+        from rag.index import RagIndex, load_corpus
+        docs = load_corpus(CORPUS_DIR)
+        _RAG_INDEX = RagIndex(docs) if docs else False
+        print(f"[启动] rag 索引就绪: {len(docs)} 篇（{CORPUS_DIR}）")
+    except Exception as e:
+        print(f"[警告] rag 索引不可用，回退旧词频检索: {e}")
+        _RAG_INDEX = False
+    return _RAG_INDEX
+
+
+def _to_context_doc(doc):
+    """corpus schema -> rag_answer 期望的 cite/passage 契约。"""
+    authors = str(doc.get("authors") or "").strip()
+    year = doc.get("year")
+    cite = (authors + (", %s" % year if year else "")) if authors else str(doc.get("title") or "")
+    return dict(doc, cite=cite, passage=str(doc.get("abstract") or ""))
+
+
+def _retrieve_chunks(query, top_k=3, domains=None):
+    """优先走 rag 索引（多学科语料 + 双语扩展）；不可用时回退旧词频检索。"""
+    index = _get_rag_index()
+    if index:
+        hits = index.search_with_fallback(query, domains=domains, top_k=top_k)
+        return [_to_context_doc(doc) for _, doc in hits]
+    return _retrieve_chunks_legacy(query, top_k)
+
+
 # ==================== 工具函数 ====================
 
 def search_knowledge(query: str) -> Optional[dict]:
@@ -414,7 +452,7 @@ _RAG_SYNONYMS = {
 }
 
 
-def _retrieve_chunks(query: str, top_k: int = 3) -> list:
+def _retrieve_chunks_legacy(query: str, top_k: int = 3) -> list:
     """
     轻量双语词频检索：对每篇 doc 的 cite+title+passage 做 token 重叠计数，取 top_k。
     中文提问先经 _RAG_SYNONYMS 映射到英文同义词，英文提问直接用词级 token。
@@ -467,7 +505,9 @@ RAG_SYSTEM_PROMPT = """你是一个学术文献问答助手，服务于一个共
 3. 不得自行生成参考文献；只能引用检索片段中出现的文献标题与来源。
 4. 回答语言必须与用户问题的语言一致（用户用中文则用中文，用英文则用英文）。
 5. 回答末尾用一行标注信息来源文献（作者 + 年份 + 期刊）。PMID/DOI 只在检索片段明确给出时才照抄，绝不编造。
-6. 回答要简洁、学术化；不要使用表情符号或多余的语气词。"""
+6. 回答要简洁、学术化；不要使用表情符号或多余的语气词。
+7. 每条引用都要标出它来自哪个频道（检索片段方括号内的领域字段）；不同频道/领域的结论不得拼接成一条因果链。
+8. 若检索片段只覆盖问题的一部分，明确指出缺口，不要用常识补全。"""
 
 
 def rag_answer(question: str, chunks: list) -> tuple:
@@ -482,7 +522,8 @@ def rag_answer(question: str, chunks: list) -> tuple:
         if doc.get("doi"):
             ids.append(f"DOI: {doc['doi']}")
         id_str = (" | " + " | ".join(ids)) if ids else ""
-        context_lines.append(f"[{i}] {cite}{id_str}\n    {passage[:1600]}")
+        meta = " | ".join(x for x in (doc.get("domain", ""), doc.get("evidence_level", "")) if x)
+        context_lines.append(f"[{i}] ({meta}) {cite}{id_str}\n    {passage[:1600]}")
     context = "\n\n".join(context_lines)
 
     user_message = f"""## 用户问题
@@ -515,6 +556,10 @@ def rag_answer(question: str, chunks: list) -> tuple:
             "title": doc.get("title", ""),
             "year": doc.get("year", ""),
             "journal": doc.get("journal", ""),
+            "domain": doc.get("domain", ""),
+            "evidence_level": doc.get("evidence_level", ""),
+            "url": doc.get("url", ""),
+            "quality": doc.get("quality", 0),
         }
         if doc.get("pmid"):
             src["pmid"] = doc["pmid"]
@@ -881,7 +926,8 @@ async def ai_analyze(
 
 
 @app.get("/api/rag_chat")
-async def rag_chat(request: Request, q: str = Query(..., description="用户提问")):
+async def rag_chat(request: Request, q: str = Query(..., description="用户提问"),
+                   domains: str = Query("", description="限定频道，逗号分隔，空=全站")):
     """
     学术助手 RAG 问答接口
     1. 从 documents.json 语料检索 top_k 相关片段
@@ -910,7 +956,8 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
             content={"success": False, "error": "问题不能为空"},
         )
 
-    chunks = _retrieve_chunks(question, top_k=3)
+    domain_filter = [d.strip() for d in (domains or "").split(",") if d.strip()] or None
+    chunks = _retrieve_chunks(question, top_k=6, domains=domain_filter)
 
     # 语料无匹配：直接返回"暂无相关资料"，不调用 DeepSeek（不消耗额度）
     if not chunks:
