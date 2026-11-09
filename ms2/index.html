@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MS2: A Tiered Evidence Framework for Assessing Translational Readiness of Candidate Probiotics in Livestock</title>
+<title>MS2 &middot; Six-Tier Evidence Framework &mdash; bioTriage-Open</title>
 <style>
 :root { --bg: #fff; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8c8c8c; --border: #d5d5d5; --border-light: #eaeaea; --accent: #1a5276; --max-width: 800px; --font-serif: 'Georgia','Times New Roman',serif; --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -138,6 +138,8 @@ h2::after {
     h1 { font-size: 21px; }
     .container { padding: 32px 18px 52px; }
 }
+.lede { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin: 12px 0 8px; }
+.scope-note { font-size: 12.5px; color: var(--text-muted); border-left: 3px solid var(--border); padding-left: 10px; margin: 0 0 26px; }
 </style>
 </head>
 <body>
@@ -159,18 +161,9 @@ h2::after {
     </aside>
     <div class="page">
         <div class="container">
-<h1>A Tiered Evidence Framework for Assessing Translational Readiness of Candidate Probiotics in Livestock: A Systematic Evidence Mapping with Methodological Development</h1>
-<p class="authors">Liu Haoan, Feng Wen<sup>*</sup></p>
-<p class="affil">Yulin University, Yulin, Shaanxi 719000, China &middot; wfeng@yulinu.edu.cn &middot; ORCID: 0000-0001-8485-5345 (W.F.), 0009-0008-1764-0908 (H.L.)</p>
-<p class="affil">Manuscript in preparation &middot; Submitted to Systematic Reviews &middot; Full text and supplementary materials available on request</p>
-
-<h2>Abstract</h2>
-<div class="abstract">
-<strong>Background.</strong> Probiotic development in livestock is hindered by the absence of a standardized framework for assessing the strength of functional evidence. Researchers routinely conflate genus-level metagenomic associations with strain-level causal validation, leading to inflated translational expectations. Existing evidence assessment systems (e.g., GRADE) were designed for clinical interventions in human populations and do not account for strain specificity or target-host validation.<br><br>
-<strong>Methods.</strong> We developed a <strong>six-tier evidence assessment framework</strong> (Levels 1a to 4) through an iterative consensus-building process involving three independent reviewers. The framework incorporates <strong>strain specificity</strong> and <strong>target-host validation</strong> as non-negotiable dimensions. A novel transitional tier (Level 3.5) deconvolves host-species transfer from strain-origin transfer&mdash;a structural confound in cross-species extrapolation. The framework was applied through a systematic evidence mapping of <em>Phascolarctobacterium succinatutens</em>, an obligate succinate-to-propionate bacterium proposed as a probiotic against post-weaning diarrhea in pigs. PRISMA-ScR guidelines were followed.<br><br>
-<strong>Results.</strong> Across all three core functional claims for <em>P. succinatutens</em> (succinate scavenging and pathogen inhibition, intestinal barrier maintenance, and lipid deposition reduction), none exceeds <strong>Level 3</strong> (murine causal validation with human-derived strains). Level 3.5 (human-derived strain in porcine models) and Level 4 (porcine-derived strain mono-colonization with independent replication) remain entirely vacant across all claims. Illustrative comparator mapping of <em>Faecalibacterium prausnitzii</em> and <em>Roseburia</em> spp. confirms that this gap is systematic rather than candidate-specific, reflecting a structural deficit in translational microbiome research.<br><br>
-<strong>Conclusions.</strong> The tiered framework converts the generic concern of "insufficient evidence" into a granular diagnosis of precisely which experimental data are missing for each functional claim, thereby defining the minimum evidential threshold for translational decisions. The framework is species-agnostic and is offered as a candidate community standard for reporting the translational readiness of microbiome-derived probiotic candidates in livestock.
-</div>
+<h1>MS2 &middot; Six-Tier Evidence Framework</h1>
+<p class="lede">How the Evidence Monitor grades a paper: six tiers from mechanistic in-vitro work (L1a) up to intervention validation in the target host (L4), constrained throughout by two dimensions &mdash; <strong>strain specificity</strong> and <strong>target-host validation</strong>.</p>
+<p class="scope-note"><strong>Applies to:</strong> the gut microbiome co-metabolism channel (Evidence Monitor) only. The eight bioinformatics channels are graded by AI significance rating (High / Medium / Low) instead, and do not use this hierarchy.</p>
 
 <h2>1. Six-Tier Evidence Assessment Framework</h2>
 
@@ -196,87 +189,19 @@ h2::after {
 <strong>Deconvolution logic.</strong> Hold strain origin constant (human-derived) while varying host species (mouse &rarr; pig). A positive L3.5 result demonstrates that the mechanism transfers across host species, isolating strain origin as the remaining barrier to L4. A negative L3.5 result identifies host-species incompatibility as the primary barrier, directing resources away from costly porcine-derived strain isolation toward mechanistic investigation of species-specific factors.
 </div>
 
-<h2>3. Systematic Evidence Mapping: <em>P. succinatutens</em> as Worked Example</h2>
-<p>Literature searches were conducted in PubMed (MEDLINE), Web of Science Core Collection, and Scopus from database inception to May 2025. Of 166 records retrieved (100 after deduplication), 15 studies met inclusion criteria for qualitative synthesis. Three independent reviewers with doctoral-level expertise in porcine gut microbiome and probiotic research completed evidence tier assignment.</p>
+<h2>3. Evidence Challenge Principle</h2>
+<p>The framework includes a provisional mechanism for dynamic evidence updating. Recognizing that evidence tiers are static snapshots at a single point in time, an <strong>evidence challenge principle</strong> is proposed: any tier assignment may be challenged by new experimental data, and a provisional workflow defines how evidence upgrades and downgrades should be adjudicated. A formal Bayesian belief-updating extension is deferred to future work. This principle ensures the framework remains a living tool rather than a static classification.</p>
 
-<div class="result-grid">
-<div class="result-card">
-<h4>Function 1: Succinate Scavenging &amp; Pathogen Inhibition</h4>
-<p class="level-line">Highest porcine evidence: <strong>L1b</strong> (co-occurrence network inference)</p>
-<p class="level-line">Highest murine evidence: <strong>L3</strong> (human-derived strain mono-colonization)</p>
-<p class="level-line" style="color:#e53e3e;">L3.5: <strong>Vacant</strong> &middot; L4: <strong>Vacant</strong></p>
-</div>
-<div class="result-card">
-<h4>Function 2: Intestinal Barrier Maintenance</h4>
-<p class="level-line">Highest porcine evidence: <strong>L2</strong> (propionate validated, non-strain-specific)</p>
-<p class="level-line">Highest murine evidence: <strong>L3</strong> (human-derived strain mono-colonization)</p>
-<p class="level-line" style="color:#e53e3e;">L3.5: <strong>Vacant</strong> &middot; L4: <strong>Vacant</strong></p>
-</div>
-<div class="result-card">
-<h4>Function 3: Lipid Deposition Reduction</h4>
-<p class="level-line">Highest porcine evidence: <strong>L1b</strong> (UCP1 knock-in pig fecal SCFA correlation)</p>
-<p class="level-line">Highest murine evidence: <strong>L3</strong> (MYC&ndash;arginine&ndash;FOXO3a pathway validated)</p>
-<p class="level-line" style="color:#e53e3e;">L3.5: <strong>Vacant</strong> &middot; L4: <strong>Vacant</strong></p>
-</div>
-</div>
-
-<div class="key-finding">
-<strong>Core finding.</strong> Across all three functional claims, <strong>Level 3.5 and Level 4 remain entirely vacant</strong>. This finding is structural, not candidate-specific. Illustrative comparator mapping of <em>F. prausnitzii</em> and <em>Roseburia</em> spp. reveals a parallel evidence structure: both have established human health associations, strong metagenomic association signals in pigs, and murine mechanistic validation, but neither has porcine mono-colonization data (L3.5 or L4). The Level 4 void is systematic across candidate porcine probiotics in the current literature.
-</div>
-
-<h2>4. Evidence Challenge Principle</h2>
-<p>The framework includes a provisional mechanism for dynamic evidence updating (detailed in Additional File 7). Recognizing that evidence tiers are static snapshots at a single point in time, an <strong>evidence challenge principle</strong> is proposed: any tier assignment may be challenged by new experimental data, and a provisional workflow defines how evidence upgrades and downgrades should be adjudicated. A formal Bayesian belief-updating extension is deferred to future work. This principle ensures the framework remains a living tool rather than a static classification.</p>
-
-<h2>5. Comparator Analysis</h2>
-<div class="table-scroll">
-<table class="tier-table">
-<tr><th>Candidate</th><th>Porcine Evidence</th><th>Murine Evidence</th><th>L3.5</th><th>L4</th><th>Assessment Scope</th></tr>
-<tr><td class="lvl"><em>P. succinatutens</em></td><td>L1b&ndash;L2</td><td>L3</td><td style="color:#e53e3e;">Vacant</td><td style="color:#e53e3e;">Vacant</td><td>Systematic (PRISMA-ScR)</td></tr>
-<tr><td class="lvl"><em>F. prausnitzii</em></td><td>L1b</td><td>L3 (human)</td><td style="color:#e53e3e;">Vacant</td><td style="color:#e53e3e;">Vacant</td><td>Illustrative</td></tr>
-<tr><td class="lvl"><em>Roseburia</em> spp.</td><td>L1b</td><td>L3 (human)</td><td style="color:#e53e3e;">Vacant</td><td style="color:#e53e3e;">Vacant</td><td>Illustrative</td></tr>
-</table>
-</div>
-
-<h2>6. Scope and Limitations</h2>
+<h2>4. Scope and Limitations</h2>
 <p>The framework has been formally applied to one candidate (<em>P. succinatutens</em>) with two illustrative comparators. Broader validation across a larger panel of candidates is needed to establish generalizability. Tier assignments reflect the highest experimental design type available, not study quality within a tier (a murine mono-colonization study with n = 3 receives the same L3 classification as one with n = 30, though they carry different statistical weight). The framework evaluates functional claims; it does not assess safety, which requires independent toxicological and microbiological evaluation.</p>
 
-<h2>7. Relationship to MS1</h2>
+<h2>5. Relationship to MS1</h2>
 <p>This framework is complementary to the <a href="../ms1/">Compartmentalized Co-Metabolism Network Model (MS1)</a>. MS1 provides a biological model of bidirectional host&ndash;microbiome interactions across three gut compartments, with a four-dimensional matrix rating system for diagnostic evidence mapping at the metabolite-node level. MS2 provides a hierarchical evidence assessment framework for evaluating translational readiness of specific probiotic candidates at the strain level. The two frameworks are <strong>layered</strong>: MS1 diagnoses where evidence gaps exist across a co-metabolism network; MS2 diagnoses how close a specific candidate is to translational readiness within that network. Together they form the methodological foundation for the Gut Microbiome Co-Metabolism Evidence Monitor on <a href="../">bioTriage-Open</a>.</p>
 
-<h2>8. Supplementary Materials</h2>
-<ul class="ref-list">
-<li><strong>Additional File 1.</strong> PRISMA-ScR Checklist (completed).</li>
-<li><strong>Additional File 2.</strong> Extended Biology Review: genomic characteristics, metabolic ecology, and cross-feeding network position of <em>P. succinatutens</em> within the genus <em>Phascolarctobacterium</em>.</li>
-<li><strong>Additional File 3.</strong> Evidence composition by functional claim (stacked bar visualization of evidence types contributing to each claim).</li>
-<li><strong>Additional File 4.</strong> Contextual information on study design characteristics of included studies.</li>
-<li><strong>Additional File 5.</strong> Per-study evidence scoring with justifications.</li>
-<li><strong>Additional File 6.</strong> Complete search strategies for PubMed, Web of Science, and Scopus.</li>
-<li><strong>Additional File 7.</strong> Comparator evidence summary for <em>F. prausnitzii</em> and <em>Roseburia</em> spp., and the evidence challenge principle with provisional workflow for dynamic evidence updating.</li>
-<li><strong>Additional File 8.</strong> Node-level evidence justifications for each functional claim.</li>
-<li><strong>Additional File 9.</strong> Extended limitations discussion.</li>
-</ul>
-<p style="font-size:12px;color:var(--text-muted);margin-top:8px;">All supplementary materials are available on request from the corresponding author.</p>
-
-<h2 id="references">9. Methodology References</h2>
+<h2 id="references">6. Methodology References</h2>
 <p>The six-tier framework is anchored to established evidence-grading and probiotic-evaluation standards rather than to ad hoc criteria.</p>
 
-<p><strong>Evidence levels (the six tiers L1a&ndash;L4).</strong> Level assignment follows a <strong>hierarchy of evidence</strong>: each rung reflects the strongest study design attained, from mechanistic and association-level evidence (L1) to causal validation in the target host (L4). GRADE supplies the complementary language for rating the <em>quality</em> of evidence <em>within</em> a level through its downgrade and upgrade domains &mdash; flagged here as a recognised future refinement rather than the current level-assignment rule.</p>
-<ul class="ref-list">
-<li><strong>[1]</strong> Evans D. Hierarchy of evidence: a framework for ranking evidence evaluating healthcare interventions. J Clin Nurs. 2003;12(1):77&ndash;84. PMID 12519253.</li>
-<li><strong>[2]</strong> Guyatt GH, Oxman AD, Vist GE, et al.; GRADE Working Group. GRADE: an emerging consensus on rating quality of evidence and strength of recommendations. BMJ. 2008;336(7650):924&ndash;926. PMID 18436948.</li>
-<li><strong>[3]</strong> Balshem H, Helfand M, Schünemann HJ, et al. GRADE guidelines: 3. Rating the quality of evidence. J Clin Epidemiol. 2011;64(4):401&ndash;406. PMID 21208779.</li>
-</ul>
-
-<p><strong>Strain specificity and target-host validation.</strong> The requirement that a candidate be validated at the strain level and in the target host follows the probiotic-evaluation consensus.</p>
-<ul class="ref-list">
-<li><strong>[4]</strong> Hill C, Guarner F, Reid G, et al. Expert consensus document: The International Scientific Association for Probiotics and Prebiotics consensus statement on the scope and appropriate use of the term probiotic. Nat Rev Gastroenterol Hepatol. 2014;11(8):506&ndash;514. PMID 24912386.</li>
-<li><strong>[5]</strong> Binda S, Hill C, Johansen E, et al. Criteria to Qualify Microorganisms as &ldquo;Probiotic&rdquo; in Foods and Dietary Supplements. Front Microbiol. 2020;11:1662. PMID 32793153.</li>
-</ul>
-
-<p><strong>Evidence-mapping method.</strong> The systematic evidence mapping follows PRISMA-ScR.</p>
-<ul class="ref-list">
-<li><strong>[6]</strong> Tricco AC, Lillie E, Zarin W, et al. PRISMA Extension for Scoping Reviews (PRISMA-ScR): Checklist and Explanation. Ann Intern Med. 2018;169(7):467&ndash;473. PMID 30178033.</li>
-</ul>
+<p><strong>Anchored to established standards.</strong> Level assignment follows the hierarchy-of-evidence tradition (Evans 2003; GRADE &mdash; Guyatt 2008, Balshem 2011); the strain-specificity and target-host requirements follow the ISAPP probiotic consensus (Hill 2014; Binda 2020); the evidence-mapping protocol follows PRISMA-ScR (Tricco 2018).</p>
 
 <p>The causal-inference and review-quality references that underpin the coupling and measurement-depth dimensions (Bradford Hill, commensal Koch&rsquo;s postulates, AMSTAR 2, PRISMA 2020) are listed in <a href="../ms1/">MS1, section 7 (Methodology References)</a>.</p>
 
