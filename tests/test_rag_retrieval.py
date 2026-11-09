@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from rag.index import RagIndex, load_corpus
+from rag.index import RagIndex, expand, load_corpus
 
 CORPUS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'corpus')
 CASES = [
@@ -63,6 +63,15 @@ class RetrievalTest(unittest.TestCase):
 
     def test_out_of_scope_returns_nothing(self):
         self.assertEqual(self.index.search_with_fallback('今天天气怎么样', top_k=3), [])
+
+    def test_expand_has_no_duplicate_terms(self):
+        """同一英文词被多个中文概念命中时必须去重（曾导致 ontology 重复计权）。"""
+        terms = [t for t, _ in expand('知识图谱本体构建')]
+        self.assertEqual(len(terms), len(set(terms)), 'expand 返回了重复词：%s' % terms)
+
+    def test_knowledge_graph_ranks_before_ontology(self):
+        domains = [d['domain'] for _, d in self.index.search_with_fallback('知识图谱本体构建', top_k=3)]
+        self.assertIn('databases-knowledge-graphs', domains, domains)
 
 
 if __name__ == '__main__':

@@ -35,17 +35,25 @@ def en_tokens(text):
     return out
 
 
-def expand(query):
+def expand(query, primary=2.0, secondary=1.2):
+    """中文概念 -> 英文检索词。
+
+    同一英文词被多个中文概念命中时取最大权重而不是累加（否则 ontology 之类会被
+    重复计权，把 knowledge graph 的研究压到下面）；每个概念的首个英文词为主词，
+    权重高于同义次词，避免"命中一个强词"输给"命中多个弱词"。
+    """
     low = str(query or '').lower()
     for filler in ZH_QUERY_FILLER:
         low = low.replace(filler, ' ')
-    pairs = []
+    weights = {}
     for cn, ens in LEXICON.items():
         if cn in low:
-            pairs.extend((e, 2.0) for e in ens)
-    pairs.extend((t, 1.0) for t in en_tokens(query))
+            for i, english in enumerate(ens):
+                weights[english] = max(weights.get(english, 0.0), primary if i == 0 else secondary)
+    for token in en_tokens(query):
+        weights[token] = max(weights.get(token, 0.0), 1.0)
     out = []
-    for term, weight in pairs:
+    for term, weight in weights.items():
         key = ' '.join(stem(w) for w in term.split()) if ' ' in term else stem(term)
         out.append((key, weight))
     return out
