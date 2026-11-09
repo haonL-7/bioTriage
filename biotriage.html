@@ -213,89 +213,24 @@
             border-bottom: 1px solid var(--primary);
         }
 
-        /* ---- Featured card (glass) ---- */
-        .featured-card {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--primary);
-            border-radius: var(--radius-sm);
-            padding: 28px 32px;
-            margin-bottom: 16px;
-            box-shadow: none;
-            transition: border-color 0.2s var(--ease);
-        }
-        .featured-card:hover {
-            border-color: var(--primary);
-        }
-        .featured-card .fc-flag {
-            font-family: var(--font-en);
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 8px;
-        }
-        .featured-card .fc-title {
-            font-family: var(--font-display);
-            font-size: 21px;
-            font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 8px;
-        }
-        .featured-card .fc-desc { font-size: 13.5px; color: var(--ink-md); line-height: 1.8; margin-bottom: 14px; }
-        .featured-card .fc-desc a { color: var(--accent); }
-        .featured-card .fc-meta { display: flex; gap: 8px; flex-wrap: wrap; }
-        .fc-meta span {
-            font-size: 11px;
-            color: var(--ink-md);
-            background: var(--bg-alt);
-            border: 1px solid var(--border-lt);
-            padding: 4px 12px;
-            border-radius: 999px;
-            letter-spacing: 0.2px;
-        }
+        /* ---- Entry cards (three platform entry points) ---- */
+        .entry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .entry-card { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--white); padding: 22px 24px; transition: border-color 0.2s var(--ease); }
+        .entry-card:hover { border-color: var(--primary); }
+        .entry-card .ec-status { font-family: var(--font-en); font-size: 10px; font-weight: 700; color: var(--ink-xlt); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; }
+        .entry-card .ec-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .entry-card .ec-title a { color: var(--ink); text-decoration: none; }
+        .entry-card .ec-title a:hover,
+        .entry-card .ec-title a:focus-visible { color: var(--primary); }
+        .entry-card .ec-desc { font-size: 13px; color: var(--ink-md); line-height: 1.8; }
+        .entry-card .ec-desc a { color: var(--accent); }
 
-        /* ---- Channel grid ---- */
-        .channel-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        .channel-card {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: var(--white);
-            padding: 22px 24px;
-            transition: border-color 0.2s var(--ease);
-        }
-        .channel-card:hover {
-            border-color: var(--primary);
-        }
-        .channel-card .cc-status {
-            font-family: var(--font-en);
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--ink-xlt);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 6px;
-        }
-        .channel-card .cc-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
-        .channel-card .cc-desc { font-size: 12px; color: var(--ink-md); line-height: 1.75; margin-bottom: 10px; }
-        .channel-card .cc-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-        .channel-card .cc-tags span {
-            font-size: 10px;
-            color: var(--ink-lt);
-            background: var(--bg-alt);
-            border: 1px solid var(--border-lt);
-            padding: 2px 9px;
-            border-radius: 999px;
-            letter-spacing: 0.2px;
-        }
+        /* ---- Channel chips ---- */
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { font-family: var(--font-en); font-size: 12.5px; color: var(--ink-md); background: var(--bg-alt); border: 1px solid var(--border-lt); border-radius: 999px; padding: 6px 14px; text-decoration: none; }
+        .chip:hover,
+        .chip:focus-visible { color: var(--primary); border-color: var(--primary); }
+        .planning-note { margin-top: 14px; font-size: 12px; color: var(--ink-xlt); line-height: 1.9; }
 
         /* ---- Methodology / Starred (glass panels) ---- */
         .methodology {
@@ -401,6 +336,7 @@
             text-align: center;
             line-height: 1.9;
         }
+        .attrib { font-size: 11.5px; color: var(--ink-xlt); line-height: 1.8; margin-bottom: 10px; }
         .site-footer a { color: var(--accent); }
 
         /* ---- Responsive ---- */
@@ -408,9 +344,8 @@
             .top-bar { flex-direction: column; height: auto; gap: 2px; padding: 10px 16px; text-align: center; }
             .site-header { padding: 48px 16px 32px; }
             .site-header .logo { font-size: 40px; }
-            .channel-grid { grid-template-columns: 1fr; }
-            .featured-card, .methodology { padding: 20px; }
-            .featured-card .fc-title { font-size: 18px; }
+            .entry-grid { grid-template-columns: 1fr; }
+            .methodology { padding: 20px; }
         }
         @media (max-width: 900px) {
             .layout { flex-direction: column; }
@@ -427,8 +362,8 @@
         button,
         .lang-btn,
         .side-item,
-        .featured-card,
-        .channel-card {
+        .entry-card,
+        .chip {
             transition-property: color, background-color, border-color, box-shadow, opacity, transform;
             transition-duration: 150ms;
             transition-timing-function: ease-out;
@@ -437,8 +372,8 @@
         button:active,
         .lang-btn:active,
         .side-item:active,
-        .featured-card:active,
-        .channel-card:active { transform: translateY(1px); }
+        .entry-card:active,
+        .chip:active { transform: translateY(1px); }
 
         /* 1b) live-page controls: top-bar nav link + Academic Assistant input/send */
         .tb-link,
@@ -500,8 +435,8 @@
             button:active,
             .lang-btn:active,
             .side-item:active,
-            .featured-card:active,
-            .channel-card:active { transform: none; }
+            .entry-card:active,
+            .chip:active { transform: none; }
         }
     </style>
 </head>
@@ -530,74 +465,54 @@
 
 <header class="site-header">
     <div class="logo">bioTriage<span class="pipe">-Open</span></div>
-    <p class="tagline" data-i18n="tagline">AI-curated literature intelligence for the life sciences &mdash; daily selection and assessment from open-access journals, preprints, and databases.</p>
+    <p class="tagline" data-i18n="tagline">AI-curated literature intelligence for the life sciences, graded against explicit evidence frameworks.</p>
     <p class="meta" data-i18n="meta">Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv &middot; Open access</p>
 </header>
 
 <main class="main-content">
 
-    <div class="section-label" data-i18n="sec-active">Active Channels</div>
+    <div class="section-label" data-i18n="sec-start">Start here</div>
 
-    <a href="evidence/" class="featured-card">
-        <div class="fc-flag" data-i18n="fc-flag">Live &mdash; Updated Daily</div>
-        <div class="fc-title" data-i18n="fc-title">Gut Microbiome Co-Metabolism Evidence Monitor</div>
-        <div class="fc-desc" data-i18n-html="fc-desc">
-            Automated daily surveillance and AI evaluation of microbial metabolite&ndash;host interactions in the porcine gut.
-            <strong>This channel is the reference implementation</strong> of two methodological frameworks developed by Liu &amp; Feng (2025&ndash;2026).
-            See <a href="ms1/">MS1: Compartmentalized Co-Metabolism Network Model</a> and
-            <a href="ms2/">MS2: Six-Tier Evidence Framework for Probiotic Translational Readiness</a>
-            for the complete methodology.
-            The evidence assessment system described in these manuscripts is <strong>channel-specific</strong>, designed for the epistemic standards
-            of gut microbiome co-metabolism research. Other bioTriage-Open channels will employ evaluation frameworks appropriate to their respective domains.
+    <div class="entry-grid">
+        <div class="entry-card">
+            <div class="ec-status" data-i18n="t1-s">Live &middot; updated daily</div>
+            <h3 class="ec-title"><a href="evidence/" data-i18n="t1-t">Evidence Monitor</a></h3>
+            <p class="ec-desc" data-i18n="t1-d">Daily screening and AI evidence grading of new open-access papers, preprints, and database releases.</p>
         </div>
-        <div class="fc-meta">
-            <span data-i18n="fc-m1">Six-Tier Evidence (L1a&ndash;L4)</span>
-            <span data-i18n="fc-m2">4D Matrix Scoring</span>
-            <span data-i18n="fc-m3">25+ Metabolite Nodes</span>
-            <span data-i18n="fc-m4">Porcine Gut Model</span>
-            <span data-i18n="fc-m5">DeepSeek API</span>
+        <div class="entry-card">
+            <div class="ec-status" data-i18n="t2-s">Daily digest</div>
+            <h3 class="ec-title"><a href="daily/" data-i18n="t2-t">Literature Daily</a></h3>
+            <p class="ec-desc" data-i18n="t2-d">One page a day: the highest-evidence papers, ranked and summarized.</p>
         </div>
-    </a>
-
-    <div class="section-label" data-i18n="sec-bio">Bioinformatics &amp; Computational Biology</div>
-    <div class="channel-grid">
-        <a href="computational-genomics/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live-lc">Live &mdash; Lightweight Curation</div><div class="cc-title" data-i18n="ch1-t">Computational Genomics &amp; Epigenomics</div><div class="cc-desc" data-i18n="ch1-d">AI-curated selection from open-access journals: variant calling, genome assembly, epigenomic profiling, and genotype-phenotype integration methods.</div><div class="cc-tags"><span data-i18n="ch1-g1">Variant Calling</span><span data-i18n="ch1-g2">Epigenomics</span><span data-i18n="ch1-g3">GWAS</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
-        <a href="metagenomics-informatics/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live">Live</div><div class="cc-title" data-i18n="ch2-t">Metagenomics &amp; Microbiome Informatics</div><div class="cc-desc" data-i18n="ch2-d">Metagenomic assembly, binning, taxonomic profiling, and functional annotation of microbial communities.</div><div class="cc-tags"><span data-i18n="ch2-g1">Assembly</span><span data-i18n="ch2-g2">Binning</span><span data-i18n="ch2-g3">MWAS</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
-        <a href="structural-bioinformatics/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live">Live</div><div class="cc-title" data-i18n="ch3-t">Structural Bioinformatics &amp; Protein Science</div><div class="cc-desc" data-i18n="ch3-d">Protein structure prediction, molecular dynamics, docking, and structure-based function annotation.</div><div class="cc-tags"><span data-i18n="ch3-g1">AlphaFold</span><span data-i18n="ch3-g2">MD</span><span data-i18n="ch3-g3">Docking</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
-        <a href="systems-biology/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live">Live</div><div class="cc-title" data-i18n="ch4-t">Systems Biology &amp; Network Analysis</div><div class="cc-desc" data-i18n="ch4-d">Gene regulatory network inference, metabolic network modeling, and multi-omics integration frameworks.</div><div class="cc-tags"><span data-i18n="ch4-g1">Network Inference</span><span data-i18n="ch4-g2">FBA</span><span data-i18n="ch4-g3">Multi-Omics</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
-        <a href="ml-biology/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live">Live</div><div class="cc-title" data-i18n="ch5-t">Machine Learning for Biological Data</div><div class="cc-desc" data-i18n="ch5-d">Deep learning, protein language models, GNNs, and foundation models for biological sequence and structure.</div><div class="cc-tags"><span data-i18n="ch5-g1">Protein LLMs</span><span data-i18n="ch5-g2">GNNs</span><span data-i18n="ch5-g3">scFoundation</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
-        <a href="single-cell-omics/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live">Live</div><div class="cc-title" data-i18n="ch6-t">Single-Cell &amp; Spatial Omics</div><div class="cc-desc" data-i18n="ch6-d">Computational methods for scRNA-seq, ATAC-seq, trajectory inference, and spatial transcriptomics.</div><div class="cc-tags"><span data-i18n="ch6-g1">scRNA-seq</span><span data-i18n="ch6-g2">Trajectory</span><span data-i18n="ch6-g3">Spatial</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
-        <a href="databases-knowledge-graphs/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live">Live</div><div class="cc-title" data-i18n="ch7-t">Biological Databases &amp; Knowledge Graphs</div><div class="cc-desc" data-i18n="ch7-d">Database releases, knowledge graph construction, ontology development, and FAIR data infrastructure.</div><div class="cc-tags"><span data-i18n="ch7-g1">Gene Ontology</span><span data-i18n="ch7-g2">KG</span><span data-i18n="ch7-g3">FAIR</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
-        <a href="ai-drug-discovery/" class="channel-card" style="text-decoration:none;color:inherit;display:block;"><div class="cc-status" style="color:#1a6b3c;" data-i18n="st-live">Live</div><div class="cc-title" data-i18n="ch8-t">AI-Driven Drug Discovery</div><div class="cc-desc" data-i18n="ch8-d">Virtual screening, molecular generation, ADMET prediction, and computational drug repurposing.</div><div class="cc-tags"><span data-i18n="ch8-g1">Virtual Screening</span><span data-i18n="ch8-g2">ADMET</span><span data-i18n="ch8-g3">Repurposing</span><span style="background:rgba(26,107,60,0.1);color:#1a6b3c;" data-i18n="tag-ai">AI-Curated</span></div></a>
+        <div class="entry-card">
+            <div class="ec-status" data-i18n="t3-s">MS1 &middot; MS2</div>
+            <h3 class="ec-title"><a href="ms1/" data-i18n="t3-t">Methodology</a></h3>
+            <p class="ec-desc" data-i18n-html="t3-d">The frameworks behind every score: six-tier evidence grading and the four-dimensional matrix. See also <a href="ms2/">MS2</a>.</p>
+        </div>
     </div>
 
-    <div class="section-label" data-i18n="sec-exp">Experimental Biology &amp; Preclinical Research</div>
-    <div class="channel-grid">
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p1-t">Molecular &amp; Cellular Biology</div><div class="cc-desc" data-i18n="p1-d">Gene expression, chromatin biology, protein trafficking, signal transduction, cell cycle, and programmed cell death.</div><div class="cc-tags"><span data-i18n="p1-g1">Transcription</span><span data-i18n="p1-g2">Signaling</span><span data-i18n="p1-g3">Autophagy</span></div></div>
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p2-t">Immunology &amp; Host&ndash;Microbe Interactions</div><div class="cc-desc" data-i18n="p2-d">Innate and adaptive immunity, mucosal immunology, inflammasome biology, vaccine development, host&ndash;pathogen co-evolution.</div><div class="cc-tags"><span data-i18n="p2-g1">Mucosal Immunity</span><span data-i18n="p2-g2">Inflammasome</span><span data-i18n="p2-g3">Vaccines</span></div></div>
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p3-t">Neuroscience &amp; Neural Circuits</div><div class="cc-desc" data-i18n="p3-d">Synaptic transmission, neural circuit mapping, neurodegeneration, glial biology, and the gut&ndash;brain axis.</div><div class="cc-tags"><span data-i18n="p3-g1">Synapse</span><span data-i18n="p3-g2">Neurodegeneration</span><span data-i18n="p3-g3">Gut&ndash;Brain</span></div></div>
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p4-t">Cancer Biology &amp; Tumor Microenvironment</div><div class="cc-desc" data-i18n="p4-d">Oncogenic signaling, tumor suppressors, metastasis, angiogenesis, tumor immunology, and the tumor microbiome.</div><div class="cc-tags"><span data-i18n="p4-g1">Oncogenes</span><span data-i18n="p4-g2">Metastasis</span><span data-i18n="p4-g3">Tumor Microbiome</span></div></div>
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p5-t">Developmental &amp; Stem Cell Biology</div><div class="cc-desc" data-i18n="p5-d">Embryogenesis, organogenesis, adult stem cell niches, organoid technology, and regenerative medicine.</div><div class="cc-tags"><span data-i18n="p5-g1">Organoids</span><span data-i18n="p5-g2">iPSCs</span><span data-i18n="p5-g3">Regeneration</span></div></div>
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p6-t">Microbiology &amp; Infectious Disease</div><div class="cc-desc" data-i18n="p6-d">Bacterial physiology, antibiotic resistance, virology, fungal pathogenesis, and emerging infectious agents.</div><div class="cc-tags"><span data-i18n="p6-g1">Antibiotics</span><span data-i18n="p6-g2">Virology</span><span data-i18n="p6-g3">Pathogenesis</span></div></div>
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p7-t">Physiology &amp; Systemic Metabolism</div><div class="cc-desc" data-i18n="p7-d">Endocrinology, metabolic homeostasis, cardiovascular physiology, adipose tissue biology, and inter-organ communication.</div><div class="cc-tags"><span data-i18n="p7-g1">Endocrinology</span><span data-i18n="p7-g2">Metabolism</span><span data-i18n="p7-g3">Circadian</span></div></div>
-        <div class="channel-card"><div class="cc-status" data-i18n="st-planned">Planned</div><div class="cc-title" data-i18n="p8-t">Pharmacology &amp; Chemical Biology</div><div class="cc-desc" data-i18n="p8-d">Drug target identification, pharmacokinetics, chemical probes, PROTACs, and high-throughput screening methodologies.</div><div class="cc-tags"><span data-i18n="p8-g1">Target ID</span><span data-i18n="p8-g2">PROTACs</span><span data-i18n="p8-g3">HTS</span></div></div>
-    </div>
+    <div class="section-label" data-i18n="sec-channels">Live channels</div>
 
-    <div class="methodology">
-        <h3 data-i18n="meth-h">Evaluation Methodology</h3>
-        <p data-i18n-html="meth-p1">
-            The structured evidence assessment methodology currently deployed in the active channel is derived from two manuscripts by Liu Haoan and Feng Wen (Yulin University, 2025&ndash;2026). These frameworks are <strong>channel-specific</strong>: they are designed for the epistemic standards of gut microbiome co-metabolism and probiotic translational research. Future channels will adopt evaluation frameworks appropriate to their respective domains.
-        </p>
-        <span class="ref">
-            <strong>MS1</strong> Liu H, Feng W. <a href="ms1/">"Compartmentalized Co-metabolism in the Porcine Gut: Systematic Evidence Mapping and a Theoretical Framework for Epigenetic&ndash;Microbiome Interactions."</a> <span data-i18n="meth-ms1">Defines the Compartmentalized Co-Metabolism Interaction Network Model and Four-Dimensional Matrix Rating System (Forward Pathway, Reverse Pathway, Coupling Verification Depth, Measurement Depth).</span>
-        </span>
-        <span class="ref">
-            <strong>MS2</strong> Liu H, Feng W. <a href="ms2/">"A Tiered Evidence Framework for Assessing Translational Readiness of Candidate Probiotics in Livestock: A Systematic Evidence Mapping with Methodological Development."</a> <span data-i18n="meth-ms2">Defines the Six-Tier Evidence Framework (L1a&ndash;L4) with strain-specificity and target-host validation as core dimensions, and the novel L3.5 transitional tier.</span>
-        </span>
-        <p data-i18n-html="meth-p2">
-            Literature evaluation is powered by the <strong>DeepSeek API</strong>, with GLM-4-Flash as fallback and local rule-based heuristics as final backup. All AI-generated assessments include confidence indicators and evaluation method attribution. Independent verification is recommended before citing.
-        </p>
+    <div class="chip-row">
+        <a class="chip" href="evidence/" data-i18n="ch-gut">Gut Microbiome Co-Metabolism</a>
+        <a class="chip" href="computational-genomics/" data-i18n="ch1-t">Computational Genomics &amp; Epigenomics</a>
+        <a class="chip" href="metagenomics-informatics/" data-i18n="ch2-t">Metagenomics &amp; Microbiome Informatics</a>
+        <a class="chip" href="structural-bioinformatics/" data-i18n="ch3-t">Structural Bioinformatics &amp; Protein Science</a>
+        <a class="chip" href="systems-biology/" data-i18n="ch4-t">Systems Biology &amp; Network Analysis</a>
+        <a class="chip" href="ml-biology/" data-i18n="ch5-t">Machine Learning for Biological Data</a>
+        <a class="chip" href="single-cell-omics/" data-i18n="ch6-t">Single-Cell &amp; Spatial Omics</a>
+        <a class="chip" href="databases-knowledge-graphs/" data-i18n="ch7-t">Biological Databases &amp; Knowledge Graphs</a>
+        <a class="chip" href="ai-drug-discovery/" data-i18n="ch8-t">AI-Driven Drug Discovery</a>
     </div>
+    <p class="planning-note"><span data-i18n="planning-prefix">In planning:</span>
+        <span data-i18n="p1-t">Molecular &amp; Cellular Biology</span> &middot;
+        <span data-i18n="p2-t">Immunology &amp; Host&ndash;Microbe Interactions</span> &middot;
+        <span data-i18n="p3-t">Neuroscience &amp; Neural Circuits</span> &middot;
+        <span data-i18n="p4-t">Cancer Biology &amp; Tumor Microenvironment</span> &middot;
+        <span data-i18n="p5-t">Developmental &amp; Stem Cell Biology</span> &middot;
+        <span data-i18n="p6-t">Microbiology &amp; Infectious Disease</span> &middot;
+        <span data-i18n="p7-t">Physiology &amp; Systemic Metabolism</span> &middot;
+        <span data-i18n="p8-t">Pharmacology &amp; Chemical Biology</span></p>
 
 
     <div class="methodology" id="academic-assistant">
@@ -620,6 +535,7 @@
 
 </main>
 
+    <p class="attrib" data-i18n="attrib">AI assessment by DeepSeek, with GLM-4-Flash as fallback; independent verification recommended before citing.</p>
 <footer class="site-footer">
     <p data-i18n-html="footer1">bioTriage-Open &mdash; life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
     <p>&copy; 2026 Liu Haoan &amp; Feng Wen, Yulin University &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
@@ -642,76 +558,38 @@
             'nav-method': 'Methodology',
             'nav-starred': 'Starred',
             'nav-account': 'My Account',
-            'tagline': 'AI-curated literature intelligence for the life sciences — daily selection and assessment from open-access journals, preprints, and databases.',
+            'tagline': 'AI-curated literature intelligence for the life sciences, graded against explicit evidence frameworks.',
             'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · Open access',
-            'sec-active': 'Active Channels',
-            'fc-flag': 'Live — Updated Daily',
-            'fc-title': 'Gut Microbiome Co-Metabolism Evidence Monitor',
-            'fc-desc': 'Automated daily surveillance and AI evaluation of microbial metabolite–host interactions in the porcine gut. <strong>This channel is the reference implementation</strong> of two methodological frameworks developed by Liu & Feng (2025–2026). See <a href="ms1/">MS1: Compartmentalized Co-Metabolism Network Model</a> and <a href="ms2/">MS2: Six-Tier Evidence Framework for Probiotic Translational Readiness</a> for the complete methodology. The evidence assessment system described in these manuscripts is <strong>channel-specific</strong>, designed for the epistemic standards of gut microbiome co-metabolism research. Other bioTriage-Open channels will employ evaluation frameworks appropriate to their respective domains.',
-            'fc-m1': 'Six-Tier Evidence (L1a–L4)',
-            'fc-m2': '4D Matrix Scoring',
-            'fc-m3': '25+ Metabolite Nodes',
-            'fc-m4': 'Porcine Gut Model',
-            'fc-m5': 'DeepSeek API',
-            'sec-bio': 'Bioinformatics & Computational Biology',
-            'sec-exp': 'Experimental Biology & Preclinical Research',
-            'st-live': 'Live',
-            'st-live-lc': 'Live — Lightweight Curation',
-            'st-planned': 'Planned',
-            'tag-ai': 'AI-Curated',
+            'sec-start': 'Start here',
+            't1-s': 'Live · updated daily',
+            't1-t': 'Evidence Monitor',
+            't1-d': 'Daily screening and AI evidence grading of new open-access papers, preprints, and database releases.',
+            't2-s': 'Daily digest',
+            't2-t': 'Literature Daily',
+            't2-d': 'One page a day: the highest-evidence papers, ranked and summarized.',
+            't3-s': 'MS1 · MS2',
+            't3-t': 'Methodology',
+            't3-d': 'The frameworks behind every score: six-tier evidence grading and the four-dimensional matrix. See also <a href="ms2/">MS2</a>.',
+            'sec-channels': 'Live channels',
+            'ch-gut': 'Gut Microbiome Co-Metabolism',
             'ch1-t': 'Computational Genomics & Epigenomics',
-            'ch1-d': 'AI-curated selection from open-access journals: variant calling, genome assembly, epigenomic profiling, and genotype-phenotype integration methods.',
-            'ch1-g1': 'Variant Calling', 'ch1-g2': 'Epigenomics', 'ch1-g3': 'GWAS',
             'ch2-t': 'Metagenomics & Microbiome Informatics',
-            'ch2-d': 'Metagenomic assembly, binning, taxonomic profiling, and functional annotation of microbial communities.',
-            'ch2-g1': 'Assembly', 'ch2-g2': 'Binning', 'ch2-g3': 'MWAS',
             'ch3-t': 'Structural Bioinformatics & Protein Science',
-            'ch3-d': 'Protein structure prediction, molecular dynamics, docking, and structure-based function annotation.',
-            'ch3-g1': 'AlphaFold', 'ch3-g2': 'MD', 'ch3-g3': 'Docking',
             'ch4-t': 'Systems Biology & Network Analysis',
-            'ch4-d': 'Gene regulatory network inference, metabolic network modeling, and multi-omics integration frameworks.',
-            'ch4-g1': 'Network Inference', 'ch4-g2': 'FBA', 'ch4-g3': 'Multi-Omics',
             'ch5-t': 'Machine Learning for Biological Data',
-            'ch5-d': 'Deep learning, protein language models, GNNs, and foundation models for biological sequence and structure.',
-            'ch5-g1': 'Protein LLMs', 'ch5-g2': 'GNNs', 'ch5-g3': 'scFoundation',
             'ch6-t': 'Single-Cell & Spatial Omics',
-            'ch6-d': 'Computational methods for scRNA-seq, ATAC-seq, trajectory inference, and spatial transcriptomics.',
-            'ch6-g1': 'scRNA-seq', 'ch6-g2': 'Trajectory', 'ch6-g3': 'Spatial',
             'ch7-t': 'Biological Databases & Knowledge Graphs',
-            'ch7-d': 'Database releases, knowledge graph construction, ontology development, and FAIR data infrastructure.',
-            'ch7-g1': 'Gene Ontology', 'ch7-g2': 'KG', 'ch7-g3': 'FAIR',
             'ch8-t': 'AI-Driven Drug Discovery',
-            'ch8-d': 'Virtual screening, molecular generation, ADMET prediction, and computational drug repurposing.',
-            'ch8-g1': 'Virtual Screening', 'ch8-g2': 'ADMET', 'ch8-g3': 'Repurposing',
+            'planning-prefix': 'In planning:',
             'p1-t': 'Molecular & Cellular Biology',
-            'p1-d': 'Gene expression, chromatin biology, protein trafficking, signal transduction, cell cycle, and programmed cell death.',
-            'p1-g1': 'Transcription', 'p1-g2': 'Signaling', 'p1-g3': 'Autophagy',
             'p2-t': 'Immunology & Host–Microbe Interactions',
-            'p2-d': 'Innate and adaptive immunity, mucosal immunology, inflammasome biology, vaccine development, host–pathogen co-evolution.',
-            'p2-g1': 'Mucosal Immunity', 'p2-g2': 'Inflammasome', 'p2-g3': 'Vaccines',
             'p3-t': 'Neuroscience & Neural Circuits',
-            'p3-d': 'Synaptic transmission, neural circuit mapping, neurodegeneration, glial biology, and the gut–brain axis.',
-            'p3-g1': 'Synapse', 'p3-g2': 'Neurodegeneration', 'p3-g3': 'Gut–Brain',
             'p4-t': 'Cancer Biology & Tumor Microenvironment',
-            'p4-d': 'Oncogenic signaling, tumor suppressors, metastasis, angiogenesis, tumor immunology, and the tumor microbiome.',
-            'p4-g1': 'Oncogenes', 'p4-g2': 'Metastasis', 'p4-g3': 'Tumor Microbiome',
             'p5-t': 'Developmental & Stem Cell Biology',
-            'p5-d': 'Embryogenesis, organogenesis, adult stem cell niches, organoid technology, and regenerative medicine.',
-            'p5-g1': 'Organoids', 'p5-g2': 'iPSCs', 'p5-g3': 'Regeneration',
             'p6-t': 'Microbiology & Infectious Disease',
-            'p6-d': 'Bacterial physiology, antibiotic resistance, virology, fungal pathogenesis, and emerging infectious agents.',
-            'p6-g1': 'Antibiotics', 'p6-g2': 'Virology', 'p6-g3': 'Pathogenesis',
             'p7-t': 'Physiology & Systemic Metabolism',
-            'p7-d': 'Endocrinology, metabolic homeostasis, cardiovascular physiology, adipose tissue biology, and inter-organ communication.',
-            'p7-g1': 'Endocrinology', 'p7-g2': 'Metabolism', 'p7-g3': 'Circadian',
             'p8-t': 'Pharmacology & Chemical Biology',
-            'p8-d': 'Drug target identification, pharmacokinetics, chemical probes, PROTACs, and high-throughput screening methodologies.',
-            'p8-g1': 'Target ID', 'p8-g2': 'PROTACs', 'p8-g3': 'HTS',
-            'meth-h': 'Evaluation Methodology',
-            'meth-p1': 'The structured evidence assessment methodology currently deployed in the active channel is derived from two manuscripts by Liu Haoan and Feng Wen (Yulin University, 2025–2026). These frameworks are <strong>channel-specific</strong>: they are designed for the epistemic standards of gut microbiome co-metabolism and probiotic translational research. Future channels will adopt evaluation frameworks appropriate to their respective domains.',
-            'meth-ms1': 'Defines the Compartmentalized Co-Metabolism Interaction Network Model and Four-Dimensional Matrix Rating System (Forward Pathway, Reverse Pathway, Coupling Verification Depth, Measurement Depth).',
-            'meth-ms2': 'Defines the Six-Tier Evidence Framework (L1a–L4) with strain-specificity and target-host validation as core dimensions, and the novel L3.5 transitional tier.',
-            'meth-p2': 'Literature evaluation is powered by the <strong>DeepSeek API</strong>, with GLM-4-Flash as fallback and local rule-based heuristics as final backup. All AI-generated assessments include confidence indicators and evaluation method attribution. Independent verification is recommended before citing.',
+            'attrib': 'AI assessment by DeepSeek, with GLM-4-Flash as fallback; independent verification recommended before citing.',
             'nav-aa': 'Academic Assistant',
             'aa-h': 'Academic Assistant',
             'aa-intro': 'Ask questions grounded in the group\'s verified literature corpus (26 papers). Answers cite their sources.',
@@ -734,76 +612,38 @@
             'nav-method': '方法学',
             'nav-starred': '星级收藏',
             'nav-account': '我的账户',
-            'tagline': '面向生命科学的 AI 文献智能——每日从开放获取期刊、预印本与数据库遴选并评估。',
+            'tagline': '面向生命科学的 AI 文献智能，依据明确的证据框架分级。',
             'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 开放获取',
-            'sec-active': '活跃频道',
-            'fc-flag': '实时 · 每日更新',
-            'fc-title': '肠道微生物组共代谢证据监测器',
-            'fc-desc': '对猪肠道中微生物代谢物与宿主互作进行每日自动监测与 AI 评估。<strong>本频道是两个方法学框架的参考实现</strong>，框架由 Liu 与 Feng（2025–2026）建立。完整方法见 <a href="ms1/">MS1：分区共代谢网络模型</a> 与 <a href="ms2/">MS2：益生菌转化就绪度六层证据框架</a>。上述手稿所描述的证据评估体系为<strong>频道专属</strong>，面向肠道微生物组共代谢研究的认识论标准而设计。bioTriage-Open 的其他频道将采用适配各自领域的评估框架。',
-            'fc-m1': '六层证据（L1a–L4）',
-            'fc-m2': '四维矩阵评分',
-            'fc-m3': '25+ 代谢物节点',
-            'fc-m4': '猪肠道模型',
-            'fc-m5': 'DeepSeek API',
-            'sec-bio': '生物信息学与计算生物学',
-            'sec-exp': '实验生物学与临床前研究',
-            'st-live': '实时',
-            'st-live-lc': '实时 · 轻量策展',
-            'st-planned': '规划中',
-            'tag-ai': 'AI 策展',
+            'sec-start': '从这里开始',
+            't1-s': '实时 · 每日更新',
+            't1-t': '证据监测',
+            't1-d': '对新近的开放获取论文、预印本与数据库发布进行每日筛查与 AI 证据分级。',
+            't2-s': '每日摘要',
+            't2-t': '文献日报',
+            't2-d': '每日一页：证据等级最高的论文，排序并附摘要。',
+            't3-s': 'MS1 · MS2',
+            't3-t': '方法学',
+            't3-d': '每个评分背后的框架：六层证据分级与四维矩阵。另见 <a href="ms2/">MS2</a>。',
+            'sec-channels': '活跃频道',
+            'ch-gut': '肠道微生物组共代谢',
             'ch1-t': '计算基因组学与表观基因组学',
-            'ch1-d': '从开放获取期刊 AI 遴选：变异检测、基因组组装、表观基因组分析，以及基因型–表型整合方法。',
-            'ch1-g1': '变异检测', 'ch1-g2': '表观基因组学', 'ch1-g3': 'GWAS',
             'ch2-t': '宏基因组学与微生物组信息学',
-            'ch2-d': '微生物群落的宏基因组组装、分箱、物种组成分析及功能注释。',
-            'ch2-g1': '组装', 'ch2-g2': '分箱', 'ch2-g3': 'MWAS',
             'ch3-t': '结构生物信息学与蛋白质科学',
-            'ch3-d': '蛋白质结构预测、分子动力学模拟、分子对接，以及基于结构的功能注释。',
-            'ch3-g1': 'AlphaFold', 'ch3-g2': '分子动力学', 'ch3-g3': '对接',
             'ch4-t': '系统生物学与网络分析',
-            'ch4-d': '基因调控网络推断、代谢网络建模（FBA）与多组学整合框架。',
-            'ch4-g1': '网络推断', 'ch4-g2': 'FBA', 'ch4-g3': '多组学',
             'ch5-t': '生物数据机器学习',
-            'ch5-d': '深度学习、蛋白质语言模型、图神经网络与生物序列结构基础模型。',
-            'ch5-g1': '蛋白质大模型', 'ch5-g2': 'GNNs', 'ch5-g3': 'scFoundation',
             'ch6-t': '单细胞与空间组学',
-            'ch6-d': 'scRNA-seq、ATAC-seq、轨迹推断与空间转录组的计算方法。',
-            'ch6-g1': 'scRNA-seq', 'ch6-g2': '轨迹', 'ch6-g3': '空间',
             'ch7-t': '生物数据库与知识图谱',
-            'ch7-d': '数据库发布、知识图谱构建、本体开发与 FAIR 数据基础设施。',
-            'ch7-g1': '基因本体', 'ch7-g2': '知识图谱', 'ch7-g3': 'FAIR',
             'ch8-t': 'AI 驱动药物发现',
-            'ch8-d': '虚拟筛选、分子生成、ADMET 预测与计算药物重定位。',
-            'ch8-g1': '虚拟筛选', 'ch8-g2': 'ADMET', 'ch8-g3': '老药新用',
+            'planning-prefix': '规划中：',
             'p1-t': '分子与细胞生物学',
-            'p1-d': '基因表达、染色质生物学、蛋白质运输、信号转导、细胞周期与程序性细胞死亡。',
-            'p1-g1': '转录', 'p1-g2': '信号转导', 'p1-g3': '自噬',
             'p2-t': '免疫学与宿主–微生物互作',
-            'p2-d': '固有与适应性免疫、黏膜免疫学、炎症小体生物学、疫苗开发与宿主–病原共进化。',
-            'p2-g1': '黏膜免疫', 'p2-g2': '炎症小体', 'p2-g3': '疫苗',
             'p3-t': '神经科学与神经环路',
-            'p3-d': '突触传递、神经环路图谱、神经退行、胶质细胞生物学与肠–脑轴。',
-            'p3-g1': '突触', 'p3-g2': '神经退行', 'p3-g3': '肠–脑',
             'p4-t': '癌症生物学与肿瘤微环境',
-            'p4-d': '致癌信号、抑癌基因、转移、血管生成、肿瘤免疫与肿瘤微生物组。',
-            'p4-g1': '癌基因', 'p4-g2': '转移', 'p4-g3': '肿瘤微生物组',
             'p5-t': '发育与干细胞生物学',
-            'p5-d': '胚胎发生、器官发生、成体干细胞龛、类器官技术与再生医学。',
-            'p5-g1': '类器官', 'p5-g2': 'iPSCs', 'p5-g3': '再生',
             'p6-t': '微生物学与感染性疾病',
-            'p6-d': '细菌生理、抗生素耐药、病毒学、真菌致病机制与新发感染病原。',
-            'p6-g1': '抗生素', 'p6-g2': '病毒学', 'p6-g3': '致病机制',
             'p7-t': '生理学与全身代谢',
-            'p7-d': '内分泌学、代谢稳态、心血管生理、脂肪组织生物学与器官间通讯。',
-            'p7-g1': '内分泌', 'p7-g2': '代谢', 'p7-g3': '昼夜节律',
             'p8-t': '药理学与化学生物学',
-            'p8-d': '药物靶点鉴定、药代动力学、化学探针、PROTACs 与高通量筛选方法学。',
-            'p8-g1': '靶点鉴定', 'p8-g2': 'PROTACs', 'p8-g3': 'HTS',
-            'meth-h': '评估方法',
-            'meth-p1': '活跃频道当前部署的结构化证据评估方法源自刘昊安与冯文（榆林学院，2025–2026）的两篇手稿。这些框架为<strong>频道专属</strong>：面向肠道微生物组共代谢与益生菌转化研究的认识论标准而设计。未来频道将采用适配各自领域的评估框架。',
-            'meth-ms1': '定义了分区共代谢互作网络模型与四维矩阵评分体系（正向通路、反向通路、耦合验证深度、测量深度）。',
-            'meth-ms2': '定义了六层证据框架（L1a–L4），以菌株特异性与靶宿主验证为核心维度，并提出创新的 L3.5 过渡层级。',
-            'meth-p2': '文献评估由 <strong>DeepSeek API</strong> 驱动，以 GLM-4-Flash 为兜底、本地规则启发式为最终备份。所有 AI 生成的评估均包含置信度指标与评估方法归属。引用前建议独立核实。',
+            'attrib': 'AI 评估由 DeepSeek 完成，GLM-4-Flash 作为兜底；引用前建议独立核实。',
             'nav-aa': '学术助手',
             'aa-h': '学术助手',
             'aa-intro': '基于研究组已核验的文献库（26 篇）提问。回答仅来自该语料并注明出处。',
