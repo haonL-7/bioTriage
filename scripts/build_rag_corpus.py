@@ -83,6 +83,7 @@ def build(write=True, today=None):
             'tags': [t for t in (row.get('tags') or []) if isinstance(t, str)],
             'journal': str(row.get('journal') or ''), 'doi': doi, 'pmid': pmid, 'url': url,
             'evidence_level': str(row.get('evidenceLevel') or ''),
+            'significance': str(row.get('significance') or ''),
             'year': pub.year if pub else None,
             'ingested_at': ingested.isoformat(), 'pool': pool_of(ingested, today),
         }

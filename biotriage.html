@@ -469,7 +469,7 @@
             <a class="side-item" href="evidence/" data-i18n="nav-evidence">Evidence Monitor</a>
             <a class="side-item" href="daily/" data-i18n="nav-daily">Literature Daily</a>
             <a class="side-item" href="weekly/" data-i18n="nav-weekly">Literature Weekly</a>
-            <a class="side-item" href="ms1/" data-i18n="nav-method">Methodology</a>
+            <a class="side-item" href="ms1/" data-i18n="nav-method">Evidence Methodology</a>
             <a class="side-item" href="starred/" data-i18n="nav-starred">Starred</a>
             <a class="side-item" href="account/" data-i18n="nav-account">My Account</a>
             <a class="side-item" href="#academic-assistant" data-i18n="nav-aa">Academic Assistant</a>
@@ -501,7 +501,7 @@
         <div class="entry-card">
             <div class="ec-status" data-i18n="t3-s">MS1 &middot; MS2</div>
             <h3 class="ec-title"><a href="ms1/" data-i18n="t3-t">Methodology</a></h3>
-            <p class="ec-desc" data-i18n-html="t3-d">The frameworks behind every score: six-tier evidence grading and the four-dimensional matrix. See also <a href="ms2/">MS2</a>.</p>
+            <p class="ec-desc" data-i18n-html="t3-d">Scoring depends on the channel: the evidence monitor grades with MS1 (four-dimensional matrix) and MS2 (six-tier hierarchy), while the eight bioinformatics channels use an AI significance rating. See <a href="ms2/">MS2</a>.</p>
         </div>
     </div>
 
@@ -581,7 +581,7 @@
             'nav-evidence': 'Evidence Monitor',
             'nav-daily': 'Literature Daily',
             'nav-weekly': 'Literature Weekly',
-            'nav-method': 'Methodology',
+            'nav-method': 'Evidence Methodology',
             'nav-starred': 'Starred',
             'nav-account': 'My Account',
             'tagline': 'AI-curated literature intelligence for the life sciences, graded against explicit evidence frameworks.',
@@ -595,7 +595,7 @@
             't2-d': 'One page a day: the highest-evidence papers, ranked and summarized.',
             't3-s': 'MS1 · MS2',
             't3-t': 'Methodology',
-            't3-d': 'The frameworks behind every score: six-tier evidence grading and the four-dimensional matrix. See also <a href="ms2/">MS2</a>.',
+            't3-d': 'Scoring depends on the channel: the evidence monitor grades with MS1 (four-dimensional matrix) and MS2 (six-tier hierarchy), while the eight bioinformatics channels use an AI significance rating. See <a href="ms2/">MS2</a>.',
             'sec-channels': 'Live channels',
             'ch-gut': 'Gut Microbiome Co-Metabolism',
             'ch1-t': 'Computational Genomics & Epigenomics',
@@ -636,7 +636,7 @@
             'nav-evidence': '证据监测器',
             'nav-daily': '文献日报',
             'nav-weekly': '文献周报',
-            'nav-method': '方法学',
+            'nav-method': '证据方法学',
             'nav-starred': '星级收藏',
             'nav-account': '我的账户',
             'tagline': '面向生命科学的 AI 文献智能，依据明确的证据框架分级。',
@@ -650,7 +650,7 @@
             't2-d': '每日一页：证据等级最高的论文，排序并附摘要。',
             't3-s': 'MS1 · MS2',
             't3-t': '方法学',
-            't3-d': '每个评分背后的框架：六层证据分级与四维矩阵。另见 <a href="ms2/">MS2</a>。',
+            't3-d': '评分按频道而定：证据监测用 MS1（四维矩阵）与 MS2（六层分级），八个生物信息频道用 AI 重要性判读（高/中/低）。另见 <a href="ms2/">MS2</a>。',
             'sec-channels': '活跃频道',
             'ch-gut': '肠道微生物组共代谢',
             'ch1-t': '计算基因组学与表观基因组学',
@@ -772,8 +772,9 @@
             var el = document.createElement('span');
             el.className = 'src';
             var html = '';
+            var grade = s.evidence_level || s.significance || '';
             if (s.domain) {
-                html += '<span class="src-dom">' + s.domain + (s.evidence_level ? ' &middot; ' + s.evidence_level : '') + '</span>';
+                html += '<span class="src-dom">' + s.domain + (grade ? ' &middot; ' + grade : '') + '</span>';
             }
             html += '<strong>' + (s.cite || s.title || '') + '</strong>';
             if (s.url) html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>';

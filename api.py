@@ -563,6 +563,7 @@ def rag_answer(question: str, chunks: list) -> tuple:
             "journal": doc.get("journal", ""),
             "domain": doc.get("domain", ""),
             "evidence_level": doc.get("evidence_level", ""),
+            "significance": doc.get("significance", ""),
             "url": doc.get("url", ""),
             "quality": doc.get("quality", 0),
         }
