@@ -97,23 +97,26 @@ jobs:
 
       - name: Verify channels present
         run: |
-          had=0
+          regressed=""
+          never=""
           for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
-            git cat-file -e "gh-pages-snapshot:$ch" 2>/dev/null && had=$((had+1))
-          done
-          missing=""
-          for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
-            [ -d "_site/$ch" ] || missing="$missing $ch"
-          done
-          if [ -n "$missing" ]; then
-            if [ "$had" -gt 0 ]; then
-              echo "::error::channels were published before but are missing now:$missing — refusing to publish a regression"
-              exit 1
+            if [ -d "_site/$ch" ]; then
+              continue
             fi
-            echo "::warning::channels missing:$missing — gh-pages never had them either, publishing without channels"
-          else
-            echo "all channel dirs present"
+            if git cat-file -e "gh-pages-snapshot:$ch" 2>/dev/null; then
+              regressed="$regressed $ch"
+            else
+              never="$never $ch"
+            fi
+          done
+          if [ -n "$regressed" ]; then
+            echo "::error::channels existed on gh-pages but are missing from this build:$regressed — refusing to publish a regression"
+            exit 1
           fi
+          if [ -n "$never" ]; then
+            echo "::warning::channels absent from _site and never published:$never — publishing without them"
+          fi
+          echo "channel check done"
 
       - name: Build platform digest
         run: python scripts/build_digest.py
