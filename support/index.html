@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>支持我们 · Support — bioTriage-Open</title>
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
+<style>
+:root { --bg:#fff; --bg-alt:#f7f8fa; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199;
+  --border:#e3e6ea; --accent:#1a4d80; --max:760px; --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+:root[data-theme="dark"] { color-scheme:dark; --bg:#14161a; --bg-alt:#191c21; --ink:#e9e7e2;
+  --ink-md:#b8b5ae; --ink-xlt:#6e6b66; --border:#2a2e35; --accent:#9cc6ea; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html.theme-anim, html.theme-anim * { transition:background-color .45s cubic-bezier(.4,0,.2,1),
+  color .45s cubic-bezier(.4,0,.2,1), border-color .45s cubic-bezier(.4,0,.2,1) !important; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.75; font-size:15px; }
+a { color:var(--accent); text-decoration:none; }
+.top-bar { display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:10px 20px; border-bottom:1px solid var(--border); font-size:13px; }
+.mini-logo { font-family:var(--serif); font-size:15px; color:var(--ink); }
+.mini-logo em { font-style:normal; color:var(--accent); }
+.tb-brand { display:flex; align-items:center; gap:10px; color:var(--ink-md); }
+.theme-btn, .nav-link { font-size:12px; color:var(--ink-xlt); background:transparent;
+  border:1px solid var(--border); border-radius:999px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.wrap { max-width:var(--max); margin:0 auto; padding:40px 20px 72px; }
+h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:8px; }
+.lede { color:var(--ink-md); font-size:15px; margin-bottom:28px; }
+h2 { font-size:13px; letter-spacing:.8px; text-transform:uppercase; color:var(--ink-xlt);
+  border-top:1px solid var(--border); padding-top:16px; margin:32px 0 12px; font-weight:600; }
+ul.use { list-style:none; }
+ul.use li { display:flex; justify-content:space-between; gap:16px; padding:7px 0;
+  border-bottom:1px dashed var(--border); font-size:14px; }
+ul.use li span.amt { color:var(--ink-md); white-space:nowrap; }
+.channels { display:flex; gap:20px; flex-wrap:wrap; }
+.chan { flex:1 1 260px; border:1px solid var(--border); border-radius:6px; padding:18px; }
+.chan h3 { font-size:14px; font-weight:600; margin-bottom:6px; }
+.chan p { font-size:13px; color:var(--ink-md); margin-bottom:12px; }
+.chan img { display:block; width:180px; height:180px; object-fit:contain; background:var(--bg-alt);
+  border:1px dashed var(--border); border-radius:4px; }
+.qr-fallback { font-size:12px; color:var(--ink-xlt); margin-top:8px; }
+.donate-btn { display:inline-block; font-size:13px; padding:8px 16px; border-radius:4px;
+  background:var(--accent); color:#fff; }
+.note { font-size:12.5px; color:var(--ink-xlt); line-height:1.8; margin-top:14px; }
+footer { border-top:1px solid var(--border); text-align:center; color:var(--ink-xlt);
+  font-size:11.5px; padding:22px 20px; }
+</style>
+</head>
+<body>
+<nav class="top-bar">
+  <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a>
+    <span>Cut through the noise. Anchor in evidence.</span></span>
+  <span style="display:flex;gap:8px;align-items:center">
+    <button id="lang-toggle" class="nav-link" type="button">EN</button>
+    <button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">&#9680;</button>
+    <a class="nav-link" href="mailto:haon.liu@outlook.com">Contact</a>
+  </span>
+</nav>
+
+<div class="wrap">
+  <h1 data-zh="支持这个项目" data-en="Support this project">支持这个项目</h1>
+  <p class="lede" data-zh="bioTriage-Open 是一个独立开发的文献智能项目：抓取、证据分级、检索语料与问答全部自动运行，没有机构经费，也不挂广告。如果你觉得它有用，可以用下面的方式支持它继续跑下去。"
+     data-en="bioTriage-Open is an independently built literature-intelligence project: crawling, evidence grading, retrieval corpus and Q&A all run unattended, with no institutional funding and no ads. If it is useful to you, the options below keep it running.">bioTriage-Open 是一个独立开发的文献智能项目：抓取、证据分级、检索语料与问答全部自动运行，没有机构经费，也不挂广告。</p>
+
+  <h2 data-zh="钱花在哪" data-en="Where the money goes">钱花在哪</h2>
+  <ul class="use">
+    <li><span data-zh="DeepSeek 模型调用（问答与文献评估）" data-en="DeepSeek API calls (Q&amp;A and evaluation)">DeepSeek 模型调用</span><span class="amt">≈ ¥30–80 / 月</span></li>
+    <li><span data-zh="服务器托管" data-en="Server hosting">服务器托管</span><span class="amt">$0–7 / 月</span></li>
+    <li><span data-zh="域名与证书" data-en="Domain and certificates">域名与证书</span><span class="amt">≈ ¥60 / 年</span></li>
+  </ul>
+  <p class="note" data-zh="以上为实际支出区间；所有账目都不做公开明细，但也不会用于本列表之外的用途。"
+     data-en="These are the real cost ranges. Accounts are not published line by line, but funds are not used for anything outside this list.">以上为实际支出区间；不会用于本列表之外的用途。</p>
+
+  <h2 data-zh="支持方式" data-en="Ways to support">支持方式</h2>
+  <div class="channels">
+    <div class="chan">
+      <h3 data-zh="微信赞赏码" data-en="WeChat reward code">微信赞赏码</h3>
+      <p data-zh="扫码任意金额，一次性，无需注册。" data-en="Scan and give any amount — one-off, no account needed.">扫码任意金额，一次性，无需注册。</p>
+      <img src="../assets/support-qr.png" alt="WeChat support QR code" loading="lazy">
+      <p class="qr-fallback" data-zh="扫码后可在备注里写上你的学科方向，我会据此调整优先抓取的重点。"
+         data-en="You can add a note about your field when paying; it guides what gets prioritised.">扫码后可在备注里写上你的学科方向。</p>
+    </div>
+    <div class="chan">
+      <h3 data-zh="定期支持" data-en="Recurring support">定期支持</h3>
+      <p data-zh="在爱发电上按次或按月支持，可留言说明你希望加强哪个学科。" data-en="Support per-post or monthly on Afdian; leave a note about which field you care about.">在爱发电上按次或按月支持。</p>
+      <a class="donate-btn" id="donateLink" href="#" data-replace-me="true"
+         data-zh="前往支持页 →" data-en="Open support page →">前往支持页 →</a>
+      <p class="qr-fallback" data-zh="（链接待填写：把下面脚本里的 SUPPORT_URL 换成你的爱发电主页）"
+         data-en="(link pending: replace SUPPORT_URL in the script below with your Afdian page)">（链接待填写）</p>
+    </div>
+  </div>
+
+  <h2 data-zh="一句必要的声明" data-en="One necessary statement">一句必要的声明</h2>
+  <p class="note" data-zh="赞助是自愿的资助，不换取任何额度、优先权、或对评估结果的影响。站点对所有用户提供相同的功能与判定标准。"
+     data-en="Support is a voluntary contribution. It does not buy quota, priority, or any influence on evaluation results. Every user gets the same features and the same judging criteria.">赞助是自愿的资助，不换取任何额度、优先权、或对评估结果的影响。</p>
+</div>
+
+<footer>&copy; 2026 bioTriage-Open &middot; Independent project &middot;
+  <a href="../">Home</a> &middot; <a href="mailto:haon.liu@outlook.com">Contact</a></footer>
+
+<script>
+(function () {
+  var SUPPORT_URL = '';  // ← 填你的爱发电/托管页地址，例如 https://afdian.com/a/xxx
+  var link = document.getElementById('donateLink');
+  if (link) {
+    if (SUPPORT_URL) { link.href = SUPPORT_URL; link.target = '_blank'; link.rel = 'noopener'; link.removeAttribute('data-replace-me'); }
+    else { link.href = 'mailto:haon.liu@outlook.com?subject=Support%20bioTriage-Open'; }
+  }
+  var btn = document.getElementById('theme-toggle');
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var ICONS = { light: '\u2600', dark: '\u263e', auto: '\u25d0' };
+  function stored() { try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; } catch (e) { return 'auto'; } }
+  function resolve(m) { return (m === 'dark' || m === 'light') ? m : ((mq && mq.matches) ? 'dark' : 'light'); }
+  function paint(mode, soft) {
+    var root = document.documentElement;
+    if (soft) { root.classList.add('theme-anim'); window.setTimeout(function () { root.classList.remove('theme-anim'); }, 620); }
+    root.dataset.theme = resolve(mode);
+    if (btn) { btn.textContent = ICONS[mode] || ICONS.auto; }
+  }
+  if (btn) {
+    btn.addEventListener('click', function () {
+      var order = ['light', 'dark', 'auto'];
+      var next = order[(order.indexOf(stored()) + 1) % order.length];
+      try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (e) {}
+      paint(next, true);
+    });
+  }
+  paint(stored());
+
+  var LT = document.getElementById('lang-toggle');
+  function lang() { try { return localStorage.getItem('bt-lang') === 'en' ? 'en' : 'zh'; } catch (e) { return 'zh'; } }
+  function applyLang(l) {
+    document.documentElement.lang = (l === 'en') ? 'en' : 'zh-CN';
+    var nodes = document.querySelectorAll('[data-zh][data-en]');
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].textContent = nodes[i].getAttribute(l === 'en' ? 'data-en' : 'data-zh');
+    }
+    if (LT) { LT.textContent = (l === 'en') ? '中文' : 'EN'; }
+  }
+  if (LT) {
+    LT.addEventListener('click', function () {
+      var next = lang() === 'en' ? 'zh' : 'en';
+      try { localStorage.setItem('bt-lang', next); } catch (e) {}
+      applyLang(next);
+    });
+  }
+  applyLang(lang());
+})();
+</script>
+</body>
+</html>

@@ -1117,6 +1117,17 @@ def main():
         shutil.copytree(weekly_src, weekly_dst)
         print("  Deployed /scfa/weekly/ SCFA channel weekly page")
 
+    # Deploy support page
+    support_src = os.path.join(PROJECT_ROOT, "..", "support")
+    if not os.path.exists(support_src):
+        support_src = os.path.join(PROJECT_ROOT, "support")
+    if os.path.exists(support_src):
+        support_dst = os.path.join(BUILD_DIR, "support")
+        if os.path.exists(support_dst):
+            shutil.rmtree(support_dst)
+        shutil.copytree(support_src, support_dst)
+        print("  Deployed /support/ support page")
+
     # Deploy starred collection page
     starred_src = os.path.join(PROJECT_ROOT, "..", "starred")
     if not os.path.exists(starred_src):
