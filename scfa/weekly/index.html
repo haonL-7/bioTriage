@@ -413,6 +413,38 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
                 color .45s cubic-bezier(.4,0,.2,1),
                 border-color .45s cubic-bezier(.4,0,.2,1);
 }
+
+        /* 顶栏：固定毛玻璃（不随主题变色；栏内文字固定深色以保证对比度） */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.66) !important;
+            -webkit-backdrop-filter: blur(14px) saturate(180%);
+            backdrop-filter: blur(14px) saturate(180%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+        }
+        .top-bar, .top-bar * { color: #16181c !important; }
+        .top-bar .mini-logo em, .top-bar a strong { color: #1a4d80 !important; }
+        .top-bar .lang-btn,
+        .top-bar .theme-btn,
+        .top-bar .nav-link,
+        .top-bar .tb-link {
+            color: #16181c !important;
+            border-color: rgba(0, 0, 0, 0.18) !important;
+            background: rgba(255, 255, 255, 0.35) !important;
+        }
+        .top-bar .lang-btn:hover,
+        .top-bar .theme-btn:hover,
+        .top-bar .nav-link:hover,
+        .top-bar .tb-link:hover {
+            color: #1a4d80 !important;
+            border-color: #1a4d80 !important;
+        }
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            .top-bar { background: rgba(255, 255, 255, 0.96) !important; }
+        }
 </style>
 </head>
 <body>
