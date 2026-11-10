@@ -1117,6 +1117,17 @@ def main():
         shutil.copytree(weekly_src, weekly_dst)
         print("  Deployed /scfa/weekly/ SCFA channel weekly page")
 
+    # Deploy shared assets (support QR 等)
+    assets_src = os.path.join(PROJECT_ROOT, "..", "assets")
+    if not os.path.exists(assets_src):
+        assets_src = os.path.join(PROJECT_ROOT, "assets")
+    if os.path.exists(assets_src):
+        assets_dst = os.path.join(BUILD_DIR, "assets")
+        if os.path.exists(assets_dst):
+            shutil.rmtree(assets_dst)
+        shutil.copytree(assets_src, assets_dst)
+        print("  Deployed /assets/ shared assets")
+
     # Deploy support page
     support_src = os.path.join(PROJECT_ROOT, "..", "support")
     if not os.path.exists(support_src):

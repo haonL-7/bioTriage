@@ -65,6 +65,18 @@ h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6p
 footer { border-top:1px solid var(--border); color:var(--ink-xlt); font-size:11.5px; text-align:center;
   padding:22px 20px; }
 .empty { color:var(--ink-xlt); font-size:13px; padding:20px 0; }
+.layout { display: flex; align-items: flex-start; max-width: 1100px; margin: 0 auto; }
+.sidebar { position: sticky; top: 60px; width: 200px; flex: 0 0 200px; padding: 28px 12px 28px 20px; }
+.side-nav { display: flex; flex-direction: column; gap: 2px; }
+.side-label { font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-xlt); padding: 0 10px 8px; }
+.side-item { display: block; padding: 8px 10px; border-radius: 4px; font-size: 13px; color: var(--ink-md); }
+.side-item:hover { background: var(--bg-alt); color: var(--ink); }
+.side-item.is-active { background: var(--accent); color: #fff; }
+.page { flex: 1; min-width: 0; }
+@media (max-width: 900px) {
+  .layout { display: block; }
+  .sidebar { position: static; width: 100%; flex: none; padding: 16px 20px 0; }
+}
 @media (max-width:640px) { h1 { font-size:21px; } }
 """
 
@@ -142,7 +154,26 @@ def load(window_days, today, per_channel=6, fallback_per_channel=2):
     return by_channel, newest
 
 
-def render(title, lede, meta, by_channel, today, nav):
+def sidebar_html(root, active):
+    items = [
+        ('Home', root, 'home'),
+        ('Gut SCFA Monitor', root + 'evidence/', 'evidence'),
+        ('Literature Daily', root + 'daily/', 'daily'),
+        ('Literature Weekly', root + 'weekly/', 'weekly'),
+        ('Methodology', root + 'ms1/', 'method'),
+        ('My Stars', root + 'account/', 'stars'),
+    ]
+    out = ['<aside class="sidebar"><nav class="side-nav">',
+           '<span class="side-label">Navigate</span>']
+    for label, href, key in items:
+        cls = 'side-item is-active' if key == active else 'side-item'
+        out.append('<a class="%s" href="%s">%s</a>' % (cls, href, html.escape(label)))
+    out.append('<a class="side-item" href="mailto:haon.liu@outlook.com">Contact</a>')
+    out.append('</nav></aside>')
+    return '\n'.join(out)
+
+
+def render(title, lede, meta, by_channel, today, nav, active):
     total = sum(len(v) for v in by_channel.values())
     blocks = []
     for label, rows in by_channel.items():
@@ -179,17 +210,23 @@ def render(title, lede, meta, by_channel, today, nav):
     <a class="nav-link" href="mailto:haon.liu@outlook.com">Contact</a>
   </span>
 </nav>
+<div class="layout">
+%(sidebar)s
+<div class="page">
 <div class="wrap">
   <h1>%(title)s</h1>
   <p class="lede">%(lede)s</p>
   <p class="meta">%(meta)s</p>
   %(body)s
 </div>
+</div>
+</div>
 <footer>&copy; 2026 bioTriage-Open &middot; Independent project &middot; AI-curated summaries; verify before citing.</footer>
 %(toggle_js)s
 </body>
 </html>""" % dict(title=title, lede=lede, total=total, nch=len(by_channel), today=today.isoformat(), meta=meta,
-                   body=body, css=CSS, head_js=HEAD_JS, toggle_js=TOGGLE_JS, root=nav)
+                   body=body, css=CSS, head_js=HEAD_JS, toggle_js=TOGGLE_JS, root=nav,
+                   sidebar=sidebar_html(nav, active))
 
 
 def main():
@@ -206,11 +243,11 @@ def main():
         'daily': render('Literature Daily',
                         'Newest papers from every channel, highest significance first.',
                         'daily window: 3 days &middot; %s &middot; generated %s' % (fresh, today.isoformat()),
-                        daily, today, '../'),
+                        daily, today, '../', 'daily'),
         'weekly': render('Literature Weekly',
                          'The week across every channel, highest significance first.',
                          'weekly window: 7 days &middot; %s &middot; generated %s' % (fresh, today.isoformat()),
-                         weekly, today, '../'),
+                         weekly, today, '../', 'weekly'),
     }
     for name, out in pages.items():
         n = sum(len(v) for v in (daily if name == 'daily' else weekly).values())
