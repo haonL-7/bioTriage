@@ -716,9 +716,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.66) !important;
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    backdrop-filter: blur(14px) saturate(180%);
+    background: rgba(255, 255, 255, 0.45) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(200%);
+    backdrop-filter: blur(18px) saturate(200%);
     border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
 }
@@ -740,5 +740,37 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
     border-color: #1a4d80 !important;
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .top-bar { background: rgba(255, 255, 255, 0.96) !important; }
+    .top-bar { background: rgba(255, 255, 255, 0.90) !important; }
+}
+
+/* ---- 深色主题：沿用本站暖调深色面 ---- */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --primary: #7fb2df;
+    --primary-lt: #9cc6ea;
+    --primary-md: #6aa2d2;
+    --accent: #9cc6ea;
+    --gold: #d8bc7a;
+    --gold-lt: #e6cf98;
+    --white: #191c21;
+    --bg: #14161a;
+    --bg-alt: #191c21;
+    --ink: #e9e7e2;
+    --ink-md: #b8b5ae;
+    --ink-lt: #918e88;
+    --ink-xlt: #6e6b66;
+    --border: #2a2e35;
+    --border-lt: #20242a;
+    --danger: #ff8a6b;
+    --danger-ink: #ffa58c;
+    --ok: #7fc9a5;
+}
+.theme-btn {
+    font-size: 13px; line-height: 1; color: var(--ink-xlt); background: transparent;
+    border: 1px solid var(--border); border-radius: 999px; padding: 5px 9px; cursor: pointer;
+    transition: color .3s var(--ease), border-color .3s var(--ease);
+}
+.theme-btn:hover { color: var(--primary); border-color: var(--primary); }
+html.theme-anim, html.theme-anim * {
+    transition: background-color .45s var(--ease), color .45s var(--ease), border-color .45s var(--ease) !important;
 }
