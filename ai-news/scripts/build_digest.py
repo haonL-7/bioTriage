@@ -157,7 +157,6 @@ def load(window_days, today, per_channel=6, fallback_per_channel=2):
 def sidebar_html(root, active):
     items = [
         ('Home', root, 'home'),
-        ('Gut SCFA Monitor', root + 'evidence/', 'evidence'),
         ('Literature Daily', root + 'daily/', 'daily'),
         ('Literature Weekly', root + 'weekly/', 'weekly'),
         ('Methodology', root + 'ms1/', 'method'),
@@ -205,6 +204,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
   <span class="tb-brand"><a href="%(root)s"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span></span>
   <span style="display:flex;gap:8px;align-items:center">
     <button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">&#9680;</button>
+    <a class="nav-link" href="%(root)s">Home</a>
     <a class="nav-link" href="%(root)sdaily/">Daily</a>
     <a class="nav-link" href="%(root)sweekly/">Weekly</a>
     <a class="nav-link" href="mailto:haon.liu@outlook.com">Contact</a>
