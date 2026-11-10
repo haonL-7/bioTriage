@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Driven Drug Discovery — bioTriage-Open</title>
+<style>
+:root { --bg: #fff; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8c8c8c; --border: #d5d5d5; --accent: #1a5276; --max-width: 800px; --font-serif: 'Georgia','Times New Roman',serif; --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; font-size: 15px; }
+.top-bar { background: #1a1a1a; color: #ccc; font-size: 12px; padding: 8px 20px; display: flex; justify-content: space-between; }
+.top-bar a { color: #fff; text-decoration: none; }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 32px 20px 60px; }
+h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+.channel-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.channel-stats { font-size: 12px; color: var(--text-muted); margin-bottom: 28px; }
+.paper-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+.paper-item:first-of-type { border-top: 1px solid var(--border); }
+.paper-meta { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; font-size: 12px; }
+.paper-meta .journal { color: var(--text-muted); font-style: italic; }
+.paper-meta .date { color: var(--text-muted); }
+.paper-meta .sig { font-size: 10px; font-weight: 600; padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.sig-high { background: #e8f5e9; color: #1a6b3c; }
+.sig-medium { background: #f5f5f5; color: #4a4a4a; }
+.sig-low { background: #fff5f5; color: #a0a0a0; }
+.paper-title { font-family: var(--font-serif); font-size: 15px; font-weight: 400; margin-bottom: 4px; line-height: 1.5; }
+.paper-title a { color: var(--text); text-decoration: none; }
+.paper-title a:hover { color: var(--accent); text-decoration: underline; }
+.paper-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 6px; }
+.paper-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font-size: 10px; color: var(--accent); background: #eaf0f6; padding: 2px 8px; letter-spacing: 0.3px; }
+.back-link { font-size: 12px; color: var(--accent); text-decoration: none; }
+.site-footer { max-width: var(--max-width); margin: 0 auto; padding: 24px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; text-align: center; }
+.site-footer a { color: var(--accent); }
+.ask { margin: 32px 0 8px; padding: 20px; border: 1px solid var(--border); }
+.ask h2 { font-family: var(--font-serif); font-size: 17px; font-weight: 400; margin-bottom: 4px; }
+.ask-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.ask-row { display: flex; gap: 8px; }
+.ask-row input { flex: 1; min-width: 0; font: inherit; font-size: 13px; padding: 8px 10px; border: 1px solid var(--border); background: #fff; color: var(--text); }
+.ask-row button { font: inherit; font-size: 13px; padding: 8px 16px; border: 1px solid #1a1a1a; background: #1a1a1a; color: #fff; cursor: pointer; }
+.ask-row button:disabled { opacity: .6; cursor: not-allowed; }
+.ask-status { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+.ask-answer { font-size: 13px; line-height: 1.75; margin-top: 12px; white-space: pre-wrap; }
+.ask-sources { margin-top: 10px; }
+.ask-sources .src { display: block; font-size: 11.5px; color: var(--text-secondary); margin-top: 6px; }
+.ask-sources .src .dom { display: inline-block; font-size: 10px; letter-spacing: .4px; color: var(--text-muted); border: 1px solid var(--border); padding: 0 5px; margin-right: 6px; }
+@media (max-width: 640px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav class="top-bar"><a href="../">bioTriage-Open</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
+<div class="container">
+<a href="../" class="back-link">&larr; bioTriage-Open</a>
+<h1>AI-Driven Drug Discovery</h1>
+<p class="channel-desc">Virtual screening, molecular generation, ADMET prediction, and computational drug repurposing from open-access literature.</p>
+<p class="channel-stats">56 papers curated &middot; High: 1 &middot; Medium: 24 &middot; Low: 31 &middot; Updated: 2026-11-10</p>
+<article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-31</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.29.762711" target="_blank" rel="noopener">Small molecule structure elucidation from NMR spectra with generative and reasoning models.</a></h3>
+            <p class="paper-summary">The authors present an AI system that automates de novo small-molecule structure elucidation from NMR spectra by combining a molecular generative model (ChefNMR2, an atomic flow-matching model) with a scientific reasoning agent. This addresses the labor-intensive, expert-dependent bottleneck of NMR interpretation, potentially accelerating chemistry, pharmacology, and drug discovery workflows.</p>
+            <div class="paper-tags"><span class="tag">metabolomics</span><span class="tag">machine-learning</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nucleic acids research</span>
+                <span class="date">2026-Oct-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fnar%2Fgkag1097" target="_blank" rel="noopener">MultiTargetDB: a comprehensive database of multitarget ligands for polypharmacology research and drug discovery.</a></h3>
+            <p class="paper-summary">MultiTargetDB is a new database that curates multitarget ligands—small molecules that bind multiple biological targets—along with comprehensive biological annotations and measurement-level provenance. It integrates chemical structures, molecular scaffolds, and drug development stages to support polypharmacology research and rational multitarget drug discovery. This resource addresses the scarcity of well-curated, dedicated databases for multitarget drug discovery, particularly for complex diseases.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">database</span><span class="tag">tool</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of the Egyptian National Cancer Institute</span>
+                <span class="date">2026-Oct-29</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs43046-026-00421-3" target="_blank" rel="noopener">Computational network pharmacology and molecular simulations to explore the potential mechanisms of Pyrrosia piloselloides compounds against prostate cancer.</a></h3>
+            <p class="paper-summary">This study uses computational network pharmacology and molecular dynamics simulations to predict which compounds in the dragon scale fern (Pyrrosia piloselloides) might act against prostate cancer and through which molecular targets. The work is entirely in silico, so it generates hypotheses about mechanisms rather than experimental evidence of anticancer activity.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">network-analysis</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Chimia</span>
+                <span class="date">2026-Oct-28</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.2533%2Fchimia.2026.676" target="_blank" rel="noopener">From LC-MS Metabolomic Profiling to AIEnabled Navigation of NPs Chemical Space: Recent Advances and Emerging Directions.</a></h3>
+            <p class="paper-summary">This review describes how LC-MS metabolomic profiling, combined with expanding spectral databases, molecular networking, and in silico annotation, is improving the characterization of complex natural product extracts. It further discusses how AI-enabled navigation of natural product chemical space can help overcome low annotation rates and rediscovery of known metabolites, accelerating natural product-based drug discovery.</p>
+            <div class="paper-tags"><span class="tag">metabolomics</span><span class="tag">machine-learning</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">European journal of pharmaceutical sciences : official journal of the European Federation for Pharmaceutical Sciences</span>
+                <span class="date">2026-Oct-27</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.ejps.2026.107699" target="_blank" rel="noopener">Modeling ethnic differences via drug-predicted clearance from chemical structures.</a></h3>
+            <p class="paper-summary">This study develops a machine-learning approach that predicts drug clearance directly from chemical structures to flag potential ethnic differences in pharmacokinetics early in drug discovery. By using predicted clearance rather than requiring extensive experimental data, the method offers a complementary screening tool to physiologically based pharmacokinetic modeling for assessing population-specific risk.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">drug-discovery</span><span class="tag">population-genetics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">RSC advances</span>
+                <span class="date">2026-Oct-26</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1039%2Fd6ra06802b" target="_blank" rel="noopener">Structure-function relationships in a square-planar Cu(ii) hybrid halometalate: experimental, DFT, molecular docking, optical, and biological studies.</a></h3>
+            <p class="paper-summary">This paper reports the synthesis and characterization of a new organic-inorganic copper(II) hybrid halometalate, (C6H8BrN2)2[CuBr4], which forms discrete square-planar [CuBr4]2- anions within a supramolecular framework held together by hydrogen bonds, π-π stacking, and halogen contacts. The authors combine single-crystal X-ray diffraction, DFT calculations, optical spectroscopy, molecular docking, and biological assays to probe structure-function relationships, finding semiconducting behavior with a ~2.5 eV band gap and broad visible emission attributed to ligand-to-metal charge transfer.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">methodology</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Molecules (Basel, Switzerland)</span>
+                <span class="date">2026-Oct-21</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fmolecules31203781" target="_blank" rel="noopener">In Silico Investigation of Candidate Anticancer Targets for Aryltetralin Lignans Previously Reported from Cleistanthus Species.</a></h3>
+            <p class="paper-summary">This study uses computational docking and target-prediction approaches to investigate which protein targets might mediate the anticancer (cytotoxic) effects of six aryltetralin lignans previously isolated from Cleistanthus plants. No new compounds were isolated and no new experiments were performed; the work integrates prior chemical and cytotoxicity data with in silico target fishing. The authors propose candidate anticancer targets for these natural products, providing hypotheses for future experimental validation.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">plants</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-20</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.14.759026" target="_blank" rel="noopener">Integrating Multisource Target Evidence with Machine-Learning Potency Prediction for Alzheimer's Disease Drug Discovery.</a></h3>
+            <p class="paper-summary">The authors built an integrated, traceable platform that combines Alzheimer's disease target evidence from biological, chemical, structural, regulatory, and trial-registry sources, covering 967 targets, 452,249 compounds, and 1.43 million measurements. They also show that fine-tuning the Boltz-2 affinity prediction head on a curated PIK3CA dataset substantially improves potency prediction accuracy (Pearson r from 0.248 to 0.560). The work aims to make AD target evaluation and machine-learning modeling more reproducible.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">database</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-20</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.14.758964" target="_blank" rel="noopener">Advancing CD38 from a marker of disease activity to an active regulator of interferon responses in juvenile dermatomyositis.</a></h3>
+            <p class="paper-summary">This study investigates whether CD38, an NAD+-consuming enzyme elevated in juvenile dermatomyositis (JDM), is merely a marker of disease activity or an active driver of the type I interferon pathway that underlies the disease. The work aims to clarify CD38's mechanistic role in JDM, potentially informing more targeted therapies than current broad immunosuppression.</p>
+            <div class="paper-tags"><span class="tag">immunology</span><span class="tag">transcriptomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Current issues in molecular biology</span>
+                <span class="date">2026-Oct-19</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fcimb48101078" target="_blank" rel="noopener">Computational Identification of GABA-A Receptor Ligands Targeting the Histamine Allosteric Pocket.</a></h3>
+            <p class="paper-summary">This study used a computational pipeline—ligand similarity screening, ADMET filtering, molecular docking, and molecular dynamics simulations—to search for small molecules that bind the histamine allosteric pocket at the β3-β3 interface of the GABA-A receptor. The work nominates candidate ligands for this site as a starting point for developing compounds targeting cognitive and neurological disorders. Findings are purely in silico and require experimental validation.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">neuroscience</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Microorganisms</span>
+                <span class="date">2026-Oct-17</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fmicroorganisms14102380" target="_blank" rel="noopener">Navigating the Eukaryotic Paradox: Insights for AI-Driven Computational Strategies Against Antifungal Resistance.</a></h3>
+            <p class="paper-summary">This review examines how the close biological similarity between fungal pathogens and human cells—the "eukaryotic paradox"—complicates AI-driven drug repurposing for antifungal resistance. It surveys computational strategies and highlights the need to account for host-pathogen homology when prioritizing candidate compounds.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-16</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.15.759417" target="_blank" rel="noopener">Network-enabled drug repurposing identifies lithium to promote cardiomyocyte proliferation.</a></h3>
+            <p class="paper-summary">The authors built a computational network model of cardiomyocyte proliferation signaling and used it to screen FDA-approved drugs for repurposing potential, identifying lithium as a candidate that promotes cardiomyocyte proliferation. This systems-level approach offers a way to prioritize existing drugs for heart regeneration, a process with few targeted therapies.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">network-analysis</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">International journal of molecular sciences</span>
+                <span class="date">2026-Oct-16</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fijms27209204" target="_blank" rel="noopener">QSAR-Guided In Silico Design of Piperazinylanthranilamide Factor Xa Inhibitors: Applicability-Domain Assessment, ADMET Profiling, Molecular Docking, Molecular Dynamics, and MM/GBSA.</a></h3>
+            <p class="paper-summary">This study builds a QSAR model from 20 known piperazinylanthranilamide factor Xa inhibitors and uses it to prioritize 20 new analog designs. The top candidates were then evaluated with docking, molecular dynamics simulations, and MM/GBSA binding free energy calculations, with apixaban as a reference. The work is a computational prioritization exercise that proposes candidate compounds but does not experimentally validate them.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Biomedicines</span>
+                <span class="date">2026-Oct-16</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fbiomedicines14102360" target="_blank" rel="noopener">Donor-Resolved Analysis of HES1-Associated Fibroblast States in Systemic Sclerosis.</a></h3>
+            <p class="paper-summary">This study analyzed over 325,000 skin cells from 230 donors across five cohorts to characterize HES1-associated fibroblast states in systemic sclerosis (SSc). Using transcription-factor screens, donor-level trajectory analyses, multiome and spatial data, the authors identify HES1-linked fibroblast populations and provide rationale for testing upstream γ-secretase inhibition with nirogacestat as a therapeutic strategy.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Biomedicines</span>
+                <span class="date">2026-Oct-15</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fbiomedicines14102343" target="_blank" rel="noopener">Network Pharmacology of Natural Products from Computational Prediction to Experimental Validation.</a></h3>
+            <p class="paper-summary">This review outlines the network pharmacology workflow for studying natural products, covering active-compound screening, ADMET evaluation, target prediction, network construction, and pathway enrichment, and discusses how molecular docking and experimental validation complement computational predictions. It serves as a practical guide for integrating chemical, biological, and disease data to investigate the multi-target mechanisms of natural products.</p>
+            <div class="paper-tags"><span class="tag">network-analysis</span><span class="tag">drug-discovery</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cancers</span>
+                <span class="date">2026-Oct-15</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fcancers18203336" target="_blank" rel="noopener">Machine Learning-Guided Virtual Screening Identifies a Novel MELK-Targeted Antiproliferative Lead Compound with G2/M Arrest Activity in Triple-Negative Breast Cancer and Lung Adenocarcinoma Cells.</a></h3>
+            <p class="paper-summary">This study used an integrated computational pipeline—combining machine learning regressors, hierarchical molecular docking, MM/GBSA rescoring, ADMET prediction, and molecular dynamics simulations—to virtually screen for novel MELK kinase inhibitors. The screen identified a lead compound that showed antiproliferative activity and G2/M cell cycle arrest in triple-negative breast cancer and lung adenocarcinoma cell lines. The work presents a machine learning-guided virtual screening strategy for discovering structurally novel kinase inhibitors.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">drug-discovery</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Current issues in molecular biology</span>
+                <span class="date">2026-Oct-13</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fcimb48101055" target="_blank" rel="noopener">In Silico Discovery of a Potential PI3Kα Inhibitor Incorporating an Imidazole Moiety for Breast Cancer Treatment.</a></h3>
+            <p class="paper-summary">The authors used computational methods—scaffold hopping from the approved PI3Kα inhibitor inavolisib, molecular docking, Lipinski drug-likeness filtering, and ADMET prediction—to identify a novel imidazole-containing compound as a candidate PI3Kα inhibitor for breast cancer. This is a purely in silico study with no experimental validation reported in the abstract, so the compound remains a hypothesis awaiting wet-lab testing.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">cancer</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">International journal of molecular sciences</span>
+                <span class="date">2026-Oct-12</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fijms27209017" target="_blank" rel="noopener">Molecular Dynamics-Guided Triage of Approved Drugs Against Escherichia coli Resistance Targets Nominates Capmatinib, Metergoline and Nilotinib as Candidates for Experimental Testing.</a></h3>
+            <p class="paper-summary">The authors docked 2070 approved drugs against four E. coli antibacterial targets (FabI, LpxC, DHFR, GyrB) and then ran 100 ns triplicate molecular dynamics simulations on top hits plus reference inhibitors. Docking failed to recover known reference inhibitors (e.g., trimethoprim ranked 762/2068), highlighting scoring-function bias, but MD triage nominated capmatinib, metergoline, and nilotinib as candidates for experimental testing.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">methodology</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of advanced research</span>
+                <span class="date">2026-Nov-09</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.jare.2026.11.006" target="_blank" rel="noopener">GPCRAgent: an intelligent multi-agent platform integrating knowledge graphs and large language models for GPCR-targeted drug discovery.</a></h3>
+            <p class="paper-summary">GPCRAgent is a multi-agent platform that combines knowledge graphs with large language models to support GPCR-targeted drug discovery. It aims to overcome the limitations of standalone LLMs by grounding their reasoning in structured GPCR domain knowledge, improving interpretability and systematic characterization of receptor functions and ligand interactions.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">LLM</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of computer-aided molecular design</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1007%2Fs10822-026-00967-3" target="_blank" rel="noopener">Anticancer activity of sodium propionate in hepatocellular carcinoma cells via downregulation of HDAC2 and HDAC6.</a></h3>
+            <p class="paper-summary">This study combines bioinformatics analysis of public HCC transcriptomic and chemical-gene interaction datasets with in vitro experiments to show that sodium propionate, a short-chain fatty acid, exerts anticancer effects on hepatocellular carcinoma cells by downregulating the histone deacetylases HDAC2 and HDAC6. The work positions SP as a potential epigenetic modulator for HCC, though the evidence is largely correlative and preliminary.</p>
+            <div class="paper-tags"><span class="tag">epigenomics</span><span class="tag">cancer</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of biochemistry</span>
+                <span class="date">2026-Nov-05</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fjb%2Fmvag078" target="_blank" rel="noopener">Strengthening Japan's drug discovery and medical research ecosystem: AMED's innovation challenge.</a></h3>
+            <p class="paper-summary">This article describes how AMED, Japan's main medical research funding agency established in 2015, is restructuring its programs to better bridge basic research and clinical application. Under its 2025-2029 strategic plan, AMED adopts five priorities, including stronger coordination across its funding programs, to address gaps in the drug discovery pipeline and accelerate translation of academic discoveries into medicines and healthcare technologies.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">clinical</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of microbiology & biology education</span>
+                <span class="date">2026-Nov-05</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fjmbe.00253-26" target="_blank" rel="noopener">An educational activity tailored for undergraduate students on AI-driven nanobody design for targeted antiviral therapeutics.</a></h3>
+            <p class="paper-summary">This paper describes a short educational activity that teaches undergraduate students how to use generative AI tools to design nanobodies against viral targets, replacing the traditional 6-12 month animal immunization and phage display workflow that is impossible in a classroom setting. The activity introduces students to AI-driven protein design concepts and the role of nanobodies as antiviral biologics, making cutting-edge computational drug discovery accessible in a standard lab session.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">protein-structure</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Royal Society open science</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1098%2Frsos.261178" target="_blank" rel="noopener">Discovery of potential ALK inhibitors from Glycosmis phytochemicals via integrated machine learning and umbrella sampling approaches.</a></h3>
+            <p class="paper-summary">This study used a computational pipeline combining machine learning, molecular docking, molecular dynamics, umbrella sampling, and toxicity prediction to screen 307 phytochemicals from the Glycosmis genus for potential ALK inhibitors. A CatBoost regression model predicted binding free energies, narrowing the set to 26 compounds with ΔG below -11 kcal/mol, which were then further evaluated by docking and simulation. The work identifies candidate natural-product ALK inhibitors for cancer therapy, though experimental validation is still needed.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">RSC advances</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1039%2Fd6ra08312a" target="_blank" rel="noopener">Design, synthesis, and docking analysis of benzene sulfonamide-[1,4]benzoxazepine hybrids as acetylcholinesterase and butyrylcholinesterase inhibitors.</a></h3>
+            <p class="paper-summary">The authors synthesized a series of hybrid molecules combining benzene sulfonamide and [1,4]benzoxazepine scaffolds and tested them as inhibitors of acetylcholinesterase (AChE) and butyrylcholinesterase (BChE), enzymes targeted in Alzheimer's disease. Several compounds showed micromolar dual inhibition, with compound 12j being the most potent BChE inhibitor (IC50 ~1 µM) and 9d the most BChE-selective. Docking analysis was used to rationalize binding, but the work is at an early preclinical stage.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">methodology</span><span class="tag">neuroscience</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">RSC advances</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1039%2Fd6ra07351d" target="_blank" rel="noopener">Innovative design and development of novel thiazole-paracetamol hybrids as COX inhibitors and immunomodulatory activity: design, synthesis, SAR, in vitro biological evaluation, and molecular docking analysis.</a></h3>
+            <p class="paper-summary">This study designed and synthesized a series of thiazole-paracetamol hybrid molecules (compounds 4-11) linked via hydrazone or azo groups, aiming to combine anti-inflammatory COX inhibition with immunomodulatory activity in a single pharmacophore. The hybrids were chemically characterized and evaluated in vitro for biological activity, supported by SAR analysis and molecular docking to rationalize binding to COX targets.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">methodology</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ACS omega</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facsomega.6c01181" target="_blank" rel="noopener">Blood-Brain Barrier Permeability Prediction by Integrating Deep Learning Representations with Chemical Compound Knowledge.</a></h3>
+            <p class="paper-summary">This paper presents a hybrid machine learning framework for predicting blood-brain barrier permeability by combining transformer-derived molecular embeddings with traditional physicochemical descriptors through late-stage ensemble fusion. Trained on B3DB and NeuTox datasets and benchmarked on BBBP, the approach aims to overcome the limitations of descriptor-only methods (lacking structural context) and pure deep learning methods (prone to overfitting). The model demonstrated strong predictive performance, though results were dataset-dependent.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">deep-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">RSC advances</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1039%2Fd6ra09088e" target="_blank" rel="noopener">Design, click synthesis, and biological evaluation of novel uracil-1,2,3-triazole hybrids as dual EGFR/CDK1 inhibitors: antiproliferative activity, mechanistic insights, and in silico studies.</a></h3>
+            <p class="paper-summary">The authors designed and synthesized a series of uracil-1,2,3-triazole hybrid compounds using click chemistry and tested them as dual inhibitors of EGFR and CDK1, two kinases important for cancer cell growth. The compounds showed antiproliferative activity against several human cancer cell lines, and the study includes mechanistic and computational (in silico) analyses supporting the dual-target binding mode.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">cancer</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">JMIR AI</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.2196%2F93862" target="_blank" rel="noopener">Conversational Multi-Agentic Network-Driven Disease Module Identification and Drug Repurposing Prediction With ChatDRex: Platform Development Study.</a></h3>
+            <p class="paper-summary">ChatDRex is a conversational multi-agent platform that integrates disease module identification and drug repurposing prediction by coordinating specialized AI agents over heterogeneous biomedical data. It aims to overcome the fragmentation of existing in silico repurposing tools by enabling natural-language-driven workflows that combine network analysis with diverse data sources. The platform is presented as a development study, with the abstract emphasizing the need for cross-disciplinary collaboration rather than reporting specific predictive performance results.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">network-analysis</span><span class="tag">LLM</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Briefings in bioinformatics</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fbib%2Fbbag592" target="_blank" rel="noopener">Machine learning for RNA-small molecule interactions: methodologies, evaluation, and future directions.</a></h3>
+            <p class="paper-summary">This review surveys machine learning and deep learning methods for predicting RNA-small molecule interactions, focusing on three core tasks: binding site prediction, binding preference prediction, and related computational challenges. It provides a comprehensive overview of methodologies, evaluation strategies, and future directions for computational RNA-targeted drug discovery.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">drug-discovery</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of cheminformatics</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs13321-026-01289-0" target="_blank" rel="noopener">ADMET property prediction and toxicity profiling of CDK2 inhibitors: a practical cheminformatics tutorial using ADMET-AI 2.0 and RDKit.</a></h3>
+            <p class="paper-summary">This tutorial provides a reproducible Jupyter notebook workflow for predicting ADMET properties and toxicity of 200 CDK2 inhibitors from ChEMBL, using the graph neural network platform ADMET-AI 2.0 combined with RDKit for cheminformatics preprocessing. It demonstrates practical large-scale pharmacokinetic and safety profiling for computer-aided drug discovery, emphasizing reproducibility and hands-on guidance.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">tool</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of medical Internet research</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.2196%2F115418" target="_blank" rel="noopener">Can AI Help Repurpose Drugs to Fight Against Antibiotic Resistance?</a></h3>
+            <p class="paper-summary">This news and perspectives article reports on recent research that uses AI models to identify existing drugs that could be repurposed to treat antibiotic-resistant infections. It highlights how machine learning can accelerate and reduce the cost of drug discovery in the fight against antimicrobial resistance.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">drug-discovery</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nanoscale advances</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1039%2Fd6na00844e" target="_blank" rel="noopener">Integrated experimental and computational study of a novel indenonaphthodiazepine[5.3.3]propellane as a potential inhibitor of Mcl-1.</a></h3>
+            <p class="paper-summary">The authors synthesized a novel indenonaphthodiazepine[5.3.3]propellane compound and characterized it spectroscopically and computationally using DFT. Molecular docking against the anti-apoptotic protein Mcl-1 showed a binding score of -5.678 kcal/mol, suggesting it may be a potential inhibitor. The work is preliminary, relying on docking rather than experimental validation of binding or biological activity.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">cancer</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PLOS digital health</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pdig.0001822" target="_blank" rel="noopener">Utilising digital technologies for mycetoma management: A comprehensive review of advances and opportunities.</a></h3>
+            <p class="paper-summary">This review examines how digital technologies—particularly AI for analyzing clinical images—could improve the diagnosis and management of mycetoma, a neglected tropical disease causing chronic subcutaneous infections in resource-limited endemic regions. The authors argue that AI-assisted early detection and other digital tools may help overcome barriers such as delayed diagnosis and limited access to specialized care.</p>
+            <div class="paper-tags"><span class="tag">clinical</span><span class="tag">machine-learning</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Chemical biology & drug design</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1111%2Fcbdd.70422" target="_blank" rel="noopener">Machine Learning-Guided Discovery of Novel Inhibitors of Escherichia coli MurB.</a></h3>
+            <p class="paper-summary">The authors built five machine-learning models to predict MurB inhibition and used the best one (RDKit_2D descriptors) to screen an in-house compound library, yielding 238 hits that were then filtered by molecular docking to 16 candidates. This demonstrates a combined ML-plus-docking workflow for antibacterial hit discovery against a validated cell-wall biosynthesis target. The abstract is truncated, so experimental validation of the candidates is not fully described.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">drug-discovery</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">EClinicalMedicine</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.eclinm.2026.104266" target="_blank" rel="noopener">A multimodal digital NeuroMarker platform with composite and domain-level validity for identification of mild cognitive impairment: a cross-sectional study.</a></h3>
+            <p class="paper-summary">This cross-sectional study presents a multimodal digital NeuroMarker platform that combines multiple digital assessments to identify mild cognitive impairment. The platform demonstrates both composite and domain-level validity, suggesting it can capture the heterogeneity of MCI while remaining scalable. This approach could enable broader screening for early cognitive decline outside specialized clinical settings.</p>
+            <div class="paper-tags"><span class="tag">clinical</span><span class="tag">neuroscience</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Chemistry & biodiversity</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1002%2Fcbdv.71888" target="_blank" rel="noopener">Biosynthetic Pathways and Regulation of Antibacterial Compounds From Endophytic Fungi: From Chemistry to Genomics and Biotechnology.</a></h3>
+            <p class="paper-summary">This review integrates the chemistry, biosynthetic pathways, and genomics of antibacterial natural products from endophytic fungi. It highlights that most biosynthetic gene clusters in these fungi are silent under standard laboratory conditions, and surveys strategies for activating cryptic BGCs to unlock unexplored chemical diversity.</p>
+            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">microbiology</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Molecular informatics</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1002%2Fminf.70060" target="_blank" rel="noopener">Interpretable Drug-Target Prediction via Geometric Alignment: A Linear Alternative to Deep Architectural Complexity.</a></h3>
+            <p class="paper-summary">The authors propose Multi-View Linear Manifold (MVLM), a linear method that aligns latent embeddings from ChemBERTa (for small molecules) and ESM-2 (for proteins) to predict kinase inhibitor–target interactions. By replacing complex deep architectures with geometric alignment, the approach aims to improve generalization to new chemical scaffolds while remaining interpretable, addressing the data-scarcity problem in kinase inhibitor design.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">protein-structure</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Biomolecules & therapeutics</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.4062%2Fbiomolther.2026.157" target="_blank" rel="noopener">AI-Enabled Animal Behavior Analysis for Translational Pharmacology and Therapeutic Discovery.</a></h3>
+            <p class="paper-summary">This review describes how AI methods—object detection, markerless pose estimation, unsupervised behavioral segmentation, foundation models, and autonomous analysis agents—are being applied to quantify animal behavior from video with higher spatial, temporal, and phenotypic resolution than conventional manual scoring. The authors argue these approaches can improve reproducibility and dimensionality of behavioral endpoints in preclinical pharmacology, toxicology, and therapeutic discovery.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">deep-learning</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Biotechnology reports (Amsterdam, Netherlands)</span>
+                <span class="date">2026-Dec-01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.btre.2026.e00987" target="_blank" rel="noopener">UPLC-MS/MS-GNPS based metabolite profiling and inhibitory potential of Vitex negundo L. leaves against Shiga toxins: Applications for biodegradable films with antibacterial properties.</a></h3>
+            <p class="paper-summary">The study characterizes 56 metabolites from Vitex negundo leaf extract using UPLC-MS/MS and molecular networking, then computationally screens them against Shiga toxin B-subunits, identifying an iridoid glycoside as a top Stx1-binding candidate. The work proposes incorporating the extract into biodegradable films as an antibacterial strategy against STEC O157:H7.</p>
+            <div class="paper-tags"><span class="tag">metabolomics</span><span class="tag">drug-discovery</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in cell and developmental biology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffcell.2026.1991399" target="_blank" rel="noopener">SLC5A12 defines an invasive epithelial state associated with immune remodeling and therapeutic vulnerability in HNSCC.</a></h3>
+            <p class="paper-summary">This study identifies SLC5A12 as a marker of an invasive epithelial cell state in head and neck squamous cell carcinoma (HNSCC). This state is linked to immune remodeling within the tumor microenvironment and points to a potential therapeutic vulnerability, suggesting SLC5A12 could help stratify patients or serve as a drug target.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">transcriptomics</span><span class="tag">single-cell</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in bioengineering and biotechnology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffbioe.2026.1946220" target="_blank" rel="noopener">Design and validation of nucleosome binding peptides using BindCraft.</a></h3>
+            <p class="paper-summary">The authors used the BindCraft protein-design pipeline to computationally design short peptides that bind the nucleosome acidic patch, a key chromatin interaction hub, and then experimentally validated the designs. This demonstrates that de novo peptide design can target chromatin interfaces, opening a route toward epigenetic tool compounds and probes.</p>
+            <div class="paper-tags"><span class="tag">protein-structure</span><span class="tag">methodology</span><span class="tag">epigenomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">International journal of chronic obstructive pulmonary disease</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.2147%2FCOPD.S638940" target="_blank" rel="noopener">Integrative Single-Cell and Bulk RNA Sequencing Analysis Identifies Ion Channel-Related Biomarkers in Chronic Obstructive Pulmonary Disease.</a></h3>
+            <p class="paper-summary">This study integrates single-cell and bulk RNA sequencing data to identify ion channel-related genes as potential biomarkers in chronic obstructive pulmonary disease (COPD). By combining cell-type resolution with population-level expression data, the authors pinpoint candidate ion channel genes associated with COPD that could serve as diagnostic or therapeutic targets. The work highlights a previously underappreciated role for ion channel effectors in COPD pathogenesis.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">single-cell</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in molecular biosciences</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffmolb.2026.1930582" target="_blank" rel="noopener">Bone morphogenetic protein 4 meets artificial intelligence: a comprehensive review of AI-driven advances in drug discovery, structural modeling, and clinical translation.</a></h3>
+            <p class="paper-summary">This review surveys how AI and machine learning are being applied to BMP4 biology, spanning drug discovery, structural modeling, and clinical translation. It highlights opportunities to understand and therapeutically target BMP4 across scales, from atomic structure prediction to population-level prognostication, in contexts including cancer, fibrosis, and fibrodysplasia ossificans progressiva.</p>
+            <div class="paper-tags"><span class="tag">review</span><span class="tag">machine-learning</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1962620" target="_blank" rel="noopener">Hupehenine suppresses tumor cell phenotypes and modulates macrophage marker profiles in a diabeticmimetic colorectal cancer model.</a></h3>
+            <p class="paper-summary">This study identifies shared molecular features between diabetes and colorectal cancer, then tests whether the natural compound hupehenine can modulate these pathways. Using a diabetic-mimetic CRC model, the authors show that hupehenine suppresses tumor cell phenotypes and alters macrophage marker profiles, suggesting a potential therapeutic axis at the diabetes–cancer interface.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">drug-discovery</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1940098" target="_blank" rel="noopener">Virology-aware artificial intelligence for respiratory antiviral discovery: from molecular docking biases to RdRp-centered benchmarking.</a></h3>
+            <p class="paper-summary">This review argues that AI-driven discovery of antivirals against respiratory RNA viruses must account for the unique biology of RNA-dependent RNA polymerases (RdRps), whose ligandable states depend on RNA templates, metal cofactors, and conformational changes. The authors critique common molecular docking practices that ignore these features and propose RdRp-centered benchmarking to make AI predictions more reliable.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1869128" target="_blank" rel="noopener">Research progress on the application of multi-scale computational methods in the research and development of anti-tuberculosis infection drugs.</a></h3>
+            <p class="paper-summary">This review synthesizes how multi-scale computational strategies—spanning molecular modeling, network analysis, and systems-level approaches—are being applied to anti-tuberculosis drug discovery. It highlights how these methods address the stagnation of conventional pipelines amid rising multidrug-resistant and extensively drug-resistant Mtb strains, and outlines their role in accelerating target identification and drug development.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">systems-biology</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1907084" target="_blank" rel="noopener">Integrative transcriptomic and computational analysis associates Ms4a6c+ macrophages with fibrosis in radiation proctitis and computationally nominates MOTS-c as a candidate modulator.</a></h3>
+            <p class="paper-summary">This study combines transcriptomic profiling with computational analyses to identify Ms4a6c+ macrophages as a cell population associated with fibrosis in chronic radiation proctitis. The authors then use computational approaches to nominate MOTS-c as a candidate modulator of this fibrotic process. The work is exploratory and hypothesis-generating, with the therapeutic candidate identified in silico rather than validated experimentally.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">machine-learning</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in oncology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffonc.2026.1885312" target="_blank" rel="noopener">Artificial intelligence and anti-cancer drugs: advancing discovery, personalization, and precision oncology.</a></h3>
+            <p class="paper-summary">This review surveys how artificial intelligence is being applied across the anticancer drug development pipeline, from target identification and virtual screening through molecular docking, pharmacokinetic prediction, and hit-to-lead optimization. It also discusses how machine learning can improve clinical trial design through patient stratification and enable real-time toxicity monitoring, addressing traditional bottlenecks of long timelines, high costs, and patient heterogeneity.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in chemistry</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffchem.2026.1988344" target="_blank" rel="noopener">Cytochrome P450 inhibitors: friends or foes?</a></h3>
+            <p class="paper-summary">This review examines cytochrome P450 enzymes as both a liability and an opportunity in drug discovery. While CYP450 inhibition traditionally raises concerns about drug-drug interactions and toxicity, the authors argue that selective inhibition of specific isoforms can be a powerful therapeutic strategy for cancer and infectious diseases. The review synthesizes data and regulatory guidance to frame when CYP450 inhibitors act as friends versus foes.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">review</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in psychology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffpsyg.2026.1931423" target="_blank" rel="noopener">Exploration or exploitation? The double-edged effects of AI use modes on radical creativity: evidence from AI-enabled drug discovery.</a></h3>
+            <p class="paper-summary">This study examines how different modes of AI use (exploration vs. exploitation) affect radical creativity in AI-enabled drug discovery, drawing on the exploration-exploitation framework and environmental dynamism. It proposes a theoretical model linking leaders' perceptions to employee creative use of AI, arguing that radical innovation depends not just on AI adoption but on how creatively employees deploy it to transcend established knowledge boundaries. The paper is a conceptual/psychological model rather than an empirical bioinformatics study.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">drug-discovery</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in bioinformatics</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffbinf.2026.1952759" target="_blank" rel="noopener">Comparative multi-target computational profiling of ebelin lactone across cognition-associated proteins.</a></h3>
+            <p class="paper-summary">This study computationally docks ebelin lactone, a triterpenoid derived from bacosides, against multiple proteins linked to cognition, including targets involved in synaptic plasticity, neuronal proteostasis, mitochondrial stress, and neurite remodeling. The work extends prior findings of its binding to M1 muscarinic and 5-HT2A receptors by profiling its structural compatibility across a broader set of cognition-associated proteins. It is an in silico screening study without experimental validation.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">neuroscience</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1994202" target="_blank" rel="noopener">Mapping the subcellular pharmacokinetic-pharmacodynamic landscape: a systems-pharmacology framework for predicting combination therapies against intracellular bacterial infections.</a></h3>
+            <p class="paper-summary">This review proposes a systems pharmacology framework that maps how drugs move and act at the subcellular level to predict combination therapies against intracellular bacterial infections. It argues that conventional drug discovery pipelines ignore the compartmentalized, dynamic nature of host cells where these pathogens hide, and that incorporating subcellular pharmacokinetic-pharmacodynamic (PK-PD) modeling could improve treatment design.</p>
+            <div class="paper-tags"><span class="tag">systems-biology</span><span class="tag">drug-discovery</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1972662" target="_blank" rel="noopener">SCOPE-based target and pathway enrichment identifies the histamine H1 receptor as a regulator of exodosis.</a></h3>
+            <p class="paper-summary">The authors apply a SCOPE-based target and pathway enrichment approach to interpret phenotypic screening results, addressing challenges from polypharmacology and pathway complexity. This analysis identifies the histamine H1 receptor as a regulator of exodosis, a cellular process.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">methodology</span><span class="tag">systems-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1937405" target="_blank" rel="noopener">Integrated in vitro and in silico assessment of antimicrobial, chemical antioxidant, and cytotoxic activities of endophytic Aspergillus sp. GK1 isolated from Mentha spicata roots.</a></h3>
+            <p class="paper-summary">This study isolated the endophytic fungus Aspergillus sp. GK1 from Mentha spicata roots and characterized its antimicrobial, antioxidant, and cytotoxic activities using both in vitro assays and in silico molecular docking. The fungus showed promising antimicrobial and antioxidant effects, and its metabolites were predicted to interact with relevant target proteins, suggesting pharmaceutical potential. However, the work is preliminary and lacks compound isolation or in vivo validation.</p>
+            <div class="paper-tags"><span class="tag">microbiology</span><span class="tag">drug-discovery</span><span class="tag">metabolomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1952519" target="_blank" rel="noopener">An m5C-associated NSUN5-YBX1-CENPF programme marks melanoma cell states and immune features.</a></h3>
+            <p class="paper-summary">This study identifies an m5C-associated regulatory programme—NSUN5-YBX1-CENPF (NYC)—that helps define melanoma cell states and their associated immune features. Using patient-matched sequencing, experimental perturbation, and multiscale transcriptomic analyses, the authors link RNA m5C modification machinery to melanoma heterogeneity and immune context.</p>
+            <div class="paper-tags"><span class="tag">epigenomics</span><span class="tag">transcriptomics</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">The Canadian journal of infectious diseases & medical microbiology = Journal canadien des maladies infectieuses et de la microbiologie medicale</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1155%2Fcjid%2F1023166" target="_blank" rel="noopener">Plasmid-Mediated AmpC Detection in Escherichia coli and Klebsiella pneumoniae: In Vitro Prevalence and In Silico Inhibitor Design.</a></h3>
+            <p class="paper-summary">This study screened clinical isolates of E. coli and K. pneumoniae from Lahore, Pakistan, for plasmid-mediated AmpC beta-lactamases and then used computational (in silico) methods to design candidate inhibitor molecules targeting these enzymes. It combines local prevalence surveillance with early-stage structure-based drug design, though the abstract does not report specific prevalence rates or validated inhibitor activity.</p>
+            <div class="paper-tags"><span class="tag">microbiology</span><span class="tag">drug-discovery</span><span class="tag">clinical</span></div>
+        </article>
+<section class="ask">
+<h2>Ask this channel</h2>
+<p class="ask-hint">Answers come only from bioTriage&rsquo;s indexed literature, scoped to this channel. Always verify before citing.</p>
+<form id="ask-form" class="ask-row">
+<input id="ask-input" type="text" placeholder="e.g. which binning tools beat the baseline?" autocomplete="off">
+<button type="submit">Ask</button>
+</form>
+<div id="ask-status" class="ask-status" hidden></div>
+<div id="ask-answer" class="ask-answer" hidden></div>
+<div id="ask-sources" class="ask-sources"></div>
+</section>
+<script>
+(function () {
+  var API = 'https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api';
+  var DOMAIN = 'ai-drug-discovery';
+  var form = document.getElementById('ask-form');
+  if (!form) { return; }
+  var input = document.getElementById('ask-input');
+  var button = form.querySelector('button');
+  var status = document.getElementById('ask-status');
+  var answer = document.getElementById('ask-answer');
+  var sources = document.getElementById('ask-sources');
+
+  function setStatus(msg) { status.hidden = !msg; status.textContent = msg || ''; }
+
+  function renderSources(items) {
+    sources.innerHTML = '';
+    (items || []).forEach(function (s) {
+      var el = document.createElement('div');
+      el.className = 'src';
+      var html = '';
+      if (s.domain) {
+        html += '<span class="dom">' + s.domain + (s.evidence_level ? ' &middot; ' + s.evidence_level : '') + '</span>';
+      }
+      html += '<strong>' + (s.cite || s.title || '') + '</strong>';
+      if (s.url) { html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>'; }
+      el.innerHTML = html;
+      sources.appendChild(el);
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) { return; }
+    button.disabled = true;
+    answer.hidden = true;
+    setStatus('Searching the corpus...');
+    var url = API + '/rag_chat?q=' + encodeURIComponent(q) + '&domains=' + encodeURIComponent(DOMAIN);
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      button.disabled = false;
+      if (!data || data.success === false) { setStatus((data && data.error) || 'Assistant unavailable.'); return; }
+      setStatus('');
+      answer.textContent = data.answer || '';
+      answer.hidden = false;
+      renderSources(data.sources);
+    }).catch(function () { button.disabled = false; setStatus('Assistant unavailable.'); });
+  });
+})();
+</script>
+</div>
+<footer class="site-footer">
+<p>AI-curated by bioTriage-Open. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">bioTriage-Open Home</a></p>
+</footer>
+</body>
+</html>

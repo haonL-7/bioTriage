@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metagenomics & Microbiome Informatics — bioTriage-Open</title>
+<style>
+:root { --bg: #fff; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8c8c8c; --border: #d5d5d5; --accent: #1a5276; --max-width: 800px; --font-serif: 'Georgia','Times New Roman',serif; --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; font-size: 15px; }
+.top-bar { background: #1a1a1a; color: #ccc; font-size: 12px; padding: 8px 20px; display: flex; justify-content: space-between; }
+.top-bar a { color: #fff; text-decoration: none; }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 32px 20px 60px; }
+h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+.channel-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.channel-stats { font-size: 12px; color: var(--text-muted); margin-bottom: 28px; }
+.paper-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+.paper-item:first-of-type { border-top: 1px solid var(--border); }
+.paper-meta { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; font-size: 12px; }
+.paper-meta .journal { color: var(--text-muted); font-style: italic; }
+.paper-meta .date { color: var(--text-muted); }
+.paper-meta .sig { font-size: 10px; font-weight: 600; padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.sig-high { background: #e8f5e9; color: #1a6b3c; }
+.sig-medium { background: #f5f5f5; color: #4a4a4a; }
+.sig-low { background: #fff5f5; color: #a0a0a0; }
+.paper-title { font-family: var(--font-serif); font-size: 15px; font-weight: 400; margin-bottom: 4px; line-height: 1.5; }
+.paper-title a { color: var(--text); text-decoration: none; }
+.paper-title a:hover { color: var(--accent); text-decoration: underline; }
+.paper-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 6px; }
+.paper-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font-size: 10px; color: var(--accent); background: #eaf0f6; padding: 2px 8px; letter-spacing: 0.3px; }
+.back-link { font-size: 12px; color: var(--accent); text-decoration: none; }
+.site-footer { max-width: var(--max-width); margin: 0 auto; padding: 24px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; text-align: center; }
+.site-footer a { color: var(--accent); }
+.ask { margin: 32px 0 8px; padding: 20px; border: 1px solid var(--border); }
+.ask h2 { font-family: var(--font-serif); font-size: 17px; font-weight: 400; margin-bottom: 4px; }
+.ask-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.ask-row { display: flex; gap: 8px; }
+.ask-row input { flex: 1; min-width: 0; font: inherit; font-size: 13px; padding: 8px 10px; border: 1px solid var(--border); background: #fff; color: var(--text); }
+.ask-row button { font: inherit; font-size: 13px; padding: 8px 16px; border: 1px solid #1a1a1a; background: #1a1a1a; color: #fff; cursor: pointer; }
+.ask-row button:disabled { opacity: .6; cursor: not-allowed; }
+.ask-status { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+.ask-answer { font-size: 13px; line-height: 1.75; margin-top: 12px; white-space: pre-wrap; }
+.ask-sources { margin-top: 10px; }
+.ask-sources .src { display: block; font-size: 11.5px; color: var(--text-secondary); margin-top: 6px; }
+.ask-sources .src .dom { display: inline-block; font-size: 10px; letter-spacing: .4px; color: var(--text-muted); border: 1px solid var(--border); padding: 0 5px; margin-right: 6px; }
+@media (max-width: 640px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav class="top-bar"><a href="../">bioTriage-Open</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
+<div class="container">
+<a href="../" class="back-link">&larr; bioTriage-Open</a>
+<h1>Metagenomics & Microbiome Informatics</h1>
+<p class="channel-desc">Computational methods for metagenomic assembly, binning, taxonomic profiling, and functional annotation of microbial communities.</p>
+<p class="channel-stats">56 papers curated &middot; High: 1 &middot; Medium: 40 &middot; Low: 15 &middot; Updated: 2026-11-10</p>
+<article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">BMJ paediatrics open</span>
+                <span class="date">2026-Oct-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1136%2Fbmjpo-2026-005152" target="_blank" rel="noopener">Probiotics and diarrhoea morbidity among infants in Tanzania: secondary analysis of a randomised clinical trial.</a></h3>
+            <p class="paper-summary">This secondary analysis of a randomized clinical trial in Tanzania found that Bifidobacterium-based probiotic supplementation did not significantly reduce diarrhoea morbidity among infants. However, gut microbiota composition at 6 weeks of age was associated with later diarrhoeal risk, suggesting that early microbiome features may predict resilience to enteric infections.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">clinical</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nucleic acids research</span>
+                <span class="date">2026-Oct-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fnar%2Fgkag1088" target="_blank" rel="noopener">CAnDi: a global catalogue of anaerobic digestion microbiomes.</a></h3>
+            <p class="paper-summary">CAnDi is a new global database cataloguing the microbiomes of anaerobic digestion, including bacteria, archaea, bacteriophages, and plasmids that are often missing from existing resources. It provides a comprehensive survey of the taxonomic and functional landscape of methanogenic communities in bioreactors, supporting both carbon-cycle research and biotechnology applications.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">database</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">World journal of microbiology & biotechnology</span>
+                <span class="date">2026-Oct-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1007%2Fs11274-026-05278-1" target="_blank" rel="noopener">Influence of Gliricidia sepium living support on rhizosphere bacterial recruitment and fruit metabolomics in black pepper (Piper nigrum).</a></h3>
+            <p class="paper-summary">This study compared the rhizosphere microbiome and fruit metabolome of black pepper grown on living Gliricidia sepium support trees versus dead wooden stakes, using shotgun metagenomics and mass spectrometry. The living support system altered bacterial recruitment in the rhizosphere, with particular attention to Actinobacteria and antimicrobial resistance genes, and was associated with differences in fruit metabolite profiles. The findings suggest that living support trees can shape beneficial microbial recruitment and crop chemistry in a sustainable pepper production system.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">metabolomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-30</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.29.762972" target="_blank" rel="noopener">Assembly of minimally fragmented metagenomic pangenome graphs.</a></h3>
+            <p class="paper-summary">The paper addresses the problem that metagenomic pangenome variation graphs often become highly fragmented into disconnected components, which prevents meaningful comparisons of genomes across components. It proposes an assembly approach that produces minimally fragmented graphs, improving the topology so that it better reflects the underlying phylogenetic and genetic relationships among the embedded genomes, with particular attention to hypervariable viral families.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">methodology</span><span class="tag">genomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Translational cancer research</span>
+                <span class="date">2026-Oct-30</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.21037%2Ftcr-2026-1983" target="_blank" rel="noopener">Network perturbation of lactate metabolism identifies an aggressive hepatocellular carcinoma subtype with distinct immune and microbial features.</a></h3>
+            <p class="paper-summary">This study classifies hepatocellular carcinoma (HCC) into molecular subtypes based on perturbations in the gene interaction network related to lactate metabolism. The authors identify an aggressive subtype with distinct immune and intratumoral microbial features, suggesting that network-based classification can reveal clinically relevant HCC heterogeneity.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">metabolomics</span><span class="tag">network-analysis</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Systematic and applied microbiology</span>
+                <span class="date">2026-Oct-29</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.syapm.2026.126782" target="_blank" rel="noopener">Senimuribacter muris sp. nov., a butyrate-producing bacterium isolated from mouse feces, and reclassification of members of the family Eubacteriaceae into the family Anaerovoracaceae.</a></h3>
+            <p class="paper-summary">This paper describes the isolation and characterization of two strictly anaerobic, butyrate-producing bacterial strains from mouse feces, which the authors propose as a new species, Senimuribacter muris sp. nov. The strains are catalase- and oxidase-negative, grow optimally at 37°C and pH 7, and share 100% 16S rRNA gene sequence similarity with each other but only ~95% with the closest known relative, Senimuribacter intestinalis. The study also reclassifies members of the family Eubacteriaceae into the family Anaerovoracaceae.</p>
+            <div class="paper-tags"><span class="tag">microbiology</span><span class="tag">microbiome</span><span class="tag">metagenomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Communications biology</span>
+                <span class="date">2026-Oct-29</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1038%2Fs42003-026-10750-7" target="_blank" rel="noopener">Microbiology Galaxy Lab: a community-driven gateway for reproducible and FAIR analysis of microbiological data.</a></h3>
+            <p class="paper-summary">The authors present the Microbiology Galaxy Lab (MGL), a free, community-supported web platform that bundles over 315 tool suites and 115 curated workflows for reproducible, FAIR analysis of microbiological omics data. It aims to lower computational and technical barriers for researchers analyzing metabarcoding, metagenomic, and metatranscriptomic datasets. The platform is built on Galaxy and supported by the global microbiology community.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">tool</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PLoS computational biology</span>
+                <span class="date">2026-Oct-29</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pcbi.1014912" target="_blank" rel="noopener">Taxonova: Deep learning enables fast and confidence-aware microbiome species-level amplicon classification.</a></h3>
+            <p class="paper-summary">Taxonova is a deep learning framework for species-level taxonomic classification of microbial amplicon sequences that works across both short- and long-read platforms. It addresses the limitations of similarity-based methods on short amplicons and poorly represented taxa, and provides confidence-aware predictions. The tool aims to improve robustness across diverse sequencing platforms and variable-region targets.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">deep-learning</span><span class="tag">metagenomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">FEMS microbiology letters</span>
+                <span class="date">2026-Oct-29</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Ffemsle%2Ffnag133" target="_blank" rel="noopener">Microbiome science needs AI competence, not just AI literacy.</a></h3>
+            <p class="paper-summary">The paper argues that microbiome researchers need deeper AI competence rather than basic AI literacy, because common pitfalls like data leakage, incomplete metadata, ecological confounding, and unverified generative-AI outputs can produce convincing but biologically misleading conclusions. It proposes a five-part AI-competence framework covering data and platform fluency, machine-learning competency, and related capabilities to guide training in the field.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Animal bioscience</span>
+                <span class="date">2026-Oct-28</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.5713%2Fab.260614" target="_blank" rel="noopener">Microencapsulated immunoglobulin Y and lactic acid bacteria improve intestinal health in Yanbian Yellow calves.</a></h3>
+            <p class="paper-summary">This study developed microcapsules containing immunoglobulin Y (IgY) and mixed lactic acid bacteria (IgY-LAB-MCs) as an antibiotic alternative to prevent neonatal calf diarrhea. The researchers evaluated the efficacy and optimal dosage of these microcapsules in Yanbian Yellow calves, finding that they improved intestinal health by suppressing enteric pathogens and enhancing gut health.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">clinical</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Poultry science</span>
+                <span class="date">2026-Oct-22</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.psj.2026.108029" target="_blank" rel="noopener">An integrated in vitro gastrointestinal digestion and fermentation model as a complementary tool for evaluating feed ingredients in young broilers: a case study with peas.</a></h3>
+            <p class="paper-summary">This study developed an in vitro model that simulates the complete gastrointestinal tract of young broilers, including digestion and caecal fermentation, to evaluate feed ingredients without animal trials. Using peas as a case study, the model captures the lower digestive capacity and simpler caecal microbiota characteristic of young birds. It offers a cheaper, ethically preferable complementary tool for screening alternative protein sources in poultry nutrition.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">methodology</span><span class="tag">metagenomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-19</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.16.759675" target="_blank" rel="noopener">Advances in 16S Taxonomic Classification: Impacts on Species-Level Resolution of Female Bladder Microbiota.</a></h3>
+            <p class="paper-summary">This preprint examines how advances in 16S rRNA taxonomic classification methods affect species-level resolution of the female bladder microbiome (urobiome). Because the urobiome is a low-biomass community with high host contamination, classification accuracy is critical, and the authors assess how different classification approaches impact the ability to resolve bacteria down to species level. The work highlights that methodological choices in 16S classification meaningfully influence the taxonomic conclusions drawn about bladder microbiota.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Genome medicine</span>
+                <span class="date">2026-Oct-17</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs13073-026-01757-0" target="_blank" rel="noopener">Multikingdom and functional gut microbiota markers for cholangiocarcinoma.</a></h3>
+            <p class="paper-summary">This study moves beyond bacteria to profile fungi, archaea, and viruses in the gut microbiomes of cholangiocarcinoma patients, characterizing multi-kingdom taxonomic and functional shifts associated with the disease. The authors use these multi-kingdom markers to build a non-invasive diagnostic model, addressing a gap left by bacteria-only studies of CCA.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-16</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.15.759161" target="_blank" rel="noopener">Shifts in the Maternal Gut Microbiome Across Pregnancy are Associated with Energetic Status in Phayre's Leaf Monkeys.</a></h3>
+            <p class="paper-summary">This study examines how the gut microbiome of pregnant Phayre's leaf monkeys changes across gestation and relates to the mothers' energetic condition. The authors find that shifts in the maternal gut microbiome during pregnancy are associated with energetic status, suggesting the microbiome may help mediate the metabolic demands of gestation. The work extends microbiome–metabolism links observed in humans and model organisms to a wild primate.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">evolution</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">medRxiv : the preprint server for health sciences</span>
+                <span class="date">2026-Oct-14</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.12.26365231" target="_blank" rel="noopener">Disrupted microbial queuosine biosynthesis contributes to dysbiosis in human inflammatory bowel disease.</a></h3>
+            <p class="paper-summary">This preprint investigates how queuosine (Q) biosynthesis by gut bacteria and the resulting tRNA Q-modification in host cells relate to inflammatory bowel disease (IBD). The authors identify which bacteria produce queuine and propose that disruption of microbial Q biosynthesis contributes to dysbiosis in IBD patients. The work links a diet/microbiome-derived micronutrient and its tRNA modification pathway to human gut health and disease.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of microbiology and biotechnology</span>
+                <span class="date">2026-Oct-13</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.4014%2Fjmb.2606.06022" target="_blank" rel="noopener">Elevated Level of Fannyhessea vaginae Correlated with Implantation Outcomes in Women undergoing in vitro fertilization Treatment.</a></h3>
+            <p class="paper-summary">This study profiled the vaginal microbiome of 100 women undergoing IVF at three timepoints (oocyte retrieval, embryo transfer, and pregnancy testing) using 16S rRNA sequencing and found that elevated levels of Fannyhessea vaginae were associated with implantation outcomes. The findings suggest specific vaginal bacteria may influence IVF success and could inform microbiome-based therapeutic strategies.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">clinical</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">The ISME journal</span>
+                <span class="date">2026-Nov-09</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fismejo%2Fwrag281" target="_blank" rel="noopener">Temperature effects on life history strategies for rapid growth potential of leaf epiphytic bacteria.</a></h3>
+            <p class="paper-summary">This study examined how temperature shapes the life-history strategies of leaf-dwelling (epiphytic) bacteria in an alpine meadow on the Qinghai-Tibet Plateau. By combining an elevational gradient with a controlled warming experiment across four plant species, the authors found that temperature is closely linked to the assembly and life-history strategies of phyllosphere bacterial communities. The work highlights how warming may favor rapid-growth strategies in leaf epiphytic bacteria.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">microbiology</span><span class="tag">plants</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Microbiology spectrum</span>
+                <span class="date">2026-Nov-09</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fspectrum.01326-26" target="_blank" rel="noopener">Identification of ebastine and ceritinib as effective inhibitors of Fusobacterium nucleatum FtsZ.</a></h3>
+            <p class="paper-summary">This study used structure-based virtual screening to identify two existing drugs, ebastine and ceritinib, as effective inhibitors of FtsZ, a key bacterial cell division protein, in the cancer-associated bacterium Fusobacterium nucleatum. Given that F. nucleatum is enriched in colorectal cancer tissues, these repurposed drugs could offer a targeted antimicrobial strategy for CRC prevention or treatment.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">microbiome</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">The Journal of nutrition</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.tjnut.2026.101933" target="_blank" rel="noopener">Children at risk of vitamin A deficiency exhibit taxonomic dysbiosis and functional remodeling of the gut microbiome: a matched case-control study.</a></h3>
+            <p class="paper-summary">This matched case-control study examines whether children at risk of vitamin A deficiency show altered gut microbiome composition and function. The authors report taxonomic dysbiosis and functional remodeling of the gut microbiome in at-risk children, supporting a link between vitamin A status and gut microbial ecology.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">mSystems</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fmsystems.01138-26" target="_blank" rel="noopener">Integrated optimization of experimental and computational workflows improves genome recovery in long-read gut metagenomics.</a></h3>
+            <p class="paper-summary">This study systematically evaluates and optimizes a long-read metagenomic workflow for gut microbiome samples, spanning sample processing through computational assembly, to improve recovery of complete microbial genomes. The integrated optimization aims to overcome the fragmentation limits of short-read sequencing and enhance assembly contiguity and genome completeness.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of virology</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fjvi.01244-26" target="_blank" rel="noopener">Sex influences the mosquito virome in a host-specific way.</a></h3>
+            <p class="paper-summary">This study examines how mosquito sex shapes the eukaryotic virome in sympatric populations of Culex quinquefasciatus. The authors find that sex influences virome composition in a host-specific manner, likely reflecting ecological differences such as female-specific blood feeding that alter viral exposure. These results highlight sex as an important factor structuring mosquito viral communities with potential implications for pathogen transmission.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">evolution</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">mBio</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fmbio.02162-26" target="_blank" rel="noopener">Diversity and evolution of the ribovirian class Stelpaviricetes.</a></h3>
+            <p class="paper-summary">This study uses metatranscriptome mining with order-specific Hidden Markov Models to explore the diversity and evolution of the ribovirian class Stelpaviricetes, which includes vertebrate-infecting astroviruses, plant-infecting potyviruses, and fungus-associated viruses. The work substantially expands the known diversity within this class and provides insights into its evolutionary relationships across hosts.</p>
+            <div class="paper-tags"><span class="tag">genomics</span><span class="tag">evolution</span><span class="tag">metagenomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">mSystems</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fmsystems.00888-26" target="_blank" rel="noopener">Physiological, behavioral, and genetic factors that shape interactions in the plant growth-promoting maize rhizosphere synthetic community.</a></h3>
+            <p class="paper-summary">The authors describe MARSc, a genome-enabled synthetic community of 31 bacterial strains representative of the maize rhizosphere in Iowa soils. By combining genomic, physiological, and behavioral profiling, they identify factors that shape interactions among community members, providing a tractable system for causal studies of plant-microbiome interactions.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">synthetic-biology</span><span class="tag">plants</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Revista Argentina de microbiologia</span>
+                <span class="date">2026-Nov-05</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.ram.2026.100763" target="_blank" rel="noopener">Exploring normality: Mapping the endometrial microbiome in healthy reproductive-aged women from Argentina.</a></h3>
+            <p class="paper-summary">This prospective observational study characterized the endometrial microbiome of 100 healthy reproductive-aged women in Rosario, Argentina, using aspiration biopsies during the follicular phase. It provides a regional baseline for the endometrial microbiome in a South American population, addressing the scarcity of data from healthy women outside North America and Europe. The findings establish reference data for future reproductive health research in this population.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">genomics</span><span class="tag">population-genetics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Applied and environmental microbiology</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Faem.01612-26" target="_blank" rel="noopener">Monitoring single-cell metabolic phenotyping changes of Daqu microbiota during fermentation by Raman spectroscopy.</a></h3>
+            <p class="paper-summary">This study applies single-cell Raman spectroscopy to track metabolic changes in the microbial community of Daqu, a traditional fermentation starter, over the course of fermentation. The authors developed an operational phenotypic unit (OPU)-based clustering method for Raman spectral data and validated the clusters by sequencing representative single cells via 16S/ITS regions. The work demonstrates that single-cell metabolic phenotyping can resolve community dynamics that bulk measurements miss.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metabolomics</span><span class="tag">single-cell</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">The ISME journal</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fismejo%2Fwrag276" target="_blank" rel="noopener">Scaffold-level validation is needed for phage-host inference from metagenome-assembled genomes.</a></h3>
+            <p class="paper-summary">This paper argues that current phage-host prediction methods, which rely on metagenome-assembled genomes (MAGs), may produce incorrect host assignments because MAG-level quality metrics do not guarantee scaffold-level accuracy. The authors show that CRISPR-associated regions can have tetranucleotide frequencies that differ from the rest of the host genome, increasing the risk of misassigning phage-host relationships. They call for scaffold-level validation in phage-host inference.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiology</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Molecular & cellular proteomics : MCP</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.mcpro.2026.101702" target="_blank" rel="noopener">Optimized Super-SILAC Normalization Enables Enhanced Profiling of Histone Post-Translational Modification Changes Associated with Microbiota and Acute Inflammation.</a></h3>
+            <p class="paper-summary">The authors developed an optimized super-SILAC (stable isotope labeling by amino acids in cell culture) strategy specifically for quantifying low-abundance non-acetyl histone acylation marks in gut epithelial tissue. Using a heavy-labeled internal standard, they improved normalization and enabled profiling of histone post-translational modification changes linked to microbiota and acute inflammation. This provides a more reliable method for studying host-microbiome epigenetic crosstalk via SCFA-derived acyl marks.</p>
+            <div class="paper-tags"><span class="tag">proteomics</span><span class="tag">epigenomics</span><span class="tag">microbiome</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">BMC infectious diseases</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs12879-026-14694-5" target="_blank" rel="noopener">Shotgun metagenomic characterization of human adenovirus F40 and a non-cpe Clostridium perfringens strain in pediatric prolonged diarrhea: a genome-resolved case study.</a></h3>
+            <p class="paper-summary">This case study used shotgun metagenomic sequencing to characterize human adenovirus F40 and a non-cpe Clostridium perfringens strain in a pediatric patient with prolonged diarrhea. The work demonstrates that metagenomics can detect and genomically characterize co-infecting pathogens that routine diagnostics may miss, though the findings are limited to a single case.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">mSystems</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fmsystems.01024-26" target="_blank" rel="noopener">Genome-resolved taxonomy, global distribution, and EPS potential of Zoogloea, the canonical floc-former in wastewater treatment systems.</a></h3>
+            <p class="paper-summary">This study provides a genome-resolved taxonomic framework for the genus Zoogloea, resolving long-standing inconsistencies in its classification that arose from phenotype-based assignments. Using this framework, the authors map the global distribution of Zoogloea in wastewater treatment plants and assess its potential for producing extracellular polymeric substances (EPS) linked to floc formation.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiology</span><span class="tag">genomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">BMJ open</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1136%2Fbmjopen-2026-123496" target="_blank" rel="noopener">Reciprocity between the intestinal microbiome and urobiome in children with and without urinary tract infection: protocol of a single-centre, nested case-control study in Denmark.</a></h3>
+            <p class="paper-summary">This protocol describes a single-centre nested case-control study in Denmark that will investigate the reciprocal relationship between the gut microbiome and the urinary microbiome (urobiome) in children with and without urinary tract infection (UTI). The study aims to characterize how microbial communities in these two niches influence each other and whether specific microbiome features are associated with UTI susceptibility. As a protocol, it outlines the design and methods rather than reporting results.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Research square</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.21203%2Frs.3.rs-11319770%2Fv1" target="_blank" rel="noopener">Global Carriage of Antimicrobial Resistance Genes and Virulence Factors Among Physicians in Cirrhosis Care.</a></h3>
+            <p class="paper-summary">This study used shotgun metagenomics to profile the fecal microbiome of 55 physicians caring for cirrhosis patients across 9 countries, examining carriage of antimicrobial resistance genes (ARGs) and virulence factors. Physicians in low- and middle-income countries showed greater ARG diversity, corresponding with higher taxonomic richness, but overall carriage of clinically relevant ARGs and virulence factors was low regardless of practice location or patient exposure. The findings suggest healthcare providers in cirrhosis care carry a modest resistance gene burden, with geographic income level influencing overall microbiome diversity more than occupational exposure.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Microbiology (Reading, England)</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1099%2Fmic.0.001786" target="_blank" rel="noopener">Importance of rumen ciliated protozoa and current research techniques for their analysis.</a></h3>
+            <p class="paper-summary">This review highlights the outsized role of ciliated protozoa in the rumen microbiome, where despite low species richness they contribute substantially to fibre degradation, volatile fatty acid production, microbial protein turnover, pH modulation, and hydrogen-driven methanogenesis. It also surveys classical and modern methods for enumerating and analysing these protozoa, underscoring their importance for feed digestion and enteric methane emissions.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ASM case reports</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fasmcr.00057-26" target="_blank" rel="noopener">Infective endocarditis due to a novel Gemella species revealed by metagenomic sequencing.</a></h3>
+            <p class="paper-summary">This case report describes a patient with infective endocarditis caused by a previously unknown Gemella species that routine diagnostic methods could not identify. Metagenomic sequencing revealed the novel organism, demonstrating both the power of sequencing-based diagnostics and the risk of misclassification when reference databases lack newly discovered species.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">clinical</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Microbial genomics</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1099%2Fmgen.0.001885" target="_blank" rel="noopener">Benchmarking nanopore-based strategies for antimicrobial resistance prediction.</a></h3>
+            <p class="paper-summary">This study benchmarks different nanopore sequencing strategies for predicting antimicrobial resistance directly from patient samples, aiming to bypass the slow culture-based diagnostic process. It evaluates how well these approaches can identify pathogens and their resistance profiles, which could enable faster, targeted antibiotic treatment. The work provides a systematic comparison of methods to guide implementation of rapid AMR diagnostics.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">methodology</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Environmental microbiology</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1111%2F1462-2920.70469" target="_blank" rel="noopener">Seasonal and Environmental Influences on Microbial Community Dynamics in the Dunk River Watershed, Prince Edward Island, Canada.</a></h3>
+            <p class="paper-summary">This study used shotgun metagenomic sequencing to characterize how seasonal and environmental factors shape microbial community composition and function across four tributaries of the Dunk River watershed in Prince Edward Island, a region dominated by intensive agriculture and groundwater-fed streams. The work identifies taxonomic and functional shifts in the riverine microbiome linked to season and land use, filling a gap in understanding how these drivers affect freshwater microbial ecology in agricultural landscapes.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nature microbiology</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1038%2Fs41564-026-02480-7" target="_blank" rel="noopener">Planetary-scale metagenomic analysis reveals CRISPR targeting dynamics across ecosystems.</a></h3>
+            <p class="paper-summary">This study developed a computational pipeline to mine 367,609 public metagenomes, recovering 794 million CRISPR spacers and identifying 1.18 billion spacer-MGE matches across 2.5 million viruses and plasmids. The planetary-scale analysis reveals how CRISPR targeting dynamics vary across Earth's ecosystems, providing a global view of host-mobile genetic element interactions. This resource enables ecosystem-level understanding of CRISPR-mediated defense and MGE activity in microbiomes.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">CRISPR</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ISME communications</span>
+                <span class="date">2026-Jan-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fismeco%2Fycag296" target="_blank" rel="noopener">Cross hybridization inference for phylogenetic resolution-fluorescence in situ hybridization enables microbiome imaging with strain level taxonomic resolution.</a></h3>
+            <p class="paper-summary">The authors present CIPHR-FISH, a pipeline that combines strategic probe design with supervised machine learning to turn probe cross-hybridization—normally treated as noise—into a useful signal for distinguishing closely related microbes. This enables fluorescence in situ hybridization imaging of microbiomes with strain-level taxonomic resolution, addressing the challenge of high 16S rRNA homology and spectral crosstalk in multiplexed FISH.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">methodology</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Gut microbes</span>
+                <span class="date">2026-Dec-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1080%2F19490976.2026.2753908" target="_blank" rel="noopener">Gut‒liver‒brain axis signature of cirrhosis-related cognitive impairment is consistent across multi-national cohorts.</a></h3>
+            <p class="paper-summary">This study examined whether gut microbiome signatures associated with cognitive impairment in cirrhosis are consistent across patients from the USA, Denmark, Lithuania, and Mexico. Using stool shotgun metagenomics and psychometric testing for covert hepatic encephalopathy, the authors identified taxonomic and functional microbial associations with cognitive scores that held across all four national cohorts. The findings suggest a generalizable gut‒liver‒brain axis signature rather than a geography-specific effect.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Gut microbes</span>
+                <span class="date">2026-Dec-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1080%2F19490976.2026.2748788" target="_blank" rel="noopener">Human milk oligosaccharides are distinctly processed by early life gut microbial sialidases.</a></h3>
+            <p class="paper-summary">This study identifies and characterizes sialidase enzymes from early-life gut microbiomes that remove sialic acid from human milk oligosaccharides (HMOs), revealing how infant gut microbes process these breast milk components differently from adult microbes. The authors found 351 unique sialidase sequences in adult metagenomes versus 214 in infant metagenomes, and characterized representative enzymes to show distinct processing patterns. These findings help explain the mechanistic basis for microbiome differences between breastfed and formula-fed infants.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">glycobiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in microbiology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffmicb.2026.1890519" target="_blank" rel="noopener">Metagenomic characterization of gut microbiota in patients with Disorders of Gut-Brain Interaction.</a></h3>
+            <p class="paper-summary">This study uses metagenomic sequencing to characterize the gut microbiota composition and functional potential in patients with Disorders of Gut-Brain Interaction (DGBI), a group of chronic gastrointestinal conditions without clear organic cause. The authors aim to identify microbial dysbiosis patterns and metabolic pathway alterations that may contribute to DGBI pathophysiology, building on emerging evidence linking gut microbes to brain-gut axis dysfunction.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PloS one</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pone.0362106" target="_blank" rel="noopener">Metagenomic analysis of tomato rhizosphere microbiomes detects Ralstonia phage sequences in Kenyan agricultural soils.</a></h3>
+            <p class="paper-summary">This study used shotgun metagenomic sequencing to characterize tomato rhizosphere microbiomes across three major tomato-growing regions in Kenya and to detect Ralstonia phage sequences in soils where bacterial wilt is a severe problem. The work provides a survey of rhizosphere microbial communities in Kenyan agricultural soils and identifies phage sequences associated with the Ralstonia solanacearum species complex, suggesting a potential biological control avenue.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">plants</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in nutrition</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffnut.2026.1818522" target="_blank" rel="noopener">A systematic review of the effects of diet on the gut microbiota in individuals at elevated risk for colorectal cancer.</a></h3>
+            <p class="paper-summary">This systematic review examines randomized controlled trials of dietary interventions—including supplements, functional foods, whole foods, and dietary patterns—and their effects on the gut microbiome in people at elevated risk for colorectal cancer. It synthesizes evidence on how diet, a modifiable CRC risk factor, may act through the gut microbiota, though the abstract does not report specific findings.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">cancer</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in cellular and infection microbiology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffcimb.2026.1973471" target="_blank" rel="noopener">Co-occurrence and genetic contexts of NDM-1, KPC-2, IMP-1, and AFM-1 carbapenemase genes in a critically ill patient.</a></h3>
+            <p class="paper-summary">This case report describes the simultaneous detection of four distinct carbapenemase genes (NDM-1, KPC-2, IMP-1, and AFM-1) in a single critically ill patient, an unusually complex resistance profile. The authors characterize the co-occurrence and genetic contexts of these genes, highlighting the potential for horizontal gene transfer and the diagnostic challenges posed by multi-carbapenemase-producing organisms.</p>
+            <div class="paper-tags"><span class="tag">clinical</span><span class="tag">microbiology</span><span class="tag">genomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of oral microbiology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1080%2F20002297.2026.2741866" target="_blank" rel="noopener">Why does apical periodontitis persist? A shotgun metagenomic survey of the microbial community in primary and persistent periapical granulomas.</a></h3>
+            <p class="paper-summary">This cross-sectional study used shotgun metagenomic sequencing to compare the microbial communities within periapical granulomas from primary versus persistent apical periodontitis, aiming to identify taxa and functional pathways linked to lesion persistence. The work provides a community-level and functional genomic view of the microbiome in these oral lesions, moving beyond culture-based approaches. It offers a baseline for understanding why some apical periodontitis lesions fail to heal after treatment.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Computational and structural biotechnology journal</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.34133%2Fcsbj.0246" target="_blank" rel="noopener">A Two-Stage ESM-Based Machine Learning Pipeline for Robust Hierarchically Evaluated Enzyme Function Prediction.</a></h3>
+            <p class="paper-summary">The authors present ESM-ECForest, a two-stage machine learning pipeline that uses protein language model embeddings (ESM-2) combined with random forest classifiers to predict Enzyme Commission (EC) numbers. The framework is designed to handle the hierarchical organization of enzyme functions and class imbalance, offering a more robust alternative to sequence-similarity-based annotation. This provides a practical tool for automated enzyme functional annotation as sequence databases continue to grow.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">protein-structure</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in medicine</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffmed.2026.1957715" target="_blank" rel="noopener">Microbiome-driven precision psychiatry: integrating multi-omics, artificial intelligence, and personalized interventions along the gut-brain axis.</a></h3>
+            <p class="paper-summary">This scoping review surveys evidence that gut microbiome composition influences depression and anxiety via the gut-brain axis, and examines how multi-omics data and artificial intelligence could be combined to enable personalized psychiatric interventions. It maps the current landscape rather than presenting new experimental results, highlighting both the promise and the methodological gaps in translating microbiome science into clinical psychiatry.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">review</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1960101" target="_blank" rel="noopener">Gut mycobiome dysbiosis in inflammatory bowel disease: a systematic review and meta-analysis.</a></h3>
+            <p class="paper-summary">This systematic review and meta-analysis pools studies comparing the gut fungal community (mycobiome) in IBD patients versus non-IBD controls. It characterizes differences in fungal diversity, taxonomic composition, and abundance, and explores links to disease type and inflammatory activity. The work consolidates evidence that fungal dysbiosis accompanies IBD, though the abstract does not report specific effect sizes.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Pediatric health, medicine and therapeutics</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.2147%2FPHMT.S596049" target="_blank" rel="noopener">Changes in the Gut Microbiota Composition and Metabolic Pathways in Six-Week-Old HIV Exposed Breastfed Infants Receiving Antiretroviral Prophylaxis.</a></h3>
+            <p class="paper-summary">This study examined how HIV exposure and antiretroviral prophylaxis (nevirapine) affect gut microbiota composition and metabolic pathways in six-week-old breastfed infants, comparing HIV-exposed infants receiving NVP with HIV-unexposed infants and considering the role of human milk oligosaccharides. The findings highlight differences in microbiota diversity and metabolic function associated with HIV exposure and prophylaxis, which may inform strategies to support infant health in this population.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">metagenomics</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in physiology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphys.2026.1945787" target="_blank" rel="noopener">Edible insect-based feed ingredients as modulators of gastrointestinal physiology in monogastric livestock and aquaculture species.</a></h3>
+            <p class="paper-summary">This review examines how edible insect-based feed ingredients can influence gastrointestinal physiology in monogastric livestock and aquaculture species. It highlights that beyond basic nutrition, insect meals contain bioactive compounds such as chitin, antimicrobial peptides, and medium-chain fatty acids that may modulate gut microbiota-host interactions and support gut health.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">review</span><span class="tag">metagenomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in cellular and infection microbiology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffcimb.2026.1951083" target="_blank" rel="noopener">Clear aligner interface properties, oral microbial ecology, and strategies for biofilm control and caries-risk mitigation: a scoping review.</a></h3>
+            <p class="paper-summary">This scoping review examines how the physical interface between clear aligners and teeth can trap saliva, microbes, and food particles, potentially altering the oral microbiome and increasing caries risk. It synthesizes fragmented evidence on aligner surface properties, microbial ecological shifts, and preventive strategies for biofilm control, though the abstract does not report specific findings.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">clinical</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in cellular and infection microbiology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffcimb.2026.1938581" target="_blank" rel="noopener">Characterization of lower-airway microbial communities in pulmonary tuberculosis by BALF metagenomic sequencing.</a></h3>
+            <p class="paper-summary">This study used metagenomic sequencing of bronchoalveolar lavage fluid (BALF) to compare the lower-airway microbial communities of patients with pulmonary tuberculosis (PTB) to those of non-PTB patients undergoing bronchoscopy. The authors characterize differences in microbial composition between the two groups, aiming to improve understanding of pulmonary microbial ecology in tuberculosis. The work provides a descriptive survey of the lower-airway microbiome in PTB.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1869338" target="_blank" rel="noopener">Decoding pyroptosis at single-cell resolution: heterogeneity, microenvironment remodeling and potential translational insights.</a></h3>
+            <p class="paper-summary">This review discusses how single-cell RNA sequencing can be used to study pyroptosis, an inflammatory form of programmed cell death mediated by caspases and Gasdermin proteins. It argues that scRNA-seq overcomes the limitations of bulk RNA-seq by capturing cell-to-cell heterogeneity and intercellular communication in pyroptotic processes, and highlights implications for microenvironment remodeling and translational applications.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Current research in food science</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.crfs.2026.101601" target="_blank" rel="noopener">Harnessing metatranscriptomics to unveil the metabolic landscape of microbiota in traditional fermented foods.</a></h3>
+            <p class="paper-summary">This review argues that metatranscriptomics can reveal the active metabolic functions of microbial communities in traditional fermented foods, moving beyond the common practice of inferring function from community composition or genomic potential alone. It highlights how RNA-based profiling captures dynamic gene expression during fermentation, linking microbiota activity to product quality, safety, and functionality. The paper serves as a methodological overview for applying metatranscriptomics in food microbiome research.</p>
+            <div class="paper-tags"><span class="tag">metagenomics</span><span class="tag">microbiome</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in nutrition</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffnut.2026.1974997" target="_blank" rel="noopener">Dietary exogenous microRNAs in the gut: biological effects, mechanistic evidence, and controversies.</a></h3>
+            <p class="paper-summary">This review examines dietary microRNAs from plants, animals, and milk that may survive digestion and influence gut physiology and the microbiota. It discusses evidence for cross-kingdom and cross-species communication, the protective role of extracellular vesicles, and ongoing controversies about whether these effects are biologically meaningful.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">review</span><span class="tag">transcriptomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in microbiology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffmicb.2026.1949973" target="_blank" rel="noopener">Building biologically relevant in vitro models of the human gut microbiota: methodological considerations, current challenges, and future perspectives.</a></h3>
+            <p class="paper-summary">This review examines the methodological factors that determine how biologically relevant in vitro models of the human gut microbiota can be, arguing that reliable experimental results depend on more than just the choice of model system. It surveys current challenges in reproducing the composition, function, and ecological dynamics of the intestinal microbial ecosystem and outlines future perspectives for improving these models.</p>
+            <div class="paper-tags"><span class="tag">microbiome</span><span class="tag">methodology</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in artificial intelligence</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffrai.2026.1985517" target="_blank" rel="noopener">Interpretable detection-based image classification for differential diagnosis of vaginal discharge using smartphone-assisted microscopy.</a></h3>
+            <p class="paper-summary">The authors developed an explainable deep learning framework that analyzes Gram-stained vaginal smear images captured through a smartphone or tablet mounted on a conventional light microscope. Unlike prior AI approaches focused on detecting individual pathogens, this framework integrates microbiota-associated conditions into a differential diagnosis of vaginal discharge. The system aims to provide interpretable, automated diagnostic support in resource-limited settings.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">clinical</span><span class="tag">microbiology</span></div>
+        </article>
+<section class="ask">
+<h2>Ask this channel</h2>
+<p class="ask-hint">Answers come only from bioTriage&rsquo;s indexed literature, scoped to this channel. Always verify before citing.</p>
+<form id="ask-form" class="ask-row">
+<input id="ask-input" type="text" placeholder="e.g. which binning tools beat the baseline?" autocomplete="off">
+<button type="submit">Ask</button>
+</form>
+<div id="ask-status" class="ask-status" hidden></div>
+<div id="ask-answer" class="ask-answer" hidden></div>
+<div id="ask-sources" class="ask-sources"></div>
+</section>
+<script>
+(function () {
+  var API = 'https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api';
+  var DOMAIN = 'metagenomics-informatics';
+  var form = document.getElementById('ask-form');
+  if (!form) { return; }
+  var input = document.getElementById('ask-input');
+  var button = form.querySelector('button');
+  var status = document.getElementById('ask-status');
+  var answer = document.getElementById('ask-answer');
+  var sources = document.getElementById('ask-sources');
+
+  function setStatus(msg) { status.hidden = !msg; status.textContent = msg || ''; }
+
+  function renderSources(items) {
+    sources.innerHTML = '';
+    (items || []).forEach(function (s) {
+      var el = document.createElement('div');
+      el.className = 'src';
+      var html = '';
+      if (s.domain) {
+        html += '<span class="dom">' + s.domain + (s.evidence_level ? ' &middot; ' + s.evidence_level : '') + '</span>';
+      }
+      html += '<strong>' + (s.cite || s.title || '') + '</strong>';
+      if (s.url) { html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>'; }
+      el.innerHTML = html;
+      sources.appendChild(el);
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) { return; }
+    button.disabled = true;
+    answer.hidden = true;
+    setStatus('Searching the corpus...');
+    var url = API + '/rag_chat?q=' + encodeURIComponent(q) + '&domains=' + encodeURIComponent(DOMAIN);
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      button.disabled = false;
+      if (!data || data.success === false) { setStatus((data && data.error) || 'Assistant unavailable.'); return; }
+      setStatus('');
+      answer.textContent = data.answer || '';
+      answer.hidden = false;
+      renderSources(data.sources);
+    }).catch(function () { button.disabled = false; setStatus('Assistant unavailable.'); });
+  });
+})();
+</script>
+</div>
+<footer class="site-footer">
+<p>AI-curated by bioTriage-Open. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">bioTriage-Open Home</a></p>
+</footer>
+</body>
+</html>
