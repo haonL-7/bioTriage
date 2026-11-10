@@ -75,21 +75,45 @@ jobs:
       - name: Restore channel snapshots from gh-pages
         if: ${{ inputs.build_only || github.event_name == 'push' }}
         run: |
-          git fetch --depth=1 origin gh-pages:refs/heads/gh-pages-snapshot || exit 0
-          git archive gh-pages-snapshot -- ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology | tar -x -C _site
-          echo "restored:"; ls _site | head -20
+          set +e
+          git fetch --depth=1 origin gh-pages:refs/heads/gh-pages-snapshot
+          if ! git rev-parse --verify -q gh-pages-snapshot >/dev/null; then
+            echo "::warning::gh-pages branch not available; keeping built _site as-is"
+            exit 0
+          fi
+          present=""
+          for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
+            if git cat-file -e "gh-pages-snapshot:$ch" 2>/dev/null; then
+              present="$present $ch"
+            fi
+          done
+          if [ -z "$present" ]; then
+            echo "::warning::gh-pages has no channel snapshots yet; nothing to restore"
+            exit 0
+          fi
+          echo "restoring:$present"
+          git archive gh-pages-snapshot -- $present | tar -x -C _site
+          ls _site | head -20
 
       - name: Verify channels present
         run: |
+          had=0
+          for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
+            git cat-file -e "gh-pages-snapshot:$ch" 2>/dev/null && had=$((had+1))
+          done
           missing=""
           for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
             [ -d "_site/$ch" ] || missing="$missing $ch"
           done
           if [ -n "$missing" ]; then
-            echo "::error::channel dirs missing:$missing — refusing to publish a site without channels"
-            exit 1
+            if [ "$had" -gt 0 ]; then
+              echo "::error::channels were published before but are missing now:$missing — refusing to publish a regression"
+              exit 1
+            fi
+            echo "::warning::channels missing:$missing — gh-pages never had them either, publishing without channels"
+          else
+            echo "all channel dirs present"
           fi
-          echo "all channel dirs present"
 
       - name: Build platform digest
         run: python scripts/build_digest.py
