@@ -21,12 +21,20 @@ class User(Base):
     is_banned: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default=false())
     quota_limit: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
+    # BYOK：用户自带的 DeepSeek key（Fernet 密文 + 末四位提示，密钥在环境变量里）
+    api_key_enc: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    api_key_hint: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    api_key_updated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
 
 # 旧库的 users 表没有这两列：db.migrate_user_columns() 依赖这份定义生成 ALTER TABLE 的列 DDL，
 # 与模型同源，避免迁移用的类型/默认值和 ORM 漂移。
 USER_ADDED_COLUMNS = {
     "is_banned": User.__table__.c.is_banned,
     "quota_limit": User.__table__.c.quota_limit,
+    "api_key_enc": User.__table__.c.api_key_enc,
+    "api_key_hint": User.__table__.c.api_key_hint,
+    "api_key_updated_at": User.__table__.c.api_key_updated_at,
 }
 
 

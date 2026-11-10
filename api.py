@@ -16,9 +16,11 @@ from sqlalchemy.orm import Session
 from accounts import (
     get_db,
     init_db,
+    load_user,
     record_evaluation,
     reserve_ai_quota,
     router as accounts_router,
+    user_api_key,
 )
 
 # ==================== 速率限制 ====================
@@ -124,9 +126,14 @@ DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 _deepseek_client = None
 
 
-def get_deepseek_client() -> OpenAI:
-    """惰性创建客户端：缺少 API Key 不再阻塞启动，只在真正调用 AI 分析时报错。"""
+def get_deepseek_client(api_key: str | None = None) -> OpenAI:
+    """惰性创建客户端：缺少 API Key 不再阻塞启动，只在真正调用 AI 分析时报错。
+
+    传入 api_key 时按 BYOK 用该用户自己的密钥现建客户端，不写入全局缓存。
+    """
     global _deepseek_client
+    if api_key:
+        return OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
     if _deepseek_client is None:
         if not DEEPSEEK_API_KEY:
             raise RuntimeError(
@@ -515,7 +522,7 @@ RAG_SYSTEM_PROMPT = """你是一个学术文献问答助手，服务于一个共
 8. 若检索片段只覆盖问题的一部分，明确指出缺口，不要用常识补全。"""
 
 
-def rag_answer(question: str, chunks: list) -> tuple:
+def rag_answer(question: str, chunks: list, api_key: str | None = None) -> tuple:
     """调用 DeepSeek，基于检索片段生成带来源的答案。返回 (answer, sources)。"""
     context_lines = []
     for i, doc in enumerate(chunks, 1):
@@ -540,7 +547,7 @@ def rag_answer(question: str, chunks: list) -> tuple:
 请基于以上检索片段回答问题。"""
 
     try:
-        response = get_deepseek_client().chat.completions.create(
+        response = get_deepseek_client(api_key).chat.completions.create(
             model="deepseek-chat",
             messages=[
                 {"role": "system", "content": RAG_SYSTEM_PROMPT},
@@ -552,7 +559,12 @@ def rag_answer(question: str, chunks: list) -> tuple:
         answer = response.choices[0].message.content.strip()
     except Exception as e:
         print(f"[RAG] DeepSeek API 调用失败: {e}")
-        answer = f"AI 服务暂时不可用，请稍后重试。（错误：{e}）"
+        status = getattr(e, "status_code", None)
+        if api_key and status in (401, 402, 403):
+            answer = ("你自带的 DeepSeek 密钥被拒绝（HTTP %s）。"
+                      "请到账户页更新密钥，或删除它改用本站免费额度。" % status)
+        else:
+            answer = f"AI 服务暂时不可用，请稍后重试。（错误：{e}）"
 
     sources = []
     for doc in chunks:
@@ -933,7 +945,8 @@ async def ai_analyze(
 
 @app.get("/api/rag_chat")
 async def rag_chat(request: Request, q: str = Query(..., description="用户提问"),
-                   domains: str = Query("", description="限定频道，逗号分隔，空=全站")):
+                   domains: str = Query("", description="限定频道，逗号分隔，空=全站"),
+                   db: Session = Depends(get_db)):
     """
     学术助手 RAG 问答接口
     1. 从 documents.json 语料检索 top_k 相关片段
@@ -962,6 +975,9 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
             content={"success": False, "error": "问题不能为空"},
         )
 
+    current_user = load_user(request, db)
+    byok_key = user_api_key(current_user) if current_user else None
+
     domain_filter = [d.strip() for d in (domains or "").split(",") if d.strip()] or None
     from rag.cache import get as cache_get, make_key
     cache_key = make_key(question, domain_filter, _RAG_FINGERPRINT)
@@ -974,6 +990,7 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
             "sources": cached.get("sources", []),
             "retrieved": cached.get("retrieved", 0),
             "cached": True,
+            "byok": bool(byok_key),
             "domains": domain_filter or "all",
             "rate_limit": {"remaining": remaining, "limit_per_day": _rag_rate_limit},
         }
@@ -991,8 +1008,9 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
             "rate_limit": {"remaining": remaining, "limit_per_day": _rag_rate_limit},
         }
 
-    _record_rag_call(ip)
-    answer, sources = rag_answer(question, chunks)
+    if not byok_key:
+        _record_rag_call(ip)
+    answer, sources = rag_answer(question, chunks, api_key=byok_key)
     try:
         from rag.cache import put as cache_put
         cache_put(cache_key, question, domain_filter, answer, sources, _RAG_FINGERPRINT, len(chunks))
@@ -1006,6 +1024,7 @@ async def rag_chat(request: Request, q: str = Query(..., description="用户提�
         "sources": sources,
         "retrieved": len(chunks),
         "cached": False,
+        "byok": bool(byok_key),
         "domains": domain_filter or "all",
         "rate_limit": {
             "remaining": remaining - 1,

@@ -32,6 +32,9 @@ services:
       # 会话 cookie 的 HMAC 密钥：交给 Render 自动生成，不要手工粘贴明文
       - key: SESSION_SECRET
         generateValue: true
+      # BYOK 密钥加密口令：任意短语即可（内部 sha256 派生），务必用 sync: false 从控制台注入
+      - key: API_KEY_ENC_SECRET
+        sync: false
 
       # ---------- 持久化 ----------
       # 由下方 databases 段自动注入；本地/无 Postgres 时留空即回退 sqlite:///./biotriage.db

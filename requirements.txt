@@ -7,3 +7,5 @@ lxml>=4.9.0
 sqlalchemy>=2.0.0
 # 仅当 DATABASE_URL 指向 Postgres 时才需要（accounts/db.py 惰性 import，SQLite 环境无需安装）
 psycopg2-binary>=2.9.9
+# BYOK：加密存储用户自带的 DeepSeek key（缺失时功能自动降级为不可用）
+cryptography>=42.0.0

@@ -13,6 +13,7 @@
     var ENDPOINTS = {
         me: API_BASE + "/api/auth/me",
         stars: API_BASE + "/api/me/stars",
+        apiKey: API_BASE + "/api/me/api-key",
         evaluations: API_BASE + "/api/me/evaluations",
         logout: API_BASE + "/api/auth/logout"
     };
@@ -392,6 +393,39 @@
         starsLoaded: false,
         evalsLoaded: false
     };
+
+    var BYOK_I18N = {
+        "zh-CN": {
+            "sl-byok": "AI 密钥",
+            "byok-none": "未配置：使用本站免费额度。",
+            "byok-set": "已配置 {0}（更新于 {1}）",
+            "byok-save": "保存",
+            "byok-delete": "删除",
+            "byok-note": "填入你自己的 DeepSeek 密钥后，本站在此账号下调用 AI 时使用你的密钥，不消耗免费额度。密钥加密存储，仅用于发起请求。",
+            "byok-saved": "已保存。",
+            "byok-deleted": "已删除，回到本站免费额度。",
+            "byok-invalid": "格式不对：应以 sk- 开头，长度 20 以上。",
+            "byok-unavailable": "服务端未启用密钥存储（缺少 API_KEY_ENC_SECRET），此功能暂不可用。",
+            "byok-load-fail": "无法读取密钥状态"
+        },
+        en: {
+            "sl-byok": "AI KEY",
+            "byok-none": "Not configured: using this site's free quota.",
+            "byok-set": "Configured {0} (updated {1})",
+            "byok-save": "Save",
+            "byok-delete": "Remove",
+            "byok-note": "With your own DeepSeek key, calls made under this account use your key and do not consume the site quota. The key is stored encrypted and only used when calling the model.",
+            "byok-saved": "Saved.",
+            "byok-deleted": "Removed; back to the site quota.",
+            "byok-invalid": "Invalid format: expected sk- followed by 16+ characters.",
+            "byok-unavailable": "Key storage is not enabled on the server (API_KEY_ENC_SECRET missing).",
+            "byok-load-fail": "Could not read key status"
+        }
+    };
+    Object.keys(BYOK_I18N).forEach(function (lang) {
+        if (!DICT[lang]) { return; }
+        Object.keys(BYOK_I18N[lang]).forEach(function (k) { DICT[lang][k] = BYOK_I18N[lang][k]; });
+    });
 
     function t(key, p0, p1, p2) {
         var table = DICT[currentLang] || DICT["zh-CN"];
@@ -1062,6 +1096,65 @@
         }
         refreshStarCount();
         if (view.starErrRes) showNote(byId("starError"), retryText(view.starErrRes, "stars-load-fail"));
+    }
+
+    function renderByok(payload) {
+        var status = byId("byokStatus");
+        var del = byId("byokDelete");
+        if (!status) { return; }
+        if (payload && payload.encryption_available === false) {
+            status.textContent = t("byok-unavailable");
+            if (del) { del.hidden = true; }
+            return;
+        }
+        if (payload && payload.configured) {
+            status.textContent = t("byok-set", payload.hint || "sk-…", String(payload.updated_at || "").slice(0, 10));
+            if (del) { del.hidden = false; }
+        } else {
+            status.textContent = t("byok-none");
+            if (del) { del.hidden = true; }
+        }
+    }
+
+    function loadApiKey() {
+        if (!byId("byokStatus")) { return Promise.resolve(); }
+        return request(ENDPOINTS.apiKey).then(function (res) {
+            if (res.ok) { renderByok(res.data); return; }
+            if (res.kind === "unauth") { handleUnauth(); return; }
+            showNote(byId("byokNote"), retryText(res, "byok-load-fail"));
+        });
+    }
+
+    function saveApiKey() {
+        var input = byId("byokInput");
+        var note = byId("byokNote");
+        var key = ((input && input.value) || "").trim();
+        if (!/^sk-[A-Za-z0-9_\-]{16,200}$/.test(key)) {
+            showNote(note, t("byok-invalid"));
+            return;
+        }
+        request(ENDPOINTS.apiKey, { method: "PUT", body: JSON.stringify({ key: key }) }).then(function (res) {
+            if (!res.ok) { showNote(note, retryText(res, "byok-load-fail")); return; }
+            if (res.data && res.data.error) { showNote(note, res.data.error); return; }
+            if (input) { input.value = ""; }
+            showNote(note, t("byok-saved"));
+            renderByok(res.data);
+        });
+    }
+
+    function deleteApiKey() {
+        request(ENDPOINTS.apiKey, { method: "DELETE" }).then(function (res) {
+            if (!res.ok) { showNote(byId("byokNote"), retryText(res, "byok-load-fail")); return; }
+            showNote(byId("byokNote"), t("byok-deleted"));
+            renderByok(res.data);
+        });
+    }
+
+    function initByok() {
+        var save = byId("byokSave");
+        var del = byId("byokDelete");
+        if (save) { save.addEventListener("click", saveApiKey); }
+        if (del) { del.addEventListener("click", deleteApiKey); }
     }
 
     function loadStars() {
@@ -1776,7 +1869,8 @@
                 unmountAdmin();
             }
 
-            return Promise.all([loadStars(), loadEvaluations()].concat(adminLoads));
+            initByok();
+            return Promise.all([loadStars(), loadEvaluations(), loadApiKey()].concat(adminLoads));
         });
     }
 
