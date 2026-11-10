@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<script>document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';</script>
-<script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foundation Papers — Gut Co-Metabolism — bioTriage-Open</title>
     <meta name="description" content="bioTriage-Open Foundation Papers — the seven papers that founded the gut microbiome co-metabolism evidence channel, and the evidence base behind its MS1 and MS2 frameworks.">
@@ -352,12 +351,30 @@
     
 :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0e1116; --bg-alt: #151a21; --white: #151a21;
-    --ink: #e6e9ee; --ink-md: #b3bac4; --ink-lt: #8d95a1; --ink-xlt: #6f7681;
-    --border: #252b34; --border-lt: #1c222b;
-    --primary: #5f9fd4; --primary-lt: #7cb3e0; --primary-md: #4b8ac0; --primary-rgb: 95 159 212;
-    --accent: #7cb3e0; --accent-lt: #8fc0e8;
-    --gold: #d0b064; --gold-lt: #e0c37c; --gold-pale: #221f16;
+    --bg: #14161a; --bg-alt: #191c21; --white: #191c21;
+    --ink: #e9e7e2; --ink-md: #b8b5ae; --ink-lt: #918e88; --ink-xlt: #6e6b66;
+    --border: #2a2e35; --border-lt: #20242a;
+    --primary: #7fb2df; --primary-lt: #9cc6ea; --primary-md: #6aa2d2; --primary-rgb: 127 178 223;
+    --accent: #9cc6ea; --accent-lt: #b3d4f0;
+    --gold: #d8bc7a; --gold-lt: #e6cf98; --gold-pale: #241f14;
+}
+
+.theme-btn {
+    font-family: var(--font-en); font-size: 13px; line-height: 1;
+    color: var(--ink-xlt); background: transparent;
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 5px 9px; cursor: pointer;
+    transition: color .3s ease, border-color .3s ease, background-color .3s ease;
+}
+.theme-btn:hover { color: var(--primary); border-color: var(--primary); }
+.theme-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+html { transition: background-color .45s cubic-bezier(.4,0,.2,1); }
+body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .methodology,
+.aa-box, .aa-input, .aa-send, .aa-domain, .aa-answer, .src, .src-dom,
+.site-footer, table, th, td, .starred-card, .paper-item {
+    transition: background-color .45s cubic-bezier(.4,0,.2,1),
+                color .45s cubic-bezier(.4,0,.2,1),
+                border-color .45s cubic-bezier(.4,0,.2,1);
 }
 </style>
 </head>
@@ -365,7 +382,7 @@
 
 <nav class="top-bar">
     <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span data-i18n="nav-tagline">Cut through the noise. Anchor in evidence.</span></span>
-    <span class="tb-right"><dark-mode-toggle id="theme-toggle" appearance="switch" legend="Theme" remember="Remember"></dark-mode-toggle>
+    <span class="tb-right"><button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">◐</button>
         <button id="lang-toggle" type="button" class="lang-btn">中文</button></span>
 </nav>
 
@@ -541,12 +558,34 @@
 
 <script>
 (function () {
-  var el = document.getElementById('theme-toggle');
-  if (!el) { return; }
-  el.addEventListener('colorschemechange', function (e) {
-    document.documentElement.dataset.theme = e.detail.colorScheme;
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) { return; }
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var ICONS = { light: '\u2600', dark: '\u263e', auto: '\u25d0' };
+  function stored() {
+    try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; }
+    catch (e) { return 'auto'; }
+  }
+  function resolve(mode) {
+    if (mode === 'dark' || mode === 'light') { return mode; }
+    return (mq && mq.matches) ? 'dark' : 'light';
+  }
+  function paint(mode) {
+    document.documentElement.dataset.theme = resolve(mode);
+    document.documentElement.dataset.themeMode = mode;
+    btn.textContent = ICONS[mode] || ICONS.auto;
+    btn.setAttribute('data-mode', mode);
+  }
+  btn.addEventListener('click', function () {
+    var order = ['light', 'dark', 'auto'];
+    var next = order[(order.indexOf(stored()) + 1) % order.length];
+    try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (e) {}
+    paint(next);
   });
-  if (el.colorscheme) { document.documentElement.dataset.theme = el.colorscheme; }
+  if (mq && mq.addEventListener) {
+    mq.addEventListener('change', function () { if (stored() === 'auto') { paint('auto'); } });
+  }
+  paint(stored());
 })();
 </script>
 </body>

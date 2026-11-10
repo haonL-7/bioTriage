@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';</script>
-<script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MS2 &middot; Six-Tier Evidence Framework &mdash; bioTriage-Open</title>
 <style>
@@ -145,15 +144,30 @@ h2::after {
 
 :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0e1116; --text: #e6e9ee; --text-secondary: #b3bac4; --text-muted: #8d95a1;
-    --border: #252b34; --border-light: #1c222b;
-    --accent: #7cb3e0;
+    --bg: #14161a; --text: #e9e7e2; --text-secondary: #b8b5ae; --text-muted: #918e88;
+    --border: #2a2e35; --border-light: #20242a;
+    --accent: #9cc6ea;
+}
+
+.theme-btn {
+    font-family: var(--font-sans); font-size: 13px; line-height: 1;
+    color: var(--text-muted); background: transparent;
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 5px 9px; cursor: pointer;
+    transition: color .3s ease, border-color .3s ease;
+}
+.theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+html { transition: background-color .45s cubic-bezier(.4,0,.2,1); }
+body, .top-bar, .sidebar, .side-item, .paper-item, .ref, table, th, td, .site-footer, .tag {
+    transition: background-color .45s cubic-bezier(.4,0,.2,1),
+                color .45s cubic-bezier(.4,0,.2,1),
+                border-color .45s cubic-bezier(.4,0,.2,1);
 }
 </style>
 </head>
 <body>
 <nav class="top-bar">
-    <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span><dark-mode-toggle id="theme-toggle" appearance="switch" legend="Theme" remember="Remember"></dark-mode-toggle>
+    <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span><button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">◐</button>
         </span>
 </nav>
 <div class="layout">
@@ -220,12 +234,34 @@ h2::after {
 </div>
 <script>
 (function () {
-  var el = document.getElementById('theme-toggle');
-  if (!el) { return; }
-  el.addEventListener('colorschemechange', function (e) {
-    document.documentElement.dataset.theme = e.detail.colorScheme;
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) { return; }
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var ICONS = { light: '\u2600', dark: '\u263e', auto: '\u25d0' };
+  function stored() {
+    try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; }
+    catch (e) { return 'auto'; }
+  }
+  function resolve(mode) {
+    if (mode === 'dark' || mode === 'light') { return mode; }
+    return (mq && mq.matches) ? 'dark' : 'light';
+  }
+  function paint(mode) {
+    document.documentElement.dataset.theme = resolve(mode);
+    document.documentElement.dataset.themeMode = mode;
+    btn.textContent = ICONS[mode] || ICONS.auto;
+    btn.setAttribute('data-mode', mode);
+  }
+  btn.addEventListener('click', function () {
+    var order = ['light', 'dark', 'auto'];
+    var next = order[(order.indexOf(stored()) + 1) % order.length];
+    try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (e) {}
+    paint(next);
   });
-  if (el.colorscheme) { document.documentElement.dataset.theme = el.colorscheme; }
+  if (mq && mq.addEventListener) {
+    mq.addEventListener('change', function () { if (stored() === 'auto') { paint('auto'); } });
+  }
+  paint(stored());
 })();
 </script>
 </body>
