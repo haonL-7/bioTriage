@@ -1103,8 +1103,8 @@
         var del = byId("byokDelete");
         if (!status) { return; }
         if (payload && payload.encryption_available === false) {
-            status.textContent = t("byok-unavailable");
-            if (del) { del.hidden = true; }
+            var card = byId("byokCard");
+            if (card) { card.hidden = true; }
             return;
         }
         if (payload && payload.configured) {
