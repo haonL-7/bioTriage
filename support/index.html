@@ -81,12 +81,13 @@ footer { border-top:1px solid var(--border); text-align:center; color:var(--ink-
          data-en="You can add a note about your field when paying; it guides what gets prioritised.">扫码后可在备注里写上你的学科方向。</p>
     </div>
     <div class="chan">
-      <h3 data-zh="定期支持" data-en="Recurring support">定期支持</h3>
-      <p data-zh="在爱发电上按次或按月支持，可留言说明你希望加强哪个学科。" data-en="Support per-post or monthly on Afdian; leave a note about which field you care about.">在爱发电上按次或按月支持。</p>
-      <a class="donate-btn" id="donateLink" href="#" data-replace-me="true"
-         data-zh="前往支持页 →" data-en="Open support page →">前往支持页 →</a>
-      <p class="qr-fallback" data-zh="（链接待填写：把下面脚本里的 SUPPORT_URL 换成你的爱发电主页）"
-         data-en="(link pending: replace SUPPORT_URL in the script below with your Afdian page)">（链接待填写）</p>
+      <h3 data-zh="其他方式" data-en="Other ways">其他方式</h3>
+      <p data-zh="机构合作、较大金额、或希望指定支持某个学科方向，可以直接邮件联系，不必通过任何平台。"
+         data-en="For institutional support, larger contributions, or to steer support toward a specific field, email directly — no platform needed.">机构合作、较大金额、或希望指定支持某个学科方向，可以直接邮件联系。</p>
+      <a class="donate-btn" href="mailto:haon.liu@outlook.com?subject=Support%20bioTriage-Open&amp;body=%E6%83%B3%E6%94%AF%E6%8C%81%E7%9A%84%E5%8E%9F%E5%9B%A0%EF%BC%9A"
+         data-zh="写邮件 →" data-en="Send an email →">写邮件 →</a>
+      <p class="qr-fallback" data-zh="邮箱：haon.liu@outlook.com"
+         data-en="Email: haon.liu@outlook.com">邮箱：haon.liu@outlook.com</p>
     </div>
   </div>
 
@@ -100,13 +101,7 @@ footer { border-top:1px solid var(--border); text-align:center; color:var(--ink-
 
 <script>
 (function () {
-  var SUPPORT_URL = '';  // ← 填你的爱发电/托管页地址，例如 https://afdian.com/a/xxx
-  var link = document.getElementById('donateLink');
-  if (link) {
-    if (SUPPORT_URL) { link.href = SUPPORT_URL; link.target = '_blank'; link.rel = 'noopener'; link.removeAttribute('data-replace-me'); }
-    else { link.href = 'mailto:haon.liu@outlook.com?subject=Support%20bioTriage-Open'; }
-  }
-  var btn = document.getElementById('theme-toggle');
+    var btn = document.getElementById('theme-toggle');
   var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
   var ICONS = { light: '\u2600', dark: '\u263e', auto: '\u25d0' };
   function stored() { try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; } catch (e) { return 'auto'; } }
