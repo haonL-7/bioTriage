@@ -50,9 +50,9 @@ footer { border-top:1px solid var(--border); text-align:center; color:var(--ink-
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.66) !important;
-            -webkit-backdrop-filter: blur(14px) saturate(180%);
-            backdrop-filter: blur(14px) saturate(180%);
+            background: rgba(255, 255, 255, 0.45) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(200%);
+            backdrop-filter: blur(18px) saturate(200%);
             border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
         }
@@ -74,13 +74,21 @@ footer { border-top:1px solid var(--border); text-align:center; color:var(--ink-
             border-color: #1a4d80 !important;
         }
         @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-            .top-bar { background: rgba(255, 255, 255, 0.96) !important; }
+            .top-bar { background: rgba(255, 255, 255, 0.90) !important; }
         }
+
+.brand-mark {
+    width: 24px; height: 24px; border-radius: 6px;
+    object-fit: cover; display: inline-block; vertical-align: -6px;
+    margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
+}
 </style>
+<link rel="icon" type="image/png" sizes="512x512" href="../assets/logo-mark.png">
+<link rel="apple-touch-icon" href="../assets/logo-mark.png">
 </head>
 <body>
 <nav class="top-bar">
-  <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a>
+  <span class="tb-brand"><img class="brand-mark" src="../assets/logo-mark.png" alt="bioTriage" width="24" height="24"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a>
     <span>Cut through the noise. Anchor in evidence.</span></span>
   <span style="display:flex;gap:8px;align-items:center">
     <button id="lang-toggle" class="nav-link" type="button">EN</button>

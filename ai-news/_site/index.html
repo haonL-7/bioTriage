@@ -487,9 +487,9 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.66) !important;
-            -webkit-backdrop-filter: blur(14px) saturate(180%);
-            backdrop-filter: blur(14px) saturate(180%);
+            background: rgba(255, 255, 255, 0.45) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(200%);
+            backdrop-filter: blur(18px) saturate(200%);
             border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
         }
@@ -511,14 +511,32 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             border-color: #1a4d80 !important;
         }
         @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-            .top-bar { background: rgba(255, 255, 255, 0.96) !important; }
+            .top-bar { background: rgba(255, 255, 255, 0.90) !important; }
         }
+
+        html.theme-anim,
+        html.theme-anim *,
+        html.theme-anim *::before,
+        html.theme-anim *::after {
+            transition: background-color .45s cubic-bezier(.4,0,.2,1),
+                        color .45s cubic-bezier(.4,0,.2,1),
+                        border-color .45s cubic-bezier(.4,0,.2,1),
+                        fill .45s cubic-bezier(.4,0,.2,1) !important;
+        }
+
+.brand-mark {
+    width: 24px; height: 24px; border-radius: 6px;
+    object-fit: cover; display: inline-block; vertical-align: -6px;
+    margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
+}
 </style>
+<link rel="icon" type="image/png" sizes="512x512" href="assets/logo-mark.png">
+<link rel="apple-touch-icon" href="assets/logo-mark.png">
 </head>
 <body>
 
 <nav class="top-bar">
-    <span class="tb-brand"><span class="mini-logo">bioTriage<em>-Open</em></span><span data-i18n="nav-tagline">Cut through the noise. Anchor in evidence.</span></span>
+    <span class="tb-brand"><img class="brand-mark" src="assets/logo-mark.png" alt="bioTriage" width="24" height="24"><span class="mini-logo">bioTriage<em>-Open</em></span><span data-i18n="nav-tagline">Cut through the noise. Anchor in evidence.</span></span>
     <span class="tb-right"><button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">◐</button>
         <button id="lang-toggle" type="button" class="lang-btn">中文</button><span>2026</span></span>
 </nav>
@@ -528,7 +546,6 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         <nav class="side-nav">
             <span class="side-label" data-i18n="side-label">Navigate</span>
             <a class="side-item is-active" href="./" data-i18n="nav-home">Home</a>
-            <a class="side-item" href="evidence/" data-i18n="nav-evidence">Gut SCFA Monitor</a>
             <a class="side-item" href="daily/" data-i18n="nav-daily">Literature Daily</a>
             <a class="side-item" href="weekly/" data-i18n="nav-weekly">Literature Weekly</a>
             <a class="side-item" href="ms1/" data-i18n="nav-method">Evidence Methodology</a>
@@ -567,7 +584,7 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         </div>
     </div>
 
-    <div class="section-label" data-i18n="sec-channels">Live channels</div>
+    <div class="section-label" id="channels" data-i18n="sec-channels">Live channels</div>
 
     <div class="chip-row">
         <a class="chip" href="evidence/" data-i18n="ch-gut">Gut Microbiome Co-Metabolism</a>
@@ -823,6 +840,13 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         aaStatus.classList.toggle('err', !!isErr);
     }
 
+    // 来源标题/链接来自外部元数据（PubMed / bioRxiv 等），插入 innerHTML 前必须转义
+    function escHtml(v) {
+        return String(v == null ? '' : v)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     function aaShowSources(sources) {
         aaSources.innerHTML = '';
         if (!sources || !sources.length) return;
@@ -836,10 +860,10 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             var html = '';
             var grade = s.evidence_level || s.significance || '';
             if (s.domain) {
-                html += '<span class="src-dom">' + s.domain + (grade ? ' &middot; ' + grade : '') + '</span>';
+                html += '<span class="src-dom">' + escHtml(s.domain) + (grade ? ' &middot; ' + escHtml(grade) : '') + '</span>';
             }
-            html += '<strong>' + (s.cite || s.title || '') + '</strong>';
-            if (s.url) html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>';
+            html += '<strong>' + escHtml(s.cite || s.title || '') + '</strong>';
+            if (s.url) html += ' &middot; <a href="' + escHtml(s.url) + '" target="_blank" rel="noopener">Link</a>';
             if (s.pmid) html += ' <a href="https://pubmed.ncbi.nlm.nih.gov/' + s.pmid + '/" target="_blank" rel="noopener">PMID ' + s.pmid + '</a>';
             if (s.doi) html += ' &middot; <a href="https://doi.org/' + s.doi + '" target="_blank" rel="noopener">DOI</a>';
             el.innerHTML = html;
@@ -898,8 +922,13 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     if (mode === 'dark' || mode === 'light') { return mode; }
     return (mq && mq.matches) ? 'dark' : 'light';
   }
-  function paint(mode) {
-    document.documentElement.dataset.theme = resolve(mode);
+  function paint(mode, soft) {
+    var root = document.documentElement;
+    if (soft) {
+      root.classList.add('theme-anim');
+      window.setTimeout(function () { root.classList.remove('theme-anim'); }, 620);
+    }
+    root.dataset.theme = resolve(mode);
     document.documentElement.dataset.themeMode = mode;
     btn.textContent = ICONS[mode] || ICONS.auto;
     btn.setAttribute('data-mode', mode);
@@ -908,10 +937,10 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     var order = ['light', 'dark', 'auto'];
     var next = order[(order.indexOf(stored()) + 1) % order.length];
     try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (e) {}
-    paint(next);
+    paint(next, true);
   });
   if (mq && mq.addEventListener) {
-    mq.addEventListener('change', function () { if (stored() === 'auto') { paint('auto'); } });
+    mq.addEventListener('change', function () { if (stored() === 'auto') { paint('auto', true); } });
   }
   paint(stored());
 })();

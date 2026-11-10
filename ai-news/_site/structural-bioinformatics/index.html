@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Structural Bioinformatics & Protein Science — bioTriage-Open</title>
+<style>
+:root { --bg: #fff; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8c8c8c; --border: #d5d5d5; --accent: #1a5276; --max-width: 800px; --font-serif: 'Georgia','Times New Roman',serif; --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--bg); color: var(--text); line-height: 1.6; font-size: 15px; }
+.top-bar { background: #1a1a1a; color: #ccc; font-size: 12px; padding: 8px 20px; display: flex; justify-content: space-between; }
+.top-bar a { color: #fff; text-decoration: none; }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 32px 20px 60px; }
+h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+.channel-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.channel-stats { font-size: 12px; color: var(--text-muted); margin-bottom: 28px; }
+.paper-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+.paper-item:first-of-type { border-top: 1px solid var(--border); }
+.paper-meta { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; font-size: 12px; }
+.paper-meta .journal { color: var(--text-muted); font-style: italic; }
+.paper-meta .date { color: var(--text-muted); }
+.paper-meta .sig { font-size: 10px; font-weight: 600; padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.sig-high { background: #e8f5e9; color: #1a6b3c; }
+.sig-medium { background: #f5f5f5; color: #4a4a4a; }
+.sig-low { background: #fff5f5; color: #a0a0a0; }
+.paper-title { font-family: var(--font-serif); font-size: 15px; font-weight: 400; margin-bottom: 4px; line-height: 1.5; }
+.paper-title a { color: var(--text); text-decoration: none; }
+.paper-title a:hover { color: var(--accent); text-decoration: underline; }
+.paper-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 6px; }
+.paper-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font-size: 10px; color: var(--accent); background: #eaf0f6; padding: 2px 8px; letter-spacing: 0.3px; }
+.back-link { font-size: 12px; color: var(--accent); text-decoration: none; }
+.site-footer { max-width: var(--max-width); margin: 0 auto; padding: 24px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; text-align: center; }
+.site-footer a { color: var(--accent); }
+.ask { margin: 32px 0 8px; padding: 20px; border: 1px solid var(--border); }
+.ask h2 { font-family: var(--font-serif); font-size: 17px; font-weight: 400; margin-bottom: 4px; }
+.ask-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.ask-row { display: flex; gap: 8px; }
+.ask-row input { flex: 1; min-width: 0; font: inherit; font-size: 13px; padding: 8px 10px; border: 1px solid var(--border); background: #fff; color: var(--text); }
+.ask-row button { font: inherit; font-size: 13px; padding: 8px 16px; border: 1px solid #1a1a1a; background: #1a1a1a; color: #fff; cursor: pointer; }
+.ask-row button:disabled { opacity: .6; cursor: not-allowed; }
+.ask-status { font-size: 12px; color: var(--text-muted); margin-top: 10px; }
+.ask-answer { font-size: 13px; line-height: 1.75; margin-top: 12px; white-space: pre-wrap; }
+.ask-sources { margin-top: 10px; }
+.ask-sources .src { display: block; font-size: 11.5px; color: var(--text-secondary); margin-top: 6px; }
+.ask-sources .src .dom { display: inline-block; font-size: 10px; letter-spacing: .4px; color: var(--text-muted); border: 1px solid var(--border); padding: 0 5px; margin-right: 6px; }
+@media (max-width: 640px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav class="top-bar"><a href="../">bioTriage-Open</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
+<div class="container">
+<a href="../" class="back-link">&larr; bioTriage-Open</a>
+<h1>Structural Bioinformatics & Protein Science</h1>
+<p class="channel-desc">AI-curated selection: protein structure prediction, molecular dynamics, docking, and structure-based function annotation.</p>
+<p class="channel-stats">58 papers curated &middot; High: 2 &middot; Medium: 40 &middot; Low: 16 &middot; Updated: 2026-11-10</p>
+<article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of advanced research</span>
+                <span class="date">2026-Oct-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.jare.2026.10.059" target="_blank" rel="noopener">Identifying phase separation modulators mediated by the SARS-CoV-2 nucleocapsid protein using a structure-based drug discovery approach.</a></h3>
+            <p class="paper-summary">This study uses a structure-based drug discovery approach to identify small molecules that modulate phase separation driven by the SARS-CoV-2 nucleocapsid protein, a viral mechanism not targeted by current antivirals. The work aims to find new therapeutic candidates that could remain effective as the virus evolves and acquires resistance to existing drugs.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Translational cancer research</span>
+                <span class="date">2026-Oct-30</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.21037%2Ftcr-2026-2690" target="_blank" rel="noopener">The pharmacological potential and metabolic risks of Xiaojin Pill in sorafenib-resistant papillary thyroid carcinoma: an integrated network analysis.</a></h3>
+            <p class="paper-summary">This study uses integrated network analysis to predict how the traditional Chinese medicine Xiaojin Pill might act on signaling pathways involved in sorafenib resistance in papillary thyroid carcinoma, and to assess toxicological risks when combined with sorafenib. The work is largely computational and predictive, identifying candidate mechanisms and potential combination safety concerns rather than providing experimental validation.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">network-analysis</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-30</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.29.758816" target="_blank" rel="noopener">GolgiFold: A Structural Predictome of Human Golgi Protein Complexes.</a></h3>
+            <p class="paper-summary">GolgiFold presents a systematic structural predictome of human Golgi protein complexes, using computational structure prediction to map molecular assemblies across the Golgi interactome. The work aims to define complexes for the many Golgi-associated proteins whose assemblies remain uncharacterized, potentially revealing unrecognized components and regulatory mechanisms in Golgi trafficking and homeostasis.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">protein-structure</span><span class="tag">proteomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Bioinformatics (Oxford, England)</span>
+                <span class="date">2026-Oct-30</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fbioinformatics%2Fbtag804" target="_blank" rel="noopener">Domain-Aware Enzyme Classification via Multiple Instance Learning.</a></h3>
+            <p class="paper-summary">The paper introduces a domain-aware enzyme classification method that uses multiple instance learning to focus on local functional regions (e.g., catalytic residues and domains) rather than whole-sequence embeddings, avoiding dependence on accurate 3D structures. This addresses limitations of existing protein language model and structure-based EC number prediction approaches, aiming to improve protein function annotation and metabolic pathway reconstruction.</p>
+            <div class="paper-tags"><span class="tag">proteomics</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-29</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.28.762692" target="_blank" rel="noopener">Structural clustering across the tree of life reveals candidate Asgard-eukaryote homologs and a shared expansion of solenoids.</a></h3>
+            <p class="paper-summary">This study takes a family-level approach to structural clustering across the tree of life, analyzing 1.89 million structural clusters from the AFESM database to profile their taxonomic composition. By starting from protein families rather than individual Asgard proteins, the authors identify candidate Asgard-eukaryote homologs and uncover a shared expansion of solenoid protein folds. The work expands the known repertoire of eukaryotic signature proteins in Asgard archaea and provides a complementary method for deep homology detection.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">evolution</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">RSC medicinal chemistry</span>
+                <span class="date">2026-Oct-28</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1039%2Fd6md00752j" target="_blank" rel="noopener">Discovery of benzimidazole-based selective α-glucosidase inhibitors with an uncompetitive mode of action: synthesis, biological assays and computational studies.</a></h3>
+            <p class="paper-summary">The authors synthesized thirteen benzimidazole derivatives and tested them as α-glucosidase inhibitors, finding that a chlorine at the C-6 position plus appropriate aromatic substituents boosts activity. Compounds 6 and 13 were the most potent (IC50 32.35 and 15.70 μM), outperforming acarbose (139 μM), and compound 13 acts via an uncompetitive inhibition mode. Computational docking and dynamics studies supported the structure-activity relationships.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">methodology</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-21</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.20.760253" target="_blank" rel="noopener">Development of CYP8B1-specific inhibitors for metabolic diseases.</a></h3>
+            <p class="paper-summary">This preprint reports the development of CYP8B1-specific inhibitors, a liver enzyme that produces 12α-hydroxylated bile acids implicated in metabolic disease. Selectivity is challenging because CYP8B1's active site resembles other cytochrome P450 enzymes, but the authors identify compounds that preferentially inhibit CYP8B1, offering a potential therapeutic route to remodel bile acid pools and gut microbiota in metabolic disorders.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">metabolomics</span><span class="tag">microbiome</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-18</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.14.759232" target="_blank" rel="noopener">Distance-AF Multimer: A Multi-Step Approach for Protein Complex Structure Modeling with User-Defined Distance Constraints.</a></h3>
+            <p class="paper-summary">Distance-AF Multimer is a new computational pipeline that incorporates user-provided distance constraints between residues into protein complex structure prediction. It addresses cases where standard methods like AlphaFold-Multimer fail to assemble complexes correctly despite available experimental distance data. The approach offers a way to leverage sparse experimental restraints to improve complex modeling.</p>
+            <div class="paper-tags"><span class="tag">protein-structure</span><span class="tag">methodology</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-18</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.13.758922" target="_blank" rel="noopener">Free-Energy and Molecular Dynamics Analysis of Ser195 and Thr195 Rotameric States in Thrombin.</a></h3>
+            <p class="paper-summary">This study uses well-tempered metadynamics and microsecond molecular dynamics simulations to compare the conformational energetics of serine versus threonine at position 195 in thrombin. The authors find that S195 and T195 occupy distinct rotameric free-energy landscapes, with S195 preferring a lower-angle rotamer in the apo state, offering a molecular explanation for why serine is strongly conserved over threonine at this catalytic nucleophile position in trypsin-like serine proteases.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">methodology</span><span class="tag">protein-structure</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-14</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.09.03.749137" target="_blank" rel="noopener">Edge-Aware Graph Attention Networks for Interpreting Biophysical Mechanisms from Molecular Dynamics Simulations.</a></h3>
+            <p class="paper-summary">This preprint introduces three edge-aware graph attention network variants (Edge-Conditioned, Edge-Injected, Edge-Gated) for learning biomolecular dynamics from molecular dynamics simulations, with the goal of extracting mechanistic insight from learned attention. The edge-aware models reportedly improve prediction performance over a standard GAT and allow attention-derived communication networks to be interpreted as biophysical mechanisms. It is a methods contribution aimed at making AI models of MD more interpretable.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">methodology</span><span class="tag">structural-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-14</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.13.758900" target="_blank" rel="noopener">Structural Basis for Angiotensin II Type I Receptor G Protein-biased Signaling.</a></h3>
+            <p class="paper-summary">This preprint reports cryo-EM structures of the angiotensin II type 1 receptor (AT1R) bound to G protein with either the natural ligand angiotensin II or the G protein-biased agonist TRV055. The two ligands adopt similar poses but trigger coordinated structural rearrangements that propagate from the ligand-binding pocket to the intracellular surface, revealing how biased signaling is encoded. These structures provide a template for designing safer cardiovascular drugs that preferentially activate G protein rather than β-arrestin pathways.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">drug-discovery</span><span class="tag">protein-structure</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">bioRxiv : the preprint server for biology</span>
+                <span class="date">2026-Oct-12</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.12.758523" target="_blank" rel="noopener">AT1R-Selective Negative Allosteric Modulator Targeting the Epitope for Pathogenic Autoantibody Activation.</a></h3>
+            <p class="paper-summary">This preprint describes the development of a negative allosteric modulator that selectively targets the extracellular epitope on AT1R where pathogenic autoantibodies bind, rather than the orthosteric AngII pocket used by conventional ARBs. The goal is to block autoantibody-driven AT1R activation in autoimmune cardiovascular and renal disease while sparing physiological AngII signaling. This represents a conceptually new pharmacological approach to AT1R inhibition.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">immunology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Biophysics reports</span>
+                <span class="date">2026-Oct-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.52601%2Fbpr.2025.250054" target="_blank" rel="noopener">A computational-experimental strategy identifies K-7174 against African swine fever.</a></h3>
+            <p class="paper-summary">The authors used the high-resolution structure of the African swine fever virus RNA polymerase to perform structure-based virtual screening of two compound libraries, identifying K-7174 as a selective inhibitor of the viral enzyme. This computational-experimental pipeline provides a starting point for antiviral development against ASF, a disease with no current vaccines or therapeutics.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Biophysics reports</span>
+                <span class="date">2026-Oct-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.52601%2Fbpr.2025.250057" target="_blank" rel="noopener">Structure-based prediction reveals FAM105A as an African swine fever virus I215L interactor.</a></h3>
+            <p class="paper-summary">The authors used HDOCK docking and AlphaFold3 modeling to screen 34 swine deubiquitinating enzymes for interaction with the ASFV ubiquitin-conjugating enzyme I215L, identifying FAM105A as the top candidate. Co-immunoprecipitation experimentally confirmed the I215L–FAM105A interaction. This structure-based prediction pipeline nominates a host factor potentially relevant to ASFV replication and antiviral modulation.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">protein-structure</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">iScience</span>
+                <span class="date">2026-Nov-20</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.isci.2026.117873" target="_blank" rel="noopener">HelixWings enables AI-driven enzyme engineering for biomimetic cofactor utilization.</a></h3>
+            <p class="paper-summary">The authors present HelixWings, an AI-driven screening platform that combines conformational dynamics analysis with sequence-based prediction to engineer enzymes that can use cheaper biomimetic cofactors like NMNH instead of NADPH. This addresses the poor activity of natural enzymes with alternative cofactors, offering a faster alternative to directed evolution and rational design.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">protein-structure</span><span class="tag">synthetic-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of advanced research</span>
+                <span class="date">2026-Nov-09</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.jare.2026.11.006" target="_blank" rel="noopener">GPCRAgent: an intelligent multi-agent platform integrating knowledge graphs and large language models for GPCR-targeted drug discovery.</a></h3>
+            <p class="paper-summary">GPCRAgent is a multi-agent platform that combines knowledge graphs with large language models to support GPCR-targeted drug discovery. The system aims to overcome LLM limitations in GPCR research—namely weak integration of structured domain knowledge and poor interpretability—by grounding model reasoning in a curated knowledge graph. It offers a systematic, interpretable approach to characterizing GPCR functions and ligand interactions without relying solely on costly experiments.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">LLM</span><span class="tag">network-analysis</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Microbiology spectrum</span>
+                <span class="date">2026-Nov-09</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1128%2Fspectrum.01326-26" target="_blank" rel="noopener">Identification of ebastine and ceritinib as effective inhibitors of Fusobacterium nucleatum FtsZ.</a></h3>
+            <p class="paper-summary">The authors used structure-based virtual screening to identify two existing drugs, ebastine and ceritinib, as inhibitors of FtsZ, a key bacterial cell-division protein in Fusobacterium nucleatum. Since this oral bacterium is enriched in colorectal cancer tissues, these repurposed drugs could offer a targeted antimicrobial strategy for CRC prevention or treatment.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">microbiome</span><span class="tag">cancer</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Communications chemistry</span>
+                <span class="date">2026-Nov-07</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1038%2Fs42004-026-02270-6" target="_blank" rel="noopener">Integrating noncanonical amino acids and synthetic cofactors for the development of artificial metalloenzymes.</a></h3>
+            <p class="paper-summary">This review discusses how artificial metalloenzymes (ArMs) combine synthetic metal cofactors with protein scaffolds to enable reactions not found in nature. It focuses on noncanonical amino acids (ncAAs) as a bridge between natural enzyme architecture and synthetic chemistry, covering genetic code expansion and cofactor integration strategies. The work surveys the design principles for engineering these hybrid biocatalysts.</p>
+            <div class="paper-tags"><span class="tag">synthetic-biology</span><span class="tag">protein-structure</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Genome research</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1101%2Fgr.282132.126" target="_blank" rel="noopener">Bacterial protein function prediction via multimodal deep learning.</a></h3>
+            <p class="paper-summary">The authors present DeepEST, a multimodal deep learning framework that predicts Gene Ontology terms for bacterial proteins by combining gene expression, genomic location, and predicted protein structure. This approach addresses the large fraction of bacterial proteins that remain functionally uncharacterized, offering a new tool for annotating function in diverse and stressful environments.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">protein-structure</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">RNA (New York, N.Y.)</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1261%2Frna.081230.126" target="_blank" rel="noopener">The evolutionary conserved protein-RNA interface formed by the cell-fate regulator Bicaudal-C.</a></h3>
+            <p class="paper-summary">This study defines how the conserved cell-fate regulator Bicaudal-C (Bicc1) selects its mRNA targets, combining in vitro binding assays with mutant RNA substrates and protein-RNA crosslinking mass spectrometry (XL-MS). The work identifies the specific RNA features and protein-RNA interface underlying Bicc1 target recognition, clarifying a molecular mechanism that has remained unclear despite Bicc1's essential roles in early development and adult organ homeostasis.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">methodology</span><span class="tag">development</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Ecotoxicology and environmental safety</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.ecoenv.2026.121021" target="_blank" rel="noopener">Acetyl tributyl citrate induces neuronal ferroptosis through ATM-associated disruption of iron and redox homeostasis.</a></h3>
+            <p class="paper-summary">This study investigates whether acetyl tributyl citrate (ATBC), a common non-phthalate plasticizer, causes neuronal damage through ferroptosis, an iron-dependent form of cell death. The authors examine the role of the ATM protein in linking ATBC exposure to disrupted iron and redox homeostasis in neurons. The findings suggest that ATBC induces neuronal ferroptosis via ATM-associated mechanisms, highlighting a potential neurotoxic pathway for this widely used chemical.</p>
+            <div class="paper-tags"><span class="tag">neuroscience</span><span class="tag">toxicology</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of computer-aided molecular design</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1007%2Fs10822-026-00967-3" target="_blank" rel="noopener">Anticancer activity of sodium propionate in hepatocellular carcinoma cells via downregulation of HDAC2 and HDAC6.</a></h3>
+            <p class="paper-summary">This study combines bioinformatics analysis of public HCC transcriptomic and chemical-gene interaction datasets with in vitro experiments to show that sodium propionate, a short-chain fatty acid, exerts anticancer effects on hepatocellular carcinoma cells by downregulating the histone deacetylases HDAC2 and HDAC6. The work identifies these HDACs as key epigenetic targets mediating sodium propionate's activity, suggesting a potential repurposing opportunity for this metabolite in liver cancer.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">epigenomics</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Current opinion in chemical biology</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.cbpa.2026.102816" target="_blank" rel="noopener">From prediction to creation: How AI-driven design is reshaping microbial biocatalysis.</a></h3>
+            <p class="paper-summary">This review argues that AI-driven protein design has moved beyond structure prediction toward generative creation of novel enzymes, using the largely uncharacterised microbial world as both a source of sequence diversity and a set of expression hosts. It surveys three stages: mining microbial sequence space, generative design of new biocatalysts, and the organism-agnostic nature of these tools. The key message is that AI is shifting enzyme engineering from being bounded by natural enzyme space to designing catalysts that do not exist in nature.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">protein-structure</span><span class="tag">synthetic-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nucleic acids research</span>
+                <span class="date">2026-Nov-06</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fnar%2Fgkag1141" target="_blank" rel="noopener">BioLiP3: a protein-ligand affinity database integrating curated data with LLM-enabled literature mining.</a></h3>
+            <p class="paper-summary">BioLiP3 is a major expansion of the BioLiP database that links quantitative protein-ligand binding affinities to 3D structures, growing affinity coverage 13-fold to nearly 600,000 records. It integrates curated experimental data with LLM-enabled literature mining to connect affinity measurements to PDB structures, addressing the disconnect between structural and quantitative binding data. This resource supports structure-based drug discovery by providing a unified, structure-centered view of biologically relevant interactions.</p>
+            <div class="paper-tags"><span class="tag">database</span><span class="tag">drug-discovery</span><span class="tag">protein-structure</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Bioscience reports</span>
+                <span class="date">2026-Nov-05</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1042%2FBSR20260518" target="_blank" rel="noopener">NADPH-specific meso-diaminopimelate dehydrogenase from the archaeon Pyrococcus sp. stereoselectively aminates α-keto acids using NADH.</a></h3>
+            <p class="paper-summary">This paper reports the first archaeal meso-diaminopimelate dehydrogenase (PyrDAPDH) from Pyrococcus sp., which can use either NADPH or NADH to stereoselectively aminate α-keto acids into D-amino acids. The enzyme's ability to use ammonium as the amino donor and support coenzyme recycling makes it a promising biocatalyst for producing D-amino acids.</p>
+            <div class="paper-tags"><span class="tag">synthetic-biology</span><span class="tag">methodology</span><span class="tag">microbiology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Bioscience reports</span>
+                <span class="date">2026-Nov-05</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1042%2FBSR20260478" target="_blank" rel="noopener">Identification of small-molecule inhibitors of the SARS-CoV-2 RBD-ACE2 interaction by structure- and affinity-based screening.</a></h3>
+            <p class="paper-summary">The authors used structure-based virtual screening and affinity-based methods to search for small molecules that bind conserved regions of the SARS-CoV-2 spike RBD outside the shallow ACE2-binding interface, aiming to block the RBD-ACE2 interaction that mediates viral entry. This explores alternative druggable pockets on the RBD as a strategy for small-molecule antivirals against SARS-CoV-2.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of the American Chemical Society</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Fjacs.6c16561" target="_blank" rel="noopener">Toward the Rational Design of Tailored Ligands for Intrinsically Disordered Proteins through NMR.</a></h3>
+            <p class="paper-summary">This paper describes a set of calix[4]arene-based multivalent ligands designed to bind different regions of the intrinsically disordered protein α-synuclein, using NMR spectroscopy to obtain atom-resolved information on the protein–ligand interactions. The work aims to establish principles for the rational design of drugs targeting intrinsically disordered proteins, a class that has historically been difficult to drug.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Discover nano</span>
+                <span class="date">2026-Nov-04</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1186%2Fs11671-026-05124-1" target="_blank" rel="noopener">From molecular pathways to nanocarrier design: a translational framework for lipid-based nanoparticles in Alzheimer's disease.</a></h3>
+            <p class="paper-summary">This review proposes a translational framework linking Alzheimer's disease molecular pathways—amyloid-β aggregation, tau hyperphosphorylation, cholinergic dysfunction, oxidative stress, and neuroinflammation—to the rational design of lipid-based nanocarriers for drug delivery. It argues that conventional therapies (acetylcholinesterase inhibitors and monoclonal antibodies) are limited by transient efficacy and poor brain penetration, and that nanocarrier engineering can address these delivery barriers. The paper synthesizes pathway biology with nanocarrier design considerations to guide future therapeutic development.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">neuroscience</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ACS omega</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facsomega.5c07849" target="_blank" rel="noopener">Cross-Linking Simulation at Metal Oxide-Thermoset Interfaces Using Quantum Chemical and Molecular Dynamics Methods.</a></h3>
+            <p class="paper-summary">This study uses a hybrid quantum chemistry and molecular dynamics approach with Monte Carlo reaction kinetics to model how hydroxylated SnO2 surfaces catalyze epoxy cross-linking. The authors find that the degree of surface hydroxylation strongly influences reaction pathways and the spatial distribution of cross-links at the metal oxide–thermoset interface.</p>
+            <div class="paper-tags"><span class="tag">methodology</span><span class="tag">materials-science</span><span class="tag">molecular-dynamics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ACS omega</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facsomega.6c05604" target="_blank" rel="noopener">Cytoplasmic Expression of Papain Isozymes in Engineered Escherichia coli for Substrate Selectivity and Computational Insights.</a></h3>
+            <p class="paper-summary">The authors achieved high-yield cytoplasmic expression of six papain-family isozymes (papain, protease omega, proteinase IV, and chymopapains I–III) in engineered E. coli SHuffle strains, overcoming prior difficulties in producing soluble, correctly folded recombinant plant proteases. They then characterized the distinct biochemical properties and substrate selectivities of each isozyme and complemented the experimental work with computational mechanistic analysis.</p>
+            <div class="paper-tags"><span class="tag">synthetic-biology</span><span class="tag">proteomics</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ACS omega</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facsomega.6c04816" target="_blank" rel="noopener">Poké: Fast and Reliable Neural-Network-Based Identification of Protein Ligandable Sites.</a></h3>
+            <p class="paper-summary">Poké is a new computational tool that identifies ligandable pockets on protein surfaces by combining energetic mapping with a neural-network-based ligandability score. It works on both static protein structures and long-timescale molecular dynamics trajectories, and is designed to detect cryptic sites that only become accessible upon conformational changes. The tool aims to make pocket detection faster and more reliable for structure-based drug design.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">protein-structure</span><span class="tag">machine-learning</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ACS omega</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facsomega.6c06094" target="_blank" rel="noopener">Weighted Views Representation with Multi-Head Coulomb Attention for Molecular Property Prediction.</a></h3>
+            <p class="paper-summary">This paper extends a weighted-views molecular featurization framework by adding single-atom properties and Coulomb pair information, then feeds these enriched views into a Transformer architecture whose attention scores directly incorporate Coulomb interactions. The approach achieves competitive performance on the QM7 atomization energy regression benchmark and on ranking enantiomers by docking scores. It is a methodological contribution to molecular property prediction rather than a new biological finding.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">deep-learning</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ACS omega</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facsomega.6c08432" target="_blank" rel="noopener">OPC3/LEW: A New Flexible Three-Site Water Model to Simulate Low-Electrostatic Environments.</a></h3>
+            <p class="paper-summary">The authors introduce OPC3/LEW, a new flexible three-site water model designed to better reproduce low-electrostatic (low-polarity) environments, such as those experienced by membrane proteins, which common water models fail to capture accurately. The model aims to improve the realism of biomolecular simulations in these contexts while remaining computationally tractable.</p>
+            <div class="paper-tags"><span class="tag">methodology</span><span class="tag">structural-biology</span><span class="tag">systems-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ACS omega</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facsomega.6c09949" target="_blank" rel="noopener">Machine Learning Prediction of Transport Properties in Amorphous Polymer Electrolytes Using Chemically Informed Structural Descriptors.</a></h3>
+            <p class="paper-summary">This study trains machine learning models on molecular dynamics data from over 6,000 amorphous polymer electrolyte systems to predict four key transport properties, including ionic conductivity and diffusivity. By using chemically informed structural descriptors, the approach aims to capture the complex coupling between polymer chemistry, structure, and ion dynamics. The work offers a data-driven route to screening polymer electrolytes for next-generation lithium batteries without running costly simulations for every candidate.</p>
+            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">methodology</span><span class="tag">synthetic-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">International journal of biological macromolecules</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.ijbiomac.2026.155150" target="_blank" rel="noopener">Structural basis for saccharide binding by human RNase 2/EDN: Insights into its potential lectin-like properties.</a></h3>
+            <p class="paper-summary">This study used X-ray crystallography to identify a conserved surface pocket on human RNase 2/EDN that binds carboxylic anions (malonate, tartrate, citrate), and then explored whether the protein can bind saccharides, given prior evidence of glycosaminoglycan interaction. The work suggests EDN may have lectin-like carbohydrate-binding properties, providing structural insights relevant to structure-based drug design targeting this antiviral and proinflammatory protein.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">protein-structure</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Accounts of chemical research</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1021%2Facs.accounts.6c00501" target="_blank" rel="noopener">Enterovirus 2C Protein Drug Design, Assay Development, and Drug Resistance Studies.</a></h3>
+            <p class="paper-summary">This Account describes a rational drug-discovery campaign targeting the enterovirus 2C protein, starting from repurposed hits and optimizing them into quinoline-based antivirals with improved potency and selectivity against EV-D68. The work integrates medicinal chemistry, resistance profiling, structural modeling, and assay development to establish 2C as a tractable antiviral target.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">microbiology</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Natural products and bioprospecting</span>
+                <span class="date">2026-Nov-03</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1007%2Fs13659-026-00654-8" target="_blank" rel="noopener">From structure prediction to ligand-target recognition: expanding the reach of AlphaFold in natural product research.</a></h3>
+            <p class="paper-summary">This review discusses how AlphaFold's protein structure prediction capabilities can be extended to ligand-target recognition in natural product research, addressing the challenge of limited structural data for pharmacological targets and biomolecular interactions. It highlights applications for complex natural products like bioactive peptides and molecular glues, where structural information is scarce but crucial for mechanism elucidation and drug optimization.</p>
+            <div class="paper-tags"><span class="tag">protein-structure</span><span class="tag">drug-discovery</span><span class="tag">review</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Briefings in bioinformatics</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fbib%2Fbbag609" target="_blank" rel="noopener">HEDGEHOG: hierarchical evaluation of drug generators through rigorous filtration.</a></h3>
+            <p class="paper-summary">HEDGEHOG is a configurable six-stage evaluation pipeline for generative molecular models that filters generated compounds through successive criteria reflecting medicinal plausibility and downstream computational suitability. It addresses the weakness of standard metrics, which poorly reflect whether generated molecules are actually useful drug candidates, thereby giving a more complete view of model performance and reducing wasted computational resources.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of molecular graphics & modelling</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.jmgm.2026.109642" target="_blank" rel="noopener">Structure-based discovery of novel BCL-XL inhibitors through molecular docking and key interaction-guided virtual screening.</a></h3>
+            <p class="paper-summary">The authors performed structure-based virtual screening of ~312,000 drug-like compounds against the BH3-binding groove of BCL-XL, using key interaction constraints to prioritize hits. The goal was to find novel, lower-molecular-weight inhibitor scaffolds that overcome the drug-likeness challenges of this large, shallow hydrophobic pocket. The abstract truncates before reporting validated hits, so the practical outcome is unclear.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nucleic acids research</span>
+                <span class="date">2026-Nov-02</span>
+                <span class="sig sig-high">High</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fnar%2Fgkag1114" target="_blank" rel="noopener">InterPro: the protein sequence classification resource in 2027.</a></h3>
+            <p class="paper-summary">InterPro is a freely accessible database that classifies protein sequences by integrating predictive models from multiple member databases, grouping sequences into families and identifying domains and functional sites. The 2027 update provides annotations for hundreds of millions of sequences, ensuring broad coverage of UniProtKB, and includes mappings to major resources such as Gene Ontology and PDBe. This makes it a central reference for protein function annotation across biology.</p>
+            <div class="paper-tags"><span class="tag">proteomics</span><span class="tag">database</span><span class="tag">protein-structure</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Journal of biochemical and molecular toxicology</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1002%2Fjbt.71165" target="_blank" rel="noopener">Psychotropic Drug GST Interactions: In Vitro Inhibition, Molecular Docking, and Translational Potential in Cancer Therapy.</a></h3>
+            <p class="paper-summary">This study tested five psychotropic drugs (aripiprazole, fluoxetine, risperidone, haloperidol, sodium valproate) for their ability to inhibit glutathione S-transferase (GST), an enzyme involved in detoxification and tumor drug resistance. Using in vitro enzyme kinetics and molecular docking, the authors characterize inhibition and propose that these drugs could be repurposed to sensitize tumors to chemotherapy by blocking GST-mediated resistance.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">cancer</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">ChemistryOpen</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1002%2Fopen.70336" target="_blank" rel="noopener">Cytotoxic Activity and Molecular Docking Studies of ONNO Type Salophen Schiff Base Metal Complexes.</a></h3>
+            <p class="paper-summary">This paper reports the synthesis and characterization of a salophen-type Schiff base ligand and its Cu(II), Ni(II), Pt(II), Fe(II), and Pd(II) complexes, evaluated for cytotoxicity against HepG2 liver and A549 lung cancer cell lines. The authors also performed molecular docking studies to rationalize the observed cytotoxic activity. The work is a standard coordination chemistry study with preliminary anticancer screening.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">cancer</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cancer pathogenesis and therapy</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.cpt.2026.02.001" target="_blank" rel="noopener">From "undruggable" to tractable: Therapeutic advances targeting Kristen rat sarcoma viral homolog glycine to cysteine mutation at codon 12 (KRAS G12C)-mutant cancers and emerging resistance mechanisms.</a></h3>
+            <p class="paper-summary">This review traces how the KRAS G12C mutation, once considered undruggable, became a tractable target in non-small cell lung cancer through covalent inhibitors, and surveys the resistance mechanisms that emerge after treatment. It argues that overcoming resistance will require precision combination therapies and computational drug discovery approaches.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">drug-discovery</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PLoS biology</span>
+                <span class="date">2026-Nov-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pbio.3004081" target="_blank" rel="noopener">A split nozzle and two-protein chain-like fibers define the tail architecture of Pseudomonas aeruginosa podophage A1002.</a></h3>
+            <p class="paper-summary">Using cryo-EM, the authors resolved the intact high-resolution structure of podophage A1002, which infects carbapenem-resistant Pseudomonas aeruginosa. They identified 11 structural proteins and described a novel split-nozzle tail architecture with two-protein chain-like fibers, providing a structural template for engineering phage-based antimicrobials against this pathogen.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">microbiology</span><span class="tag">protein-structure</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Nucleus (Austin, Tex.)</span>
+                <span class="date">2026-Dec-31</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1080%2F19491034.2026.2756751" target="_blank" rel="noopener">Molecular force gates regulate mechanical transmission across the nuclear envelope.</a></h3>
+            <p class="paper-summary">Using atomistic molecular dynamics simulations, the authors identify 'force gates' in the LINC complex—specific structural interactions, including a key disulfide bond (SUN2 Cys563), that maintain mechanical connectivity between the cytoskeleton and nuclear interior under load. Targeted mutations in the KASH peptide and SUN protein disrupt these gates, providing computational evidence for how mechanical force transmission across the nuclear envelope is regulated.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">methodology</span><span class="tag">systems-biology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Quantitative biology (Beijing, China)</span>
+                <span class="date">2026-Dec-01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1002%2Fqub2.70062" target="_blank" rel="noopener">Predicting the alternative conformation of a known protein structure based on the distogram of AlphaFold2.</a></h3>
+            <p class="paper-summary">The authors show that AlphaFold2's predicted residue-residue distance distributions (distograms) can encode multiple structural states even from a single standard prediction with a deep MSA, rather than collapsing to one conformation. They use this signal to predict an alternative conformation of a known protein structure, suggesting multi-state information is latent in routine AF2 outputs.</p>
+            <div class="paper-tags"><span class="tag">protein-structure</span><span class="tag">machine-learning</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Gastroenterology research and practice</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1155%2Fgrp%2F2878164" target="_blank" rel="noopener">Identification of Neuroinflammation-Related Diagnostic Biomarkers in Metabolic Dysfunction-Associated Steatohepatitis: An Integrated Bioinformatics and Machine Learning Approach.</a></h3>
+            <p class="paper-summary">This study integrates public transcriptomic data with machine learning to identify neuroinflammation-related genes as candidate diagnostic biomarkers for metabolic dysfunction-associated steatohepatitis (MASH). The authors frame the work as hypothesis-generating, proposing a molecular link between liver disease and neuroinflammation. The findings are preliminary and require experimental validation.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">machine-learning</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1924426" target="_blank" rel="noopener">Carbonic anhydrase 4 restrains dual TLR4-NF-κB/IRF3 innate immune signaling and epithelial-mesenchymal transition in methotrexate-induced pulmonary fibrosis.</a></h3>
+            <p class="paper-summary">This study identifies carbonic anhydrase 4 (CA4) as a key regulator in a rat model of methotrexate-induced pulmonary fibrosis. CA4 appears to restrain both TLR4-NF-κB/IRF3 innate immune signaling and epithelial-mesenchymal transition, suggesting its loss or dysregulation contributes to fibrosis progression. The work proposes CA4 as a potential molecular target for diagnosis and intervention in this drug toxicity.</p>
+            <div class="paper-tags"><span class="tag">immunology</span><span class="tag">clinical</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in bioinformatics</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffbinf.2026.1952759" target="_blank" rel="noopener">Comparative multi-target computational profiling of ebelin lactone across cognition-associated proteins.</a></h3>
+            <p class="paper-summary">This study computationally screens ebelin lactone, a triterpenoid derived from bacosides, against multiple proteins linked to cognition, including targets involved in synaptic plasticity, neuronal proteostasis, mitochondrial stress, and neurite remodeling. The work extends prior findings of its binding to M1 muscarinic and 5-HT2A receptors by profiling its structural compatibility with a broader set of cognition-associated proteins. It is a purely in silico docking/structural analysis without experimental validation.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">structural-biology</span><span class="tag">neuroscience</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1964912" target="_blank" rel="noopener">Integrated pharmacology and validation reveal Formononetin upregulates GSTM2 to modulate prostate cancer immune microenvironment via ROS/STAT3-driven chemokine reprogramming.</a></h3>
+            <p class="paper-summary">This study uses integrated pharmacology and experimental validation to show that the natural isoflavone Formononetin upregulates GSTM2 in prostate cancer cells, which alters ROS/STAT3 signaling and reprograms chemokine expression to modulate the immune microenvironment. The authors propose GSTM2 and downstream chemokine pathways as potential translational targets to address biochemical recurrence in prostate cancer.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">drug-discovery</span><span class="tag">immunology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">PloS one</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pone.0361876" target="_blank" rel="noopener">Mutation-induced structural and dynamic perturbations at the IL-17A-IL-17RA interface: Therapeutic insights from multi-replicate molecular dynamics simulations.</a></h3>
+            <p class="paper-summary">This study uses multi-replicate molecular dynamics simulations to examine how mutations at the IL-17A–IL-17RA protein interface perturb the structure and dynamics of the complex. The authors aim to predict which mutations disrupt the interaction, offering computational guidance for therapeutic strategies targeting this pro-inflammatory signaling axis. The work is a simulation-based analysis rather than an experimental or new-resource contribution.</p>
+            <div class="paper-tags"><span class="tag">structural-biology</span><span class="tag">methodology</span><span class="tag">immunology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1928244" target="_blank" rel="noopener">Quercetin ameliorates gestational diabetes mellitus-induced placental dysfunction by modulating the AGE-RAGE-associated oxidative and inflammatory signaling network.</a></h3>
+            <p class="paper-summary">This study investigates whether the flavonoid quercetin protects against placental dysfunction in gestational diabetes mellitus by targeting the AGE-RAGE signaling axis. The authors combine experimental evidence of molecular binding between quercetin and RAGE with characterization of downstream AGE-RAGE/ROS/NF-κB signaling changes in GDM placental injury models. The work provides direct binding evidence that prior flavonoid studies lacked, supporting quercetin as a modulator of oxidative and inflammatory signaling in the diabetic placenta.</p>
+            <div class="paper-tags"><span class="tag">metabolomics</span><span class="tag">clinical</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1948257" target="_blank" rel="noopener">Kurarinol A from Sophora flavescens suppresses hepatic stellate cell activation via the TLR4/MyD88/NF-κB pathway.</a></h3>
+            <p class="paper-summary">This study identifies kurarinol A, a flavonoid from Sophora flavescens, as an inhibitor of hepatic stellate cell activation, the key cellular event in liver fibrosis. The authors show that kurarinol A suppresses this activation through the TLR4/MyD88/NF-κB signaling pathway, suggesting a specific molecular target for the plant's traditional use in liver disorders.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">clinical</span><span class="tag">methodology</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Oncology research</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.32604%2For.2026.089127" target="_blank" rel="noopener">A Tanshinone IIA Sulfonate Derivative Targets USP21 to Induce SCD1 Degradation, Suppressing NSCLC Metabolism and Enhancing Antitumor Immunity.</a></h3>
+            <p class="paper-summary">This study identifies a Tanshinone IIA sulfonate derivative as a selective inhibitor of the deubiquitinase USP21 in non-small cell lung cancer. The compound promotes degradation of SCD1, disrupting tumor metabolic reprogramming and enhancing antitumor immune responses. The work provides a new pharmacological tool and a potential immunotherapy-sensitizing strategy for NSCLC.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">drug-discovery</span><span class="tag">metabolomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in pharmacology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffphar.2026.1962620" target="_blank" rel="noopener">Hupehenine suppresses tumor cell phenotypes and modulates macrophage marker profiles in a diabeticmimetic colorectal cancer model.</a></h3>
+            <p class="paper-summary">This study identifies shared molecular features between diabetes and colorectal cancer and tests whether the natural compound hupehenine can modulate these pathways. Using a diabetic-mimetic CRC model, the authors show that hupehenine suppresses tumor cell phenotypes and alters macrophage marker profiles, suggesting a potential therapeutic link at the diabetes–cancer interface.</p>
+            <div class="paper-tags"><span class="tag">cancer</span><span class="tag">drug-discovery</span><span class="tag">transcriptomics</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Frontiers in immunology</span>
+                <span class="date">2026--01</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1970789" target="_blank" rel="noopener">Structure-based minimization of a high-mobility group protein B1 (HMGB1) B box peptide uncouples anti-NETotic activity and anti-biofilm function.</a></h3>
+            <p class="paper-summary">The authors engineered truncated variants of an HMGB1 B-box peptide (mB Box-97) to test whether its anti-biofilm and anti-NETosis activities could be separated. They found that shorter peptides containing Helix 1 of the B-box can uncouple these two functions, yielding variants that retain one activity without the other. This provides a basis for developing more specific HMGB1-derived peptides with reduced off-target effects.</p>
+            <div class="paper-tags"><span class="tag">immunology</span><span class="tag">microbiology</span><span class="tag">drug-discovery</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cell Biochemistry and Biophysics</span>
+                <span class="date">2024</span>
+                <span class="sig sig-low">Low</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.1007%2Fs12013-024-01618-w" target="_blank" rel="noopener">Discovery of Galangin Derivatives as a Potential T-cell Leukemia Virus 1 Protease Inhibitor Through Chemoinformatics Approaches</a></h3>
+            <p class="paper-summary">This study uses chemoinformatics approaches to identify galangin derivatives as potential inhibitors of the T-cell leukemia virus 1 (HTLV-1) protease. The authors likely performed virtual screening, molecular docking, and ADMET profiling to prioritize compounds, though the abstract provided is empty so specific results cannot be confirmed. The work proposes a computational starting point for antiviral development against HTLV-1.</p>
+            <div class="paper-tags"><span class="tag">drug-discovery</span><span class="tag">machine-learning</span><span class="tag">clinical</span></div>
+        </article><article class="paper-item">
+            <div class="paper-meta">
+                <span class="journal">Cells</span>
+                <span class="date">2024</span>
+                <span class="sig sig-medium">Medium</span>
+            </div>
+            <h3 class="paper-title"><a href="https://doi.org/10.3390%2Fcells13211760" target="_blank" rel="noopener">p70S6K as a Potential Anti-COVID-19 Target: Insights from Wet Bench and In Silico Studies</a></h3>
+            <p class="paper-summary">The study tracked kinase phosphorylation dynamics in RAW264.7 macrophages after SPIKE transfection and identified p70S6K (RPS6KB1) as a host kinase upregulated roughly 3.5-fold, proposing it as a potential anti-COVID-19 target because targeting a host factor could sidestep viral genetic variation and address cytokine storm. The work combines wet-bench experiments with in silico analyses to support p70S6K as a pivotal host kinase in COVID-19 infection.</p>
+            <div class="paper-tags"><span class="tag">proteomics</span><span class="tag">drug-discovery</span><span class="tag">clinical</span></div>
+        </article>
+<section class="ask">
+<h2>Ask this channel</h2>
+<p class="ask-hint">Answers come only from bioTriage&rsquo;s indexed literature, scoped to this channel. Always verify before citing.</p>
+<form id="ask-form" class="ask-row">
+<input id="ask-input" type="text" placeholder="e.g. which binning tools beat the baseline?" autocomplete="off">
+<button type="submit">Ask</button>
+</form>
+<div id="ask-status" class="ask-status" hidden></div>
+<div id="ask-answer" class="ask-answer" hidden></div>
+<div id="ask-sources" class="ask-sources"></div>
+</section>
+<script>
+(function () {
+  var API = 'https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api';
+  var DOMAIN = 'structural-bioinformatics';
+  var form = document.getElementById('ask-form');
+  if (!form) { return; }
+  var input = document.getElementById('ask-input');
+  var button = form.querySelector('button');
+  var status = document.getElementById('ask-status');
+  var answer = document.getElementById('ask-answer');
+  var sources = document.getElementById('ask-sources');
+
+  function setStatus(msg) { status.hidden = !msg; status.textContent = msg || ''; }
+
+  function renderSources(items) {
+    sources.innerHTML = '';
+    (items || []).forEach(function (s) {
+      var el = document.createElement('div');
+      el.className = 'src';
+      var html = '';
+      if (s.domain) {
+        html += '<span class="dom">' + s.domain + (s.evidence_level ? ' &middot; ' + s.evidence_level : '') + '</span>';
+      }
+      html += '<strong>' + (s.cite || s.title || '') + '</strong>';
+      if (s.url) { html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>'; }
+      el.innerHTML = html;
+      sources.appendChild(el);
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) { return; }
+    button.disabled = true;
+    answer.hidden = true;
+    setStatus('Searching the corpus...');
+    var url = API + '/rag_chat?q=' + encodeURIComponent(q) + '&domains=' + encodeURIComponent(DOMAIN);
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      button.disabled = false;
+      if (!data || data.success === false) { setStatus((data && data.error) || 'Assistant unavailable.'); return; }
+      setStatus('');
+      answer.textContent = data.answer || '';
+      answer.hidden = false;
+      renderSources(data.sources);
+    }).catch(function () { button.disabled = false; setStatus('Assistant unavailable.'); });
+  });
+})();
+</script>
+</div>
+<footer class="site-footer">
+<p>AI-curated by bioTriage-Open. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">bioTriage-Open Home</a></p>
+</footer>
+</body>
+</html>

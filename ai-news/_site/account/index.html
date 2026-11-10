@@ -2,21 +2,25 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>我的账户 · bio|Triage</title>
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
+<link rel="icon" type="image/png" sizes="512x512" href="../assets/logo-mark.png">
+<link rel="apple-touch-icon" href="../assets/logo-mark.png">
 </head>
 <body>
 
 <a class="skip-link" href="#mainContent" data-i18n="skip">跳到主要内容</a>
 
 <nav class="top-bar" aria-label="站点顶栏">
-    <span class="tb-brand">
+    <span class="tb-brand"><img class="brand-mark" src="../assets/logo-mark.png" alt="bioTriage" width="24" height="24">
         <span class="mini-logo">bio<em>|</em>Triage</span>
         <span class="tb-tagline" data-i18n="nav-tagline">穿梭喧杂，锚定实证</span>
     </span>
     <span class="tb-right">
+        <a class="tb-link" href="../">Home</a><button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">&#9680;</button>
         <button id="lang-toggle" type="button" class="lang-btn" aria-label="切换语言">EN</button>
         
         <span class="tb-year">2026</span>
@@ -28,7 +32,6 @@
         <nav class="side-nav" aria-label="主导航">
             <span class="side-label" data-i18n="side-label">导航</span>
             <a class="side-item" href="../" data-i18n="nav-home">首页</a>
-            <a class="side-item" href="../evidence/" data-i18n="nav-evidence">肠道 SCFA</a>
             <a class="side-item" href="../daily/" data-i18n="nav-daily">文献日报</a>
             <a class="side-item" href="../weekly/" data-i18n="nav-weekly">文献周报</a>
             <a class="side-item" href="../ms1/" data-i18n="nav-method">方法学</a>
@@ -182,5 +185,29 @@
     <p class="empty"><span data-i18n="noscript-text">需要启用 JavaScript 才能显示账户信息。</span><a href="https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com/api/auth/login?mode=pages" data-i18n="noscript-link">直接前往 ORCID 登录</a></p>
     </div></div>
 </noscript>
+<script>
+(function () {
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) { return; }
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var ICONS = { light: '\u2600', dark: '\u263e', auto: '\u25d0' };
+  function stored() { try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; } catch (e) { return 'auto'; } }
+  function resolve(m) { return (m === 'dark' || m === 'light') ? m : ((mq && mq.matches) ? 'dark' : 'light'); }
+  function paint(mode, soft) {
+    var root = document.documentElement;
+    if (soft) { root.classList.add('theme-anim'); window.setTimeout(function () { root.classList.remove('theme-anim'); }, 620); }
+    root.dataset.theme = resolve(mode);
+    btn.textContent = ICONS[mode] || ICONS.auto;
+  }
+  btn.addEventListener('click', function () {
+    var order = ['light', 'dark', 'auto'];
+    var next = order[(order.indexOf(stored()) + 1) % order.length];
+    try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (e) {}
+    paint(next, true);
+  });
+  if (mq && mq.addEventListener) { mq.addEventListener('change', function () { if (stored() === 'auto') { paint('auto', true); } }); }
+  paint(stored());
+})();
+</script>
 </body>
 </html>
