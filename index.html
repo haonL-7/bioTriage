@@ -513,6 +513,16 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
             .top-bar { background: rgba(255, 255, 255, 0.90) !important; }
         }
+
+        html.theme-anim,
+        html.theme-anim *,
+        html.theme-anim *::before,
+        html.theme-anim *::after {
+            transition: background-color .45s cubic-bezier(.4,0,.2,1),
+                        color .45s cubic-bezier(.4,0,.2,1),
+                        border-color .45s cubic-bezier(.4,0,.2,1),
+                        fill .45s cubic-bezier(.4,0,.2,1) !important;
+        }
 </style>
 </head>
 <body>
@@ -897,8 +907,13 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     if (mode === 'dark' || mode === 'light') { return mode; }
     return (mq && mq.matches) ? 'dark' : 'light';
   }
-  function paint(mode) {
-    document.documentElement.dataset.theme = resolve(mode);
+  function paint(mode, soft) {
+    var root = document.documentElement;
+    if (soft) {
+      root.classList.add('theme-anim');
+      window.setTimeout(function () { root.classList.remove('theme-anim'); }, 620);
+    }
+    root.dataset.theme = resolve(mode);
     document.documentElement.dataset.themeMode = mode;
     btn.textContent = ICONS[mode] || ICONS.auto;
     btn.setAttribute('data-mode', mode);
@@ -907,10 +922,10 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     var order = ['light', 'dark', 'auto'];
     var next = order[(order.indexOf(stored()) + 1) % order.length];
     try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (e) {}
-    paint(next);
+    paint(next, true);
   });
   if (mq && mq.addEventListener) {
-    mq.addEventListener('change', function () { if (stored() === 'auto') { paint('auto'); } });
+    mq.addEventListener('change', function () { if (stored() === 'auto') { paint('auto', true); } });
   }
   paint(stored());
 })();
