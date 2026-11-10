@@ -77,6 +77,12 @@ footer { border-top:1px solid var(--border); color:var(--ink-xlt); font-size:11.
   .layout { display: block; }
   .sidebar { position: static; width: 100%; flex: none; padding: 16px 20px 0; }
 }
+
+.brand-mark {
+    width: 24px; height: 24px; border-radius: 6px;
+    object-fit: cover; display: inline-block; vertical-align: -6px;
+    margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
+}
 @media (max-width:640px) { h1 { font-size:21px; } }
 """
 
@@ -196,12 +202,13 @@ def render(title, lede, meta, by_channel, today, nav, active):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>%(title)s — bioTriage-Open</title>
+<link rel="icon" type="image/png" href="%(root)sassets/logo-mark.png">
 %(head_js)s
 <style>%(css)s</style>
 </head>
 <body>
 <nav class="top-bar">
-  <span class="tb-brand"><a href="%(root)s"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span></span>
+  <span class="tb-brand"><a href="%(root)s"><img class="brand-mark" src="%(root)sassets/logo-mark.png" alt="bioTriage" width="24" height="24"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span></span>
   <span style="display:flex;gap:8px;align-items:center">
     <button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">&#9680;</button>
     <a class="nav-link" href="%(root)s">Home</a>

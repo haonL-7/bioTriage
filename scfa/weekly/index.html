@@ -455,12 +455,20 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
                         border-color .45s cubic-bezier(.4,0,.2,1),
                         fill .45s cubic-bezier(.4,0,.2,1) !important;
         }
+
+.brand-mark {
+    width: 24px; height: 24px; border-radius: 6px;
+    object-fit: cover; display: inline-block; vertical-align: -6px;
+    margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
+}
 </style>
+<link rel="icon" type="image/png" sizes="512x512" href="../../assets/logo-mark.png">
+<link rel="apple-touch-icon" href="../../assets/logo-mark.png">
 </head>
 <body>
 
 <nav class="top-bar">
-    <span class="tb-brand"><a href="../../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span data-i18n="nav-tagline">Cut through the noise. Anchor in evidence.</span></span>
+    <span class="tb-brand"><img class="brand-mark" src="../../assets/logo-mark.png" alt="bioTriage" width="24" height="24"><a href="../../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span data-i18n="nav-tagline">Cut through the noise. Anchor in evidence.</span></span>
     <span class="tb-right"><button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">◐</button>
         <button id="lang-toggle" type="button" class="lang-btn">中文</button></span>
 </nav>
