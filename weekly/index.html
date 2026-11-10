@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Literature Weekly — bioTriage-Open</title>
+<link rel="icon" type="image/png" href="../assets/logo-mark.png">
 <script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <style>:root { --bg:#fff; --bg-alt:#f7f8fa; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199;
   --border:#e3e6ea; --accent:#1a4d80; --max:820px; --serif: Georgia,'Times New Roman',serif;
@@ -52,12 +53,18 @@ footer { border-top:1px solid var(--border); color:var(--ink-xlt); font-size:11.
   .layout { display: block; }
   .sidebar { position: static; width: 100%; flex: none; padding: 16px 20px 0; }
 }
+
+.brand-mark {
+    width: 24px; height: 24px; border-radius: 6px;
+    object-fit: cover; display: inline-block; vertical-align: -6px;
+    margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
+}
 @media (max-width:640px) { h1 { font-size:21px; } }
 </style>
 </head>
 <body>
 <nav class="top-bar">
-  <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span></span>
+  <span class="tb-brand"><a href="../"><img class="brand-mark" src="../assets/logo-mark.png" alt="bioTriage" width="24" height="24"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span></span>
   <span style="display:flex;gap:8px;align-items:center">
     <button id="theme-toggle" class="theme-btn" type="button" aria-label="Theme">&#9680;</button>
     <a class="nav-link" href="../">Home</a>
