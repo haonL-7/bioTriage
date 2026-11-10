@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<script>document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';</script>
+<script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foundation Papers — Gut Co-Metabolism — bioTriage-Open</title>
     <meta name="description" content="bioTriage-Open Foundation Papers — the seven papers that founded the gut microbiome co-metabolism evidence channel, and the evidence base behind its MS1 and MS2 frameworks.">
@@ -347,13 +349,24 @@
             border-left-color: #e2e8f0;
         }
         .starred-links { font-variant-numeric: tabular-nums; }
-    </style>
+    
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0e1116; --bg-alt: #151a21; --white: #151a21;
+    --ink: #e6e9ee; --ink-md: #b3bac4; --ink-lt: #8d95a1; --ink-xlt: #6f7681;
+    --border: #252b34; --border-lt: #1c222b;
+    --primary: #5f9fd4; --primary-lt: #7cb3e0; --primary-md: #4b8ac0; --primary-rgb: 95 159 212;
+    --accent: #7cb3e0; --accent-lt: #8fc0e8;
+    --gold: #d0b064; --gold-lt: #e0c37c; --gold-pale: #221f16;
+}
+</style>
 </head>
 <body>
 
 <nav class="top-bar">
     <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span data-i18n="nav-tagline">Cut through the noise. Anchor in evidence.</span></span>
-    <span class="tb-right"><button id="lang-toggle" type="button" class="lang-btn">中文</button></span>
+    <span class="tb-right"><dark-mode-toggle id="theme-toggle" appearance="switch" legend="Theme" remember="Remember"></dark-mode-toggle>
+        <button id="lang-toggle" type="button" class="lang-btn">中文</button></span>
 </nav>
 
 <div class="layout">
@@ -526,5 +539,15 @@
 })();
 </script>
 
+<script>
+(function () {
+  var el = document.getElementById('theme-toggle');
+  if (!el) { return; }
+  el.addEventListener('colorschemechange', function (e) {
+    document.documentElement.dataset.theme = e.detail.colorScheme;
+  });
+  if (el.colorscheme) { document.documentElement.dataset.theme = el.colorscheme; }
+})();
+</script>
 </body>
 </html>

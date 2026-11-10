@@ -97,6 +97,7 @@ jobs:
         run: python scripts/build_rag_corpus.py
 
       - name: Commit corpus to main
+        if: ${{ github.event_name != 'push' }}
         working-directory: .
         run: |
           git config user.name "github-actions[bot]"
