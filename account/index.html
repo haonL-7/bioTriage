@@ -102,6 +102,21 @@
                 </div>
             </section>
 
+            <section class="card" aria-labelledby="byokLabel">
+                <span class="section-label" id="byokLabel" data-i18n="sl-byok">AI 密钥</span>
+                <div class="card-body">
+                    <p class="byok-status" id="byokStatus" data-i18n="byok-none">未配置：使用本站免费额度。</p>
+                    <div class="byok-row">
+                        <input id="byokInput" class="byok-input" type="password" autocomplete="off"
+                               spellcheck="false" placeholder="sk-..." aria-labelledby="byokLabel">
+                        <button type="button" class="btn btn-primary" id="byokSave" data-i18n="byok-save">保存</button>
+                        <button type="button" class="btn btn-ghost" id="byokDelete" data-i18n="byok-delete" hidden>删除</button>
+                    </div>
+                    <p class="byok-note" data-i18n="byok-note">填入你自己的 DeepSeek 密钥后，本站在此账号下调用 AI 时使用你的密钥，不消耗免费额度。密钥加密存储，仅用于发起请求。</p>
+                    <p class="inline-error" id="byokNote" hidden></p>
+                </div>
+            </section>
+
             <section class="card" aria-labelledby="quotaLabel">
                 <span class="section-label" id="quotaLabel"><span data-i18n="sl-quota">QUOTA</span><span class="sl-zh" data-i18n="sl-quota-zh">今日配额</span></span>
                 <div class="card-body">

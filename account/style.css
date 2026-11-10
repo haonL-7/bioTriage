@@ -699,3 +699,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
         transition-duration: 0.001ms !important;
     }
 }
+
+/* ---- BYOK：自带 DeepSeek 密钥 ---- */
+.byok-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 8px; }
+.byok-input {
+    flex: 1 1 220px; min-width: 0; font: inherit; font-size: 13px;
+    padding: 7px 10px; border: 1px solid #d5d5d5; border-radius: 4px;
+    background: #fff; color: #16181c;
+}
+.byok-input:focus-visible { outline: 2px solid #1a4d80; outline-offset: 1px; }
+.byok-status { font-size: 13px; color: #4a5058; margin: 0; }
+.byok-note { font-size: 12px; color: #8a9199; line-height: 1.7; margin: 4px 0 0; }
