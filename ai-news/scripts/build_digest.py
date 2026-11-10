@@ -83,6 +83,17 @@ footer { border-top:1px solid var(--border); color:var(--ink-xlt); font-size:11.
     object-fit: cover; display: inline-block; vertical-align: -6px;
     margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
 }
+.item { position: relative; padding-right: 36px; }
+.star-btn {
+  position: absolute; top: 12px; right: 0; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; line-height: 1; cursor: pointer;
+  color: var(--ink-xlt); background: transparent;
+  border: 1px solid var(--border); border-radius: 50%;
+  transition: color .2s, border-color .2s, background-color .2s;
+}
+.star-btn:hover { color: #b08d2f; border-color: #b08d2f; }
+.star-btn.is-on { color: #b08d2f; border-color: #b08d2f; background: rgba(176,141,47,.08); }
 @media (max-width:640px) { h1 { font-size:21px; } }
 """
 
@@ -185,15 +196,23 @@ def render(title, lede, meta, by_channel, today, nav, active):
         items = []
         for r in rows:
             sig = str(r.get('significance') or 'Medium')
+            star = ('<button class="star-btn" type="button" aria-pressed="false" '
+                    'data-key="%s" data-doi="%s" data-title="%s" data-url="%s" data-channel="%s" '
+                    'title="Star">&#9734;</button>' % (
+                        html.escape(str(r.get('doi') or r.get('title') or ''), quote=True),
+                        html.escape(str(r.get('doi') or ''), quote=True),
+                        html.escape(str(r.get('title') or ''), quote=True),
+                        html.escape(str(r.get('url') or ''), quote=True),
+                        html.escape(label, quote=True)))
             items.append(
                 '<article class="item">'
                 '<div class="row"><span class="sig sig-%s">%s</span><span>%s</span><span>%s</span></div>'
                 '<h3><a href="%s" target="_blank" rel="noopener">%s</a></h3>'
-                '<p class="sum">%s</p></article>' % (
+                '<p class="sum">%s</p>%s</article>' % (
                     sig.lower(), html.escape(sig), html.escape(str(r.get('journal') or '')),
                     html.escape(str(r.get('pub_date') or '')),
                     html.escape(str(r.get('url') or '#'), quote=True), html.escape(str(r.get('title') or '')),
-                    html.escape(str(r.get('summary') or '')[:320])))
+                    html.escape(str(r.get('summary') or '')[:320]), star))
         blocks.append('<div class="ch">%s</div>%s' % (html.escape(label), ''.join(items)))
     body = ''.join(blocks) or '<p class="empty">No papers in this window.</p>'
     return """<!DOCTYPE html>
@@ -229,6 +248,74 @@ def render(title, lede, meta, by_channel, today, nav, active):
 </div>
 </div>
 <footer>&copy; 2026 bioTriage-Open &middot; Independent project &middot; AI-curated summaries; verify before citing.</footer>
+<script>
+(function () {
+  var API_BASE = 'https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com';
+  var TOKEN_KEY = 'bt_token';
+  var ids = {};
+
+  function token() { try { return window.localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; } }
+  function norm(v) { return String(v == null ? '' : v).trim().toLowerCase(); }
+  function paint(btn, on) {
+    btn.textContent = on ? '\u2605' : '\u2606';
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.classList.toggle('is-on', on);
+  }
+  function buttonKey(btn) { return norm(btn.getAttribute('data-key')); }
+
+  function loadStars() {
+    var t = token();
+    if (!t) { return; }
+    fetch(API_BASE + '/api/me/stars', { headers: { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        var items = (data && data.items) || [];
+        items.forEach(function (it) { ids[norm(it.doi || it.title)] = it.id; });
+        Array.prototype.forEach.call(document.querySelectorAll('.star-btn'), function (b) {
+          if (ids[buttonKey(b)]) { paint(b, true); }
+        });
+      })
+      .catch(function () {});
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest('.star-btn') : null;
+    if (!btn) { return; }
+    var t = token();
+    if (!t) { window.location.href = '../account/'; return; }
+    var key = buttonKey(btn);
+    var headers = { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json' };
+
+    if (ids[key]) {
+      fetch(API_BASE + '/api/me/stars/' + ids[key], { method: 'DELETE', headers: headers })
+        .then(function (r) {
+          if (r.ok || r.status === 204) { delete ids[key]; paint(btn, false); }
+        })
+        .catch(function () {});
+      return;
+    }
+    var body = {
+      kind: 'paper',
+      doi: btn.getAttribute('data-doi') || null,
+      title: btn.getAttribute('data-title') || null,
+      payload: { url: btn.getAttribute('data-url') || '', channel: btn.getAttribute('data-channel') || '' }
+    };
+    fetch(API_BASE + '/api/me/stars', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var item = d && d.item;
+        if (item && item.id) { ids[key] = item.id; paint(btn, true); }
+      })
+      .catch(function () {});
+  });
+
+  loadStars();
+})();
+</script>
 %(toggle_js)s
 </body>
 </html>""" % dict(title=title, lede=lede, total=total, nch=len(by_channel), today=today.isoformat(), meta=meta,

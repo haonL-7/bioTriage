@@ -840,6 +840,13 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         aaStatus.classList.toggle('err', !!isErr);
     }
 
+    // 来源标题/链接来自外部元数据（PubMed / bioRxiv 等），插入 innerHTML 前必须转义
+    function escHtml(v) {
+        return String(v == null ? '' : v)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     function aaShowSources(sources) {
         aaSources.innerHTML = '';
         if (!sources || !sources.length) return;
@@ -853,10 +860,10 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             var html = '';
             var grade = s.evidence_level || s.significance || '';
             if (s.domain) {
-                html += '<span class="src-dom">' + s.domain + (grade ? ' &middot; ' + grade : '') + '</span>';
+                html += '<span class="src-dom">' + escHtml(s.domain) + (grade ? ' &middot; ' + escHtml(grade) : '') + '</span>';
             }
-            html += '<strong>' + (s.cite || s.title || '') + '</strong>';
-            if (s.url) html += ' &middot; <a href="' + s.url + '" target="_blank" rel="noopener">Link</a>';
+            html += '<strong>' + escHtml(s.cite || s.title || '') + '</strong>';
+            if (s.url) html += ' &middot; <a href="' + escHtml(s.url) + '" target="_blank" rel="noopener">Link</a>';
             if (s.pmid) html += ' <a href="https://pubmed.ncbi.nlm.nih.gov/' + s.pmid + '/" target="_blank" rel="noopener">PMID ' + s.pmid + '</a>';
             if (s.doi) html += ' &middot; <a href="https://doi.org/' + s.doi + '" target="_blank" rel="noopener">DOI</a>';
             el.innerHTML = html;
