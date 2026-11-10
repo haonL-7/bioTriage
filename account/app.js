@@ -88,8 +88,8 @@
             "kv-tier": "配额档位",
             "logout": "登出",
             "star-empty-title": "还没有收藏",
-            "star-empty-text": "在证据监测或文献日报里点条目上的 ★ 收藏，之后在任何设备登录都能看到。",
-            "star-empty-link": "去证据监测挑几条 →",
+            "star-empty-text": "在文献日报里点条目右上角的 ☆ 即可收藏，之后在任何设备登录都能看到。",
+            "star-empty-link": "去文献日报挑几条 →",
             "eval-empty-title": "暂无评估记录",
             "eval-empty-text": "在证据监测页发起一次 AI 分析后，结论会留在这里，随时可以回看。",
             "eval-empty-link": "去发起一次 AI 分析 →",
@@ -258,8 +258,8 @@
             "kv-tier": "Plan",
             "logout": "Sign out",
             "star-empty-title": "No starred items yet",
-            "star-empty-text": "Tap ★ on an item in Evidence Monitor or Literature Daily, then sign in anywhere to see it again.",
-            "star-empty-link": "Browse Evidence Monitor →",
+            "star-empty-text": "Tap the ☆ on any item in Literature Daily, then sign in anywhere to see it again.",
+            "star-empty-link": "Browse Literature Daily →",
             "eval-empty-title": "No evaluations yet",
             "eval-empty-text": "Run an AI analysis in Evidence Monitor and its verdict is archived here for later review.",
             "eval-empty-link": "Run an AI analysis →",
@@ -516,7 +516,7 @@
     /* ---------------- 凭据存取（只作用于当前标签页） ---------------- */
     function readToken() {
         try {
-            var v = window.sessionStorage.getItem(TOKEN_KEY);
+            var v = window.localStorage.getItem(TOKEN_KEY);
             return v ? String(v) : "";
         } catch (err) {
             return "";
@@ -525,7 +525,7 @@
 
     function saveToken(token) {
         try {
-            window.sessionStorage.setItem(TOKEN_KEY, token);
+            window.localStorage.setItem(TOKEN_KEY, token);
             return true;
         } catch (err) {
             return false;
@@ -535,7 +535,7 @@
     function dropToken() {
         currentToken = "";
         try {
-            window.sessionStorage.removeItem(TOKEN_KEY);
+            window.localStorage.removeItem(TOKEN_KEY);
         } catch (err) { /* 存储不可用时忽略：内存里的凭据已经清掉 */ }
     }
 
