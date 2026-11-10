@@ -72,6 +72,9 @@ jobs:
         run: python scripts/build.py
         timeout-minutes: 2
 
+      - name: Build platform digest
+        run: python scripts/build_digest.py
+
       - name: Freshness guard
         run: |
           python - <<'PY'

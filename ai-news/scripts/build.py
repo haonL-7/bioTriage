@@ -1095,26 +1095,27 @@ def main():
             print(f"  Deployed /{ms_dir}/ manuscript page")
 
     # Deploy literature daily page
-    daily_src = os.path.join(PROJECT_ROOT, "..", "daily")
+    daily_src = os.path.join(PROJECT_ROOT, "..", "scfa", "daily")
     if not os.path.exists(daily_src):
-        daily_src = os.path.join(PROJECT_ROOT, "daily")
+        daily_src = os.path.join(PROJECT_ROOT, "scfa", "daily")
     if os.path.exists(daily_src):
-        daily_dst = os.path.join(BUILD_DIR, "daily")
+        os.makedirs(os.path.join(BUILD_DIR, "scfa"), exist_ok=True)
+        daily_dst = os.path.join(BUILD_DIR, "scfa", "daily")
         if os.path.exists(daily_dst):
             shutil.rmtree(daily_dst)
         shutil.copytree(daily_src, daily_dst)
-        print("  Deployed /daily/ literature daily page")
+        print("  Deployed /scfa/daily/ SCFA channel daily page")
 
     # Deploy literature weekly page (AIHOT 移植：周报，复用 daily 样式)
-    weekly_src = os.path.join(PROJECT_ROOT, "..", "weekly")
+    weekly_src = os.path.join(PROJECT_ROOT, "..", "scfa", "weekly")
     if not os.path.exists(weekly_src):
-        weekly_src = os.path.join(PROJECT_ROOT, "weekly")
+        weekly_src = os.path.join(PROJECT_ROOT, "scfa", "weekly")
     if os.path.exists(weekly_src):
-        weekly_dst = os.path.join(BUILD_DIR, "weekly")
+        weekly_dst = os.path.join(BUILD_DIR, "scfa", "weekly")
         if os.path.exists(weekly_dst):
             shutil.rmtree(weekly_dst)
         shutil.copytree(weekly_src, weekly_dst)
-        print("  Deployed /weekly/ literature weekly page")
+        print("  Deployed /scfa/weekly/ SCFA channel weekly page")
 
     # Deploy starred collection page
     starred_src = os.path.join(PROJECT_ROOT, "..", "starred")
