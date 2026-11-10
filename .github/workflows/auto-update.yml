@@ -72,6 +72,25 @@ jobs:
         run: python scripts/build.py
         timeout-minutes: 2
 
+      - name: Restore channel snapshots from gh-pages
+        if: ${{ inputs.build_only || github.event_name == 'push' }}
+        run: |
+          git fetch --depth=1 origin gh-pages:refs/heads/gh-pages-snapshot || exit 0
+          git archive gh-pages-snapshot -- ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology | tar -x -C _site
+          echo "restored:"; ls _site | head -20
+
+      - name: Verify channels present
+        run: |
+          missing=""
+          for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
+            [ -d "_site/$ch" ] || missing="$missing $ch"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::channel dirs missing:$missing — refusing to publish a site without channels"
+            exit 1
+          fi
+          echo "all channel dirs present"
+
       - name: Build platform digest
         run: python scripts/build_digest.py
 
