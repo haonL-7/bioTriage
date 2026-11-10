@@ -40,6 +40,18 @@ h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6p
 footer { border-top:1px solid var(--border); color:var(--ink-xlt); font-size:11.5px; text-align:center;
   padding:22px 20px; }
 .empty { color:var(--ink-xlt); font-size:13px; padding:20px 0; }
+.layout { display: flex; align-items: flex-start; max-width: 1100px; margin: 0 auto; }
+.sidebar { position: sticky; top: 60px; width: 200px; flex: 0 0 200px; padding: 28px 12px 28px 20px; }
+.side-nav { display: flex; flex-direction: column; gap: 2px; }
+.side-label { font-size: 10.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-xlt); padding: 0 10px 8px; }
+.side-item { display: block; padding: 8px 10px; border-radius: 4px; font-size: 13px; color: var(--ink-md); }
+.side-item:hover { background: var(--bg-alt); color: var(--ink); }
+.side-item.is-active { background: var(--accent); color: #fff; }
+.page { flex: 1; min-width: 0; }
+@media (max-width: 900px) {
+  .layout { display: block; }
+  .sidebar { position: static; width: 100%; flex: none; padding: 16px 20px 0; }
+}
 @media (max-width:640px) { h1 { font-size:21px; } }
 </style>
 </head>
@@ -53,11 +65,25 @@ footer { border-top:1px solid var(--border); color:var(--ink-xlt); font-size:11.
     <a class="nav-link" href="mailto:haon.liu@outlook.com">Contact</a>
   </span>
 </nav>
+<div class="layout">
+<aside class="sidebar"><nav class="side-nav">
+<span class="side-label">Navigate</span>
+<a class="side-item" href="../">Home</a>
+<a class="side-item" href="../evidence/">Gut SCFA Monitor</a>
+<a class="side-item" href="../daily/">Literature Daily</a>
+<a class="side-item is-active" href="../weekly/">Literature Weekly</a>
+<a class="side-item" href="../ms1/">Methodology</a>
+<a class="side-item" href="../account/">My Stars</a>
+<a class="side-item" href="mailto:haon.liu@outlook.com">Contact</a>
+</nav></aside>
+<div class="page">
 <div class="wrap">
   <h1>Literature Weekly</h1>
   <p class="lede">The week across every channel, highest significance first.</p>
   <p class="meta">weekly window: 7 days &middot; no dated papers found &middot; generated 2026-11-10</p>
   <p class="empty">No papers in this window.</p>
+</div>
+</div>
 </div>
 <footer>&copy; 2026 bioTriage-Open &middot; Independent project &middot; AI-curated summaries; verify before citing.</footer>
 <script>
