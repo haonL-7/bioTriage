@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';</script>
+<script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MS2 &middot; Six-Tier Evidence Framework &mdash; bioTriage-Open</title>
 <style>
@@ -140,11 +142,19 @@ h2::after {
 }
 .lede { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin: 12px 0 8px; }
 .scope-note { font-size: 12.5px; color: var(--text-muted); border-left: 3px solid var(--border); padding-left: 10px; margin: 0 0 26px; }
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0e1116; --text: #e6e9ee; --text-secondary: #b3bac4; --text-muted: #8d95a1;
+    --border: #252b34; --border-light: #1c222b;
+    --accent: #7cb3e0;
+}
 </style>
 </head>
 <body>
 <nav class="top-bar">
-    <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span></span>
+    <span class="tb-brand"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a><span>Cut through the noise. Anchor in evidence.</span><dark-mode-toggle id="theme-toggle" appearance="switch" legend="Theme" remember="Remember"></dark-mode-toggle>
+        </span>
 </nav>
 <div class="layout">
     <aside class="sidebar">
@@ -208,5 +218,15 @@ h2::after {
         </div>
     </div>
 </div>
+<script>
+(function () {
+  var el = document.getElementById('theme-toggle');
+  if (!el) { return; }
+  el.addEventListener('colorschemechange', function (e) {
+    document.documentElement.dataset.theme = e.detail.colorScheme;
+  });
+  if (el.colorscheme) { document.documentElement.dataset.theme = el.colorscheme; }
+})();
+</script>
 </body>
 </html>
