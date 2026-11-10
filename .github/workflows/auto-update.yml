@@ -72,6 +72,40 @@ jobs:
         run: python scripts/build.py
         timeout-minutes: 2
 
+      - name: Freshness guard
+        run: |
+          python - <<'PY'
+          import datetime, json, re, sys
+
+          MON = {m: i + 1 for i, m in enumerate(
+              ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'])}
+
+          def parse(value):
+              s = str(value or '')[:11]
+              try:
+                  return datetime.date.fromisoformat(s[:10])
+              except ValueError:
+                  pass
+              m = re.match(r'^(\d{4})-(\w{3})-(\d{1,2})', s)
+              if m and m.group(2).lower() in MON:
+                  try:
+                      return datetime.date(int(m.group(1)), MON[m.group(2).lower()], int(m.group(3)))
+                  except ValueError:
+                      return None
+              return None
+
+          with open('data/news.json', encoding='utf-8') as f:
+              papers = json.load(f).get('papers', [])
+          dated = [d for d in (parse(p.get('pubDate') or p.get('pub_date')) for p in papers) if d]
+          if not dated:
+              sys.exit('STALE: news.json contains no parseable publication dates')
+          newest = max(dated)
+          age = (datetime.date.today() - newest).days
+          print(f'newest paper: {newest} ({age} days old), papers={len(papers)}')
+          if age > 45:
+              sys.exit(f'STALE: newest paper is {age} days old; the crawler is not producing new articles')
+          PY
+
       - name: Restore lightweight channel snapshots (build-only / push)
         if: ${{ inputs.build_only || github.event_name == 'push' }}
         run: |
@@ -102,7 +136,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add corpus
+          git add corpus ai-news/data ai-news/_site
           if git diff --cached --quiet; then
             echo "corpus unchanged"
           else

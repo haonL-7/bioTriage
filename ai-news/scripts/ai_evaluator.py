@@ -17,6 +17,18 @@ from typing import Optional
 # ==================== 配置 ====================
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+_PLACEHOLDER_RE = re.compile(r'\{(title|journal|source|first_author|abstract|query_node)\}')
+
+
+def render_prompt(template, **fields):
+    """只替换已知占位符。
+
+    提示词里内嵌了要求模型输出的 JSON 结构（花括号），str.format 会把
+    {"entry_type": ...} 当成字段名并抛 KeyError，因此这里用受限的正则替换。
+    """
+    return _PLACEHOLDER_RE.sub(lambda m: str(fields.get(m.group(1), '')), template)
+
+
 RAW_ARTICLES_FILE = os.path.join(DATA_DIR, "raw_articles.json")
 SCORED_ARTICLES_FILE = os.path.join(DATA_DIR, "scored_articles.json")
 
@@ -257,7 +269,7 @@ def evaluate_with_deepseek(article: dict, retries: int = 3) -> Optional[dict]:
     from openai import OpenAI
     client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
 
-    prompt = EVALUATION_PROMPT.format(
+    prompt = render_prompt(EVALUATION_PROMPT,
         title=article.get("title", ""),
         journal=article.get("journal", ""),
         source=article.get("source", ""),
@@ -298,7 +310,7 @@ def evaluate_with_glm(article: dict) -> Optional[dict]:
         from openai import OpenAI
         client = OpenAI(api_key=GLM_API_KEY, base_url=GLM_BASE_URL)
 
-        prompt = EVALUATION_PROMPT.format(
+        prompt = render_prompt(EVALUATION_PROMPT,
             title=article.get("title", ""),
             journal=article.get("journal", ""),
             source=article.get("source", ""),
@@ -431,7 +443,7 @@ def evaluate_second_deepseek(article: dict) -> Optional[dict]:
         return None
     from openai import OpenAI
     client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
-    prompt = SECOND_OPINION_PROMPT.format(
+    prompt = render_prompt(SECOND_OPINION_PROMPT,
         title=article.get("title", ""),
         journal=article.get("journal", ""),
         source=article.get("source", ""),
@@ -447,7 +459,7 @@ def evaluate_second_glm(article: dict) -> Optional[dict]:
         return None
     from openai import OpenAI
     client = OpenAI(api_key=GLM_API_KEY, base_url=GLM_BASE_URL)
-    prompt = SECOND_OPINION_PROMPT.format(
+    prompt = render_prompt(SECOND_OPINION_PROMPT,
         title=article.get("title", ""),
         journal=article.get("journal", ""),
         source=article.get("source", ""),
@@ -587,6 +599,22 @@ def main():
         print("  No articles to evaluate.")
         return 0
 
+    # 去重：已评估过的条目不再重复调用模型。抓取失败时 raw_articles.json 会停留在旧内容，
+    # 没有这一步就会每天把同一批原文重新评估一遍，持续消耗 token 而内容不变。
+    previously_scored = load_articles(SCORED_ARTICLES_FILE)
+
+    def _key(item):
+        return str(item.get("id") or item.get("doi") or item.get("title") or "")
+
+    done = {_key(item) for item in previously_scored if _key(item)}
+    fresh = [a for a in articles if _key(a) not in done]
+    if done:
+        print(f"  Already evaluated: {len(done)} | new this run: {len(fresh)}")
+    if not fresh:
+        print("  Nothing new to evaluate; previous scored_articles.json left untouched.")
+        return len(previously_scored)
+    articles = fresh
+
     print(f"\n  Loaded: {len(articles)} articles")
 
     to_evaluate = articles[:MAX_ARTICLES_PER_RUN]
@@ -665,7 +693,11 @@ def main():
         level_counts[lv] = level_counts.get(lv, 0) + 1
     print(f"  Evidence levels: {dict(sorted(level_counts.items()))}")
 
-    save_scored(scored, SCORED_ARTICLES_FILE)
+    # 合并保存：保留历史评估结果，只更新本次新评估的条目
+    merged = {_key(item): item for item in previously_scored if _key(item)}
+    for item in scored:
+        merged[_key(item)] = item
+    save_scored(list(merged.values()), SCORED_ARTICLES_FILE)
 
     with open(os.path.join(DATA_DIR, "eval_stats.txt"), "w") as f:
         f.write(
