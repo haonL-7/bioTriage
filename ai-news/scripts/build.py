@@ -1064,7 +1064,15 @@ def main():
     evidence_index_path = os.path.join(evidence_dir, "index.html")
     with open(evidence_index_path, "w", encoding="utf-8") as f:
         f.write(static_html)
-    print(f"  Generated /evidence/index.html with {len(all_papers)} pre-rendered papers")
+    # /evidence/ 页面已下线：保留一个跳转到 /scfa/daily/ 的存根，避免旧书签 404
+    with open(evidence_index_path, "w", encoding="utf-8") as f:
+        f.write('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">'
+                '<title>Moved — SCFA Daily</title>'
+                '<meta http-equiv="refresh" content="0; url=../scfa/daily/">'
+                '<link rel="canonical" href="../scfa/daily/">'
+                '</head><body><p>This page has moved to '
+                '<a href="../scfa/daily/">SCFA Daily</a>.</p></body></html>')
+    print("  /evidence/index.html -> redirect stub to /scfa/daily/")
 
     write_news_json(all_papers, stats, evidence_dir)
     # AIHOT 移植：预计算公开层 feed.xml + /api/v1/ 静态 JSON
@@ -1127,6 +1135,17 @@ def main():
             shutil.rmtree(assets_dst)
         shutil.copytree(assets_src, assets_dst)
         print("  Deployed /assets/ shared assets")
+
+    # Deploy stars page
+    stars_src = os.path.join(PROJECT_ROOT, "..", "stars")
+    if not os.path.exists(stars_src):
+        stars_src = os.path.join(PROJECT_ROOT, "stars")
+    if os.path.exists(stars_src):
+        stars_dst = os.path.join(BUILD_DIR, "stars")
+        if os.path.exists(stars_dst):
+            shutil.rmtree(stars_dst)
+        shutil.copytree(stars_src, stars_dst)
+        print("  Deployed /stars/ page")
 
     # Deploy support page
     support_src = os.path.join(PROJECT_ROOT, "..", "support")
