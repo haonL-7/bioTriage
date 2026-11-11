@@ -95,32 +95,6 @@ jobs:
           git archive gh-pages-snapshot -- $present | tar -x -C _site
           ls _site | head -20
 
-      - name: Verify channels present
-        run: |
-          regressed=""
-          never=""
-          for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
-            if [ -d "_site/$ch" ]; then
-              continue
-            fi
-            if git cat-file -e "gh-pages-snapshot:$ch" 2>/dev/null; then
-              regressed="$regressed $ch"
-            else
-              never="$never $ch"
-            fi
-          done
-          if [ -n "$regressed" ]; then
-            echo "::error::channels existed on gh-pages but are missing from this build:$regressed — refusing to publish a regression"
-            exit 1
-          fi
-          if [ -n "$never" ]; then
-            echo "::warning::channels absent from _site and never published:$never — publishing without them"
-          fi
-          echo "channel check done"
-
-      - name: Build platform digest
-        run: python scripts/build_digest.py
-
       - name: Freshness guard
         run: |
           python - <<'PY'
@@ -174,6 +148,32 @@ jobs:
             python ../lightweight/build_channel.py $ch
           done
         timeout-minutes: 60
+
+      - name: Verify channels present
+        run: |
+          regressed=""
+          never=""
+          for ch in ai-drug-discovery computational-genomics databases-knowledge-graphs evidence metagenomics-informatics ml-biology single-cell-omics structural-bioinformatics systems-biology; do
+            if [ -d "_site/$ch" ]; then
+              continue
+            fi
+            if git cat-file -e "gh-pages-snapshot:$ch" 2>/dev/null; then
+              regressed="$regressed $ch"
+            else
+              never="$never $ch"
+            fi
+          done
+          if [ -n "$regressed" ]; then
+            echo "::error::channels existed on gh-pages but are missing from this build:$regressed — refusing to publish a regression"
+            exit 1
+          fi
+          if [ -n "$never" ]; then
+            echo "::warning::channels absent from _site and never published:$never — publishing without them"
+          fi
+          echo "channel check done"
+
+      - name: Build platform digest
+        run: python scripts/build_digest.py
 
       - name: Build retrieval corpus
         working-directory: .
