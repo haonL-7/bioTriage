@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Stars — bioTriage-Open</title>
+<link rel="icon" type="image/png" href="../assets/logo-mark.png">
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
+<style>
+:root { --bg:#fff; --bg-alt:#f7f8fa; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199;
+  --border:#e3e6ea; --accent:#1a4d80; --gold:#b08d2f; --max:760px;
+  --serif:Georgia,'Times New Roman',serif; --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+:root[data-theme="dark"] { color-scheme:dark; --bg:#14161a; --bg-alt:#191c21; --ink:#e9e7e2;
+  --ink-md:#b8b5ae; --ink-xlt:#6e6b66; --border:#2a2e35; --accent:#9cc6ea; --gold:#d8bc7a; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html.theme-anim, html.theme-anim * { transition:background-color .45s cubic-bezier(.4,0,.2,1),
+  color .45s cubic-bezier(.4,0,.2,1), border-color .45s cubic-bezier(.4,0,.2,1) !important; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.7; font-size:15px; }
+a { color:var(--accent); text-decoration:none; }
+.top-bar { display:flex; justify-content:space-between; align-items:center; gap:12px;
+  position:sticky; top:0; z-index:100; padding:10px 20px; font-size:13px;
+  background:rgba(255,255,255,0.45); -webkit-backdrop-filter:blur(18px) saturate(200%);
+  backdrop-filter:blur(18px) saturate(200%); border-bottom:1px solid rgba(0,0,0,.07); }
+.top-bar, .top-bar * { color:#16181c !important; }
+.mini-logo { font-family:var(--serif); font-size:15px; }
+.mini-logo em { font-style:normal; color:#1a4d80; }
+.brand-mark { width:24px; height:24px; border-radius:6px; object-fit:cover; vertical-align:-6px; margin-right:8px; }
+.nav-link { font-size:12px; color:#16181c; background:transparent; border:1px solid rgba(0,0,0,.18);
+  border-radius:999px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.wrap { max-width:var(--max); margin:0 auto; padding:34px 20px 72px; }
+h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6px; }
+.lede { color:var(--ink-md); font-size:14px; margin-bottom:22px; }
+.star-item { display:flex; gap:12px; align-items:flex-start; padding:14px 0;
+  border-bottom:1px solid var(--border); }
+.star-main { flex:1; min-width:0; }
+.star-title { font-size:14.5px; font-weight:600; line-height:1.45; }
+.star-meta { font-size:12px; color:var(--ink-xlt); margin-top:4px; }
+.star-del { flex:none; width:28px; height:28px; border-radius:50%; cursor:pointer;
+  color:var(--gold); background:transparent; border:1px solid var(--border); font-size:15px; line-height:1; }
+.star-del:hover { border-color:var(--gold); }
+.empty { padding:40px 0; text-align:center; color:var(--ink-xlt); font-size:14px; }
+.empty a { display:inline-block; margin-top:12px; font-size:13.5px; }
+.note { font-size:12px; color:var(--ink-xlt); margin-top:22px; }
+</style>
+</head>
+<body>
+<nav class="top-bar">
+  <span><img class="brand-mark" src="../assets/logo-mark.png" alt="bioTriage"><span class="mini-logo">bioTriage<em>-Open</em></span></span>
+  <span style="display:flex;gap:8px;align-items:center">
+    <a class="nav-link" href="../">Home</a>
+    <a class="nav-link" href="../daily/">Daily</a>
+    <a class="nav-link" href="../weekly/">Weekly</a>
+    <a class="nav-link" href="../account/">Account</a>
+  </span>
+</nav>
+
+<div class="wrap">
+  <h1>My Stars</h1>
+  <p class="lede" id="lede">Papers you starred in Literature Daily.</p>
+  <div id="list"><p class="empty">Loading…</p></div>
+  <p class="note" id="note" hidden></p>
+</div>
+
+<script>
+(function () {
+  var API_BASE = 'https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com';
+  var TOKEN_KEY = 'bt_token';
+  var list = document.getElementById('list');
+  var note = document.getElementById('note');
+  var lede = document.getElementById('lede');
+
+  function token() { try { return window.localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; } }
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function fail(msg) { list.innerHTML = '<p class="empty">' + esc(msg) + '</p>'; }
+
+  var t = token();
+  if (!t) { window.location.href = '../account/'; return; }
+
+  fetch(API_BASE + '/api/me/stars', { headers: { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json' } })
+    .then(function (r) {
+      if (r.status === 401) { window.location.href = '../account/'; return null; }
+      if (!r.ok) { throw new Error('HTTP ' + r.status); }
+      return r.json();
+    })
+    .then(function (data) {
+      if (!data) { return; }
+      var items = data.items || [];
+      lede.textContent = items.length ? (items.length + ' starred paper' + (items.length > 1 ? 's' : '') + '.') : lede.textContent;
+      if (!items.length) {
+        list.innerHTML = '<p class="empty">Nothing starred yet.<a href="../daily/">Browse Literature Daily →</a></p>';
+        return;
+      }
+      list.innerHTML = items.map(function (it) {
+        var p = it.payload || {};
+        var url = p.url || (it.doi ? 'https://doi.org/' + it.doi : '');
+        var title = it.title || it.doi || '(untitled)';
+        var meta = [it.kind === 'paper' ? 'Paper' : (it.kind || ''), p.channel || '',
+                    String(it.created_at || '').slice(0, 10)].filter(Boolean).join(' · ');
+        return '<div class="star-item" data-id="' + esc(it.id) + '">'
+          + '<div class="star-main">'
+          + '<div class="star-title">' + (url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(title) + '</a>' : esc(title)) + '</div>'
+          + '<div class="star-meta">' + esc(meta) + '</div>'
+          + '</div>'
+          + '<button class="star-del" type="button" title="Remove" aria-label="Remove">&#9733;</button>'
+          + '</div>';
+      }).join('');
+    })
+    .catch(function (err) { fail('Could not load stars: ' + err.message); });
+
+  list.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.star-del') : null;
+    if (!btn) { return; }
+    var row = btn.parentNode;
+    var id = row.getAttribute('data-id');
+    fetch(API_BASE + '/api/me/stars/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token() } })
+      .then(function (r) {
+        if (r.ok || r.status === 204) {
+          row.parentNode.removeChild(row);
+          if (!list.querySelector('.star-item')) {
+            list.innerHTML = '<p class="empty">Nothing starred yet.<a href="../daily/">Browse Literature Daily →</a></p>';
+          }
+        } else if (r.status === 401) {
+          window.location.href = '../account/';
+        } else {
+          note.hidden = false;
+          note.textContent = 'Remove failed (HTTP ' + r.status + ').';
+        }
+      })
+      .catch(function (err) { note.hidden = false; note.textContent = 'Remove failed: ' + err.message; });
+  });
+
+  var btn = document.getElementById('theme-toggle');
+})();
+</script>
+<script>
+(function () {
+  var order = ['light', 'dark', 'auto'];
+  function stored() { try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; } catch (e) { return 'auto'; } }
+  function resolve(m) {
+    if (m === 'dark' || m === 'light') { return m; }
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('#theme-toggle') : null;
+    if (!b) { return; }
+    var next = order[(order.indexOf(stored()) + 1) % order.length];
+    try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (err) {}
+    var root = document.documentElement;
+    root.classList.add('theme-anim');
+    setTimeout(function () { root.classList.remove('theme-anim'); }, 620);
+    root.dataset.theme = resolve(next);
+  });
+})();
+</script>
+</body>
+</html>
