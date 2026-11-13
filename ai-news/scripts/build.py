@@ -924,6 +924,26 @@ def generate_static_html(papers: list[dict], stats: dict):
     return result
 
 
+def create_sitemap():
+    """生成 sitemap.xml（供 Google Search Console / 百度提交收录）"""
+    base = "https://haonl-7.github.io/bioTriage/"
+    pages = ["", "daily/", "weekly/", "ms1/", "ms2/", "support/", "stars/",
+             "account/", "starred/", "scfa/daily/", "scfa/weekly/",
+             "computational-genomics/", "metagenomics-informatics/", "structural-bioinformatics/",
+             "systems-biology/", "single-cell-omics/", "ml-biology/",
+             "databases-knowledge-graphs/", "ai-drug-discovery/"]
+    today = datetime.date.today().isoformat()
+    items = "".join(
+        "  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n" % (base, page, today)
+        for page in pages)
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           + items + '</urlset>\n')
+    with open(os.path.join(BUILD_DIR, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write(xml)
+    print("  Created sitemap.xml (%d urls)" % len(pages))
+
+
 def create_nojekyll():
     """创建 .nojekyll 文件（告诉 GitHub Pages 不要用 Jekyll 处理）"""
     nojekyll_path = os.path.join(BUILD_DIR, ".nojekyll")
@@ -1079,6 +1099,7 @@ def main():
     write_feed_xml(all_papers)
     build_api_v1(all_papers, stats)
     create_nojekyll()
+    create_sitemap()
 
     # Deploy BioTriage main page → /index.html
     biotriage_src = os.path.join(PROJECT_ROOT, "..", "biotriage.html")
