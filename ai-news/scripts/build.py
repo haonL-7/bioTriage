@@ -932,7 +932,7 @@ def create_sitemap():
              "computational-genomics/", "metagenomics-informatics/", "structural-bioinformatics/",
              "systems-biology/", "single-cell-omics/", "ml-biology/",
              "databases-knowledge-graphs/", "ai-drug-discovery/"]
-    today = datetime.date.today().isoformat()
+    today = datetime.now().date().isoformat()
     items = "".join(
         "  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n" % (base, page, today)
         for page in pages)
