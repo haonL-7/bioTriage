@@ -202,6 +202,14 @@ jobs:
           publish_branch: gh-pages
           commit_message: "auto: update AI news"
 
+      - name: Ping IndexNow (Bing / Yandex / Naver)
+        continue-on-error: true
+        run: |
+          curl -sS -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json' \
+            -d '{"host":"haonl-7.github.io","key":"biotriageopen2026indexnowkey","keyLocation":"https://haonl-7.github.io/bioTriage/biotriageopen2026indexnowkey.txt","urlList":["https://haonl-7.github.io/bioTriage/","https://haonl-7.github.io/bioTriage/daily/","https://haonl-7.github.io/bioTriage/weekly/"]}' \
+            && echo "IndexNow ping sent"
+
       - name: Summary
         if: always()
         run: |
