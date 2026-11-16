@@ -943,6 +943,12 @@ def create_sitemap():
         f.write(xml)
     print("  Created sitemap.xml (%d urls)" % len(pages))
 
+    # IndexNow 校验文件（Bing / Yandex / Naver 主动推送用）
+    indexnow_key = "biotriageopen2026indexnowkey"
+    with open(os.path.join(BUILD_DIR, indexnow_key + ".txt"), "w", encoding="utf-8") as f:
+        f.write(indexnow_key)
+    print("  Created IndexNow key file")
+
 
 def create_nojekyll():
     """创建 .nojekyll 文件（告诉 GitHub Pages 不要用 Jekyll 处理）"""
