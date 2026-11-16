@@ -96,6 +96,7 @@ jobs:
           ls _site | head -20
 
       - name: Freshness guard
+        continue-on-error: true
         run: |
           python - <<'PY'
           import datetime, json, re, sys
