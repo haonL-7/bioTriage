@@ -551,7 +551,48 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     object-fit: cover; display: inline-block; vertical-align: -6px;
     margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
 }
-</style>
+
+        /* ---- 统计条 ---- */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin: 26px 0 30px;
+            overflow: hidden;
+        }
+        .stat-cell { background: var(--white); padding: 16px 14px; }
+        .stat-num {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.15;
+        }
+        .stat-lbl { font-size: 11.5px; color: var(--ink-xlt); margin-top: 3px; letter-spacing: .3px; }
+        @media (max-width: 720px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ---- 数据来源徽标 ---- */
+        .sources-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0 4px;
+        }
+        .src-badge {
+            font-size: 11.5px;
+            color: var(--ink-md);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px 11px;
+            transition: color .2s, border-color .2s;
+        }
+        .src-badge:hover { color: var(--primary); border-color: var(--primary); }
+    </style>
 <link rel="icon" type="image/png" sizes="512x512" href="assets/logo-mark.png">
 <link rel="apple-touch-icon" href="assets/logo-mark.png">
 </head>
@@ -586,6 +627,25 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     <p class="meta" data-i18n="meta">Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv &middot; Open access</p>
 </header>
 
+    <div class="stats-bar" id="statsBar">
+        <div class="stat-cell">
+            <div class="stat-num" id="statPapers">&mdash;</div>
+            <div class="stat-lbl" data-i18n="stat-papers">Curated papers</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num">9</div>
+            <div class="stat-lbl" data-i18n="stat-channels">Discipline channels</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num" id="statNewest">&mdash;</div>
+            <div class="stat-lbl" data-i18n="stat-newest">Newest paper</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num" data-i18n="stat-daily">Daily</div>
+            <div class="stat-lbl" data-i18n="stat-updated">Auto-updated, no ads, no tracking</div>
+        </div>
+    </div>
+
 <main class="main-content">
 
     <div class="section-label" data-i18n="sec-start">Start here</div>
@@ -606,6 +666,16 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             <h3 class="ec-title"><a href="ms1/" data-i18n="t3-t">Methodology</a></h3>
             <p class="ec-desc" data-i18n-html="t3-d">Scoring depends on the channel: the evidence monitor grades with MS1 (four-dimensional matrix) and MS2 (six-tier hierarchy), while the eight bioinformatics channels use an AI significance rating. See <a href="ms2/">MS2</a>.</p>
         </div>
+    </div>
+
+    <div class="section-label" data-i18n="sec-sources">Data sources</div>
+    <div class="sources-row">
+        <a class="src-badge" href="https://europepmc.org/" target="_blank" rel="noopener">Europe PMC</a>
+        <a class="src-badge" href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed</a>
+        <a class="src-badge" href="https://www.biorxiv.org/" target="_blank" rel="noopener">bioRxiv</a>
+        <a class="src-badge" href="https://openalex.org/" target="_blank" rel="noopener">OpenAlex</a>
+        <a class="src-badge" href="https://www.semanticscholar.org/" target="_blank" rel="noopener">Semantic Scholar</a>
+        <a class="src-badge" href="https://arxiv.org/" target="_blank" rel="noopener">arXiv</a>
     </div>
 
     <div class="section-label" id="channels" data-i18n="sec-channels">Live channels</div>
@@ -690,6 +760,12 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             'nav-contact': 'Contact',
             'nav-channels': 'Channels',
             'nav-privacy': 'Privacy',
+            'stat-papers': 'Curated papers',
+            'stat-channels': 'Discipline channels',
+            'stat-newest': 'Newest paper',
+            'stat-daily': 'Daily',
+            'stat-updated': 'Auto-updated, no ads, no tracking',
+            'sec-sources': 'Data sources',
             'tagline': 'Evidence-graded literature intelligence for the life sciences.',
             'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · Open access',
             'sec-start': 'Start here',
@@ -748,6 +824,12 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             'nav-contact': '联系',
             'nav-channels': '频道',
             'nav-privacy': '隐私',
+            'stat-papers': '收录论文',
+            'stat-channels': '学科频道',
+            'stat-newest': '最新论文',
+            'stat-daily': '每日',
+            'stat-updated': '自动更新 · 无广告 · 无追踪',
+            'sec-sources': '数据来源',
             'tagline': '面向生命科学的证据分级文献情报。',
             'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 开放获取',
             'sec-start': '从这里开始',
@@ -974,6 +1056,44 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
   }
   paint(stored());
 })();
+</script>
+<script>
+    // 首页统计条：篇数与最新日期从各频道数据实时统计
+    (function () {
+        var CH = ['computational-genomics', 'metagenomics-informatics', 'structural-bioinformatics',
+                  'systems-biology', 'single-cell-omics', 'ml-biology',
+                  'databases-knowledge-graphs', 'ai-drug-discovery'];
+        var total = 0, newest = '';
+        var pending = CH.length;
+        function done() {
+            pending -= 1;
+            if (pending > 0) { return; }
+            var el = document.getElementById('statPapers');
+            var nd = document.getElementById('statNewest');
+            if (el && total) { el.textContent = String(total); }
+            if (nd && newest) { nd.textContent = newest; }
+        }
+        CH.forEach(function (c) {
+            fetch(c + '/data/papers.json')
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (d) {
+                    if (d) {
+                        var arr = d.papers || d.items || [];
+                        total += arr.length;
+                        arr.forEach(function (p) {
+                            var s = String(p.pub_date || p.pubDate || '');
+                            var iso = new Date();
+                            var todayStr = iso.getFullYear() + '-' +
+                                String(iso.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(iso.getDate()).padStart(2, '0');
+                            if (s && s <= todayStr && s > newest) { newest = s; }
+                        });
+                    }
+                    done();
+                })
+                .catch(done);
+        });
+    })();
 </script>
 </body>
 </html>
