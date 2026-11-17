@@ -1174,6 +1174,28 @@ def main():
         shutil.copytree(stars_src, stars_dst)
         print("  Deployed /stars/ page")
 
+    # Deploy /channels/ page
+    channels_src = os.path.join(PROJECT_ROOT, "..", "channels")
+    if not os.path.exists(channels_src):
+        channels_src = os.path.join(PROJECT_ROOT, "channels")
+    if os.path.exists(channels_src):
+        channels_dst = os.path.join(BUILD_DIR, "channels")
+        if os.path.exists(channels_dst):
+            shutil.rmtree(channels_dst)
+        shutil.copytree(channels_src, channels_dst)
+        print("  Deployed /channels/ page")
+
+    # Deploy /privacy/ page
+    privacy_src = os.path.join(PROJECT_ROOT, "..", "privacy")
+    if not os.path.exists(privacy_src):
+        privacy_src = os.path.join(PROJECT_ROOT, "privacy")
+    if os.path.exists(privacy_src):
+        privacy_dst = os.path.join(BUILD_DIR, "privacy")
+        if os.path.exists(privacy_dst):
+            shutil.rmtree(privacy_dst)
+        shutil.copytree(privacy_src, privacy_dst)
+        print("  Deployed /privacy/ page")
+
     # Deploy support page
     support_src = os.path.join(PROJECT_ROOT, "..", "support")
     if not os.path.exists(support_src):

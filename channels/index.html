@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Channels — bioTriage-Open</title>
+<meta name="description" content="bioTriage-Open 的九个文献频道：计算基因组学、宏基因组信息学、结构生物信息学、系统生物学、单细胞组学、生物机器学习、数据库与知识图谱、AI 药物发现，以及肠道 SCFA 共代谢。">
+<link rel="canonical" href="https://haonl-7.github.io/bioTriage/channels/">
+<link rel="icon" type="image/png" href="../assets/logo-mark.png">
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
+<style>
+:root { --bg:#fff; --bg-alt:#f7f8fa; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199;
+  --border:#e3e6ea; --accent:#1a4d80; --max:820px;
+  --serif:Georgia,'Times New Roman',serif; --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+:root[data-theme="dark"] { color-scheme:dark; --bg:#14161a; --bg-alt:#191c21; --ink:#e9e7e2;
+  --ink-md:#b8b5ae; --ink-xlt:#6e6b66; --border:#2a2e35; --accent:#9cc6ea; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html.theme-anim, html.theme-anim * { transition:background-color .45s cubic-bezier(.4,0,.2,1),
+  color .45s cubic-bezier(.4,0,.2,1), border-color .45s cubic-bezier(.4,0,.2,1) !important; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.7; font-size:15px; }
+a { color:var(--accent); text-decoration:none; }
+.top-bar { display:flex; justify-content:space-between; align-items:center; gap:12px;
+  position:sticky; top:0; z-index:100; padding:10px 20px; font-size:13px;
+  background:rgba(255,255,255,0.45); -webkit-backdrop-filter:blur(18px) saturate(200%);
+  backdrop-filter:blur(18px) saturate(200%); border-bottom:1px solid rgba(0,0,0,.07); }
+.top-bar, .top-bar * { color:#16181c !important; }
+.mini-logo { font-family:var(--serif); font-size:15px; }
+.mini-logo em { font-style:normal; color:#1a4d80; }
+.brand-mark { width:24px; height:24px; border-radius:6px; object-fit:cover; vertical-align:-6px; margin-right:8px; }
+.nav-link { font-size:12px; color:#16181c; background:transparent; border:1px solid rgba(0,0,0,.18);
+  border-radius:999px; padding:4px 10px; font-family:inherit; }
+.wrap { max-width:var(--max); margin:0 auto; padding:34px 20px 72px; }
+h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6px; }
+.lede { color:var(--ink-md); font-size:14px; margin-bottom:26px; }
+.ch { display:flex; justify-content:space-between; gap:16px; align-items:baseline;
+  padding:16px 0; border-bottom:1px solid var(--border); }
+.ch-name { font-size:15px; font-weight:600; }
+.ch-desc { font-size:12.5px; color:var(--ink-xlt); margin-top:3px; }
+.ch-meta { font-size:12px; color:var(--ink-xlt); white-space:nowrap; }
+.foot { font-size:12px; color:var(--ink-xlt); margin-top:26px; }
+</style>
+</head>
+<body>
+<nav class="top-bar">
+  <span><img class="brand-mark" src="../assets/logo-mark.png" alt="bioTriage"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a></span>
+  <span style="display:flex;gap:8px;align-items:center">
+    <a class="nav-link" href="../">Home</a>
+    <a class="nav-link" href="../daily/">Daily</a>
+    <a class="nav-link" href="../weekly/">Weekly</a>
+    <a class="nav-link" href="../privacy/">Privacy</a>
+  </span>
+</nav>
+
+<div class="wrap">
+  <h1>Channels</h1>
+  <p class="lede">每个频道独立抓取、独立评估，日报与周报再把它们聚合起来。</p>
+  <div id="list"><p class="foot">Loading…</p></div>
+  <p class="foot">数据每日自动更新。<a href="../daily/">查看今日聚合 →</a></p>
+</div>
+
+<script>
+(function () {
+  var CHANNELS = [
+    ['computational-genomics', 'Computational Genomics', '基因组学与表观遗传学的计算方法'],
+    ['metagenomics-informatics', 'Metagenomics & Bioinformatics', '宏基因组、微生物组信息学'],
+    ['structural-bioinformatics', 'Structural Bioinformatics', '结构预测、分子对接、蛋白设计'],
+    ['systems-biology', 'Systems Biology', '网络建模、多组学整合、动态系统'],
+    ['single-cell-omics', 'Single-Cell Omics', '单细胞转录组、空间组学、轨迹推断'],
+    ['ml-biology', 'ML in Biology', '生物领域的机器学习基础模型'],
+    ['databases-knowledge-graphs', 'Databases & Knowledge Graphs', '生物数据库、本体、知识图谱'],
+    ['ai-drug-discovery', 'AI in Drug Discovery', '虚拟筛选、ADMET、分子生成'],
+    ['scfa/daily', 'Gut SCFA Monitor', '肠道菌群共代谢（独立频道，含 101 篇基线文献）']
+  ];
+  var el = document.getElementById('list');
+  el.innerHTML = CHANNELS.map(function (c) {
+    return '<div class="ch" data-key="' + c[0] + '">'
+      + '<div><div class="ch-name"><a href="../' + c[0] + '/">' + c[1] + '</a></div>'
+      + '<div class="ch-desc">' + c[2] + '</div></div>'
+      + '<div class="ch-meta" data-meta>—</div></div>';
+  }).join('');
+
+  CHANNELS.forEach(function (c) {
+    var row = el.querySelector('[data-key="' + c[0] + '"] [data-meta]');
+    var dataPath = (c[0] === 'scfa/daily') ? '../evidence/data/news.json' : '../' + c[0] + '/data/papers.json';
+    fetch(dataPath)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !row) { if (row) row.textContent = 'n/a'; return; }
+        var arr = d.papers || d.items || [];
+        var ds = arr.map(function (p) { return String(p.pub_date || p.pubDate || ''); }).filter(Boolean).sort();
+        row.textContent = arr.length + ' 篇 · ' + (ds.slice(-1)[0] || 'n/a');
+      })
+      .catch(function () { if (row) row.textContent = 'n/a'; });
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('#theme-toggle') : null;
+    if (!b) { return; }
+    var order = ['light', 'dark', 'auto'];
+    var cur = (function () { try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; } catch (err) { return 'auto'; } })();
+    var next = order[(order.indexOf(cur) + 1) % order.length];
+    try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (err) {}
+    document.documentElement.dataset.theme = (next === 'auto')
+      ? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light') : next;
+  });
+})();
+</script>
+</body>
+</html>

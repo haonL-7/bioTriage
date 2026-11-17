@@ -94,6 +94,10 @@ footer { border-top:1px solid var(--border); color:var(--ink-xlt); font-size:11.
 }
 .star-btn:hover { color: #b08d2f; border-color: #b08d2f; }
 .star-btn.is-on { color: #b08d2f; border-color: #b08d2f; background: rgba(176,141,47,.08); }
+.csv-btn { margin-left: 10px; font: inherit; font-size: 12px; padding: 3px 10px;
+  border: 1px solid var(--border); border-radius: 999px; background: transparent;
+  color: var(--ink-xlt); cursor: pointer; }
+.csv-btn:hover { color: var(--accent); border-color: var(--accent); }
 @media (max-width:640px) { h1 { font-size:21px; } }
 """
 
@@ -242,7 +246,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
 <div class="wrap">
   <h1>%(title)s</h1>
   <p class="lede">%(lede)s</p>
-  <p class="meta">%(meta)s</p>
+  <p class="meta">%(meta)s <button id="csvBtn" class="csv-btn" type="button">Export CSV</button></p>
   %(body)s
 </div>
 </div>
@@ -314,6 +318,44 @@ def render(title, lede, meta, by_channel, today, nav, active):
   });
 
   loadStars();
+})();
+</script>
+<script>
+(function () {
+  var btn = document.getElementById('csvBtn');
+  if (!btn) { return; }
+  function cell(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+  btn.addEventListener('click', function () {
+    var rows = [['title', 'journal', 'date', 'significance', 'channel', 'url']];
+    var nodes = document.querySelectorAll('.item');
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      var a = n.querySelector('h3 a');
+      var summary = n.querySelector('.sum');
+      var ch = n.previousElementSibling && n.previousElementSibling.className === 'ch'
+        ? n.previousElementSibling.textContent : '';
+      var meta = n.querySelector('.row');
+      var spans = meta ? meta.querySelectorAll('span') : [];
+      rows.push([
+        a ? a.textContent : '',
+        spans[1] ? spans[1].textContent : '',
+        spans[2] ? spans[2].textContent : '',
+        spans[0] ? spans[0].textContent : '',
+        ch,
+        a ? a.href : ''
+      ]);
+    }
+    var csv = rows.map(function (r) { return r.map(cell).join(','); }).join('\r\n');
+    var blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = document.title.replace(/[\\/:*?"<>|]/g, '-') + '.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  });
 })();
 </script>
 %(toggle_js)s

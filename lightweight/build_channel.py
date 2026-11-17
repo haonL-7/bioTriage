@@ -132,6 +132,8 @@ def generate_channel_html(channel_key: str, meta: dict, papers: list) -> str:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title} — bioTriage-Open</title>
+<meta name="description" content="{title} — daily curated preprints and papers from bioTriage-Open, each graded for evidence level and significance.">
+<link rel="canonical" href="https://haonl-7.github.io/bioTriage/{channel_key}/">
 <style>
 :root {{ --bg: #fff; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8c8c8c; --border: #d5d5d5; --accent: #1a5276; --max-width: 800px; --font-serif: 'Georgia','Times New Roman',serif; --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
