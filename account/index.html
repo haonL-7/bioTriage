@@ -5,10 +5,12 @@
 <script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>我的账户 · bio|Triage</title>
+<link rel="stylesheet" href="../assets/cell-hero.css">
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
 <link rel="icon" type="image/png" sizes="512x512" href="../assets/logo-mark.png">
 <link rel="apple-touch-icon" href="../assets/logo-mark.png">
+<link rel="stylesheet" href="../assets/nav.css">
 </head>
 <body>
 
@@ -26,6 +28,16 @@
         <span class="tb-year">2026</span>
     </span>
 </nav>
+
+
+<section class="cell-hero">
+  <div class="hero-fade" aria-hidden="true"></div>
+  <canvas id="cellHeroCanvas" aria-hidden="true"></canvas>
+  <div class="container">
+    <h1><span data-i18n="page-title">我的账户</span> <span class="h1-accent" data-i18n="page-title-accent">Account</span></h1>
+    <p data-i18n="header-tagline">用 ORCID 登录，统一管理你的 AI 分析配额、收藏条目与评估历史。</p>
+  </div>
+</section>
 
 <div class="layout">
     <aside class="sidebar">
@@ -46,11 +58,6 @@
     <div class="page">
     <main id="mainContent">
 
-        <header class="page-header">
-            <h1><span data-i18n="page-title">我的账户</span> <span class="h1-accent" data-i18n="page-title-accent">Account</span></h1>
-            <p class="tagline" data-i18n="header-tagline">用 ORCID 登录，统一管理你的 AI 分析配额、收藏条目与评估历史。</p>
-            <p class="meta" data-i18n="header-meta">每日 5 次 AI 分析 · 收藏跨设备同步 · 评估历史留档</p>
-        </header>
 
         <!-- 读取中 -->
         <div class="loading" id="loadingBox" role="status" aria-live="polite">
@@ -211,5 +218,7 @@
   paint(stored());
 })();
 </script>
+<script src="../assets/cell-hero.js" defer></script>
+<script src="../assets/theme-wipe.js" defer></script>
 </body>
 </html>

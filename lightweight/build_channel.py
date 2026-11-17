@@ -249,6 +249,7 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 <footer class="site-footer">
 <p>AI-curated by bioTriage-Open. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">bioTriage-Open Home</a></p>
 </footer>
+<script src="../assets/theme-wipe.js" defer></script>
 </body>
 </html>'''
 

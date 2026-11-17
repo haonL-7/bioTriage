@@ -228,6 +228,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>%(title)s — bioTriage-Open</title>
 <link rel="icon" type="image/png" href="%(root)sassets/logo-mark.png">
+<link rel="stylesheet" href="%(root)sassets/nav.css">
 %(head_js)s
 <style>%(css)s</style>
 </head>
@@ -361,6 +362,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
 })();
 </script>
 %(toggle_js)s
+<script src="%(root)sassets/theme-wipe.js" defer></script>
 </body>
 </html>""" % dict(title=title, lede=lede, total=total, nch=len(by_channel), today=today.isoformat(), meta=meta,
                    body=body, css=CSS, head_js=HEAD_JS, toggle_js=TOGGLE_JS, root=nav,
