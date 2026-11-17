@@ -928,7 +928,7 @@ def create_sitemap():
     """生成 sitemap.xml（供 Google Search Console / 百度提交收录）"""
     base = "https://haonl-7.github.io/bioTriage/"
     pages = ["", "daily/", "weekly/", "ms1/", "ms2/", "support/", "stars/",
-             "account/", "starred/", "channels/", "privacy/", "scfa/daily/", "scfa/weekly/",
+             "account/", "starred/", "channels/", "privacy/", "contact/", "scfa/daily/", "scfa/weekly/",
              "computational-genomics/", "metagenomics-informatics/", "structural-bioinformatics/",
              "systems-biology/", "single-cell-omics/", "ml-biology/",
              "databases-knowledge-graphs/", "ai-drug-discovery/"]
@@ -1195,6 +1195,17 @@ def main():
             shutil.rmtree(privacy_dst)
         shutil.copytree(privacy_src, privacy_dst)
         print("  Deployed /privacy/ page")
+
+    # Deploy contact page
+    contact_src = os.path.join(PROJECT_ROOT, "..", "contact")
+    if not os.path.exists(contact_src):
+        contact_src = os.path.join(PROJECT_ROOT, "contact")
+    if os.path.exists(contact_src):
+        contact_dst = os.path.join(BUILD_DIR, "contact")
+        if os.path.exists(contact_dst):
+            shutil.rmtree(contact_dst)
+        shutil.copytree(contact_src, contact_dst)
+        print("  Deployed /contact/ page")
 
     # Deploy support page
     support_src = os.path.join(PROJECT_ROOT, "..", "support")
