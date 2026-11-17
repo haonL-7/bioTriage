@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隐私与服务条款 — bioTriage-Open</title>
+<meta name="description" content="bioTriage-Open 的隐私说明与服务条款：仅保存 ORCID 公开标识、密钥加密存储、不向第三方出售数据、可随时删除。">
+<link rel="canonical" href="https://haonl-7.github.io/bioTriage/privacy/">
+<link rel="icon" type="image/png" href="../assets/logo-mark.png">
+<style>
+:root { --bg:#fff; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199; --border:#e3e6ea;
+  --accent:#1a4d80; --max:720px; --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#14161a; --ink:#e9e7e2; --ink-md:#b8b5ae; --ink-xlt:#6e6b66; --border:#2a2e35; --accent:#9cc6ea; }
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.85; font-size:15px; }
+a { color:var(--accent); }
+.wrap { max-width:var(--max); margin:0 auto; padding:44px 20px 80px; }
+h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:22px; }
+h2 { font-size:15px; margin:30px 0 8px; }
+p, li { font-size:14.5px; color:var(--ink-md); margin-bottom:10px; }
+ul { padding-left:20px; }
+.foot { margin-top:34px; padding-top:16px; border-top:1px solid var(--border); font-size:12.5px; color:var(--ink-xlt); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>隐私说明与服务条款</h1>
+
+  <h2>我们收集什么</h2>
+  <ul>
+    <li><strong>ORCID 公开标识</strong>（登录时由 ORCID 提供）。我们只保存这个公开 ID 与显示名，不获取你的邮箱、机构、论文列表等私有信息。</li>
+    <li><strong>会话令牌</strong>：登录后签发，保存在你浏览器的 localStorage，用于识别登录状态。</li>
+    <li><strong>收藏与评估记录</strong>：你主动收藏的论文标题、DOI、链接。</li>
+    <li><strong>AI 使用计数</strong>：每日调用次数，用于额度限制。</li>
+    <li><strong>可选的自带密钥</strong>：若你填入自己的 DeepSeek API key，它以 Fernet 对称加密后存入数据库，仅用于代你发起模型请求；页面只显示末四位。可随时删除。</li>
+  </ul>
+
+  <h2>我们不做什么</h2>
+  <ul>
+    <li>不向任何第三方出售、出租或交换用户数据；</li>
+    <li>不使用第三方广告或行为追踪脚本；</li>
+    <li>不把你的密钥用于你本人请求之外的任何用途。</li>
+  </ul>
+
+  <h2>第三方服务</h2>
+  <p>登录依赖 ORCID；AI 问答依赖 DeepSeek（将你的提问与检索到的论文片段发送给模型服务商）。文献元数据来自 Europe PMC、PubMed、bioRxiv、OpenAlex、Semantic Scholar 等公开数据源。</p>
+
+  <h2>保留与删除</h2>
+  <p>账户数据在账户存在期间保留。你可以随时在账户页删除自带密钥；如需删除账户及全部数据，发邮件至 <a href="mailto:haon.liu@outlook.com">haon.liu@outlook.com</a>，我们会在 30 天内处理。</p>
+
+  <h2>服务条款与免责</h2>
+  <p>本平台为科研辅助工具，提供文献检索、证据分级与自动摘要，<strong>不构成医学建议、临床决策依据或投资建议</strong>。自动生成的评估与摘要可能存在错误或遗漏，引用前请核对原文。</p>
+  <p>服务按现状提供，不承诺可用性与准确性；因使用本平台产生的后果由使用者自行承担。</p>
+
+  <h2>变更</h2>
+  <p>本页内容变更时会在站点公布，继续使用视为接受更新后的条款。</p>
+
+  <p class="foot">最后更新：2026-11-17 · <a href="../">返回首页</a> · <a href="../channels/">频道列表</a></p>
+</div>
+</body>
+</html>
