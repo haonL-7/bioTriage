@@ -40,6 +40,8 @@ h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6p
 .star-del:hover { border-color:var(--gold); }
 .empty { padding:40px 0; text-align:center; color:var(--ink-xlt); font-size:14px; }
 .empty a { display:inline-block; margin-top:12px; font-size:13.5px; }
+.star-csv { font: inherit; font-size:12px; padding:3px 10px; margin-left:8px; vertical-align:middle;
+  border:1px solid var(--border); border-radius:999px; background:transparent; color:var(--ink-xlt); cursor:pointer; }
 .note { font-size:12px; color:var(--ink-xlt); margin-top:22px; }
 </style>
 <link rel="canonical" href="https://haonl-7.github.io/bioTriage/stars/">
@@ -57,7 +59,7 @@ h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6p
 </nav>
 
 <div class="wrap">
-  <h1>My Stars</h1>
+  <h1>My Stars <button id="csvBtn" class="star-csv" type="button" hidden>Export CSV</button></h1>
   <p class="lede" id="lede">Papers you starred in Literature Daily.</p>
   <div id="list"><p class="empty">Loading…</p></div>
   <p class="note" id="note" hidden></p>
@@ -68,6 +70,7 @@ h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6p
   var API_BASE = 'https://1477715351-0lu4gk6z6i.ap-chengdu.tencentscf.com';
   var TOKEN_KEY = 'bt_token';
   var list = document.getElementById('list');
+  var csvBtn = document.getElementById('csvBtn');
   var note = document.getElementById('note');
   var lede = document.getElementById('lede');
 
@@ -90,6 +93,8 @@ h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6p
     .then(function (data) {
       if (!data) { return; }
       var items = data.items || [];
+      window.__STARS__ = items;
+      if (csvBtn && items.length) { csvBtn.hidden = false; }
       lede.textContent = items.length ? (items.length + ' starred paper' + (items.length > 1 ? 's' : '') + '.') : lede.textContent;
       if (!items.length) {
         list.innerHTML = '<p class="empty">Nothing starred yet.<a href="../daily/">Browse Literature Daily →</a></p>';
@@ -111,6 +116,25 @@ h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:6p
       }).join('');
     })
     .catch(function (err) { fail('Could not load stars: ' + err.message); });
+
+  if (csvBtn) {
+    csvBtn.addEventListener('click', function () {
+      var rows = [['title', 'doi', 'channel', 'url', 'starred_at']];
+      var cell = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+      (window.__STARS__ || []).forEach(function (it) {
+        var p = it.payload || {};
+        rows.push([it.title || '', it.doi || '', p.channel || '',
+                   p.url || (it.doi ? 'https://doi.org/' + it.doi : ''), it.created_at || '']);
+      });
+      var csv = rows.map(function (r) { return r.map(cell).join(','); }).join('\r\n');
+      var blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'my-stars.csv';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
 
   list.addEventListener('click', function (e) {
     var btn = e.target.closest ? e.target.closest('.star-del') : null;

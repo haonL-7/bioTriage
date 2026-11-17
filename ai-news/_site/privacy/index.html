@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隐私与服务条款 — bioTriage-Open</title>
+<meta name="description" content="bioTriage-Open 的隐私说明与服务条款：仅保存 ORCID 公开标识、密钥加密存储、不向第三方出售数据、可随时删除。Privacy policy and terms of service.">
+<link rel="canonical" href="https://haonl-7.github.io/bioTriage/privacy/">
+<link rel="icon" type="image/png" href="../assets/logo-mark.png">
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
+<style>
+:root { --bg:#fff; --bg-alt:#f7f8fa; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199;
+  --border:#e3e6ea; --accent:#1a4d80; --max:720px; --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+:root[data-theme="dark"] { color-scheme:dark; --bg:#14161a; --bg-alt:#191c21; --ink:#e9e7e2;
+  --ink-md:#b8b5ae; --ink-xlt:#6e6b66; --border:#2a2e35; --accent:#9cc6ea; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html.theme-anim, html.theme-anim * { transition:background-color .45s cubic-bezier(.4,0,.2,1),
+  color .45s cubic-bezier(.4,0,.2,1), border-color .45s cubic-bezier(.4,0,.2,1) !important; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.85; font-size:15px; }
+a { color:var(--accent); }
+.top-bar { display:flex; justify-content:space-between; align-items:center; gap:12px;
+  position:sticky; top:0; z-index:100; padding:10px 20px; font-size:13px;
+  background:rgba(255,255,255,0.45); -webkit-backdrop-filter:blur(18px) saturate(200%);
+  backdrop-filter:blur(18px) saturate(200%); border-bottom:1px solid rgba(0,0,0,.07); }
+.top-bar, .top-bar * { color:#16181c !important; }
+.mini-logo { font-family:var(--serif); font-size:15px; }
+.mini-logo em { font-style:normal; color:#1a4d80; }
+.brand-mark { width:24px; height:24px; border-radius:6px; object-fit:cover; vertical-align:-6px; margin-right:8px; }
+.nav-link { font-size:12px; color:#16181c; background:transparent; border:1px solid rgba(0,0,0,.18);
+  border-radius:999px; padding:4px 10px; font-family:inherit; cursor:pointer; }
+.wrap { max-width:var(--max); margin:0 auto; padding:34px 20px 80px; }
+h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:22px; }
+h2 { font-size:15px; margin:30px 0 8px; }
+p, li { font-size:14.5px; color:var(--ink-md); margin-bottom:10px; }
+ul { padding-left:20px; }
+.foot { margin-top:34px; padding-top:16px; border-top:1px solid var(--border); font-size:12.5px; color:var(--ink-xlt); }
+</style>
+</head>
+<body>
+<nav class="top-bar">
+  <span><img class="brand-mark" src="../assets/logo-mark.png" alt="bioTriage"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a></span>
+  <span style="display:flex;gap:8px;align-items:center">
+    <a class="nav-link" href="../" data-zh="首页" data-en="Home">首页</a>
+    <a class="nav-link" href="../channels/" data-zh="频道" data-en="Channels">频道</a>
+    <button id="lang-toggle" class="nav-link" type="button">EN</button>
+    <button id="theme-toggle" class="nav-link" type="button" aria-label="Theme">&#9680;</button>
+  </span>
+</nav>
+
+<div class="wrap">
+  <h1 data-zh="隐私说明与服务条款" data-en="Privacy &amp; Terms">隐私说明与服务条款</h1>
+
+  <h2 data-zh="我们收集什么" data-en="What we collect">我们收集什么</h2>
+  <ul>
+    <li data-zh="ORCID 公开标识（登录时由 ORCID 提供）。只保存这个公开 ID 与显示名，不获取邮箱、机构、论文列表等私有信息。"
+        data-en="Your public ORCID iD (provided at sign-in). We store only that public identifier and display name — not your email, affiliation, or publication list.">ORCID 公开标识（登录时由 ORCID 提供）。只保存这个公开 ID 与显示名。</li>
+    <li data-zh="会话令牌：登录后签发，保存在浏览器 localStorage，用于识别登录状态。"
+        data-en="A session token, issued at sign-in and stored in your browser's localStorage to identify your session.">会话令牌：登录后签发，保存在浏览器 localStorage，用于识别登录状态。</li>
+    <li data-zh="收藏与评估记录：你主动收藏的论文标题、DOI、链接。"
+        data-en="Stars and evaluations: the titles, DOIs and links you choose to save.">收藏与评估记录：你主动收藏的论文标题、DOI、链接。</li>
+    <li data-zh="AI 使用计数：每日调用次数，用于额度限制。"
+        data-en="AI usage counters: daily call counts, used only for quota limits.">AI 使用计数：每日调用次数，用于额度限制。</li>
+    <li data-zh="可选的自带密钥：若填入自己的 DeepSeek API key，它以 Fernet 对称加密后存入数据库，仅用于代你发起模型请求；页面只显示末四位，可随时删除。"
+        data-en="Optional bring-your-own key: if you add a DeepSeek API key it is Fernet-encrypted at rest and used only to make model calls on your behalf; the page shows the last four characters, and you can delete it at any time.">可选的自带密钥：以 Fernet 加密存储，仅用于代你发起模型请求，可随时删除。</li>
+  </ul>
+
+  <h2 data-zh="我们不做什么" data-en="What we do not do">我们不做什么</h2>
+  <ul>
+    <li data-zh="不向任何第三方出售、出租或交换用户数据；"
+        data-en="We do not sell, rent or trade user data with any third party.">不向任何第三方出售、出租或交换用户数据。</li>
+    <li data-zh="不使用第三方广告或行为追踪脚本；"
+        data-en="We run no third-party advertising or behavioural tracking scripts.">不使用第三方广告或行为追踪脚本。</li>
+    <li data-zh="不把你的密钥用于你本人请求之外的任何用途。"
+        data-en="We never use your key for anything beyond your own requests.">不把你的密钥用于你本人请求之外的任何用途。</li>
+  </ul>
+
+  <h2 data-zh="第三方服务" data-en="Third-party services">第三方服务</h2>
+  <p data-zh="登录依赖 ORCID；AI 问答依赖 DeepSeek（你的提问与检索到的论文片段会发送给模型服务商）。文献元数据来自 Europe PMC、PubMed、bioRxiv、OpenAlex、Semantic Scholar 等公开数据源。"
+     data-en="Sign-in relies on ORCID; AI Q&amp;A relies on DeepSeek (your question and the retrieved paper excerpts are sent to the model provider). Bibliographic metadata comes from public sources such as Europe PMC, PubMed, bioRxiv, OpenAlex and Semantic Scholar.">登录依赖 ORCID；AI 问答依赖 DeepSeek；文献元数据来自公开数据源。</p>
+
+  <h2 data-zh="保留与删除" data-en="Retention and deletion">保留与删除</h2>
+  <p data-zh="账户数据在账户存在期间保留。你可以随时在账户页删除自带密钥；如需删除账户及全部数据，发邮件至 haon.liu@outlook.com，我们会在 30 天内处理。"
+     data-en="Account data is retained while the account exists. You can delete your own key at any time on the account page; to delete the account and all its data, email haon.liu@outlook.com and we will handle it within 30 days.">账户数据在账户存在期间保留，可随时删除密钥或申请删除账户。</p>
+
+  <h2 data-zh="服务条款与免责" data-en="Terms and disclaimer">服务条款与免责</h2>
+  <p data-zh="本平台为科研辅助工具，提供文献检索、证据分级与自动摘要，不构成医学建议、临床决策依据或投资建议。自动生成的评估与摘要可能存在错误或遗漏，引用前请核对原文。"
+     data-en="This platform is a research aid offering literature retrieval, evidence grading and automatic summaries. It is not medical advice, a basis for clinical decisions, or investment advice. Generated evaluations and summaries may contain errors or omissions — verify against the original paper before citing.">本平台为科研辅助工具，不构成医学建议、临床决策依据或投资建议。</p>
+  <p data-zh="服务按现状提供，不承诺可用性与准确性；因使用本平台产生的后果由使用者自行承担。"
+     data-en="The service is provided as-is, with no guarantee of availability or accuracy; users bear the consequences of their use.">服务按现状提供，不承诺可用性与准确性。</p>
+
+  <h2 data-zh="变更" data-en="Changes">变更</h2>
+  <p data-zh="本页内容变更时会在站点公布，继续使用视为接受更新后的条款。"
+     data-en="Changes to this page are announced on the site; continued use constitutes acceptance of the updated terms.">本页内容变更时会在站点公布。</p>
+
+  <p class="foot"><span data-zh="最后更新：2026-11-17" data-en="Last updated: 2026-11-17">最后更新：2026-11-17</span>
+     · <a href="../" data-zh="返回首页" data-en="Home">返回首页</a>
+     · <a href="../channels/" data-zh="频道列表" data-en="Channels">频道列表</a></p>
+</div>
+
+<script>
+(function () {
+  function lang() { try { return localStorage.getItem('bt-lang') === 'en' ? 'en' : 'zh'; } catch (e) { return 'zh'; } }
+  var L = lang();
+  function apply(l) {
+    var nodes = document.querySelectorAll('[data-zh][data-en]');
+    for (var i = 0; i < nodes.length; i++) {
+      var v = nodes[i].getAttribute(l === 'en' ? 'data-en' : 'data-zh');
+      if (v !== null) { nodes[i].textContent = v; }
+    }
+    var lt = document.getElementById('lang-toggle');
+    if (lt) { lt.textContent = l === 'en' ? '中文' : 'EN'; }
+    document.documentElement.lang = l === 'en' ? 'en' : 'zh-CN';
+    document.title = l === 'en' ? 'Privacy & Terms — bioTriage-Open' : '隐私与服务条款 — bioTriage-Open';
+  }
+  apply(L);
+  var lt = document.getElementById('lang-toggle');
+  if (lt) {
+    lt.addEventListener('click', function () {
+      L = (L === 'en') ? 'zh' : 'en';
+      try { localStorage.setItem('bt-lang', L); } catch (e) {}
+      apply(L);
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('#theme-toggle') : null;
+    if (!b) { return; }
+    var order = ['light', 'dark', 'auto'];
+    var cur = (function () { try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; } catch (err) { return 'auto'; } })();
+    var next = order[(order.indexOf(cur) + 1) % order.length];
+    try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (err) {}
+    var root = document.documentElement;
+    root.classList.add('theme-anim');
+    setTimeout(function () { root.classList.remove('theme-anim'); }, 620);
+    root.dataset.theme = (next === 'auto')
+      ? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light') : next;
+  });
+})();
+</script>
+</body>
+</html>
