@@ -7,6 +7,8 @@
 <meta name="description" content="联系 bioTriage-Open：反馈问题、建议新频道、报告数据错误或洽谈合作。Contact form for bioTriage-Open.">
 <link rel="canonical" href="https://haonl-7.github.io/bioTriage/contact/">
 <link rel="icon" type="image/png" href="../assets/logo-mark.png">
+<link rel="stylesheet" href="../assets/starfield.css">
+<link rel="stylesheet" href="../assets/starfield-hero.css">
 <script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <style>
 :root { --bg:#fff; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199; --border:#e3e6ea;
@@ -42,6 +44,7 @@ button[type=submit] { align-self:flex-start; font:inherit; font-size:14px; paddi
 .note { font-size:12px; color:var(--ink-xlt); line-height:1.7; margin-top:14px; }
 .hp { position:absolute; left:-9999px; }
 </style>
+<link rel="stylesheet" href="../assets/nav.css">
 </head>
 <body>
 <nav class="top-bar">
@@ -55,10 +58,18 @@ button[type=submit] { align-self:flex-start; font:inherit; font-size:14px; paddi
   </span>
 </nav>
 
+
+<section class="starfield-header" style="width:100%;height:320px;overflow:hidden;">
+  <div class="hero-fade" aria-hidden="true"></div>
+  <canvas id="sf-bg-canvas"></canvas>
+  <canvas id="sf-canvas"></canvas>
+  <div class="container">
+    <h1 data-zh="联系开发者" data-en="Contact the developer">联系开发者</h1>
+    <p data-zh="反馈问题、建议新增频道、报告数据错误，或洽谈合作。" data-en="Report a problem, suggest a channel, flag a data error, or discuss collaboration.">反馈问题、建议新增频道、报告数据错误，或洽谈合作。</p>
+  </div>
+</section>
+
 <div class="wrap">
-  <h1 data-zh="联系我们" data-en="Contact us">联系我们</h1>
-  <p class="lede" data-zh="反馈问题、建议新增频道、报告数据错误，或洽谈合作。"
-     data-en="Report a problem, suggest a channel, flag a data error, or discuss collaboration.">反馈问题、建议新增频道、报告数据错误，或洽谈合作。</p>
 
   <form id="contact-form" action="https://formsubmit.co/haon.liu@outlook.com" method="POST">
     <input type="hidden" name="_subject" value="bioTriage-Open contact">
@@ -132,5 +143,7 @@ button[type=submit] { align-self:flex-start; font:inherit; font-size:14px; paddi
   });
 })();
 </script>
+<script src="../assets/starfield-header.js" defer></script>
+<script src="../assets/theme-wipe.js" defer></script>
 </body>
 </html>

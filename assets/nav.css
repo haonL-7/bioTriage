@@ -1,0 +1,54 @@
+/* ============================================================
+   全站导航栏：ASHSA 形态（纯白实心 + 1px 底边 + 文字链接）
+   以 !important 覆盖各页原有的毛玻璃实现
+   ============================================================ */
+.top-bar {
+    background: rgba(255, 255, 255, 0.72) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset !important;
+}
+
+/* 浏览器不支持 backdrop-filter 时退回接近纯白，避免文字糊在内容上 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .top-bar { background: rgba(255, 255, 255, 0.96) !important; }
+}
+
+.top-bar,
+.top-bar * { color: #16181c !important; }
+
+.top-bar .mini-logo,
+.top-bar .brand-mark + .mini-logo { font-family: var(--font-display, Georgia, serif) !important; }
+
+.top-bar .mini-logo em { color: #1a4d80 !important; font-style: normal !important; }
+
+/* 链接：去掉胶囊边框，hover 用浅灰底 */
+.top-bar .nav-link,
+.top-bar .lang-btn,
+.top-bar .theme-btn,
+.top-bar .tb-link,
+.top-bar .side-item {
+    border: none !important;
+    border-radius: 4px !important;
+    background: transparent !important;
+    padding: 6px 12px !important;
+    font-size: 13.5px !important;
+    line-height: 1.2 !important;
+    color: #3d4450 !important;
+    transition: background-color .18s ease, color .18s ease !important;
+}
+
+.top-bar .nav-link:hover,
+.top-bar .lang-btn:hover,
+.top-bar .theme-btn:hover,
+.top-bar .tb-link:hover {
+    background: #f1f3f6 !important;
+    color: #123a63 !important;
+}
+
+.top-bar .nav-link.is-active,
+.top-bar a.nav-link[aria-current='page'] {
+    background: #e8eef6 !important;
+    color: #123a63 !important;
+}

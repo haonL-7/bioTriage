@@ -1,0 +1,30 @@
+/* ============================================================
+   Starfield 可选背景层（源自 ASHA starfield-header，改为整页背景）
+   用法：<body class="sf-on"> + 两个 canvas + starfield-header.js
+   ============================================================ */
+body.sf-on { position: relative; }
+
+body.sf-on #sf-bg-canvas,
+body.sf-on #sf-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: .55;
+}
+body.sf-on #sf-bg-canvas { z-index: 0; }
+body.sf-on #sf-canvas    { z-index: 1; }
+
+/* 内容压在星空之上 */
+body.sf-on .layout,
+body.sf-on .page,
+body.sf-on main,
+body.sf-on .wrap,
+body.sf-on .top-bar { position: relative; z-index: 2; }
+
+/* 系统偏好减弱动效时仍保留星空，但降低存在感（而非整块隐藏） */
+@media (prefers-reduced-motion: reduce) {
+  body.sf-on #sf-bg-canvas,
+  body.sf-on #sf-canvas { opacity: .28; }
+}

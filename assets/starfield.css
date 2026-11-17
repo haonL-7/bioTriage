@@ -1,0 +1,87 @@
+/* ============================================================
+   Starfield Header — sub-page blue header with particle field
+   ============================================================ */
+.starfield-header {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: visible;
+  background: linear-gradient(to bottom, #040d1a 0%, #0a1f3a 30%, #0f3055 60%, #1e5580 100%);
+}
+
+#sf-bg-canvas,
+#sf-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 115%;
+}
+#sf-bg-canvas { z-index: 0; }
+#sf-canvas    { z-index: 1; pointer-events: none; }
+
+.starfield-header .container {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.starfield-header .hero-eyebrow {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: var(--space-md);
+  backdrop-filter: blur(4px);
+  background: rgba(255,255,255,0.04);
+}
+
+.starfield-header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: var(--space-sm);
+  text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+}
+
+.starfield-header p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.65);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  .starfield-header { height: 240px; }
+  .starfield-header h1 { font-size: 1.5rem; }
+  .starfield-header p { font-size: 0.85rem; }
+}
+
+/* ---- 底部幕布：hero 渐隐进页面底色 ---- */
+.hero-fade {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 96px;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        var(--bg, #ffffff) 100%);
+}
+:root[data-theme="dark"] .hero-fade {
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        var(--bg, #14161a) 100%);
+}
