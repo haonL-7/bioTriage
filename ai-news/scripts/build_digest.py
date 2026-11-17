@@ -150,6 +150,7 @@ def load(window_days, today, per_channel=6, fallback_per_channel=2):
     """按窗口取每频道论文；窗口内没有的频道退化为其最新几条，避免整页空白。"""
     cutoff = today - datetime.timedelta(days=window_days)
     by_channel, newest = {}, None
+    fallback_used = False
     for key, label in CHANNELS:
         path = os.path.join(SITE, key, 'data', 'papers.json')
         if not os.path.isfile(path):
@@ -164,15 +165,16 @@ def load(window_days, today, per_channel=6, fallback_per_channel=2):
             d = parse_date(row.get('pub_date'))
             if d is not None:
                 dated.append((d, row))
-                if newest is None or d > newest:
+                if d <= today and (newest is None or d > newest):
                     newest = d
         dated.sort(key=lambda x: x[0], reverse=True)
         picked = [r for d, r in dated if cutoff <= d <= today][:per_channel]
         if not picked:
             picked = [r for _, r in dated[:fallback_per_channel]]
+            fallback_used = True
         if picked:
             by_channel[label] = picked
-    return by_channel, newest
+    return by_channel, newest, fallback_used
 
 
 def sidebar_html(root, active):
@@ -371,18 +373,20 @@ def main():
     args = ap.parse_args()
     today = datetime.date.today()
 
-    daily, newest_d = load(3, today)
-    weekly, newest_w = load(7, today)
+    daily, newest_d, fb_d = load(7, today)
+    weekly, newest_w, fb_w = load(14, today)
     newest = newest_d or newest_w
     fresh = ('newest paper: %s' % newest.isoformat()) if newest else 'no dated papers found'
+    note_d = ' &middot; some channels had no papers in window, showing their latest' if fb_d else ''
+    note_w = ' &middot; some channels had no papers in window, showing their latest' if fb_w else ''
     pages = {
         'daily': render('Literature Daily',
                         'Newest papers from every channel, highest significance first.',
-                        'daily window: 3 days &middot; %s &middot; generated %s' % (fresh, today.isoformat()),
+                        'daily window: 7 days &middot; %s &middot; generated %s%s' % (fresh, today.isoformat(), note_d),
                         daily, today, '../', 'daily'),
         'weekly': render('Literature Weekly',
                          'The week across every channel, highest significance first.',
-                         'weekly window: 7 days &middot; %s &middot; generated %s' % (fresh, today.isoformat()),
+                         'weekly window: 14 days &middot; %s &middot; generated %s%s' % (fresh, today.isoformat(), note_w),
                          weekly, today, '../', 'weekly'),
     }
     for name, out in pages.items():
