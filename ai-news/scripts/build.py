@@ -928,7 +928,7 @@ def create_sitemap():
     """生成 sitemap.xml（供 Google Search Console / 百度提交收录）"""
     base = "https://haonl-7.github.io/bioTriage/"
     pages = ["", "daily/", "weekly/", "ms1/", "ms2/", "support/", "stars/",
-             "account/", "starred/", "scfa/daily/", "scfa/weekly/",
+             "account/", "starred/", "channels/", "privacy/", "scfa/daily/", "scfa/weekly/",
              "computational-genomics/", "metagenomics-informatics/", "structural-bioinformatics/",
              "systems-biology/", "single-cell-omics/", "ml-biology/",
              "databases-knowledge-graphs/", "ai-drug-discovery/"]
