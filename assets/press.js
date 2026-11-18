@@ -2,7 +2,7 @@
  * 物理按压：pointerdown 进入压缩态，抬起后播放衰减振荡回弹。
  */
 (function () {
-  var SEL = 'button, .btn, .star-btn, a.nav-link, .side-item, .ch, .entry-card';
+  var SEL = 'button, .btn, .star-btn, a.nav-link, .side-item, .ch, .entry-card, .chip, .src-badge, .aa-domain';
   var KEYS = { ' ': 1, Enter: 1 };   // 空格 / 回车触发
   var current = null;
 
