@@ -177,6 +177,7 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 @media (max-width: 640px) {{ h1 {{ font-size: 20px; }} }}
 </style>
 <link rel="stylesheet" href="../assets/page-transition.css">
+<link rel="stylesheet" href="../assets/press.css">
 </head>
 <body>
 <nav class="top-bar"><a href="../">bioTriage-Open</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
@@ -252,6 +253,7 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 </footer>
 <script src="../assets/theme-wipe.js" defer></script>
 <script src="../assets/shared-transition.js" defer></script>
+<script src="../assets/press.js" defer></script>
 </body>
 </html>'''
 

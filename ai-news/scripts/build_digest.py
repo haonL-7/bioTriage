@@ -18,14 +18,14 @@ import re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, '_site')
 CHANNELS = [
-    ('computational-genomics', 'Computational Genomics'),
-    ('metagenomics-informatics', 'Metagenomics'),
-    ('structural-bioinformatics', 'Structural Bioinformatics'),
-    ('systems-biology', 'Systems Biology'),
-    ('ml-biology', 'Machine Learning'),
-    ('single-cell-omics', 'Single-cell & Spatial'),
-    ('databases-knowledge-graphs', 'Databases & KG'),
-    ('ai-drug-discovery', 'AI Drug Discovery'),
+    ('computational-genomics', 'Computational Genomics & Epigenomics'),
+    ('metagenomics-informatics', 'Metagenomics & Microbiome Informatics'),
+    ('structural-bioinformatics', 'Structural Bioinformatics & Protein Science'),
+    ('systems-biology', 'Systems Biology & Network Analysis'),
+    ('ml-biology', 'Machine Learning for Biological Data'),
+    ('single-cell-omics', 'Single-Cell & Spatial Omics'),
+    ('databases-knowledge-graphs', 'Biological Databases & Knowledge Graphs'),
+    ('ai-drug-discovery', 'AI-Driven Drug Discovery'),
 ]
 SIGN_RANK = {'High': 3, 'Medium': 2, 'Low': 1}
 MON = {m: i + 1 for i, m in enumerate(['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'])}
@@ -232,6 +232,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
 %(head_js)s
 <style>%(css)s</style>
 <link rel="stylesheet" href="%(root)sassets/page-transition.css">
+<link rel="stylesheet" href="%(root)sassets/press.css">
 </head>
 <body>
 <nav class="top-bar">
@@ -365,6 +366,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
 %(toggle_js)s
 <script src="%(root)sassets/theme-wipe.js" defer></script>
 <script src="%(root)sassets/shared-transition.js" defer></script>
+<script src="%(root)sassets/press.js" defer></script>
 </body>
 </html>""" % dict(title=title, lede=lede, total=total, nch=len(by_channel), today=today.isoformat(), meta=meta,
                    body=body, css=CSS, head_js=HEAD_JS, toggle_js=TOGGLE_JS, root=nav,
