@@ -56,6 +56,27 @@ CHANNEL_QUERIES = {
     ],
 }
 
+_MONTHS = {m: i + 1 for i, m in enumerate(
+    ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])}
+
+
+def _norm_date(year, month="", day=""):
+    """归一化为 ISO(YYYY-MM-DD)。PubMed 的 Month 可能是月份名或空值。"""
+    y = str(year or "").strip()
+    if not (len(y) == 4 and y.isdigit()):
+        return ""
+    ms = str(month or "").strip()
+    if ms.isdigit():
+        mon = max(1, min(12, int(ms)))
+    elif ms:
+        mon = _MONTHS.get(ms[:3].lower(), 1)
+    else:
+        mon = 1
+    ds = str(day or "").strip()
+    dd = max(1, min(31, int(ds))) if ds.isdigit() else 1
+    return "%s-%02d-%02d" % (y, mon, dd)
+
+
 def _make_id(title, source):
     return hashlib.sha256(f"{title}|{source}".encode()).hexdigest()[:12]
 
@@ -110,7 +131,7 @@ def fetch_pubmed_details(pmids: list[str]) -> list[dict]:
                 y = pub_date_elem.findtext("Year", "") if pub_date_elem is not None else ""
                 m = pub_date_elem.findtext("Month", "") if pub_date_elem is not None else ""
                 d = pub_date_elem.findtext("Day", "01") if pub_date_elem is not None else ""
-                pub_date = f"{y}-{m}-{d}" if y else ""
+                pub_date = _norm_date(y, m, d)
                 authors = []
                 for au in article.findall(".//AuthorList/Author"):
                     ln = au.findtext("LastName", "")
@@ -153,7 +174,9 @@ def fetch_semantic_scholar(query: str, max_results: int = 15) -> list:
             if not title: continue
             doi = (item.get("externalIds") or {}).get("DOI", "")
             journal = (item.get("journal") or {}).get("name", "") if item.get("journal") else ""
-            pub_date = str(item.get("year", ""))
+            _pd = str(item.get("publicationDate") or "")
+            pub_date = (_pd if re.match(r"^\d{4}-\d{2}-\d{2}$", _pd)
+                        else _norm_date(item.get("year", ""), _pd[5:7], _pd[8:10]))
             url = f"https://doi.org/{quote(doi, safe='')}" if doi else ""
             if not url: continue
             articles.append({

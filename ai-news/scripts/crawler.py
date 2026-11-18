@@ -190,6 +190,27 @@ NODE_GROUPS = {
 }
 
 
+_MONTHS = {m: i + 1 for i, m in enumerate(
+    ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])}
+
+
+def _norm_date(year, month="", day=""):
+    """归一化为 ISO(YYYY-MM-DD)。PubMed 的 Month 可能是月份名或空值。"""
+    y = str(year or "").strip()
+    if not (len(y) == 4 and y.isdigit()):
+        return ""
+    ms = str(month or "").strip()
+    if ms.isdigit():
+        mon = max(1, min(12, int(ms)))
+    elif ms:
+        mon = _MONTHS.get(ms[:3].lower(), 1)
+    else:
+        mon = 1
+    ds = str(day or "").strip()
+    dd = max(1, min(31, int(ds))) if ds.isdigit() else 1
+    return "%s-%02d-%02d" % (y, mon, dd)
+
+
 def add_parent_nodes(nodes: list[str]) -> list[str]:
     """给定细粒度节点列表，自动补入父级分组标签"""
     expanded = list(nodes)
@@ -410,7 +431,7 @@ def fetch_pubmed_details(pmids: list[str]) -> list[dict]:
                     y = pub_date_elem.findtext("Year", "")
                     m = pub_date_elem.findtext("Month", "")
                     d = pub_date_elem.findtext("Day", "01")
-                    pub_date = f"{y}-{m}-{d}"
+                    pub_date = _norm_date(y, m, d)
 
                 authors = []
                 for au in article.findall(".//AuthorList/Author"):
