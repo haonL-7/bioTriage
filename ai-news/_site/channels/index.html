@@ -7,6 +7,8 @@
 <meta name="description" content="bioTriage-Open 的九个文献频道：计算基因组学、宏基因组信息学、结构生物信息学、系统生物学、单细胞组学、生物机器学习、数据库与知识图谱、AI 药物发现，以及肠道 SCFA 共代谢。Each channel is crawled and graded independently.">
 <link rel="canonical" href="https://haonl-7.github.io/bioTriage/channels/">
 <link rel="icon" type="image/png" href="../assets/logo-mark.png">
+<link rel="stylesheet" href="../assets/starfield.css">
+<link rel="stylesheet" href="../assets/starfield-hero.css">
 <script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <style>
 :root { --bg:#fff; --bg-alt:#f7f8fa; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199;
@@ -38,7 +40,13 @@ h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6p
 .ch-desc { font-size:12.5px; color:var(--ink-xlt); margin-top:3px; }
 .ch-meta { font-size:12px; color:var(--ink-xlt); white-space:nowrap; }
 .foot { font-size:12px; color:var(--ink-xlt); margin-top:26px; }
+
+
+
+
+
 </style>
+<link rel="stylesheet" href="../assets/nav.css">
 </head>
 <body>
 <nav class="top-bar">
@@ -53,10 +61,19 @@ h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6p
   </span>
 </nav>
 
+<section class="starfield-header" style="width:100%;height:320px;overflow:hidden;">
+  <div class="hero-fade" aria-hidden="true"></div>
+    <canvas id="sf-bg-canvas"></canvas>
+    <canvas id="sf-canvas"></canvas>
+    <div class="container">
+      <h1 style="color:#fff" data-zh="频道" data-en="Channels">频道</h1>
+      <p style="color:rgba(255,255,255,.72)" data-zh="每个频道独立抓取、独立评估，日报与周报再把它们聚合起来。"
+         data-en="Each channel is crawled and graded on its own; Daily and Weekly then aggregate them.">每个频道独立抓取、独立评估，日报与周报再把它们聚合起来。</p>
+    </div>
+  </section>
+
 <div class="wrap">
-  <h1 data-zh="频道" data-en="Channels">频道</h1>
-  <p class="lede" data-zh="每个频道独立抓取、独立评估，日报与周报再把它们聚合起来。"
-     data-en="Each channel is crawled and graded on its own; Daily and Weekly then aggregate them.">每个频道独立抓取、独立评估，日报与周报再把它们聚合起来。</p>
+  
   <div id="list"><p class="foot" data-zh="载入中…" data-en="Loading…">载入中…</p></div>
   <p class="foot"><span data-zh="数据每日自动更新。" data-en="Data updates daily.">数据每日自动更新。</span>
      <a href="../daily/" data-zh="查看今日聚合 →" data-en="See today's digest →">查看今日聚合 →</a></p>
@@ -152,5 +169,7 @@ h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6p
   });
 })();
 </script>
+<script src="../assets/starfield-header.js" defer></script>
+<script src="../assets/theme-wipe.js" defer></script>
 </body>
 </html>

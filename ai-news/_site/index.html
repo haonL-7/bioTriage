@@ -364,8 +364,9 @@
         .site-footer {
             position: relative;
             z-index: 1;
-            max-width: var(--max-width);
-            margin: 0 auto;
+            width: 100%;
+            max-width: none;
+            margin: 0;
             padding: 32px 24px 48px;
             border-top: 1px solid var(--border);
             color: var(--ink-xlt);
@@ -375,6 +376,20 @@
         }
         .attrib { font-size: 11.5px; color: var(--ink-xlt); line-height: 1.8; margin-bottom: 10px; }
         .site-footer a { color: var(--accent); }
+        
+        /* ---- 深色页脚 ---- */
+        .site-footer {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 40px 24px 56px;
+            border-top: none;
+            background: #123a63;
+            color: rgba(255, 255, 255, .62);
+        }
+        
+        .site-footer a { color: #9cc6ea; }
+        .site-footer a:hover { color: #ffffff; }
 
         /* ---- Responsive ---- */
         @media (max-width: 700px) {
@@ -468,6 +483,14 @@
                 transition: none !important;
                 animation: none !important;
             }
+            /* 卡片 hover 豁免（波浪动画由 .w-top/.w-bottom 各自控制）*/
+            .entry-card,
+            .entry-card::before,
+            .entry-card::after {
+                transition: transform .4s cubic-bezier(.4,0,.2,1),
+                            box-shadow .4s cubic-bezier(.4,0,.2,1),
+                            opacity .4s cubic-bezier(.4,0,.2,1) !important;
+            }
             a:active { opacity: 1; }
             button:active,
             .lang-btn:active,
@@ -551,9 +574,292 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     object-fit: cover; display: inline-block; vertical-align: -6px;
     margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.18);
 }
+
+        /* ---- 统计条 ---- */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin: 26px 0 30px;
+            overflow: hidden;
+        }
+        .stat-cell { background: var(--white); padding: 16px 14px; }
+        .stat-num {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.15;
+        }
+        .stat-lbl { font-size: 11.5px; color: var(--ink-xlt); margin-top: 3px; letter-spacing: .3px; }
+        @media (max-width: 720px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ---- 数据来源徽标 ---- */
+        .sources-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0 4px;
+        }
+        .src-badge {
+            font-size: 11.5px;
+            color: var(--ink-md);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px 11px;
+            transition: color .2s, border-color .2s;
+        }
+        .src-badge:hover { color: var(--primary); border-color: var(--primary); }
+
+        /* ---- 卡片 hover：照搬 ASHA .card 效果 ---- */
+        .entry-card {
+            position: relative;
+            overflow: hidden;
+            transition: all .4s cubic-bezier(.4, 0, .2, 1);
+        }
+        .entry-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-md, #123a63), var(--primary, #1a4d80), #b08d2f);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .5s cubic-bezier(.4, 0, .2, 1);
+            z-index: 2;
+        }
+        .entry-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(26, 77, 128, .05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity .4s cubic-bezier(.4, 0, .2, 1);
+            pointer-events: none;
+        }
+        .entry-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .08), 0 2px 8px rgba(0, 0, 0, .04);
+            transform: translateY(-5px);
+            border-color: transparent;
+        }
+        .entry-card:hover::before { transform: scaleX(1); }
+        .entry-card:hover::after { opacity: 1; }
+        /* ---- 页脚波浪：ASHSA 原版代码，仅改配色 ---- */
+        /* ---- 首页底部场景：白天海浪 / 夜晚星空+草坪 ---- */
+        
+        
+        
+           /* 下压 3px 进页脚，彻底消缝 */
+        
+        :root[data-theme="dark"] 
+        
+        :root[data-theme="dark"] 
+
+        
+        /* ---- 夜间模式：高清海面（扰动 + 浪花 + 颗粒）---- */
+        :root[data-theme="dark"] 
+        :root[data-theme="dark"] 
+        :root[data-theme="dark"] 
+
+        
+        
+        
+        
+        @media (prefers-reduced-motion: reduce) {
+            
+            
+        }
+
+        /* ---- 夜间：页脚本身就是旷野（换色 + 草线 + 星辰）---- */
+        .site-footer { position: relative; overflow: hidden; }
+        
+        :root[data-theme="dark"]         /* 夜间不要海浪场景 */
+        
+        :root[data-theme="dark"] .site-footer {
+            background: #070d10;
+        }
+        
+
+        /* ---- 底部场景：白天海浪 / 夜间星场（结构平行，同为 300px）---- */
+        
+        
+        :root[data-theme="dark"] 
+        :root[data-theme="dark"] 
+        :root[data-theme="dark"] 
+        :root[data-theme="dark"] .site-footer {
+            background: var(--bg, #14161a);
+            border-top: none;
+        }
+
+        .site-footer .footer-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        /* ---- 底部场景容器：海浪与 DNA 叠放，靠 opacity 交叉过渡 ---- */
+        .footer-scene::before {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; top: 0;
+            height: 56px;
+            pointer-events: none;
+            z-index: 4;
+            background: linear-gradient(to bottom, var(--bg, #ffffff) 0%, rgba(255,255,255,0) 100%);
+        }
+        .footer-scene {
+            position: relative;
+            width: 100%;
+            height: 268px;
+            margin: 24px 0 -1px;
+            overflow: hidden;
+            background: var(--bg, #ffffff);
+        }
+        .footer-scene .wave-wrap,
+        .footer-scene         .footer-scene .wave-wrap { opacity: 1; }
+        .footer-scene .dna-wrap  { opacity: 0; pointer-events: none; }
+        :root[data-theme="dark"] .footer-scene .wave-wrap { opacity: 0; pointer-events: none; }
+        :root[data-theme="dark"] .footer-scene .dna-wrap  { opacity: 1; pointer-events: auto; }
+
+
+        /* ---- 白天页脚海浪（ASHSA 原版）---- */
+        .wave-wrap { width: 100%; height: 100%; line-height: 0; display: flex; align-items: flex-end; }
+        .parallax-svg { display: block; width: 100%; height: 206px; }
+        .parallax > use {
+            animation: move-forever 20s linear infinite;
+            transform-origin: 50% 50%;
+        }
+        .parallax > use:nth-child(1) { animation-delay: -3s; }
+        .parallax > use:nth-child(2) { animation-delay: -6s; animation-duration: 5s; }
+        @keyframes move-forever {
+            0%   { transform: translate(-90px, 0%); }
+            100% { transform: translate(85px, 0%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .parallax > use { animation: move-forever 20s linear infinite !important; }
+            .parallax > use:nth-child(2) { animation-duration: 5s !important; animation-delay: -6s !important; }
+        }
+
+        /* ---- 夜间海浪配色（与深色底 / 页脚衔接）---- */
+        :root[data-theme="dark"] .site-footer {
+            background: #10151b;
+            border-top: none;
+        }
+
+
+
+
+        /* ---- 夜间：细胞壁纹理 + 双螺旋 + 光标脉冲 ---- */
+        .dna-wrap {
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            background: var(--bg, #14161a);
+            overflow: hidden;
+            --mx: 50%;
+            --my: 50%;
+            transition: opacity .6s ease;
+        }
+        /* 植物细胞壁纹理（低对比，作为底纹） */
+        .dna-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2234%22%20viewBox%3D%220%200%2064%2034%22%3E%3Cpolygon%20points%3D%22-30.6%2C8.5%20-23.7%2C1.4%20-8.3%2C1.4%20-1.4%2C8.5%20-8.3%2C15.6%20-23.7%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%221.4%2C8.5%208.3%2C1.4%2023.7%2C1.4%2030.6%2C8.5%2023.7%2C15.6%208.3%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2233.4%2C8.5%2040.3%2C1.4%2055.7%2C1.4%2062.6%2C8.5%2055.7%2C15.6%2040.3%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2265.4%2C8.5%2072.3%2C1.4%2087.7%2C1.4%2094.6%2C8.5%2087.7%2C15.6%2072.3%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%22-14.6%2C25.5%20-7.7%2C18.4%207.7%2C18.4%2014.6%2C25.5%207.7%2C32.6%20-7.7%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2217.4%2C25.5%2024.3%2C18.4%2039.7%2C18.4%2046.6%2C25.5%2039.7%2C32.6%2024.3%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2249.4%2C25.5%2056.3%2C18.4%2071.7%2C18.4%2078.6%2C25.5%2071.7%2C32.6%2056.3%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2281.4%2C25.5%2088.3%2C18.4%20103.7%2C18.4%20110.6%2C25.5%20103.7%2C32.6%2088.3%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%232f9e8a%22%20stroke-width%3D%220.9%22%20stroke-opacity%3D%220.55%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: repeat;
+            background-size: 64px 34px;
+            opacity: .30;
+            pointer-events: none;
+            z-index: 0;
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, #000 14%, #000 86%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, #000 14%, #000 86%, rgba(0,0,0,0) 100%);
+        }
+        /* 光标处的脉冲光晕 */
+        
+        .dna-wrap:hover .dna-lit {
+            opacity: 1;
+            animation: cellwall-pulse 4s ease-in-out infinite;
+        }
+        
+        .dna-wrap canvas {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        /* ---- 底部标语：只被"光"照亮的地方才浮现 ---- */
+        .dna-words {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 1.4s ease 0s;
+            -webkit-mask-image: radial-gradient(circle 105px at var(--mx, 50%) var(--my, 50%),
+                rgba(0,0,0,.9) 12%, rgba(0,0,0,.6) 42%, rgba(0,0,0,.2) 66%, transparent 82%);
+            mask-image: radial-gradient(circle 105px at var(--mx, 50%) var(--my, 50%),
+                rgba(0,0,0,.9) 12%, rgba(0,0,0,.6) 42%, rgba(0,0,0,.2) 66%, transparent 82%);
+        }
+        .dna-wrap:hover .dna-words {
+            opacity: 1;
+            transition: opacity 2.2s ease .9s;
+        }
+
+        .dna-slogan {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+            font-style: italic;
+            font-size: 16px;
+            letter-spacing: .045em;
+            color: rgba(198, 245, 234, .95);
+            text-shadow: 0 0 22px rgba(127, 227, 204, .6), 0 0 6px rgba(143, 240, 221, .35);
+            white-space: nowrap;
+        }
+        .dna-slogan--l { left: 6%; }
+        .dna-slogan--r { right: 6%; }
+        @media (max-width: 900px) { .dna-words { display: none; } }
+
+        /* ---- 细胞壁局部点亮（光标处六边形亮起）---- */
+        .dna-lit {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2234%22%20viewBox%3D%220%200%2064%2034%22%3E%3Cpolygon%20points%3D%22-30.6%2C8.5%20-23.7%2C1.4%20-8.3%2C1.4%20-1.4%2C8.5%20-8.3%2C15.6%20-23.7%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%221.4%2C8.5%208.3%2C1.4%2023.7%2C1.4%2030.6%2C8.5%2023.7%2C15.6%208.3%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2233.4%2C8.5%2040.3%2C1.4%2055.7%2C1.4%2062.6%2C8.5%2055.7%2C15.6%2040.3%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2265.4%2C8.5%2072.3%2C1.4%2087.7%2C1.4%2094.6%2C8.5%2087.7%2C15.6%2072.3%2C15.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%22-14.6%2C25.5%20-7.7%2C18.4%207.7%2C18.4%2014.6%2C25.5%207.7%2C32.6%20-7.7%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2217.4%2C25.5%2024.3%2C18.4%2039.7%2C18.4%2046.6%2C25.5%2039.7%2C32.6%2024.3%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2249.4%2C25.5%2056.3%2C18.4%2071.7%2C18.4%2078.6%2C25.5%2071.7%2C32.6%2056.3%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolygon%20points%3D%2281.4%2C25.5%2088.3%2C18.4%20103.7%2C18.4%20110.6%2C25.5%20103.7%2C32.6%2088.3%2C32.6%22%20fill%3D%22none%22%20stroke%3D%22%239df6e2%22%20stroke-width%3D%221.5%22%20stroke-opacity%3D%220.95%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: repeat;
+            background-size: 64px 34px;
+            opacity: 0;
+            transition: opacity 1.1s ease;
+            -webkit-mask-image: radial-gradient(circle 88px at var(--mx, 50%) var(--my, 50%),
+                rgba(0,0,0,.92) 0%, rgba(0,0,0,.55) 30%, rgba(0,0,0,.18) 58%, transparent 78%);
+            mask-image: radial-gradient(circle 88px at var(--mx, 50%) var(--my, 50%),
+                rgba(0,0,0,.92) 0%, rgba(0,0,0,.55) 30%, rgba(0,0,0,.18) 58%, transparent 78%);
+            filter: drop-shadow(0 0 4px rgba(143, 240, 221, .32));
+        }
+        .dna-wrap:hover .dna-lit {
+            opacity: 1;
+            transition: opacity 1.3s ease .3s;
+        }
+        .dna-wrap canvas { z-index: 2; }
+        .dna-words { z-index: 3; }
+
+        /* 减少动效模式下仍保留细胞壁/标语的淡入淡出（追加在最后以覆盖全局 transition:none） */
+        @media (prefers-reduced-motion: reduce) {
+            .dna-lit   { transition: opacity 1.4s ease 0s !important; }
+            .dna-words { transition: opacity 1.4s ease 0s !important; }
+            .dna-wrap:hover .dna-lit   { transition: opacity 1.3s ease .3s !important; }
+            .dna-wrap:hover .dna-words { transition: opacity 2.2s ease .9s !important; }
+        }
 </style>
 <link rel="icon" type="image/png" sizes="512x512" href="assets/logo-mark.png">
 <link rel="apple-touch-icon" href="assets/logo-mark.png">
+<link rel="stylesheet" href="assets/nav.css">
 </head>
 <body>
 
@@ -573,9 +879,9 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             <a class="side-item" href="ms1/" data-i18n="nav-method">Evidence Methodology</a>
             <a class="side-item" href="stars/" data-i18n="nav-starred">My Stars</a>
             <a class="side-item" href="account/" data-i18n="nav-account">My Account</a>
-            <a class="side-item" href="mailto:haon.liu@outlook.com">Contact</a>
-            <a class="side-item" href="channels/">Channels</a>
-            <a class="side-item" href="privacy/">Privacy</a>
+            <a class="side-item" href="contact/" data-i18n="nav-contact">Contact</a>
+            <a class="side-item" href="channels/" data-i18n="nav-channels">Channels</a>
+            <a class="side-item" href="privacy/" data-i18n="nav-privacy">Privacy</a>
         </nav>
     </aside>
     <div class="page">
@@ -585,6 +891,25 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
     <p class="tagline" data-i18n="tagline">Evidence-graded literature intelligence for the life sciences.</p>
     <p class="meta" data-i18n="meta">Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv &middot; Open access</p>
 </header>
+
+    <div class="stats-bar" id="statsBar">
+        <div class="stat-cell">
+            <div class="stat-num" id="statPapers">&mdash;</div>
+            <div class="stat-lbl" data-i18n="stat-papers">Curated papers</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num">9</div>
+            <div class="stat-lbl" data-i18n="stat-channels">Discipline channels</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num" id="statNewest">&mdash;</div>
+            <div class="stat-lbl" data-i18n="stat-newest">Newest paper</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-num" data-i18n="stat-daily">Daily</div>
+            <div class="stat-lbl" data-i18n="stat-updated">Auto-updated, no ads, no tracking</div>
+        </div>
+    </div>
 
 <main class="main-content">
 
@@ -606,6 +931,16 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             <h3 class="ec-title"><a href="ms1/" data-i18n="t3-t">Methodology</a></h3>
             <p class="ec-desc" data-i18n-html="t3-d">Scoring depends on the channel: the evidence monitor grades with MS1 (four-dimensional matrix) and MS2 (six-tier hierarchy), while the eight bioinformatics channels use an AI significance rating. See <a href="ms2/">MS2</a>.</p>
         </div>
+    </div>
+
+    <div class="section-label" data-i18n="sec-sources">Data sources</div>
+    <div class="sources-row">
+        <a class="src-badge" href="https://europepmc.org/" target="_blank" rel="noopener">Europe PMC</a>
+        <a class="src-badge" href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubMed</a>
+        <a class="src-badge" href="https://www.biorxiv.org/" target="_blank" rel="noopener">bioRxiv</a>
+        <a class="src-badge" href="https://openalex.org/" target="_blank" rel="noopener">OpenAlex</a>
+        <a class="src-badge" href="https://www.semanticscholar.org/" target="_blank" rel="noopener">Semantic Scholar</a>
+        <a class="src-badge" href="https://arxiv.org/" target="_blank" rel="noopener">arXiv</a>
     </div>
 
     <div class="section-label" id="channels" data-i18n="sec-channels">Live channels</div>
@@ -665,13 +1000,42 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
 </main>
 
     <p class="attrib" data-i18n="attrib">AI assessment by DeepSeek, with GLM-4-Flash as fallback; independent verification recommended before citing.</p>
-<footer class="site-footer">
-    <p data-i18n-html="footer1">bioTriage-Open &mdash; life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
-    <p>&copy; 2026 bioTriage-Open &middot; Independent project &middot; <a href="mailto:haon.liu@outlook.com">Contact</a> &middot; <a href="support/" data-support-link>Support us</a> &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
-</footer>
+
 
     </div>
 </div>
+
+
+  
+<div class="footer-scene" aria-hidden="true">
+<div class="wave-wrap" aria-hidden="true">
+<svg class="parallax-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+    <defs>
+        <path id="gentle-wave" d="m -160,44.4 c 30,0 58,-18 87.7,-18 30.3,0 58.3,18 87.3,18 30,0 58,-18 88,-18 30,0 58,18 88,18 l 0,34.5 -351,0 Z"/>
+    </defs>
+    <g class="parallax">
+        <use href="#gentle-wave" x="50" y="0" fill="#1a4d80"></use>
+        <use href="#gentle-wave" x="50" y="6" fill="#123a63"></use>
+    </g>
+</svg>
+</div>
+
+<div class="dna-wrap">
+  <div class="dna-lit" aria-hidden="true"></div>
+  <canvas id="dnaHelix" aria-hidden="true"></canvas>
+  <div class="dna-words">
+    <span class="dna-slogan dna-slogan--l">Cut through the noise.</span>
+    <span class="dna-slogan dna-slogan--r">Anchor in evidence.</span>
+  </div>
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p data-i18n-html="footer1">bioTriage-Open &mdash; life-sciences literature intelligence. Methodology inspired by <a href="https://aihot.virxact.com/" target="_blank">AIHot</a>.</p>
+    <p>&copy; 2026 bioTriage-Open &middot; Independent project &middot; <a href="mailto:haon.liu@outlook.com">Contact</a> &middot; <a href="support/" data-support-link>Support us</a> &middot; <a href="https://github.com/haonL-7/bioTriage" target="_blank">GitHub</a></p>
+  </div>
+</footer>
 
 <script>
 (function () {
@@ -687,6 +1051,15 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             'nav-method': 'Evidence Methodology',
             'nav-starred': 'My Stars',
             'nav-account': 'My Account',
+            'nav-contact': 'Contact',
+            'nav-channels': 'Channels',
+            'nav-privacy': 'Privacy',
+            'stat-papers': 'Curated papers',
+            'stat-channels': 'Discipline channels',
+            'stat-newest': 'Newest paper',
+            'stat-daily': 'Daily',
+            'stat-updated': 'Auto-updated, no ads, no tracking',
+            'sec-sources': 'Data sources',
             'tagline': 'Evidence-graded literature intelligence for the life sciences.',
             'meta': 'Curated daily from Europe PMC, PubMed, bioRxiv, Semantic Scholar, and arXiv · Open access',
             'sec-start': 'Start here',
@@ -742,6 +1115,15 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             'nav-method': '证据方法学',
             'nav-starred': '我的收藏',
             'nav-account': '我的账户',
+            'nav-contact': '联系',
+            'nav-channels': '频道',
+            'nav-privacy': '隐私',
+            'stat-papers': '收录论文',
+            'stat-channels': '学科频道',
+            'stat-newest': '最新论文',
+            'stat-daily': '每日',
+            'stat-updated': '自动更新 · 无广告 · 无追踪',
+            'sec-sources': '数据来源',
             'tagline': '面向生命科学的证据分级文献情报。',
             'meta': '每日从 Europe PMC、PubMed、bioRxiv、Semantic Scholar 与 arXiv 策展 · 开放获取',
             'sec-start': '从这里开始',
@@ -969,5 +1351,68 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
   paint(stored());
 })();
 </script>
+<script>
+    // 首页统计条：篇数与最新日期从各频道数据实时统计
+    (function () {
+        var CH = ['computational-genomics', 'metagenomics-informatics', 'structural-bioinformatics',
+                  'systems-biology', 'single-cell-omics', 'ml-biology',
+                  'databases-knowledge-graphs', 'ai-drug-discovery'];
+        var total = 0, newest = '';
+        var pending = CH.length;
+        function done() {
+            pending -= 1;
+            if (pending > 0) { return; }
+            var el = document.getElementById('statPapers');
+            var nd = document.getElementById('statNewest');
+            if (el && total) { el.textContent = String(total); }
+            if (nd && newest) { nd.textContent = newest; }
+        }
+        CH.forEach(function (c) {
+            fetch(c + '/data/papers.json')
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (d) {
+                    if (d) {
+                        var arr = d.papers || d.items || [];
+                        total += arr.length;
+                        arr.forEach(function (p) {
+                            var s = String(p.pub_date || p.pubDate || '');
+                            var iso = new Date();
+                            var todayStr = iso.getFullYear() + '-' +
+                                String(iso.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(iso.getDate()).padStart(2, '0');
+                            if (s && s <= todayStr && s > newest) { newest = s; }
+                        });
+                    }
+                    done();
+                })
+                .catch(done);
+        });
+    })();
+</script>
+<script src="assets/dna-helix.js" defer></script>
+<script id="cellwall-pointer">
+(function () {
+  var wrap = document.querySelector('.dna-wrap');
+  if (!wrap) { return; }
+  var tx = 0, ty = 0, cx = 0, cy = 0, seeded = false;
+
+  wrap.addEventListener('mousemove', function (e) {
+    var r = wrap.getBoundingClientRect();
+    tx = e.clientX - r.left;
+    ty = e.clientY - r.top;
+    if (!seeded) { cx = tx; cy = ty; seeded = true; }
+  });
+
+  (function tick() {
+    requestAnimationFrame(tick);
+    if (!seeded) { return; }
+    cx += (tx - cx) * 0.04;
+    cy += (ty - cy) * 0.04;
+    wrap.style.setProperty('--mx', cx.toFixed(1) + 'px');
+    wrap.style.setProperty('--my', cy.toFixed(1) + 'px');
+  })();
+})();
+</script>
+<script src="assets/theme-wipe.js" defer></script>
 </body>
 </html>

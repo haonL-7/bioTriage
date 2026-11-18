@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>联系我们 — bioTriage-Open</title>
+<meta name="description" content="联系 bioTriage-Open：反馈问题、建议新频道、报告数据错误或洽谈合作。Contact form for bioTriage-Open.">
+<link rel="canonical" href="https://haonl-7.github.io/bioTriage/contact/">
+<link rel="icon" type="image/png" href="../assets/logo-mark.png">
+<link rel="stylesheet" href="../assets/starfield.css">
+<link rel="stylesheet" href="../assets/starfield-hero.css">
+<script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
+<style>
+:root { --bg:#fff; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199; --border:#e3e6ea;
+  --accent:#1a4d80; --max:640px; --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; }
+:root[data-theme="dark"] { color-scheme:dark; --bg:#14161a; --ink:#e9e7e2; --ink-md:#b8b5ae;
+  --ink-xlt:#6e6b66; --border:#2a2e35; --accent:#9cc6ea; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html.theme-anim, html.theme-anim * { transition:background-color .45s cubic-bezier(.4,0,.2,1),
+  color .45s cubic-bezier(.4,0,.2,1), border-color .45s cubic-bezier(.4,0,.2,1) !important; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.75; font-size:15px; }
+a { color:var(--accent); }
+.top-bar { display:flex; justify-content:space-between; align-items:center; gap:12px;
+  position:sticky; top:0; z-index:100; padding:10px 20px; font-size:13px;
+  background:rgba(255,255,255,0.45); -webkit-backdrop-filter:blur(18px) saturate(200%);
+  backdrop-filter:blur(18px) saturate(200%); border-bottom:1px solid rgba(0,0,0,.07); }
+.top-bar, .top-bar * { color:#16181c !important; }
+.mini-logo { font-family:var(--serif); font-size:15px; }
+.mini-logo em { font-style:normal; color:#1a4d80; }
+.brand-mark { width:24px; height:24px; border-radius:6px; object-fit:cover; vertical-align:-6px; margin-right:8px; }
+.nav-link { font-size:12px; color:#16181c; background:transparent; border:1px solid rgba(0,0,0,.18);
+  border-radius:999px; padding:4px 10px; font-family:inherit; cursor:pointer; }
+.wrap { max-width:var(--max); margin:0 auto; padding:36px 20px 80px; }
+h1 { font-family:var(--serif); font-size:26px; font-weight:400; margin-bottom:8px; }
+.lede { color:var(--ink-md); font-size:14px; margin-bottom:24px; }
+form { display:flex; flex-direction:column; gap:16px; }
+label { font-size:12.5px; font-weight:600; display:block; margin-bottom:5px; }
+input, textarea, select { width:100%; padding:10px 12px; font:inherit; font-size:14px;
+  border:1px solid var(--border); border-radius:4px; background:var(--bg); color:var(--ink); }
+textarea { min-height:140px; resize:vertical; }
+button[type=submit] { align-self:flex-start; font:inherit; font-size:14px; padding:9px 22px;
+  border:none; border-radius:4px; background:var(--accent); color:#fff; cursor:pointer; }
+.note { font-size:12px; color:var(--ink-xlt); line-height:1.7; margin-top:14px; }
+.hp { position:absolute; left:-9999px; }
+</style>
+<link rel="stylesheet" href="../assets/nav.css">
+</head>
+<body>
+<nav class="top-bar">
+  <span><img class="brand-mark" src="../assets/logo-mark.png" alt="bioTriage"><a href="../"><span class="mini-logo">bioTriage<em>-Open</em></span></a></span>
+  <span style="display:flex;gap:8px;align-items:center">
+    <a class="nav-link" href="../" data-zh="首页" data-en="Home">首页</a>
+    <a class="nav-link" href="../channels/" data-zh="频道" data-en="Channels">频道</a>
+    <a class="nav-link" href="../privacy/" data-zh="隐私" data-en="Privacy">隐私</a>
+    <button id="lang-toggle" class="nav-link" type="button">EN</button>
+    <button id="theme-toggle" class="nav-link" type="button" aria-label="Theme">&#9680;</button>
+  </span>
+</nav>
+
+
+<section class="starfield-header" style="width:100%;height:320px;overflow:hidden;">
+  <div class="hero-fade" aria-hidden="true"></div>
+  <canvas id="sf-bg-canvas"></canvas>
+  <canvas id="sf-canvas"></canvas>
+  <div class="container">
+    <h1 data-zh="联系开发者" data-en="Contact the developer">联系开发者</h1>
+    <p data-zh="反馈问题、建议新增频道、报告数据错误，或洽谈合作。" data-en="Report a problem, suggest a channel, flag a data error, or discuss collaboration.">反馈问题、建议新增频道、报告数据错误，或洽谈合作。</p>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <form id="contact-form" action="https://formsubmit.co/haon.liu@outlook.com" method="POST">
+    <input type="hidden" name="_subject" value="bioTriage-Open contact">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div>
+      <label for="cf-email" data-zh="你的邮箱" data-en="Your email">你的邮箱</label>
+      <input type="email" id="cf-email" name="email" required placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div>
+      <label for="cf-topic" data-zh="类型" data-en="Topic">类型</label>
+      <select id="cf-topic" name="topic">
+        <option value="bug" data-zh="功能异常" data-en="Bug">功能异常</option>
+        <option value="data" data-zh="数据错误" data-en="Data error">数据错误</option>
+        <option value="channel" data-zh="建议新频道" data-en="Suggest a channel">建议新频道</option>
+        <option value="collab" data-zh="合作" data-en="Collaboration">合作</option>
+        <option value="other" data-zh="其他" data-en="Other">其他</option>
+      </select>
+    </div>
+    <div>
+      <label for="cf-msg" data-zh="内容" data-en="Message">内容</label>
+      <textarea id="cf-msg" name="message" required
+        data-zh-placeholder="请尽量说明具体页面与论文标题，便于定位。" data-en-placeholder="Include the page and paper title where possible."
+        placeholder="请尽量说明具体页面与论文标题，便于定位。"></textarea>
+    </div>
+    <button type="submit" data-zh="发送" data-en="Send">发送</button>
+  </form>
+  <p class="note" data-zh="表单由 Formsubmit 中转投递到项目邮箱；首次使用需在收件箱点击一次激活链接。也可以直接发邮件至 haon.liu@outlook.com。"
+     data-en="The form is relayed by Formsubmit to the project inbox; the first submission needs one activation click in the inbox. You can also email haon.liu@outlook.com directly.">表单由 Formsubmit 中转投递到项目邮箱；也可以直接发邮件。</p>
+</div>
+
+<script>
+(function () {
+  function lang() { try { return localStorage.getItem('bt-lang') === 'en' ? 'en' : 'zh'; } catch (e) { return 'zh'; } }
+  var L = lang();
+  function apply(l) {
+    document.querySelectorAll('[data-zh][data-en]').forEach(function (n) {
+      var v = n.getAttribute(l === 'en' ? 'data-en' : 'data-zh');
+      if (v !== null) { n.textContent = v; }
+    });
+    document.querySelectorAll('[data-zh-placeholder][data-en-placeholder]').forEach(function (n) {
+      n.placeholder = n.getAttribute(l === 'en' ? 'data-en-placeholder' : 'data-zh-placeholder');
+    });
+    var lt = document.getElementById('lang-toggle');
+    if (lt) { lt.textContent = l === 'en' ? '中文' : 'EN'; }
+    document.documentElement.lang = l === 'en' ? 'en' : 'zh-CN';
+    document.title = l === 'en' ? 'Contact — bioTriage-Open' : '联系我们 — bioTriage-Open';
+  }
+  apply(L);
+  var lt = document.getElementById('lang-toggle');
+  if (lt) {
+    lt.addEventListener('click', function () {
+      L = (L === 'en') ? 'zh' : 'en';
+      try { localStorage.setItem('bt-lang', L); } catch (e) {}
+      apply(L);
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('#theme-toggle') : null;
+    if (!b) { return; }
+    var order = ['light', 'dark', 'auto'];
+    var cur = (function () { try { var v = localStorage.getItem('bt-theme'); return (v === 'dark' || v === 'light') ? v : 'auto'; } catch (err) { return 'auto'; } })();
+    var next = order[(order.indexOf(cur) + 1) % order.length];
+    try { if (next === 'auto') { localStorage.removeItem('bt-theme'); } else { localStorage.setItem('bt-theme', next); } } catch (err) {}
+    var root = document.documentElement;
+    root.classList.add('theme-anim');
+    setTimeout(function () { root.classList.remove('theme-anim'); }, 620);
+    root.dataset.theme = (next === 'auto')
+      ? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light') : next;
+  });
+})();
+</script>
+<script src="../assets/starfield-header.js" defer></script>
+<script src="../assets/theme-wipe.js" defer></script>
+</body>
+</html>

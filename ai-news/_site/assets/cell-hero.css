@@ -1,0 +1,164 @@
+/* ============================================================
+   细胞 hero — 深青底 + 多层细胞光斑 + 核点 + 底部渐隐
+   ============================================================ */
+.cell-hero {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+    background:
+        radial-gradient(120% 150% at 18% 8%, #0e4340 0%, #072a26 48%, #041715 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 第一层：大而虚的细胞体（缓慢漂移） */
+.cell-hero::before {
+    content: '';
+    position: absolute;
+    inset: -14%;
+    background:
+        radial-gradient(circle at 18% 34%, rgba(90, 216, 190, .16) 0 10%, rgba(90, 216, 190, 0) 11%),
+        radial-gradient(circle at 34% 62%, rgba(70, 200, 176, .12) 0 16%, rgba(70, 200, 176, 0) 17%),
+        radial-gradient(circle at 62% 24%, rgba(90, 216, 190, .13) 0 12%, rgba(90, 216, 190, 0) 13%),
+        radial-gradient(circle at 78% 58%, rgba(70, 200, 176, .10) 0 18%, rgba(70, 200, 176, 0) 19%),
+        radial-gradient(circle at 92% 20%, rgba(90, 216, 190, .08) 0 9%,  rgba(90, 216, 190, 0) 10%);
+    animation: cell-drift 34s ease-in-out infinite alternate;
+    filter: blur(1px);
+}
+
+/* 第二层：小细胞核（清晰、慢呼吸） */
+.cell-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 36%, rgba(180, 255, 235, .55) 0 1.1%, rgba(180, 255, 235, 0) 2.2%),
+        radial-gradient(circle at 63% 26%, rgba(180, 255, 235, .45) 0 0.9%, rgba(180, 255, 235, 0) 1.9%),
+        radial-gradient(circle at 79% 60%, rgba(180, 255, 235, .40) 0 0.8%, rgba(180, 255, 235, 0) 1.7%),
+        radial-gradient(62% 48% at 50% 0%, rgba(150, 255, 230, .10), rgba(0, 0, 0, 0) 72%),
+        linear-gradient(to bottom, rgba(4, 23, 21, 0) 82%, rgba(4, 23, 21, .55) 100%);
+    animation: cell-breathe 12s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes cell-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(-18px, -10px, 0) scale(1.06); }
+}
+@keyframes cell-breathe {
+    from { transform: scale(1); opacity: .9; }
+    to   { transform: scale(1.03); opacity: 1; }
+}
+
+.cell-hero .container {
+    position: relative;
+    z-index: 3;
+    max-width: 760px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.cell-hero h1 {
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, .4);
+}
+.cell-hero h1 .h1-accent { color: #7fe3cc; font-weight: 400; }
+
+.cell-hero p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, .68);
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+    .cell-hero { height: 250px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .cell-hero::before, .cell-hero::after { animation: none !important; }
+}
+
+/* ============================================================
+   流动细胞：6 个独立元素，各自以不同周期漂移 + 轻微形变
+   ============================================================ */
+.cell-hero .cells {
+    position: absolute;
+    inset: -12%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.cell-hero .cells i {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 30%,
+        rgba(170, 255, 236, .22) 0%,
+        rgba(96, 220, 196, .12) 42%,
+        rgba(70, 200, 176, 0) 72%);
+    box-shadow: inset 0 0 48px rgba(150, 255, 230, .07);
+    filter: blur(2px);
+    will-change: transform;
+}
+
+.cell-hero .cells i:nth-child(1) { width: 200px; height: 200px; left: 6%;  top: 10%; animation: cell-flow-a 44s linear infinite; }
+.cell-hero .cells i:nth-child(2) { width: 130px; height: 130px; left: 30%; top: 58%; animation: cell-flow-b 58s linear infinite; }
+.cell-hero .cells i:nth-child(3) { width: 250px; height: 250px; left: 52%; top: 6%;  animation: cell-flow-c 72s linear infinite; }
+.cell-hero .cells i:nth-child(4) { width: 110px; height: 110px; left: 74%; top: 52%; animation: cell-flow-b 50s linear infinite; animation-delay: -12s; }
+.cell-hero .cells i:nth-child(5) { width: 170px; height: 170px; left: 86%; top: 16%; animation: cell-flow-a 64s linear infinite; animation-delay: -20s; }
+.cell-hero .cells i:nth-child(6) { width: 90px;  height: 90px;  left: 18%; top: 74%; animation: cell-flow-c 40s linear infinite; animation-delay: -8s; }
+
+@keyframes cell-flow-a {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    50%  { transform: translate3d(38px, -26px, 0) scale(1.08); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes cell-flow-b {
+    0%   { transform: translate3d(0, 0, 0) scale(.96); }
+    50%  { transform: translate3d(-30px, 30px, 0) scale(1.06); }
+    100% { transform: translate3d(0, 0, 0) scale(.96); }
+}
+@keyframes cell-flow-c {
+    0%   { transform: translate3d(0, 0, 0) scale(1.02); }
+    33%  { transform: translate3d(24px, 18px, 0) scale(.98); }
+    66%  { transform: translate3d(-18px, 10px, 0) scale(1.05); }
+    100% { transform: translate3d(0, 0, 0) scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cell-hero .cells i { animation: none !important; }
+}
+
+/* canvas 细胞场 */
+.cell-hero canvas#cellHeroCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+.cell-hero .container { z-index: 3; }
+
+/* ---- 底部幕布：hero 渐隐进页面底色 ---- */
+.hero-fade {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 96px;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        var(--bg, #ffffff) 100%);
+}
+:root[data-theme="dark"] .hero-fade {
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        var(--bg, #14161a) 100%);
+}
