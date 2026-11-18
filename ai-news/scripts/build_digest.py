@@ -231,6 +231,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
 <link rel="stylesheet" href="%(root)sassets/nav.css">
 %(head_js)s
 <style>%(css)s</style>
+<link rel="stylesheet" href="%(root)sassets/page-transition.css">
 </head>
 <body>
 <nav class="top-bar">
@@ -363,6 +364,7 @@ def render(title, lede, meta, by_channel, today, nav, active):
 </script>
 %(toggle_js)s
 <script src="%(root)sassets/theme-wipe.js" defer></script>
+<script src="%(root)sassets/shared-transition.js" defer></script>
 </body>
 </html>""" % dict(title=title, lede=lede, total=total, nch=len(by_channel), today=today.isoformat(), meta=meta,
                    body=body, css=CSS, head_js=HEAD_JS, toggle_js=TOGGLE_JS, root=nav,

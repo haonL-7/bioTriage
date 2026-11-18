@@ -286,13 +286,8 @@
 
   function drawGradient() {
     // Bottom edge blend to page bg only — no frosted glass
-    var edgeTop = H2 * 0.92;
-    var eg = ctx.createLinearGradient(0, edgeTop, 0, H);
-    eg.addColorStop(0, 'rgba(0,0,0,0)');
-    eg.addColorStop(0.5, 'rgba(246,248,251,0.5)');
-    eg.addColorStop(1, '#f6f8fb');
-    ctx.fillStyle = eg;
-    ctx.fillRect(0, edgeTop, W, H - edgeTop);
+    // 底部不再叠加浅色渐变（会形成白雾），收边交给 CSS 幕布
+    return;
   }
 
   // ============ CONSTELLATIONS ============

@@ -1,0 +1,43 @@
+/* ============================================================
+   跨文档视图转场：卡片 → 详情页的共享元素缩放
+   ============================================================ */
+@view-transition { navigation: auto; }
+
+/* 根：交叉淡入 + 轻微缩放，承接背景过渡 */
+::view-transition-old(root) {
+    animation: vt-root-out .26s ease both;
+}
+::view-transition-new(root) {
+    animation: vt-root-in .34s cubic-bezier(.22,.7,.18,1) both;
+}
+@keyframes vt-root-out { to { opacity: 0; } }
+@keyframes vt-root-in {
+    from { opacity: 0; transform: scale(.992); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* 共享元素：卡片 ↔ 详情容器 */
+::view-transition-group(card) {
+    animation-duration: .46s;
+    animation-timing-function: cubic-bezier(.22,.7,.18,1);
+}
+::view-transition-old(card),
+::view-transition-new(card) {
+    animation-duration: .46s;
+    animation-timing-function: cubic-bezier(.22,.7,.18,1);
+    height: 100%;
+}
+::view-transition-old(card) {
+    animation-name: vt-card-out;
+}
+::view-transition-new(card) {
+    animation-name: vt-card-in;
+}
+@keyframes vt-card-out {
+    to { opacity: 0; transform: scale(.985); border-radius: 14px; }
+}
+@keyframes vt-card-in {
+    from { opacity: 0; transform: scale(.985); border-radius: 14px; }
+}
+
+/* 不支持 View Transitions 的浏览器：直接跳转，不做处理 */

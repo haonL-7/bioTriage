@@ -176,6 +176,7 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 .ask-sources .src .dom {{ display: inline-block; font-size: 10px; letter-spacing: .4px; color: var(--text-muted); border: 1px solid var(--border); padding: 0 5px; margin-right: 6px; }}
 @media (max-width: 640px) {{ h1 {{ font-size: 20px; }} }}
 </style>
+<link rel="stylesheet" href="../assets/page-transition.css">
 </head>
 <body>
 <nav class="top-bar"><a href="../">bioTriage-Open</a><span>Lightweight Curation &mdash; AI selection &amp; significance rating</span></nav>
@@ -250,6 +251,7 @@ h1 {{ font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-
 <p>AI-curated by bioTriage-Open. Summaries and significance ratings are AI-generated; verify before citing. &middot; <a href="../">bioTriage-Open Home</a></p>
 </footer>
 <script src="../assets/theme-wipe.js" defer></script>
+<script src="../assets/shared-transition.js" defer></script>
 </body>
 </html>'''
 

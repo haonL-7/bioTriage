@@ -705,10 +705,10 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             content: '';
             position: absolute;
             left: 0; right: 0; top: 0;
-            height: 56px;
+            height: 44px;
             pointer-events: none;
             z-index: 4;
-            background: linear-gradient(to bottom, var(--bg, #ffffff) 0%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(to bottom, var(--bg, #ffffff) 12%, rgba(255,255,255,0) 100%);
         }
         .footer-scene {
             position: relative;
@@ -856,10 +856,49 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             .dna-wrap:hover .dna-lit   { transition: opacity 1.3s ease .3s !important; }
             .dna-wrap:hover .dna-words { transition: opacity 2.2s ease .9s !important; }
         }
+
+        /* ---- 毛玻璃层：极淡光晕底 + 半透明卡片 ---- */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(58% 46% at 10% 6%, rgba(26, 77, 128, .07) 0%, rgba(26, 77, 128, 0) 68%),
+                radial-gradient(48% 42% at 90% 10%, rgba(127, 227, 204, .08) 0%, rgba(127, 227, 204, 0) 70%),
+                radial-gradient(70% 58% at 50% 102%, rgba(26, 77, 128, .06) 0%, rgba(26, 77, 128, 0) 72%);
+        }
+        :root[data-theme="dark"] body::before {
+            background:
+                radial-gradient(58% 46% at 10% 6%, rgba(127, 227, 204, .05) 0%, rgba(127, 227, 204, 0) 68%),
+                radial-gradient(48% 42% at 90% 10%, rgba(56, 183, 159, .05) 0%, rgba(56, 183, 159, 0) 70%);
+        }
+
+        .entry-card {
+            background: rgba(255, 255, 255, .62) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            backdrop-filter: blur(16px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, .8) !important;
+            box-shadow: 0 8px 28px rgba(18, 58, 99, .07), inset 0 1px 0 rgba(255, 255, 255, .9) !important;
+        }
+        .entry-card:hover {
+            background: rgba(255, 255, 255, .78) !important;
+            border-color: rgba(26, 77, 128, .22) !important;
+        }
+        :root[data-theme="dark"] .entry-card {
+            background: rgba(30, 34, 40, .55) !important;
+            border: 1px solid rgba(255, 255, 255, .08) !important;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, .35) !important;
+        }
+        :root[data-theme="dark"] .entry-card:hover {
+            background: rgba(36, 41, 48, .72) !important;
+        }
 </style>
 <link rel="icon" type="image/png" sizes="512x512" href="assets/logo-mark.png">
 <link rel="apple-touch-icon" href="assets/logo-mark.png">
-<link rel="stylesheet" href="assets/nav.css">
+<link rel="stylesheet" href="assets/nav.css?v=20260512m">
+<link rel="stylesheet" href="assets/page-transition.css?v=20260512n">
 </head>
 <body>
 
@@ -1389,7 +1428,7 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         });
     })();
 </script>
-<script src="assets/dna-helix.js" defer></script>
+<script src="assets/dna-helix.js?v=20260512m" defer></script>
 <script id="cellwall-pointer">
 (function () {
   var wrap = document.querySelector('.dna-wrap');
@@ -1413,6 +1452,7 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
   })();
 })();
 </script>
-<script src="assets/theme-wipe.js" defer></script>
+<script src="assets/theme-wipe.js?v=20260512m" defer></script>
+<script src="assets/shared-transition.js?v=20260512n" defer></script>
 </body>
 </html>
