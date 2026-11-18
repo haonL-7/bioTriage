@@ -7,8 +7,8 @@
 <meta name="description" content="bioTriage-Open 的九个文献频道：计算基因组学、宏基因组信息学、结构生物信息学、系统生物学、单细胞组学、生物机器学习、数据库与知识图谱、AI 药物发现，以及肠道 SCFA 共代谢。Each channel is crawled and graded independently.">
 <link rel="canonical" href="https://haonl-7.github.io/bioTriage/channels/">
 <link rel="icon" type="image/png" href="../assets/logo-mark.png">
-<link rel="stylesheet" href="../assets/starfield.css">
-<link rel="stylesheet" href="../assets/starfield-hero.css">
+<link rel="stylesheet" href="../assets/starfield.css?v=20260512m">
+<link rel="stylesheet" href="../assets/starfield-hero.css?v=20260512m">
 <script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <style>
 :root { --bg:#fff; --bg-alt:#f7f8fa; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199;
@@ -34,11 +34,43 @@ a { color:var(--accent); text-decoration:none; }
 .wrap { max-width:var(--max); margin:0 auto; padding:34px 20px 72px; }
 h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6px; }
 .lede { color:var(--ink-md); font-size:14px; margin-bottom:26px; }
-.ch { display:flex; justify-content:space-between; gap:16px; align-items:baseline;
-  padding:16px 0; border-bottom:1px solid var(--border); }
-.ch-name { font-size:15px; font-weight:600; }
-.ch-desc { font-size:12.5px; color:var(--ink-xlt); margin-top:3px; }
-.ch-meta { font-size:12px; color:var(--ink-xlt); white-space:nowrap; }
+/* ---- 频道卡片：网格 + 毛玻璃 ---- */
+#list { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; }
+.ch {
+  position:relative; display:flex; flex-direction:column; gap:8px;
+  padding:20px 22px 18px; border-radius:14px;
+  background:rgba(255,255,255,.62);
+  -webkit-backdrop-filter:blur(16px) saturate(150%);
+  backdrop-filter:blur(16px) saturate(150%);
+  border:1px solid rgba(255,255,255,.8);
+  box-shadow:0 8px 26px rgba(18,58,99,.06), inset 0 1px 0 rgba(255,255,255,.9);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+}
+.ch:hover { transform:translateY(-2px); background:rgba(255,255,255,.8);
+  border-color:rgba(26,77,128,.22);
+  box-shadow:0 14px 34px rgba(18,58,99,.12), inset 0 1px 0 rgba(255,255,255,.95); }
+.ch-name { font-size:15.5px; font-weight:600; letter-spacing:.01em; }
+.ch-name a { color:var(--ink); text-decoration:none; }
+.ch-name a:hover { color:#1a4d80; }
+.ch-desc { font-size:12.5px; color:var(--ink-xlt); margin-top:4px; line-height:1.6; }
+.ch-meta { font-size:11.5px; color:var(--ink-xlt); margin-top:auto; padding-top:10px;
+  letter-spacing:.02em; font-variant-numeric:tabular-nums; }
+.ch-meta::before { content:''; display:inline-block; width:5px; height:5px; border-radius:50%;
+  background:#38b79f; margin-right:7px; vertical-align:1px; }
+.ch-meta.is-empty { color:var(--ink-faint, #b6c0cc); font-style:italic; }
+.ch-meta.is-empty::before { background:#c3ccd6; }
+
+:root[data-theme="dark"] .ch { background:rgba(30,34,40,.55); border-color:rgba(255,255,255,.08);
+  box-shadow:0 8px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05); }
+:root[data-theme="dark"] .ch:hover { background:rgba(36,41,48,.72); border-color:rgba(127,227,204,.25); }
+:root[data-theme="dark"] .ch-name a { color:var(--ink); }
+
+body::before {
+  content:''; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(58% 46% at 10% 6%, rgba(26,77,128,.07) 0%, rgba(26,77,128,0) 68%),
+    radial-gradient(48% 42% at 90% 10%, rgba(127,227,204,.08) 0%, rgba(127,227,204,0) 70%);
+}
 .foot { font-size:12px; color:var(--ink-xlt); margin-top:26px; }
 
 
@@ -46,7 +78,8 @@ h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6p
 
 
 </style>
-<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/nav.css?v=20260512m">
+<link rel="stylesheet" href="../assets/page-transition.css?v=20260512n">
 </head>
 <body>
 <nav class="top-bar">
@@ -106,6 +139,11 @@ h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6p
   var L = lang();
   var list = document.getElementById('list');
 
+  function empty(row) {
+    row.textContent = (L === 'en' ? 'awaiting first sync' : '待首次同步');
+    row.classList.add('is-empty');
+  }
+
   function render() {
     list.innerHTML = CHANNELS.map(function (c) {
       var name = L === 'en' ? c[1] : c[2];
@@ -122,12 +160,13 @@ h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6p
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (d) {
           if (!row) { return; }
-          if (!d) { row.textContent = 'n/a'; return; }
-          var arr = d.papers || d.items || [];
+          var arr = (d && (d.papers || d.items)) || [];
           var ds = arr.map(function (p) { return String(p.pub_date || p.pubDate || ''); }).filter(Boolean).sort();
-          row.textContent = arr.length + (L === 'en' ? ' papers · ' : ' 篇 · ') + (ds.slice(-1)[0] || 'n/a');
+          var last = ds.slice(-1)[0];
+          if (!arr.length) { empty(row); return; }
+          row.textContent = arr.length + (L === 'en' ? ' papers' : ' 篇') + (last ? ' · ' + last : '');
         })
-        .catch(function () { if (row) { row.textContent = 'n/a'; } });
+        .catch(function () { if (row) { empty(row); } });
     });
   }
 
@@ -169,7 +208,8 @@ h1 { font-family:var(--serif); font-size:27px; font-weight:400; margin-bottom:6p
   });
 })();
 </script>
-<script src="../assets/starfield-header.js" defer></script>
-<script src="../assets/theme-wipe.js" defer></script>
+<script src="../assets/starfield-header.js?v=20260512m" defer></script>
+<script src="../assets/theme-wipe.js?v=20260512m" defer></script>
+<script src="../assets/shared-transition.js?v=20260512n" defer></script>
 </body>
 </html>
