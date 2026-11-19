@@ -1,0 +1,81 @@
+/* ============================================================
+   按压反馈：弹性压缩（squash）+ 衰减振荡回弹（spring）
+   ============================================================ */
+
+/* 可按压元素 */
+button, .btn, .star-btn, a.nav-link, .side-item, .ch, .entry-card, .chip, .src-badge, .aa-domain {
+    transform: translateZ(0);
+    transition:
+        transform .34s cubic-bezier(.22, .68, .32, 1),
+        box-shadow .28s ease,
+        background-color .22s ease,
+        border-color .22s ease,
+        color .2s ease;
+}
+
+/* 压缩态：横向更紧、纵向略塌，配内阴影表现"被按进去" */
+.press {
+    transform: scale(.955, .935) !important;
+    box-shadow:
+        inset 0 3px 10px rgba(11, 32, 55, .26),
+        inset 0 1px 0 rgba(0, 0, 0, .14) !important;
+    transition:
+        transform .07s cubic-bezier(.3, .9, .3, 1),
+        box-shadow .07s ease !important;
+}
+
+/* 回弹：三段衰减振荡，幅度逐次收敛 */
+.spring {
+    animation: press-spring .54s cubic-bezier(.3, .7, .3, 1) both;
+}
+
+@keyframes press-spring {
+    0%   { transform: scale(.955, .935); }
+    34%  { transform: scale(1.026, 1.016); }
+    58%  { transform: scale(.989, .995); }
+    78%  { transform: scale(1.007, 1.004); }
+    100% { transform: scale(1, 1); }
+}
+
+/* 卡片：幅度收敛，避免整块晃动 */
+.ch.press, .entry-card.press {
+    transform: scale(.988, .984) !important;
+    box-shadow:
+        inset 0 2px 12px rgba(11, 32, 55, .16),
+        0 4px 14px rgba(18, 58, 99, .10) !important;
+}
+.ch.spring, .entry-card.spring {
+    animation: press-spring-card .58s cubic-bezier(.3, .7, .3, 1) both;
+}
+@keyframes press-spring-card {
+    0%   { transform: scale(.988, .984); }
+    36%  { transform: scale(1.012, 1.008); }
+    62%  { transform: scale(.996, .998); }
+    100% { transform: scale(1, 1); }
+}
+
+/* 深色模式内阴影更沉 */
+:root[data-theme="dark"] .press {
+    box-shadow:
+        inset 0 3px 10px rgba(0, 0, 0, .6),
+        inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+}
+
+/* 无 JS 兜底 */
+button:active:not(.press), .btn:active:not(.press), a.nav-link:active:not(.press), .chip:active:not(.press), .src-badge:active:not(.press) {
+    transform: scale(.96);
+}
+
+button:focus-visible, .btn:focus-visible, a.nav-link:focus-visible {
+    outline: 2px solid rgba(47, 158, 138, .55);
+    outline-offset: 2px;
+}
+
+/* 减少动效模式下保留形变与一次回弹（全局 transition:none 会吃掉它） */
+@media (prefers-reduced-motion: reduce) {
+    button, .btn, .star-btn, a.nav-link, .side-item, .ch, .entry-card, .chip, .src-badge, .aa-domain {
+        transition: transform .34s cubic-bezier(.22, .68, .32, 1), box-shadow .28s ease !important;
+    }
+    .press { transition: transform .07s ease, box-shadow .07s ease !important; }
+    .spring { animation: press-spring .54s cubic-bezier(.3, .7, .3, 1) both !important; }
+}

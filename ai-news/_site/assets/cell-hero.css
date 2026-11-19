@@ -7,7 +7,7 @@
     height: 320px;
     overflow: hidden;
     background:
-        radial-gradient(120% 150% at 18% 8%, #0e4340 0%, #072a26 48%, #041715 100%);
+        radial-gradient(120% 150% at 18% 8%, #0d423e 0%, #082d28 48%, #041816 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -146,19 +146,12 @@
 }
 .cell-hero .container { z-index: 3; }
 
-/* ---- 底部幕布：hero 渐隐进页面底色 ---- */
+/* ---- 底部幕布：高度 = hero 高度的 10% ---- */
 .hero-fade {
     position: absolute;
     left: 0; right: 0; bottom: 0;
-    height: 96px;
+    height: 0.8px;
     pointer-events: none;
     z-index: 2;
-    background: linear-gradient(to bottom,
-        rgba(255, 255, 255, 0) 0%,
-        var(--bg, #ffffff) 100%);
-}
-:root[data-theme="dark"] .hero-fade {
-    background: linear-gradient(to bottom,
-        rgba(0, 0, 0, 0) 0%,
-        var(--bg, #14161a) 100%);
+    background: linear-gradient(to bottom, transparent 0%, var(--bg, #ffffff) 100%);
 }

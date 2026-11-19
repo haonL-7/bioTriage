@@ -7,8 +7,8 @@
 <meta name="description" content="联系 bioTriage-Open：反馈问题、建议新频道、报告数据错误或洽谈合作。Contact form for bioTriage-Open.">
 <link rel="canonical" href="https://haonl-7.github.io/bioTriage/contact/">
 <link rel="icon" type="image/png" href="../assets/logo-mark.png">
-<link rel="stylesheet" href="../assets/starfield.css">
-<link rel="stylesheet" href="../assets/starfield-hero.css">
+<link rel="stylesheet" href="../assets/starfield.css?v=20260512m">
+<link rel="stylesheet" href="../assets/starfield-hero.css?v=20260512m">
 <script>(function(){try{var s=localStorage.getItem('bt-theme');var sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.dataset.theme=(s==='dark'||s==='light')?s:(sys?'dark':'light');}catch(e){}})();</script>
 <style>
 :root { --bg:#fff; --ink:#16181c; --ink-md:#4a5058; --ink-xlt:#8a9199; --border:#e3e6ea;
@@ -43,8 +43,35 @@ button[type=submit] { align-self:flex-start; font:inherit; font-size:14px; paddi
   border:none; border-radius:4px; background:var(--accent); color:#fff; cursor:pointer; }
 .note { font-size:12px; color:var(--ink-xlt); line-height:1.7; margin-top:14px; }
 .hp { position:absolute; left:-9999px; }
+
+/* ---- 微信联系 ---- */
+.wechat {
+  display: flex; gap: 28px; align-items: center; justify-content: space-between;
+  margin-top: 30px; padding: 24px 26px; border-radius: 16px;
+  background: rgba(255,255,255,.62);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: 0 8px 26px rgba(18,58,99,.06), inset 0 1px 0 rgba(255,255,255,.9);
+}
+.wechat h2 { font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 8px; }
+.wechat p { font-size: 13px; color: var(--ink-md); line-height: 1.75; max-width: 46ch; }
+.wechat-note { margin-top: 8px; color: var(--ink-xlt); font-size: 12px; }
+.wechat-qr { flex: 0 0 auto; text-align: center; margin: 0; }
+.wechat-qr img { display: block; width: 200px; height: 200px; border-radius: 10px; background: #fff; }
+.wechat-qr figcaption { margin-top: 8px; font-size: 11.5px; color: var(--ink-xlt); letter-spacing: .04em; }
+:root[data-theme="dark"] .wechat {
+  background: rgba(30,34,40,.55); border-color: rgba(255,255,255,.08);
+  box-shadow: 0 8px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+}
+@media (max-width: 640px) {
+  .wechat { flex-direction: column-reverse; align-items: flex-start; gap: 18px; }
+  .wechat-qr { align-self: center; }
+}
 </style>
-<link rel="stylesheet" href="../assets/nav.css">
+<link rel="stylesheet" href="../assets/nav.css?v=20260512m">
+<link rel="stylesheet" href="../assets/page-transition.css?v=20260512n">
+<link rel="stylesheet" href="../assets/press.css?v=20260513c">
 </head>
 <body>
 <nav class="top-bar">
@@ -100,6 +127,20 @@ button[type=submit] { align-self:flex-start; font:inherit; font-size:14px; paddi
   </form>
   <p class="note" data-zh="表单由 Formsubmit 中转投递到项目邮箱；首次使用需在收件箱点击一次激活链接。也可以直接发邮件至 haon.liu@outlook.com。"
      data-en="The form is relayed by Formsubmit to the project inbox; the first submission needs one activation click in the inbox. You can also email haon.liu@outlook.com directly.">表单由 Formsubmit 中转投递到项目邮箱；也可以直接发邮件。</p>
+  <section class="wechat">
+    <div class="wechat-text">
+      <h2 data-zh="微信" data-en="WeChat">微信</h2>
+      <p data-zh="扫描右侧二维码添加维护者的微信小号。仅用于项目讨论（数据错误、频道建议、合作），不做群发与推广。"
+         data-en="Scan the code to add the maintainer's WeChat. Used only for project conversations — data errors, channel suggestions, collaboration — never for broadcasts or promotion.">扫描右侧二维码添加维护者的微信小号。仅用于项目讨论（数据错误、频道建议、合作），不做群发与推广。</p>
+      <p class="wechat-note" data-zh="如果二维码过期或无法添加，请改用上方表单或邮件联系。"
+         data-en="If the code has expired or cannot be added, use the form above or email instead.">如果二维码过期或无法添加，请改用上方表单或邮件联系。</p>
+    </div>
+    <figure class="wechat-qr">
+      <img src="../assets/wechat-contact.png" alt="WeChat QR code" width="200" height="200" loading="lazy">
+      <figcaption data-zh="扫码添加" data-en="Scan to add">扫码添加</figcaption>
+    </figure>
+  </section>
+
 </div>
 
 <script>
@@ -143,7 +184,9 @@ button[type=submit] { align-self:flex-start; font:inherit; font-size:14px; paddi
   });
 })();
 </script>
-<script src="../assets/starfield-header.js" defer></script>
-<script src="../assets/theme-wipe.js" defer></script>
+<script src="../assets/starfield-header.js?v=20260512m" defer></script>
+<script src="../assets/theme-wipe.js?v=20260512m" defer></script>
+<script src="../assets/shared-transition.js?v=20260512n" defer></script>
+<script src="../assets/press.js?v=20260513c" defer></script>
 </body>
 </html>

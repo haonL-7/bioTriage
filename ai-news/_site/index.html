@@ -705,10 +705,10 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             content: '';
             position: absolute;
             left: 0; right: 0; top: 0;
-            height: 56px;
+            height: 44px;
             pointer-events: none;
             z-index: 4;
-            background: linear-gradient(to bottom, var(--bg, #ffffff) 0%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(to bottom, var(--bg, #ffffff) 12%, rgba(255,255,255,0) 100%);
         }
         .footer-scene {
             position: relative;
@@ -856,10 +856,50 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             .dna-wrap:hover .dna-lit   { transition: opacity 1.3s ease .3s !important; }
             .dna-wrap:hover .dna-words { transition: opacity 2.2s ease .9s !important; }
         }
+
+        /* ---- 毛玻璃层：极淡光晕底 + 半透明卡片 ---- */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(58% 46% at 10% 6%, rgba(26, 77, 128, .07) 0%, rgba(26, 77, 128, 0) 68%),
+                radial-gradient(48% 42% at 90% 10%, rgba(127, 227, 204, .08) 0%, rgba(127, 227, 204, 0) 70%),
+                radial-gradient(70% 58% at 50% 102%, rgba(26, 77, 128, .06) 0%, rgba(26, 77, 128, 0) 72%);
+        }
+        :root[data-theme="dark"] body::before {
+            background:
+                radial-gradient(58% 46% at 10% 6%, rgba(127, 227, 204, .05) 0%, rgba(127, 227, 204, 0) 68%),
+                radial-gradient(48% 42% at 90% 10%, rgba(56, 183, 159, .05) 0%, rgba(56, 183, 159, 0) 70%);
+        }
+
+        .entry-card {
+            background: rgba(255, 255, 255, .62) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            backdrop-filter: blur(16px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, .8) !important;
+            box-shadow: 0 8px 28px rgba(18, 58, 99, .07), inset 0 1px 0 rgba(255, 255, 255, .9) !important;
+        }
+        .entry-card:hover {
+            background: rgba(255, 255, 255, .78) !important;
+            border-color: rgba(26, 77, 128, .22) !important;
+        }
+        :root[data-theme="dark"] .entry-card {
+            background: rgba(30, 34, 40, .55) !important;
+            border: 1px solid rgba(255, 255, 255, .08) !important;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, .35) !important;
+        }
+        :root[data-theme="dark"] .entry-card:hover {
+            background: rgba(36, 41, 48, .72) !important;
+        }
 </style>
 <link rel="icon" type="image/png" sizes="512x512" href="assets/logo-mark.png">
 <link rel="apple-touch-icon" href="assets/logo-mark.png">
-<link rel="stylesheet" href="assets/nav.css">
+<link rel="stylesheet" href="assets/nav.css?v=20260512m">
+<link rel="stylesheet" href="assets/page-transition.css?v=20260512n">
+<link rel="stylesheet" href="assets/press.css?v=20260513c">
 </head>
 <body>
 
@@ -1045,7 +1085,7 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             'nav-tagline': 'Cut through the noise. Anchor in evidence.',
             'side-label': 'Navigate',
             'nav-home': 'Home',
-            'nav-evidence': 'Gut SCFA Monitor',
+            'nav-evidence': 'Gut Microbiome Co-Metabolism',
             'nav-daily': 'Literature Daily',
             'nav-weekly': 'Literature Weekly',
             'nav-method': 'Evidence Methodology',
@@ -1109,7 +1149,7 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
             'nav-tagline': '穿梭喧杂，锚定实证',
             'side-label': '导航',
             'nav-home': '首页',
-            'nav-evidence': '肠道 SCFA',
+            'nav-evidence': '肠道微生物组共代谢',
             'nav-daily': '文献日报',
             'nav-weekly': '文献周报',
             'nav-method': '证据方法学',
@@ -1357,7 +1397,26 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         var CH = ['computational-genomics', 'metagenomics-informatics', 'structural-bioinformatics',
                   'systems-biology', 'single-cell-omics', 'ml-biology',
                   'databases-knowledge-graphs', 'ai-drug-discovery'];
-        var total = 0, newest = '';
+        var total = 0, newest = '', newestTs = -Infinity;
+        var today = Date.now();
+        var MON = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+        function parseDate(s) {
+          s = String(s || '').trim();
+          if (!s) { return null; }
+          var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
+          if (m) { return Date.UTC(+m[1], +m[2] - 1, +m[3]); }
+          m = /^(\d{4})-([A-Za-z]{3,9})-(\d{1,2})/.exec(s);
+          if (m) { var mo = MON[m[2].slice(0, 3).toLowerCase()]; if (mo) { return Date.UTC(+m[1], mo - 1, +m[3]); } }
+          m = /^(\d{4})-(\d{2})$/.exec(s);
+          if (m) { return Date.UTC(+m[1], +m[2] - 1, 1); }
+          m = /^(\d{4})$/.exec(s);
+          if (m) { return Date.UTC(+m[1], 0, 1); }
+          return null;
+        }
+        function isoOf(ts) {
+          var d = new Date(ts);
+          return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+        }
         var pending = CH.length;
         function done() {
             pending -= 1;
@@ -1375,12 +1434,9 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
                         var arr = d.papers || d.items || [];
                         total += arr.length;
                         arr.forEach(function (p) {
-                            var s = String(p.pub_date || p.pubDate || '');
-                            var iso = new Date();
-                            var todayStr = iso.getFullYear() + '-' +
-                                String(iso.getMonth() + 1).padStart(2, '0') + '-' +
-                                String(iso.getDate()).padStart(2, '0');
-                            if (s && s <= todayStr && s > newest) { newest = s; }
+                            var ts = parseDate(p.pub_date || p.pubDate || '');
+                            if (ts === null || ts > today) { return; }
+                            if (ts > newestTs) { newestTs = ts; newest = isoOf(ts); }
                         });
                     }
                     done();
@@ -1389,7 +1445,7 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
         });
     })();
 </script>
-<script src="assets/dna-helix.js" defer></script>
+<script src="assets/dna-helix.js?v=20260512m" defer></script>
 <script id="cellwall-pointer">
 (function () {
   var wrap = document.querySelector('.dna-wrap');
@@ -1413,6 +1469,8 @@ body, .top-bar, .sidebar, .side-item, .entry-card, .chip, .planning-note, .metho
   })();
 })();
 </script>
-<script src="assets/theme-wipe.js" defer></script>
+<script src="assets/theme-wipe.js?v=20260512m" defer></script>
+<script src="assets/shared-transition.js?v=20260512n" defer></script>
+<script src="assets/press.js?v=20260513c" defer></script>
 </body>
 </html>
