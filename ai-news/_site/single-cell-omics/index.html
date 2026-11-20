@@ -57,7 +57,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
 <a href="../" class="back-link">&larr; bioTriage-Open</a>
 <h1>Single-Cell & Spatial Omics</h1>
 <p class="channel-desc">Computational methods for scRNA-seq, ATAC-seq, trajectory inference, cell-cell communication, and spatial transcriptomics.</p>
-<p class="channel-stats">17 papers curated &middot; High: 0 &middot; Medium: 15 &middot; Low: 2 &middot; Updated: 2026-11-19</p>
+<p class="channel-stats">17 papers curated &middot; High: 0 &middot; Medium: 15 &middot; Low: 2 &middot; Updated: 2026-11-20</p>
 <article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Life science alliance</span>
@@ -65,8 +65,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.26508%2Flsa.202603861" target="_blank" rel="noopener">Label-free multi-metric pipeline for reproducible clustering of single-cell RNA-seq cell types.</a></h3>
-            <p class="paper-summary">The authors present scClustBench, an open-source benchmarking framework that evaluates single-cell RNA-seq clustering by testing cluster quality, stability, and reproducibility across multiple analytical approaches rather than relying on any single clustering method. The goal is to help distinguish genuine biological cell subtypes from analysis artifacts by checking whether proposed clusters can be consistently recovered.</p>
-            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">methodology</span></div>
+            <p class="paper-summary">The authors present scClustBench, an open-source benchmarking framework that evaluates single-cell RNA-seq clustering by testing cluster quality, stability, and reproducibility across multiple analytical approaches rather than relying on a single method. The tool helps distinguish true biological cell subtypes from analysis artifacts by checking whether proposed clusters can be consistently recovered.</p>
+            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">tool</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">bioRxiv : the preprint server for biology</span>
@@ -74,8 +74,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.09.758080" target="_blank" rel="noopener">A versatile set of computational tools for inference of genetic ancestry from human molecular data.</a></h3>
-            <p class="paper-summary">The authors present RAIDS, a software toolkit that infers genetic ancestry from human molecular data, including sequence data that are difficult to genotype. Its data-synthesis approach lets it assess and optimize ancestry inference accuracy for each individual sample without needing cohort data.</p>
-            <div class="paper-tags"><span class="tag">population-genetics</span><span class="tag">tool</span><span class="tag">methodology</span></div>
+            <p class="paper-summary">The authors present RAIDS, a software toolkit that infers genetic ancestry directly from human molecular sequence data, including data that are difficult to genotype. Its data-synthesis approach lets it assess and optimize ancestry-inference accuracy for each individual profile without needing cohort data.</p>
+            <div class="paper-tags"><span class="tag">population-genetics</span><span class="tag">methodology</span><span class="tag">tool</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">GigaScience</span>
@@ -83,7 +83,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fgigascience%2Fgiag100" target="_blank" rel="noopener">SigBridgeR: An R Toolkit for Standardized Identification and Benchmarking of Phenotype-Associated Cell Subpopulations in Single-Cell Transcriptomics.</a></h3>
-            <p class="paper-summary">SigBridgeR is an R toolkit that standardizes the identification and benchmarking of phenotype-associated cell subpopulations by integrating bulk transcriptomic data with single-cell RNA-seq data. It addresses the current fragmentation in the field—where methods differ in algorithms, parameters, and output formats—by providing a unified framework for fair comparison and reproducible analysis. This enables researchers to more reliably determine which computational approach best links cell subpopulations to clinical phenotypes.</p>
+            <p class="paper-summary">SigBridgeR is an R toolkit that standardizes the process of identifying and benchmarking cell subpopulations associated with clinical phenotypes by integrating bulk and single-cell transcriptomic data. It addresses the current fragmentation in the field, where disparate algorithms, parameters, and output formats hinder fair comparison and reproducibility. The toolkit provides a unified framework for method evaluation and selection.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">tool</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -92,8 +92,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.biosystems.2026.105937" target="_blank" rel="noopener">Disagreement-informed arbitration for gene regulatory network inference: A score-level meta-classifier and a diagnostic typology of inter-method conflict.</a></h3>
-            <p class="paper-summary">The authors propose a per-edge arbitration approach for gene regulatory network inference, using a gradient-boosted classifier trained on the raw scores from ten different inference methods (including GENIE3, GRNBoost2, CLR, and ARACNe). Instead of choosing one method or averaging all, the meta-classifier learns edge-specific weights, and the paper also presents a diagnostic typology of inter-method conflicts. Evaluated across six single-cell perturbation screens, this score-level meta-classifier aims to resolve disagreements more effectively than standard consensus strategies.</p>
-            <div class="paper-tags"><span class="tag">machine-learning</span><span class="tag">network-analysis</span><span class="tag">single-cell</span></div>
+            <p class="paper-summary">The authors propose a meta-learning approach to gene regulatory network inference that arbitrates disagreements between ten existing inference methods on a per-edge basis, using a gradient-boosted classifier trained on the raw scores each method assigns. They also develop a diagnostic typology of inter-method conflict, evaluated across six single-cell perturbation screens. The work reframes method disagreement as a signal to be exploited rather than a nuisance to be averaged away.</p>
+            <div class="paper-tags"><span class="tag">network-analysis</span><span class="tag">single-cell</span><span class="tag">machine-learning</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Translational oncology</span>
@@ -101,7 +101,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.tranon.2026.103028" target="_blank" rel="noopener">Integrated single-cell and bulk transcriptomic analysis reveals an epithelial cell-derived prognostic and immunotherapeutic signature with ADAM12 as a key functional regulator in non-small cell lung cancer.</a></h3>
-            <p class="paper-summary">This study integrates single-cell and bulk RNA-seq data from NSCLC to build a prognostic and immunotherapeutic signature (PIS) based on epithelial cell-derived genes, using machine learning to stratify patients by survival and immune activity. Low-PIS patients showed better outcomes and higher immune infiltration, and ADAM12 was validated as a key functional regulator through cell line and mouse experiments. The work links epithelial cell states to immunotherapy response prediction in lung cancer.</p>
+            <p class="paper-summary">This study integrates single-cell and bulk RNA-seq data to build a prognostic and immunotherapeutic signature (PIS) for non-small cell lung cancer, based on epithelial cell-derived genes. The signature stratifies patients by survival and immune activity, with low-PIS patients showing better outcomes and higher immune infiltration. ADAM12 is identified and validated as a key functional regulator through cell line assays and mouse experiments.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">cancer</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -110,8 +110,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.tig.2026.07.004" target="_blank" rel="noopener">A categorization of spatial transcriptomics methods for cell-cell communication analysis.</a></h3>
-            <p class="paper-summary">This review categorizes 33 recent computational methods for inferring cell-cell communication from spatial transcriptomics data into three groups: cell-type or single-cell resolution network inference, modeling of microenvironment-driven transcriptional variability and regulatory modulation, and other emerging frameworks. It highlights how spatial context enables more biologically grounded communication inference than scRNA-seq alone and maps each method to the biological questions it best addresses.</p>
-            <div class="paper-tags"><span class="tag">spatial-omics</span><span class="tag">transcriptomics</span><span class="tag">methodology</span></div>
+            <p class="paper-summary">This review categorizes 33 recent computational methods for inferring cell-cell communication from spatial transcriptomics data into three groups: cell-type or single-cell resolution network inference, modeling of microenvironment-driven transcriptional variability, and regulatory modulation. It highlights how spatial context enables more biologically grounded communication inference than scRNA-seq alone and maps methods to the distinct biological questions they address.</p>
+            <div class="paper-tags"><span class="tag">spatial-omics</span><span class="tag">transcriptomics</span><span class="tag">review</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Computer methods and programs in biomedicine</span>
@@ -119,7 +119,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.cmpb.2026.109563" target="_blank" rel="noopener">A contextual activity score (CAS) for inferring ADAR-associated transcriptional activity across RNA-seq, single-cell, and spatial transcriptomics.</a></h3>
-            <p class="paper-summary">The authors introduce a Contextual Activity Score (CAS) that infers ADAR-associated RNA editing activity from gene expression data rather than raw sequencing reads. This overcomes the limitations of the standard Alu Editing Index (AEI), which requires raw reads and performs poorly on single-cell and spatial transcriptomic data, enabling ADAR activity inference across RNA-seq, single-cell, and spatial platforms.</p>
+            <p class="paper-summary">The authors introduce a Contextual Activity Score (CAS) that infers ADAR-associated RNA editing activity directly from gene expression data, bypassing the need for raw sequencing reads required by the standard Alu Editing Index. This enables ADAR activity estimation across RNA-seq, single-cell, and spatial transcriptomics platforms, where the AEI is impractical.</p>
             <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">single-cell</span><span class="tag">spatial-omics</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -128,7 +128,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fneuonc%2Fnoag170" target="_blank" rel="noopener">An integrated transcriptional and post-transcriptional regulatory circuit orchestrated by NUDT21 maintains the proliferation and survival of neuroblastoma.</a></h3>
-            <p class="paper-summary">This study investigates how alternative polyadenylation (APA), a post-transcriptional regulatory mechanism, contributes to neuroblastoma, the most common pediatric solid tumor. The authors identify NUDT21 as a central orchestrator of an integrated transcriptional and post-transcriptional circuit that sustains neuroblastoma cell proliferation and survival, suggesting APA regulators as potential therapeutic targets.</p>
+            <p class="paper-summary">This study investigates how alternative polyadenylation (APA), a post-transcriptional regulatory mechanism, contributes to neuroblastoma, the most common pediatric solid tumor. The authors identify NUDT21 as a central orchestrator of an integrated transcriptional and post-transcriptional circuit that sustains neuroblastoma cell proliferation and survival. The work highlights APA and its regulators as previously underappreciated drivers of this aggressive childhood cancer.</p>
             <div class="paper-tags"><span class="tag">cancer</span><span class="tag">transcriptomics</span><span class="tag">methodology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -137,8 +137,8 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.28.762504" target="_blank" rel="noopener">Lineage-mixed neurodevelopmental programs in pediatric sarcomas nominate tumor-selective surface antigen pairs.</a></h3>
-            <p class="paper-summary">The authors analyzed a pan-pediatric single-cell RNA-seq atlas of 266 patient- and xenograft-derived samples spanning 22 pediatric solid tumor types to identify shared developmental programs. They found that pediatric sarcomas express lineage-mixed neurodevelopmental gene programs, and used these programs to nominate tumor-selective surface antigen pairs as potential therapeutic targets.</p>
-            <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">cancer</span></div>
+            <p class="paper-summary">This preprint analyzes a pan-pediatric single-cell RNA-seq atlas of 266 samples across 22 pediatric solid tumor types to identify shared developmental gene expression programs. The authors find that pediatric sarcomas exhibit lineage-mixed neurodevelopmental programs, and they use these programs to nominate tumor-selective surface antigen pairs as potential therapeutic targets. The work demonstrates how single-cell atlases can reveal convergent vulnerabilities across rare pediatric cancers.</p>
+            <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">single-cell</span><span class="tag">cancer</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">bioRxiv : the preprint server for biology</span>
@@ -146,7 +146,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.06.08.730896" target="_blank" rel="noopener">HOMED enables hierarchical and multimodal optimization of DNA methylation deconvolution across tissues.</a></h3>
-            <p class="paper-summary">HOMED is a new computational framework for DNA methylation deconvolution that accounts for hierarchical relationships among related cell types and uses single-cell RNA-seq and paired bulk RNA-seq/DNAm data to optimize CpG signatures. This improves the accuracy of estimating cell-type proportions from bulk methylation data, which is important for epigenome-wide association studies where cellular heterogeneity confounds results.</p>
+            <p class="paper-summary">HOMED is a new computational framework for DNA methylation deconvolution that accounts for hierarchical relationships among related cell types and uses single-cell RNA-seq and paired bulk RNA-seq/DNAm data to optimize CpG signatures. This improves estimation of cell-type proportions from bulk methylation data, which is important for epigenome-wide association studies where cellular heterogeneity can confound results. The method was validated across multiple simulated and real datasets.</p>
             <div class="paper-tags"><span class="tag">epigenomics</span><span class="tag">methodology</span><span class="tag">single-cell</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -155,7 +155,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1016%2Fj.cels.2026.101762" target="_blank" rel="noopener">Categorization and analysis of 16 computational methods for estimating cell potency from single-cell RNA-seq data.</a></h3>
-            <p class="paper-summary">This review categorizes 16 computational methods for estimating cell potency (differentiation potential) from static scRNA-seq data into average-based, entropy-based, and knowledge-based approaches. The authors show that these methods rest on different, sometimes conflicting assumptions, and they evaluate them using a unified mathematical framework. The work provides guidance for choosing appropriate potency-inference tools and highlights conceptual disagreements in the field.</p>
+            <p class="paper-summary">This review categorizes 16 computational methods for estimating cell potency—the differentiation potential of individual cells—from static scRNA-seq data. The authors group methods into average-based, entropy-based, and knowledge-based approaches and analyze them under a unified mathematical framework, highlighting differing and sometimes contrasting assumptions. The work provides guidance for choosing appropriate potency metrics and clarifies the conceptual foundations of this emerging analysis paradigm.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">methodology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -164,7 +164,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1093%2Fnar%2Fgkag1040" target="_blank" rel="noopener">CellMarker 3.0: an updated resource of manually curated and computationally predicted cell markers in human/mouse and interactive web tools for single-cell and spatial transcriptomics analysis.</a></h3>
-            <p class="paper-summary">CellMarker 3.0 is an updated database that combines manually curated, experimentally validated cell marker genes with computationally predicted markers for many cell types in human and mouse tissues. It adds substantial new content over the previous version (274 tissues, 1,877 cell types, 64,040 markers, and over 1.2 million tissue-cell type-marker entries) and introduces interactive web tools for analyzing single-cell RNA-seq and spatial transcriptomics data.</p>
+            <p class="paper-summary">CellMarker 3.0 is an updated database that combines manually curated, experimentally validated cell marker genes with computationally predicted markers for many cell types in human and mouse tissues. It adds substantial new content over the prior version and introduces interactive web tools for analyzing single-cell RNA-seq and spatial transcriptomics data.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">spatial-omics</span><span class="tag">database</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -182,25 +182,25 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.64898%2F2026.10.20.760589" target="_blank" rel="noopener">Denoising single-cell ATAC-seq data with Shannon entropy.</a></h3>
-            <p class="paper-summary">The authors introduce a Shannon entropy-based method for filtering out low-quality and empty droplets in single-cell ATAC-seq data. Unlike existing approaches that rely on read depth or predefined genomic features, this method uses the information content of the chromatin accessibility landscape itself to distinguish high-quality nuclei. This should improve downstream analyses by removing noisy droplets that can distort results and obscure rare cell populations.</p>
+            <p class="paper-summary">The authors introduce a Shannon entropy-based method for denoising single-cell ATAC-seq data, specifically to filter out empty droplets and droplets containing damaged nuclei or cellular debris. Unlike existing approaches that rely on read depth or predefined genomic features, this method uses entropy derived from the chromatin accessibility landscape itself to distinguish high-quality nuclei. This improves downstream analysis by removing noisy reads that can distort results and obscure rare cell populations.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">epigenomics</span><span class="tag">methodology</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">PloS one</span>
                 <span class="date">2026-01-01</span>
-                <span class="sig sig-medium">Medium</span>
+                <span class="sig sig-low">Low</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.1371%2Fjournal.pone.0359523" target="_blank" rel="noopener">A ten-gene tyrosine-metabolism signature defines prognosis and reveals metabo-immune suppression in low-grade astrocytoma.</a></h3>
-            <p class="paper-summary">This study identifies a ten-gene signature related to tyrosine metabolism that can predict prognosis in low-grade astrocytoma. The signature also reveals a link between altered tyrosine metabolism and immune suppression in the tumor microenvironment, suggesting a potential metabo-immune axis.</p>
+            <p class="paper-summary">This study identifies a ten-gene signature related to tyrosine metabolism that is associated with prognosis in low-grade astrocytoma. The authors suggest that this signature reflects a state of metabolic and immune suppression, potentially linking tyrosine metabolism to immune evasion in these tumors.</p>
             <div class="paper-tags"><span class="tag">cancer</span><span class="tag">metabolomics</span><span class="tag">transcriptomics</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
                 <span class="journal">Frontiers in immunology</span>
                 <span class="date">2026-01-01</span>
-                <span class="sig sig-low">Low</span>
+                <span class="sig sig-medium">Medium</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffimmu.2026.1869338" target="_blank" rel="noopener">Decoding pyroptosis at single-cell resolution: heterogeneity, microenvironment remodeling and potential translational insights.</a></h3>
-            <p class="paper-summary">This review argues that single-cell RNA sequencing overcomes the limitations of bulk RNA-seq for studying pyroptosis, a pro-inflammatory programmed cell death driven by inflammatory caspases and Gasdermin proteins. It surveys how scRNA-seq reveals cell-to-cell heterogeneity in pyroptotic gene expression, dissects intercellular communication within the microenvironment, and highlights potential translational applications. The paper is a synthesis of existing literature rather than new primary data.</p>
+            <p class="paper-summary">This review discusses how single-cell RNA sequencing can be used to study pyroptosis, a form of inflammatory programmed cell death, overcoming the limitations of bulk RNA-seq in capturing cellular heterogeneity and intercellular communication. It highlights insights into how pyroptotic cells vary between individual cells, how they remodel their surrounding microenvironment, and potential translational applications. The paper synthesizes existing scRNA-seq-based findings on pyroptosis rather than presenting new primary data.</p>
             <div class="paper-tags"><span class="tag">single-cell</span><span class="tag">transcriptomics</span><span class="tag">review</span></div>
         </article><article class="paper-item">
             <div class="paper-meta">
@@ -209,7 +209,7 @@ h1 { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-b
                 <span class="sig sig-low">Low</span>
             </div>
             <h3 class="paper-title"><a href="https://doi.org/10.3389%2Ffgene.2026.1918021" target="_blank" rel="noopener">Reanalysis of public bulk and single-nucleus transcriptomes identifies widespread tumor-normal dysregulation and a cross-layer cell-cycle signal in sinonasal squamous cell carcinoma.</a></h3>
-            <p class="paper-summary">This study reanalyzed public bulk and single-nucleus transcriptomic data to characterize differences between tumor and normal tissue in sinonasal squamous cell carcinoma (SNSCC), a rare cancer with HPV-positive and HPV-negative subtypes. The authors report widespread tumor-normal dysregulation and identify a cell-cycle signal that appears consistently across both bulk and single-nucleus data layers. The work provides a descriptive transcriptomic atlas of SNSCC cellular composition and highlights cell-cycle activity as a cross-layer feature.</p>
+            <p class="paper-summary">This study reanalyzed public bulk and single-nucleus transcriptome datasets to characterize differences between tumor and normal tissue in sinonasal squamous cell carcinoma (SNSCC), a rare head and neck cancer. The authors report widespread tumor-normal transcriptional dysregulation and identify a cell-cycle signal that appears consistently across both bulk and single-nucleus data layers. The work also touches on differences between HPV-positive and HPV-negative tumors, though the abstract is truncated before full results are described.</p>
             <div class="paper-tags"><span class="tag">transcriptomics</span><span class="tag">single-cell</span><span class="tag">cancer</span></div>
         </article>
 <section class="ask">
