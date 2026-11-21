@@ -1,7 +1,7 @@
 {
   "channel": "databases-knowledge-graphs",
-  "generated_at": "2026-11-21T00:21:41.132705",
-  "count": 25,
+  "generated_at": "2026-11-21T23:40:43.715960",
+  "count": 16,
   "papers": [
     {
       "id": "06878c236c58",
@@ -26,42 +26,11 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42997842/"
         }
       ],
-      "summary": "EchoGO is a reproducible framework for functional enrichment of transcriptomic data that uses GOseq as the primary evidence while comparing results across multiple organism annotation contexts with experiment-specific backgrounds. It assembles evidence at the GO-term level with analytical and organism provenance, helping address incomplete annotation and uneven identifier recognition.",
-      "significance": "Medium",
+      "summary": "EchoGO is a reproducible framework for functional enrichment of transcriptomic data that keeps GOseq as the primary evidence while comparing results across multiple organism annotation contexts using experiment-specific backgrounds. It assembles evidence at the GO-term level with analytical and organism provenance, helping address incomplete annotation and uneven identifier recognition. The tool is aimed at making downstream functional interpretation more transparent and reproducible.",
+      "significance": "Low",
       "tags": [
         "transcriptomics",
-        "methodology",
-        "tool"
-      ]
-    },
-    {
-      "id": "a9c02486797c",
-      "title": "PIANO enables generative modeling of gene expression and scales multi-omics integration to 100 million cells.",
-      "abstract": "Single-cell RNA technologies enable the routine acquisition of transcriptomic atlases. However, these molecular profiles are influenced by overlapping sources of variation. Since these covariates confound comparisons, data integration is the first step in most analyses. Three challenges remain: correcting strong batch effects, scaling to millions of cells, and modeling how covariates influence gene expression. To address these challenges, we developed PIANO, probabilistic inference autoencoder networks for multi-omics, a deep learning framework whose central feature is a generative model of ge",
-      "journal": "Cell reports methods",
-      "doi": "10.1016/j.crmeth.2026.101661",
-      "pmid": "43020064",
-      "first_author": "Wang N",
-      "pub_date": "2026-11-12",
-      "source": "PubMed",
-      "url": "https://doi.org/10.1016%2Fj.crmeth.2026.101661",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.1016%2Fj.crmeth.2026.101661"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/43020064/"
-        }
-      ],
-      "summary": "PIANO is a deep learning framework that uses a generative model of gene expression to integrate single-cell multi-omics data. It addresses three key challenges: correcting strong batch effects, scaling to millions of cells (up to 100 million), and modeling how covariates influence gene expression. This enables more accurate comparisons across large-scale transcriptomic atlases.",
-      "significance": "High",
-      "tags": [
-        "single-cell",
-        "machine-learning",
+        "tool",
         "methodology"
       ]
     },
@@ -88,13 +57,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43006134/"
         }
       ],
-      "summary": "gcPathogen 2.0 is a major update to a pathogen genomic surveillance database, expanding coverage from 1,134 to 1,506 pathogenic species and surpassing 2.3 million genomic records. The update adds integrated genomic and transcriptional profiles, systematic tracking of cross-habitat distribution, and large-scale antimicrobial peptide discovery, supporting One Health research across bacteria, fungi, viruses, and parasites.",
+      "summary": "gcPathogen 2.0 is a major update to a pathogen genomic surveillance database, expanding coverage from 1,134 to 1,506 pathogenic species across bacteria, fungi, viruses, and parasites, with over 2.3 million genomic records. The update adds integrated transcriptomic profiles, systematic tracking of cross-habitat distribution to support One Health research, and large-scale discovery of antimicrobial peptides.",
       "significance": "Medium",
       "tags": [
         "database",
         "genomics",
-        "metagenomics",
-        "microbiology"
+        "transcriptomics",
+        "microbiology",
+        "metagenomics"
       ]
     },
     {
@@ -120,7 +90,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42984451/"
         }
       ],
-      "summary": "Met-SC is a new integrated metabolomics database and analysis platform that supports standardized deposition of metabolomics data across LC-MS, CE-MS, and NMR workflows, along with spectral resource management and online analysis tools. It contains over 7.7 million reference spectra and adds disease-focused knowledge mining, aiming to make metabolomics data easier to store, analyze, and reuse.",
+      "summary": "Met-SC is a new integrated metabolomics database and analysis platform that supports standardized data deposition, spectral resource management, online analysis, and disease-focused knowledge mining. It captures detailed metadata across LC-MS, CE-MS, and NMR workflows and contains over 7.7 million reference spectra, addressing the growing need for integrated storage and reuse of metabolomics data.",
       "significance": "Medium",
       "tags": [
         "metabolomics",
@@ -151,12 +121,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42976355/"
         }
       ],
-      "summary": "ChatDRex is a conversational multi-agent platform that integrates disease module identification and drug repurposing prediction by coordinating specialized agents over heterogeneous biomedical data and networks. It aims to lower the barrier to complex in silico repurposing workflows by letting users interact in natural language while agents handle data integration and analysis. The work is a platform-development study, so its main contribution is the architecture and workflow rather than a validated new repurposing candidate.",
+      "summary": "ChatDRex is a conversational multi-agent platform that integrates disease module identification and drug repurposing prediction by coordinating specialized AI agents over network-based data. It aims to overcome the fragmentation of existing tools and heterogeneous data sources by letting users interact through natural language to run complex repurposing workflows. The platform is presented as a development study, so its practical impact will depend on validation and adoption.",
       "significance": "Medium",
       "tags": [
         "drug-discovery",
         "network-analysis",
-        "LLM"
+        "machine-learning"
       ]
     },
     {
@@ -182,7 +152,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42969043/"
         }
       ],
-      "summary": "InterPro is a freely accessible database that integrates predictive models from multiple member databases to classify protein sequences into families and identify domains and functional sites. The 2027 update provides annotations for hundreds of millions of sequences, covering UniProtKB extensively and linking to resources like Gene Ontology and PDBe. This makes it a central hub for protein functional annotation.",
+      "summary": "InterPro is a freely accessible database that classifies protein sequences by integrating predictive models (signatures) from multiple member databases to assign proteins to families and identify domains and functional sites. The 2027 update provides annotations for hundreds of millions of sequences, achieving extensive coverage of UniProtKB and linking to major resources such as Gene Ontology and PDBe. This makes it a central reference for protein functional annotation.",
       "significance": "High",
       "tags": [
         "proteomics",
@@ -213,12 +183,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42379284/"
         }
       ],
-      "summary": "This study profiled miRNA expression changes in human macrophage-like THP-1 cells after exposure to crystalline silica particles, identifying both intracellular and extracellular (secreted) miRNA responses. The findings suggest that specific miRNAs could serve as effect biomarkers of silica exposure in human biomonitoring. The work is preliminary and limited to a single cell line, but provides a starting point for developing exposure biomarkers for silicosis and related diseases.",
+      "summary": "This study exposed human macrophage-like THP-1 cells to crystalline silica particles and profiled changes in microRNA expression, identifying both intracellular and extracellular miRNA responses to the exposure. The work suggests miRNAs could serve as biomarkers of silica exposure in human biomonitoring, though the findings are preliminary and limited to a cell line model.",
       "significance": "Low",
       "tags": [
         "transcriptomics",
-        "clinical",
-        "methodology"
+        "methodology",
+        "clinical"
       ]
     },
     {
@@ -244,7 +214,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42314081/"
         }
       ],
-      "summary": "This review synthesizes evidence on managing graft-versus-host disease (GVHD) symptoms after hematopoietic stem cell transplantation to build a structured knowledge graph for nursing interventions. The goal is to give nurses a systematic tool for addressing GVHD symptoms across multiple organ systems, where current practice lacks structured guidance.",
+      "summary": "This review synthesizes evidence on managing symptoms of graft-versus-host disease (GVHD) after hematopoietic stem cell transplantation to build a knowledge graph for nursing interventions. The work aims to provide a structured tool that helps nurses address GVHD symptoms across multiple organ systems, addressing a gap in current clinical practice.",
       "significance": "Low",
       "tags": [
         "clinical",
@@ -275,137 +245,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42302922/"
         }
       ],
-      "summary": "This study shows that both acne-associated and healthy skin-associated strains of Cutibacterium acnes rapidly trigger extracellular trap release from human neutrophils and Th17 T cells. While neutrophil extracellular traps had a conserved proteomic profile regardless of strain, T-cell extracellular traps (TETs) exhibited distinct proteome programs depending on the C. acnes strain, suggesting strain-specific functional consequences in acne pathogenesis.",
+      "summary": "This study shows that both acne-associated and healthy skin-associated strains of Cutibacterium acnes trigger rapid extracellular trap release from human neutrophils and Th17 T cells. While neutrophil extracellular traps had a conserved proteomic profile regardless of strain, T-cell extracellular traps induced by the two strains displayed distinct proteomic programs, suggesting strain-specific functional consequences in acne pathogenesis.",
       "significance": "Medium",
       "tags": [
-        "immunology",
+        "microbiome",
         "proteomics",
-        "microbiome"
-      ]
-    },
-    {
-      "id": "e177cd1f8a08",
-      "title": "Reframing QSP: AI-Driven Multi-Modal Data as a New Measurement Layer.",
-      "abstract": "Quantitative systems pharmacology (QSP) provides a mechanistic framework for integrating biological and pharmacological knowledge in drug development. Simultaneously, advances in artificial intelligence (AI), particularly in multi-modal data analysis, are transforming how biological information is derived. I argue that AI should not be viewed as a data integration tool, but as a new layer of quantitative measurement generation. This reframing positions QSP as a foundational model of biology, used here in a conceptual rather than technical sense, and AI as a source of quantitative inputs.",
-      "journal": "CPT: pharmacometrics & systems pharmacology",
-      "doi": "10.1002/psp4.70373",
-      "pmid": "42971924",
-      "first_author": "Knöchel J",
-      "pub_date": "2026-11-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.1002%2Fpsp4.70373",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.1002%2Fpsp4.70373"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42971924/"
-        }
-      ],
-      "summary": "This perspective argues that AI-driven multi-modal data analysis should be reconceived not as a tool for integrating data into quantitative systems pharmacology (QSP) models, but as a new layer that generates quantitative measurements. In this reframing, QSP serves as a conceptual foundational model of biology while AI supplies the quantitative inputs, potentially reshaping how mechanistic drug-development models are built and parameterized.",
-      "significance": "Medium",
-      "tags": [
-        "systems-biology",
-        "machine-learning",
-        "drug-discovery"
-      ]
-    },
-    {
-      "id": "4678739ec691",
-      "title": "PDBe-SIFTS: An open-source tool for Structure Integration with Function, Taxonomy, and Sequences, featuring improved alignment, scoring scheme, and accelerated search.",
-      "abstract": "Structure integration with function, taxonomy and sequences (SIFTS) provides residue-level mappings between UniProt Knowledgebase sequences and Protein Data Bank structures and has historically been generated through internal Protein Data Bank in Europe (PDBe) pipelines. Here, PDBe-SIFTS is presented as a fully open-source, locally deployable implementation of this mapping framework. The pipeline combines fast, scalable sequence search using MMseqs2, an improved bounded scoring scheme for ranking candidate mappings, and residue-level mapping refinement based on backbone connectivity. PDBe-SIFT",
-      "journal": "Protein science : a publication of the Protein Society",
-      "doi": "10.1002/pro.70819",
-      "pmid": "42885203",
-      "first_author": "Bellaiche A",
-      "pub_date": "2026-11-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.1002%2Fpro.70819",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.1002%2Fpro.70819"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42885203/"
-        }
-      ],
-      "summary": "PDBe-SIFTS is a new open-source, locally deployable tool that maps UniProt protein sequences to PDB structures at residue-level resolution. It improves on the original SIFTS pipeline by using MMseqs2 for fast sequence search, a better scoring scheme for ranking candidate mappings, and connectivity-based refinement of residue alignments. This makes high-quality structure-function mapping accessible to any lab without relying on internal PDBe infrastructure.",
-      "significance": "Medium",
-      "tags": [
-        "structural-biology",
-        "database",
-        "tool",
-        "methodology"
-      ]
-    },
-    {
-      "id": "49b7751eeeeb",
-      "title": "EXPERT: A practical and forward-looking guide to capturing protein expression and purification metadata to develop machine learning models.",
-      "abstract": "As machine learning (ML) becomes increasingly important in protein engineering, synthetic biology, and bioprocess optimization, the lack of consistent, complete, and standardized experimental reporting remains a major barrier to building effective models. EXPERT (EXpression and Purification Experimental Reporting Template) defines a structured framework for capturing protein expression and purification data across the community, to increase reproducibility across laboratories and support downstream ML applications. We propose here the essential data that should be recorded during expression an",
-      "journal": "The Journal of biological chemistry",
-      "doi": "10.1016/j.jbc.2026.113610",
-      "pmid": "42810683",
-      "first_author": "Cooper CDO",
-      "pub_date": "2026-11-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.1016%2Fj.jbc.2026.113610",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.1016%2Fj.jbc.2026.113610"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42810683/"
-        }
-      ],
-      "summary": "The paper introduces EXPERT, a structured reporting template for capturing protein expression and purification metadata in a consistent, standardized way. The authors argue that inconsistent experimental reporting is a major barrier to building effective machine learning models for protein engineering and bioprocess optimization, and propose the essential data fields that should be recorded during expression and purification workflows.",
-      "significance": "Medium",
-      "tags": [
-        "proteomics",
-        "machine-learning",
-        "methodology"
-      ]
-    },
-    {
-      "id": "5fa5e275774b",
-      "title": "Single-cell chromatin accessibility atlas decodes bone development, diseases, and regeneration.",
-      "abstract": "Bone development, homeostasis, and regeneration are governed by complex, dynamic gene regulatory programs, and these processes are disrupted in numerous skeletal diseases. The epigenetic landscape-particularly chromatin accessibility-dictates transcription factor binding and gene expression, which fundamentally shape bone cell fate and function. In recent years, single-cell chromatin accessibility technologies, most notably single-cell assay for transposase-accessible chromatin using sequencing (scATAC-seq), have revolutionized bone epigenome research and enabled single-cell resolution dissect",
-      "journal": "Journal of advanced research",
-      "doi": "10.1016/j.jare.2026.10.040",
-      "pmid": "42962911",
-      "first_author": "Jin Y",
-      "pub_date": "2026-10-30",
-      "source": "PubMed",
-      "url": "https://doi.org/10.1016%2Fj.jare.2026.10.040",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.1016%2Fj.jare.2026.10.040"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42962911/"
-        }
-      ],
-      "summary": "This review synthesizes how single-cell chromatin accessibility profiling, especially scATAC-seq, has been applied to map the epigenetic regulatory landscape of bone development, skeletal disease, and regeneration. It highlights how these technologies reveal transcription factor binding programs and gene regulatory networks that control bone cell fate at single-cell resolution, and discusses how these maps can inform understanding of skeletal pathologies and regenerative strategies.",
-      "significance": "Medium",
-      "tags": [
-        "epigenomics",
-        "single-cell",
-        "development"
+        "immunology"
       ]
     },
     {
@@ -431,12 +276,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42969579/"
         }
       ],
-      "summary": "This paper develops a focused knowledge graph that organizes traditional Chinese medicine (TCM) literature on hypertension with emotional comorbidities such as anxiety, depression, and insomnia, linking syndrome patterns, treatment principles, formulas, and herbs to their sources. It then evaluates the knowledge graph's contribution to generated answers through a blinded question-answering assessment. The work demonstrates how a domain-specific knowledge graph can support grounded, source-traceable answers in a specialized clinical domain.",
+      "summary": "This paper develops a focused knowledge graph from traditional Chinese medicine literature on hypertension with emotional comorbidities (anxiety, depression, insomnia), capturing syndrome patterns, treatment principles, formulas, and herbs with source attribution. It then evaluates the graph's utility through a blinded question-answering assessment, separating the graph's organizational value from the quality of generated answers. The work demonstrates a domain-specific KG construction and evaluation approach for TCM clinical knowledge.",
       "significance": "Medium",
       "tags": [
-        "knowledge-graph",
+        "database",
         "clinical",
-        "LLM"
+        "machine-learning"
       ]
     },
     {
@@ -462,43 +307,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43019861/"
         }
       ],
-      "summary": "This study combined cost-effective genotyping-by-sequencing (GBS) with two ensemble machine learning methods, Random Forest and Gradient Boosting Machine, to identify SNP markers associated with body weight at hatch and 3 weeks in broiler chickens. The approach demonstrates that GBS plus ML can serve as a cheaper alternative to high-density SNP arrays for genome-wide association studies in poultry breeding. The work highlights informative markers that could support marker-assisted selection for growth traits.",
+      "summary": "This study combined cost-effective genotyping-by-sequencing (GBS) with two ensemble machine learning methods, Random Forest and Gradient Boosting Machine, to identify SNP markers associated with body weight at hatch and 3 weeks in broiler chickens. The approach demonstrates that GBS plus ML can serve as an affordable alternative to high-density SNP arrays for genome-wide association work in poultry breeding. It identifies informative markers that could support marker-assisted selection for growth traits.",
       "significance": "Medium",
       "tags": [
         "genomics",
         "machine-learning",
         "population-genetics"
-      ]
-    },
-    {
-      "id": "d207580f7cdd",
-      "title": "Lessons From CABBI: Advancing Vegetative Oil Production in C4 Crops Through a Vertically Integrated DBTL Framework.",
-      "abstract": "The global demand for renewable liquid fuels and biobased chemicals has intensified interest in engineering high-biomass C4 grasses to accumulate triacylglycerol (TAG) in vegetative tissues. Achieving this goal requires coordinated solutions across molecular biology, crop science, chemical engineering, and life cycle assessment, disciplines that rarely operate within a single research program. The Center for Advanced Bioenergy and Bioproducts Innovation (CABBI) was established to provide this integration through a Design-Build-Test-Learn (DBTL) framework applied to three C4 feedstocks: sacchar",
-      "journal": "Plant biotechnology journal",
-      "doi": "10.1111/pbi.70771",
-      "pmid": "42947611",
-      "first_author": "Lunn D",
-      "pub_date": "2026-10-28",
-      "source": "PubMed",
-      "url": "https://doi.org/10.1111%2Fpbi.70771",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.1111%2Fpbi.70771"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42947611/"
-        }
-      ],
-      "summary": "This paper describes how the CABBI research center used a Design-Build-Test-Learn framework to coordinate efforts across molecular biology, crop science, chemical engineering, and life cycle assessment to engineer C4 grasses (such as sugarcane and sorghum) to accumulate oil (triacylglycerol) in their vegetative tissues rather than just seeds. It reports lessons from this vertically integrated, multi-disciplinary approach to producing renewable fuels and biobased chemicals from high-biomass crops.",
-      "significance": "Medium",
-      "tags": [
-        "plants",
-        "synthetic-biology",
-        "metabolic-engineering"
       ]
     },
     {
@@ -524,7 +338,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42990210/"
         }
       ],
-      "summary": "The authors compute phenologs—statistically significant overlaps between human disease genes and model-organism phenotype genes linked by orthology—at knowledge-graph scale using the Monarch Knowledge Graph, covering human and seven model species. Using PANTHER protein families as an orthology framework, they produce a catalog of candidate genes for thousands of human diseases, including cross-species links such as mouse-to-slime-mold. This provides a systematic, principled resource for transferring model-organism gene-phenotype knowledge to human disease gene discovery.",
+      "summary": "The authors compute phenologs—pairs of human diseases and model-organism phenotypes whose orthologous genes overlap more than expected by chance—at scale using the Monarch Knowledge Graph, which integrates gene-disease, gene-phenotype, and orthology data across human and seven model species. Using PANTHER protein families as an orthology framework, they generate a mouse-to-slime-mold catalog of candidate genes for thousands of human diseases, demonstrating that distant model organisms can yield disease gene candidates.",
       "significance": "Medium",
       "tags": [
         "genomics",
@@ -555,12 +369,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42934170/"
         }
       ],
-      "summary": "OmniVira is a curated knowledgebase that consolidates literature-derived evidence on viral spillover and cross-species transmission into structured, source-linked records. It uses an auditable framework that connects individual findings and supporting text to normalized virus, host, and geographic entities, making dispersed surveillance, epidemiological, and genomic evidence reusable and traceable.",
+      "summary": "OmniVira is a curated knowledgebase that converts literature on viral spillover and cross-species transmission into structured, traceable evidence records. Each finding is linked to normalized virus, host, and geographic entities, along with supporting text, creating an auditable framework for reuse. This consolidates dispersed surveillance, epidemiological, experimental, and genomic evidence into a single resource for zoonotic emergence research.",
       "significance": "Medium",
       "tags": [
         "database",
-        "metagenomics",
-        "microbiology"
+        "microbiology",
+        "metagenomics"
       ]
     },
     {
@@ -586,7 +400,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42932871/"
         }
       ],
-      "summary": "This retrospective multicenter study develops a biomarker-aware Transformer model that leverages longitudinal electronic health record data to predict the onset of acute kidney injury and to forecast patient prognosis after onset. The approach addresses the high dimensionality, heterogeneity, and temporal complexity of EHR data, aiming to support earlier prevention and better post-onset care decisions.",
+      "summary": "This retrospective multicenter study develops a biomarker-aware Transformer model to predict the onset of acute kidney injury (AKI) and to forecast patient prognosis after AKI occurs, using longitudinal electronic health record data. The approach aims to handle the high dimensionality, heterogeneity, and temporal complexity of EHRs that challenge conventional machine learning methods. The work suggests that Transformer-based architectures incorporating biomarker information can support both early warning and post-onset risk stratification in hospitalized patients.",
       "significance": "Medium",
       "tags": [
         "machine-learning",
@@ -617,12 +431,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42954128/"
         }
       ],
-      "summary": "This paper develops and evaluates a Meta Mesh Ontology designed to integrate mental health knowledge across different domains, addressing the limitations of rigid categorical diagnostic systems like DSM-5 and ICD-11. The ontology aims to capture the complexity, heterogeneity, and dynamic nature of mental disorders, including multifactorial etiologies, dimensional symptom profiles, and comorbidity. It represents an effort to provide a more flexible knowledge representation framework for psychiatric classification.",
+      "summary": "This paper develops and evaluates a Meta Mesh Ontology designed to integrate mental health knowledge across different domains, addressing the limitations of rigid categorical systems like DSM-5 and ICD-11. The ontology aims to better capture the complexity, heterogeneity, and comorbidity of psychiatric disorders by combining dimensional models and domain-specific ontologies into a unified framework.",
       "significance": "Medium",
       "tags": [
         "database",
-        "methodology",
-        "clinical"
+        "clinical",
+        "methodology"
       ]
     },
     {
@@ -648,7 +462,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42922359/"
         }
       ],
-      "summary": "scSpatial is a new atlas/database that aggregates single-cell spatial omics datasets, which were previously scattered across individual publications. It integrates spatial coordinates with molecular profiles and cell identities to support construction of spatially resolved cell atlases and characterization of disease-associated tissue remodeling. The resource aims to make SCSO data more accessible and reusable for the community.",
+      "summary": "scSpatial is a new atlas/database that consolidates single-cell spatial omics datasets that were previously scattered across individual publications. It integrates spatial coordinates with molecular profiles and cell identities to support construction of spatially resolved cell atlases and characterization of disease-associated tissue remodeling. The resource aims to make fragmented SCSO data centrally accessible for the spatial omics community.",
       "significance": "Medium",
       "tags": [
         "spatial-omics",
@@ -679,107 +493,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43011331/"
         }
       ],
-      "summary": "This hypothesis paper proposes a framework for 'closed-loop cognitive state control,' in which an individual's task-specific high-performance cognitive states are rapidly entered, stabilized, and recovered using real-time multimodal sensing. Cognition is modeled as a partially observable dynamical system whose latent states are inferred from behavioral, physiological, and contextual signals. The work is conceptual and does not present empirical validation.",
+      "summary": "This hypothesis paper proposes a framework for 'closed-loop cognitive state control,' in which an individual's task-specific high-performance cognitive states are rapidly entered, stabilized, and recovered using real-time multimodal inference. Cognition is modeled as a partially observable dynamical system whose latent states are estimated from behavioral, physiological, and contextual signals. The work is conceptual and does not present empirical validation.",
       "significance": "Low",
       "tags": [
         "neuroscience",
         "systems-biology",
         "methodology"
-      ]
-    },
-    {
-      "id": "4cdf95a4375a",
-      "title": "Identification of metabolic vulnerabilities and synthetic lethal targets utilizing artificial intelligence-driven precision medicine.",
-      "abstract": "Cancer metabolism is highly plastic, and most attempts to turn that plasticity into a therapeutic target fail for a specific, recurring reason: a computational prediction of a metabolic vulnerability is not the same evidentiary object as an experimentally confirmed one, and the two are routinely discussed as if they were interchangeable. This review takes that distinction as its starting point rather than its conclusion. Artificial intelligence and genome-scale systems biology have made it easy to generate metabolic hypotheses at a scale no experimental program could match - machine learning m",
-      "journal": "Frontiers in oncology",
-      "doi": "10.3389/fonc.2026.1972698",
-      "pmid": "43011687",
-      "first_author": "Mir R",
-      "pub_date": "2026-01-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.3389%2Ffonc.2026.1972698",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.3389%2Ffonc.2026.1972698"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/43011687/"
-        }
-      ],
-      "summary": "This review argues that computationally predicted metabolic vulnerabilities in cancer are not equivalent to experimentally confirmed ones, and that the field often conflates the two. It surveys how AI and genome-scale systems biology generate metabolic hypotheses at scale, and calls for clearer evidentiary standards before predictions are treated as validated synthetic lethal targets.",
-      "significance": "Medium",
-      "tags": [
-        "metabolomics",
-        "machine-learning",
-        "cancer",
-        "systems-biology",
-        "review"
-      ]
-    },
-    {
-      "id": "4f2a9804e347",
-      "title": "Artificial Intelligence as a Multifaceted Toolkit for Antibacterial Drug Discovery against Resistance.",
-      "abstract": "How artificial intelligence (AI) can be rationally applied to antibacterial drug discovery and development to overcome antimicrobial resistance (AMR) remains insufficiently defined, particularly across different resistance mechanisms and translational stages. The global emergence and dissemination of AMR are compromising conventional antibacterial therapies, while slow antibiotic discovery, limited target diversity, and reliance on single-mechanism drug design further increase the risk of inadequate treatment options. With strengths in multi-omics integration, complex pattern recognition, and ",
-      "journal": "Research (Washington, D.C.)",
-      "doi": "10.34133/research.1457",
-      "pmid": "43011525",
-      "first_author": "You J",
-      "pub_date": "2026-01-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.34133%2Fresearch.1457",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.34133%2Fresearch.1457"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/43011525/"
-        }
-      ],
-      "summary": "This review argues that AI can be applied as a structured toolkit across antibacterial drug discovery and development to combat antimicrobial resistance, rather than as a single isolated technique. It emphasizes AI's strengths in integrating multi-omics data and recognizing complex patterns to address slow antibiotic discovery, limited target diversity, and single-mechanism drug design. The paper frames AI applications across different resistance mechanisms and translational stages.",
-      "significance": "Medium",
-      "tags": [
-        "drug-discovery",
-        "machine-learning",
-        "review"
-      ]
-    },
-    {
-      "id": "ebb279f731a0",
-      "title": "Sustainable nutrition: integrating food systems, environmental science, and diet to advance public and planetary health.",
-      "abstract": "Nutrition science has traditionally focused on dietary intake, nutrient metabolism, physiology, and health outcomes. Although these domains remain fundamental, advancing public health increasingly requires understanding nutrition within the broader systems that shape food production, processing, access, consumption, and environmental sustainability. This Perspective proposes sustainable nutrition as a unifying concept: maintaining nutritional status that supports growth, development, and health across the lifespan while accounting for population needs, context, and the capacity and resilience ",
-      "journal": "Frontiers in nutrition",
-      "doi": "10.3389/fnut.2026.1976376",
-      "pmid": "43005144",
-      "first_author": "Bremer AA",
-      "pub_date": "2026-01-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.3389%2Ffnut.2026.1976376",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.3389%2Ffnut.2026.1976376"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/43005144/"
-        }
-      ],
-      "summary": "This perspective proposes 'sustainable nutrition' as a unifying concept that links dietary intake and health outcomes with food production, processing, access, consumption, and environmental sustainability. It argues that advancing public and planetary health requires understanding nutrition within these broader food-system and environmental contexts rather than focusing on intake and metabolism alone.",
-      "significance": "Low",
-      "tags": [
-        "review",
-        "clinical",
-        "population-genetics"
       ]
     }
   ]
