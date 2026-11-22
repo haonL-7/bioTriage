@@ -1,7 +1,7 @@
 {
   "channel": "single-cell-omics",
-  "generated_at": "2026-11-21T23:40:09.802525",
-  "count": 17,
+  "generated_at": "2026-11-22T23:54:30.618523",
+  "count": 15,
   "papers": [
     {
       "id": "f68cc3c095e6",
@@ -26,12 +26,13 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43039660/"
         }
       ],
-      "summary": "The authors present scClustBench, an open-source benchmarking framework that evaluates single-cell RNA-seq clustering by testing cluster quality, stability, and reproducibility across multiple analytical approaches rather than relying on a single method. The tool helps distinguish true biological cell subtypes from analysis artifacts by checking whether proposed clusters can be consistently recovered.",
+      "summary": "The authors present scClustBench, an open-source benchmarking framework that evaluates single-cell RNA-seq clustering by testing cluster quality, stability, and reproducibility across multiple analytical approaches rather than relying on a single method. The tool helps distinguish genuine biological cell subtypes from analysis artifacts by checking whether proposed clusters can be consistently recovered.",
       "significance": "Medium",
       "tags": [
         "single-cell",
         "transcriptomics",
-        "tool"
+        "tool",
+        "methodology"
       ]
     },
     {
@@ -57,7 +58,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42999047/"
         }
       ],
-      "summary": "The authors present RAIDS, a software toolkit that infers genetic ancestry from human molecular data, including sequence data that are difficult to genotype. Its data-synthesis approach allows accuracy to be assessed and optimized for each individual profile without needing cohort data, making ancestry inference more broadly applicable to diverse molecular datasets.",
+      "summary": "The authors present RAIDS, a software toolkit for inferring genetic ancestry from human molecular data, including sequence data that are difficult to genotype. Its data-synthesis approach allows per-sample accuracy assessment and optimization without requiring cohort data. This makes ancestry inference more broadly applicable to diverse molecular datasets.",
       "significance": "Medium",
       "tags": [
         "population-genetics",
@@ -88,7 +89,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43008316/"
         }
       ],
-      "summary": "SigBridgeR is an R toolkit that standardizes the identification and benchmarking of phenotype-associated cell subpopulations by integrating bulk transcriptomic and single-cell RNA-seq data. It addresses the current lack of comparability across computational methods by providing unified interfaces, parameter configurations, and output formats, enabling fair method comparison and reproducible analyses.",
+      "summary": "SigBridgeR is an R toolkit that standardizes the identification and benchmarking of phenotype-associated cell subpopulations by integrating bulk and single-cell transcriptomic data. It addresses the lack of fair comparison and reproducibility across existing computational methods by providing a unified framework with consistent parameters and output formats. This enables researchers to more reliably link specific cell types to clinical phenotypes.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -120,12 +121,13 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42727749/"
         }
       ],
-      "summary": "The authors propose a per-edge arbitration approach for gene regulatory network inference, training a gradient-boosted classifier on the raw scores from ten different inference methods to decide which method to trust for each regulator-target pair rather than picking one method or averaging all. They also develop a diagnostic typology of inter-method conflicts. Evaluated across six single-cell perturbation screens, the approach aims to resolve method disagreement at the level of individual edges.",
+      "summary": "The authors propose a per-edge arbitration approach for gene regulatory network inference, training a gradient-boosted classifier on the raw scores from ten different inference methods (including GENIE3, GRNBoost2, CLR, and ARACNe) so that method weighting varies by edge rather than being fixed globally. They also develop a diagnostic typology of inter-method conflict. Evaluated across six single-cell perturbation screens, the approach aims to resolve disagreements between inference methods more intelligently than selecting one method or simple averaging.",
       "significance": "Medium",
       "tags": [
         "network-analysis",
         "single-cell",
-        "machine-learning"
+        "machine-learning",
+        "methodology"
       ]
     },
     {
@@ -151,11 +153,11 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42705211/"
         }
       ],
-      "summary": "This study integrates single-cell and bulk RNA-seq data with machine learning to build a prognostic and immunotherapeutic signature (PIS) for non-small cell lung cancer, based on epithelial cell-derived genes. The signature stratifies patients by survival and immune activity, with low-PIS patients showing better outcomes and higher immune infiltration. ADAM12 is identified as a key functional regulator and validated in cell lines and mouse models.",
+      "summary": "This study integrates single-cell and bulk RNA-seq data with machine learning to build a prognostic and immunotherapeutic signature (PIS) for non-small cell lung cancer based on epithelial cell-derived genes. The signature stratifies patients by survival and immune activity, with low-PIS patients showing better outcomes and higher immune infiltration. ADAM12 is identified and validated as a key functional regulator through cell line and mouse experiments.",
       "significance": "Medium",
       "tags": [
-        "transcriptomics",
         "single-cell",
+        "transcriptomics",
         "cancer"
       ]
     },
@@ -182,12 +184,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42601252/"
         }
       ],
-      "summary": "This review organizes 33 recent spatial transcriptomics methods for cell-cell communication analysis into three categories: cell-type or single-cell resolution network inference, microenvironment-driven transcriptional variability modeling, and regulatory modulation. It highlights how spatial context enables more biologically grounded communication inference than scRNA-seq alone and maps methods to distinct biological questions.",
+      "summary": "This review categorizes 33 recent computational methods for inferring cell-cell communication from spatial transcriptomics data into three groups: cell-type or single-cell resolution network inference, modeling of microenvironment-driven transcriptional variability, and regulatory modulation. It highlights how spatial context enables more biologically grounded communication inference than scRNA-seq alone and maps methods to the distinct biological questions they address.",
       "significance": "Medium",
       "tags": [
         "spatial-omics",
         "transcriptomics",
-        "review"
+        "review",
+        "network-analysis",
+        "methodology"
       ]
     },
     {
@@ -213,7 +217,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42526067/"
         }
       ],
-      "summary": "The authors introduce a Contextual Activity Score (CAS) that infers ADAR-associated RNA editing activity from gene expression data rather than raw sequencing reads. This overcomes the limitations of the standard Alu Editing Index (AEI), which requires raw reads and cannot be applied to single-cell or spatial transcriptomics. CAS thus enables estimation of ADAR activity across RNA-seq, single-cell, and spatial datasets.",
+      "summary": "The authors introduce a Contextual Activity Score (CAS), a new metric for inferring ADAR-associated RNA editing activity from gene expression data rather than raw sequencing reads. Unlike the standard Alu Editing Index, CAS is designed to work across bulk RNA-seq, single-cell, and spatial transcriptomics, where read-level editing quantification is impractical. This provides a broadly applicable framework for studying ADAR activity in contexts previously inaccessible to existing methods.",
       "significance": "Medium",
       "tags": [
         "transcriptomics",
@@ -244,7 +248,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42507894/"
         }
       ],
-      "summary": "This study identifies NUDT21, a core alternative polyadenylation (APA) factor, as a key regulator that coordinates both transcriptional and post-transcriptional programs to sustain neuroblastoma proliferation and survival. The work links APA-mediated regulation to the maintenance of an oncogenic state in this pediatric solid tumor, suggesting NUDT21 and its downstream circuit as potential therapeutic targets.",
+      "summary": "This study investigates how alternative polyadenylation (APA), a post-transcriptional regulatory mechanism, contributes to neuroblastoma, the most common pediatric solid tumor. The authors identify NUDT21 as a key orchestrator of an integrated transcriptional and post-transcriptional circuit that sustains neuroblastoma cell proliferation and survival, suggesting APA regulation as a potential therapeutic vulnerability.",
       "significance": "Medium",
       "tags": [
         "cancer",
@@ -275,7 +279,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42990313/"
         }
       ],
-      "summary": "This preprint analyzes a pan-pediatric single-cell RNA-seq atlas of 266 samples across 22 pediatric solid tumor types to identify shared developmental gene expression programs. The authors find that pediatric sarcomas exhibit lineage-mixed neurodevelopmental programs, and they use these programs to nominate tumor-selective surface antigen pairs for potential therapeutic targeting. The work demonstrates how single-cell atlases can reveal convergent vulnerabilities in low-mutation-burden pediatric tumors.",
+      "summary": "The authors analyzed a large single-cell RNA-seq atlas of 266 pediatric solid tumor samples and xenografts, revealing that pediatric sarcomas express mixed neurodevelopmental gene programs reflecting their arrested progenitor origins. This lineage mixing identifies tumor-selective pairs of surface antigens that could serve as targets for combinatorial therapy, offering a potential strategy to overcome the low mutational burden of these cancers.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -306,7 +310,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42990126/"
         }
       ],
-      "summary": "HOMED is a new computational framework for DNA methylation deconvolution that improves estimation of cell-type proportions in bulk tissue samples. It incorporates hierarchical relationships among related cell types and uses single-cell RNA-seq and paired bulk RNA-seq/DNAm data to optimize CpG signatures, addressing limitations of existing reference-based methods. The approach is validated across multiple simulated and real datasets.",
+      "summary": "HOMED is a new computational framework for DNA methylation deconvolution that accounts for hierarchical relationships among related cell types and uses single-cell RNA-seq and paired bulk RNA-seq/DNAm data to optimize CpG signatures. This improves the accuracy of estimating cell-type proportions from bulk methylation data, which is important for epigenome-wide association studies where cellular heterogeneity confounds results. The method was validated across multiple simulated and real datasets.",
       "significance": "Medium",
       "tags": [
         "epigenomics",
@@ -337,7 +341,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42956748/"
         }
       ],
-      "summary": "This review categorizes 16 computational methods for estimating cell potency—a cell's differentiation potential—from static single-cell RNA-seq data. The authors group methods into average-based, entropy-based, and knowledge-based approaches, highlighting that these methods rest on different and sometimes conflicting assumptions. A unified mathematical framework is used to compare them, helping researchers choose appropriate tools and interpret potency estimates.",
+      "summary": "This review categorizes 16 computational methods for estimating cell potency—a cell's differentiation potential—from static single-cell RNA-seq data. The authors group methods into average-based, entropy-based, and knowledge-based approaches based on how they summarize gene expression, and compare them using a unified mathematical framework. The work clarifies the differing assumptions underlying potency inference and provides guidance for choosing appropriate methods.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -368,7 +372,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42935241/"
         }
       ],
-      "summary": "CellMarker 3.0 is an updated database that combines manually curated, experimentally validated cell marker genes with computationally predicted markers for human and mouse cell types across many tissues. It adds substantial new content (274 tissues, 1,877 cell types, 64,040 markers, and over 1.2 million tissue-cell type-marker entries) and introduces interactive web tools for analyzing single-cell RNA-seq and spatial transcriptomics data.",
+      "summary": "CellMarker 3.0 is an updated database that combines manually curated, experimentally validated cell marker genes with computationally predicted markers for human and mouse cell types across many tissues. It adds substantial new content over the prior version (274 tissues, 1,877 cell types, 64,040 markers) and introduces interactive web tools for analyzing single-cell RNA-seq and spatial transcriptomics data.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -399,7 +403,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42934226/"
         }
       ],
-      "summary": "The authors developed droplet-based long-read single-cell epigenome sequencing methods, dscNanoATAC and dscNanoCUT, which combine a commercial microfluidic device with nanopore sequencing to profile chromatin accessibility and histone modifications in individual cells at high throughput. This addresses the previous scalability bottleneck of long-read single-cell epigenomics, enabling multidimensional regulatory element profiling within single cells.",
+      "summary": "The authors developed droplet-based long-read single-cell epigenome sequencing methods, dscNanoATAC and dscNanoCUT, by combining a commercial microfluidic device with nanopore sequencing to profile chromatin accessibility and histone modifications in individual cells at high throughput. This addresses previous scalability limitations of long-read single-cell epigenomics, enabling multidimensional regulatory element profiling within single cells.",
       "significance": "High",
       "tags": [
         "epigenomics",
@@ -430,7 +434,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42996021/"
         }
       ],
-      "summary": "The authors introduce a Shannon entropy-based method for filtering low-quality and empty droplets in single-cell ATAC-seq data. Unlike existing approaches that rely on read depth or predefined genomic features, this method uses the information content of the chromatin accessibility landscape itself to distinguish high-quality nuclei. This helps prevent noisy droplets from distorting downstream analyses and obscuring rare cell populations.",
+      "summary": "The authors introduce a Shannon entropy-based method for filtering low-quality and empty droplets in single-cell ATAC-seq data. Unlike existing approaches that rely on read depth or predefined genomic features, this method uses the information content of the chromatin accessibility landscape itself to distinguish high-quality nuclei from noisy droplets. This helps preserve rare cell populations that might otherwise be obscured by debris-derived reads.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -461,74 +465,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43038266/"
         }
       ],
-      "summary": "This study identifies a ten-gene tyrosine-metabolism signature that predicts prognosis in low-grade astrocytoma and links it to suppressed metabolic-immune interactions. The authors use this signature to stratify patients and reveal a potential mechanism by which tyrosine metabolism contributes to immune evasion in these tumors.",
-      "significance": "Low",
+      "summary": "This study identifies a ten-gene signature related to tyrosine metabolism that predicts prognosis in low-grade astrocytoma and suggests that altered tyrosine metabolism is linked to immune suppression in the tumor microenvironment. The authors propose that this signature could help stratify patients and reveal a metabolic-immune axis that may be therapeutically relevant.",
+      "significance": "Medium",
       "tags": [
         "cancer",
         "metabolomics",
         "transcriptomics"
-      ]
-    },
-    {
-      "id": "4be8288d46fe",
-      "title": "Decoding pyroptosis at single-cell resolution: heterogeneity, microenvironment remodeling and potential translational insights.",
-      "abstract": "Pyroptosis, a pro-inflammatory programmed cell death mediated by inflammatory caspases and Gasdermin (GSDM) family proteins, exerts dual roles in host defense and pathological damage. Traditional bulk RNA sequencing (bulk RNA-seq) is limited in capturing single-cell heterogeneity and dissecting intercellular communication, impeding in-depth mechanistic exploration of pyroptosis. Single-cell RNA sequencing (scRNA-seq) has emerged as a powerful tool to address these limitations, enabling high-throughput profiling of single-cell transcriptomes and precise characterization of gene expression heter",
-      "journal": "Frontiers in immunology",
-      "doi": "10.3389/fimmu.2026.1869338",
-      "pmid": "42991405",
-      "first_author": "Xiang L",
-      "pub_date": "2026-01-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.3389%2Ffimmu.2026.1869338",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.3389%2Ffimmu.2026.1869338"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42991405/"
-        }
-      ],
-      "summary": "This review discusses how single-cell RNA sequencing can decode pyroptosis, an inflammatory form of programmed cell death, by capturing cell-to-cell heterogeneity and intercellular communication that bulk RNA-seq misses. It highlights how scRNA-seq reveals pyroptosis-related heterogeneity and microenvironment remodeling, and outlines potential translational insights. The paper is a synthesis of existing literature rather than new primary data.",
-      "significance": "Low",
-      "tags": [
-        "single-cell",
-        "transcriptomics",
-        "review"
-      ]
-    },
-    {
-      "id": "37989ee37bb4",
-      "title": "Reanalysis of public bulk and single-nucleus transcriptomes identifies widespread tumor-normal dysregulation and a cross-layer cell-cycle signal in sinonasal squamous cell carcinoma.",
-      "abstract": "Sinonasal squamous cell carcinoma (SNSCC) is a rare malignancy affecting the nasal cavity and paranasal sinuses, with human papillomavirus (HPV) infection identified as a critical etiological factor in a subset of cases. HPV-positive and HPV-negative SNSCC exhibit distinct clinical behaviors, with HPV-positive tumors generally demonstrating better prognosis and treatment response. However, the cellular composition and transcriptomic landscape of SNSCC tumor versus normal tissue remain incompletely characterized. Multi-layer transcriptomic reanalysis of publicly available single-nucleus and bul",
-      "journal": "Frontiers in genetics",
-      "doi": "10.3389/fgene.2026.1918021",
-      "pmid": "42991089",
-      "first_author": "Yuan J",
-      "pub_date": "2026-01-01",
-      "source": "PubMed",
-      "url": "https://doi.org/10.3389%2Ffgene.2026.1918021",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.3389%2Ffgene.2026.1918021"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42991089/"
-        }
-      ],
-      "summary": "This study reanalyzed public bulk and single-nucleus transcriptomic datasets to compare tumor and normal tissue in sinonasal squamous cell carcinoma (SNSCC), a rare head and neck cancer. The authors report widespread tumor-normal transcriptional dysregulation and identify a cell-cycle signal that appears consistently across both bulk and single-nucleus data layers, alongside differences linked to HPV status. The work is largely a secondary analysis of existing public data rather than a new experimental resource.",
-      "significance": "Low",
-      "tags": [
-        "transcriptomics",
-        "single-cell",
-        "cancer"
       ]
     }
   ]
