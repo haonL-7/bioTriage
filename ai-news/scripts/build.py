@@ -924,6 +924,64 @@ def generate_static_html(papers: list[dict], stats: dict):
     return result
 
 
+def create_robots():
+    """生成 robots.txt：允许搜索引擎，屏蔽训练型与批量抓取型 UA（自愿协议）。"""
+    base = "https://haonl-7.github.io/bioTriage/"
+    lines = [
+        "# bioTriage-Open",
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /api/",
+        "Disallow: /evidence/data/",
+        "Disallow: /*/data/",
+        "",
+        "# 训练型 / 批量采集型爬虫（自愿协议，不具强制力）",
+        "User-agent: GPTBot",
+        "Disallow: /",
+        "",
+        "User-agent: CCBot",
+        "Disallow: /",
+        "",
+        "User-agent: Google-Extended",
+        "Disallow: /",
+        "",
+        "User-agent: Bytespider",
+        "Disallow: /",
+        "",
+        "User-agent: Amazonbot",
+        "Disallow: /",
+        "",
+        "User-agent: ClaudeBot",
+        "Disallow: /",
+        "",
+        "User-agent: PerplexityBot",
+        "Disallow: /",
+        "",
+        "Sitemap: " + base + "sitemap.xml",
+        "",
+    ]
+    out = os.path.join(BUILD_DIR, "robots.txt")
+    with open(out, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("  Created robots.txt")
+
+
+def create_security_txt():
+    """生成 /.well-known/security.txt（漏洞披露联系方式）。"""
+    d = os.path.join(BUILD_DIR, ".well-known")
+    os.makedirs(d, exist_ok=True)
+    lines = [
+        "Contact: mailto:haon.liu@outlook.com",
+        "Expires: 2027-12-31T00:00:00Z",
+        "Preferred-Languages: zh, en",
+        "Canonical: https://haonl-7.github.io/bioTriage/.well-known/security.txt",
+        "",
+    ]
+    with open(os.path.join(d, "security.txt"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("  Created .well-known/security.txt")
+
+
 def create_sitemap():
     """生成 sitemap.xml（供 Google Search Console / 百度提交收录）"""
     base = "https://haonl-7.github.io/bioTriage/"
@@ -1106,6 +1164,8 @@ def main():
     build_api_v1(all_papers, stats)
     create_nojekyll()
     create_sitemap()
+    create_robots()
+    create_security_txt()
 
     # Deploy BioTriage main page → /index.html
     biotriage_src = os.path.join(PROJECT_ROOT, "..", "biotriage.html")
