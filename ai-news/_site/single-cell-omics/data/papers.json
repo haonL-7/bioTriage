@@ -1,7 +1,7 @@
 {
   "channel": "single-cell-omics",
-  "generated_at": "2026-11-22T23:54:30.618523",
-  "count": 15,
+  "generated_at": "2026-11-24T04:13:31.080473",
+  "count": 20,
   "papers": [
     {
       "id": "f68cc3c095e6",
@@ -26,13 +26,44 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43039660/"
         }
       ],
-      "summary": "The authors present scClustBench, an open-source benchmarking framework that evaluates single-cell RNA-seq clustering by testing cluster quality, stability, and reproducibility across multiple analytical approaches rather than relying on a single method. The tool helps distinguish genuine biological cell subtypes from analysis artifacts by checking whether proposed clusters can be consistently recovered.",
+      "summary": "The authors present scClustBench, an open-source benchmarking framework that evaluates single-cell RNA-seq clustering by testing cluster quality, stability, and reproducibility across multiple analytical approaches rather than relying on a single method. The tool helps distinguish true biological cell subtypes from analysis artifacts by checking whether proposed clusters can be consistently recovered.",
       "significance": "Medium",
       "tags": [
         "single-cell",
         "transcriptomics",
         "tool",
         "methodology"
+      ]
+    },
+    {
+      "id": "daa8149b69e9",
+      "title": "Iterative Geometric Structure Guided Nonnegative Matrix Factorization Scheme for Bulk Tissue RNA-seq Data Deconvolution.",
+      "abstract": "Complete deconvolution is a class of unsupervised methods that aim to estimate both cell-type proportions and cell-type-specific gene expression profiles (GEPs) from bulk RNA-seq data, without requiring prior reference profiles. Hence, it enables broader applicability to tissues or species for which reference data are limited or unavailable. For many existing methods, nonnegative matrix factorization (NMF) serves as the fundamental computational tool. However, NMF is mathematically ill-posed and a comprehensive understanding of how to overcome the inherent ill-posedness and improve solution ac",
+      "journal": "Bulletin of mathematical biology",
+      "doi": "10.1007/s11538-026-01802-4",
+      "pmid": "43043564",
+      "first_author": "Li S",
+      "pub_date": "2026-11-17",
+      "source": "PubMed",
+      "url": "https://doi.org/10.1007%2Fs11538-026-01802-4",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.1007%2Fs11538-026-01802-4"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/43043564/"
+        }
+      ],
+      "summary": "This paper proposes an iterative geometric structure-guided nonnegative matrix factorization (NMF) method for complete deconvolution of bulk RNA-seq data, simultaneously estimating cell-type proportions and cell-type-specific gene expression profiles without reference profiles. The approach addresses the mathematical ill-posedness of standard NMF by incorporating geometric structure constraints iteratively, aiming to improve solution accuracy and stability. It targets tissues or species where reference expression data are unavailable.",
+      "significance": "Medium",
+      "tags": [
+        "transcriptomics",
+        "methodology",
+        "machine-learning"
       ]
     },
     {
@@ -58,12 +89,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42999047/"
         }
       ],
-      "summary": "The authors present RAIDS, a software toolkit for inferring genetic ancestry from human molecular data, including sequence data that are difficult to genotype. Its data-synthesis approach allows per-sample accuracy assessment and optimization without requiring cohort data. This makes ancestry inference more broadly applicable to diverse molecular datasets.",
+      "summary": "The authors present RAIDS, a software toolkit for inferring genetic ancestry from human molecular data, including sequence data that is difficult to genotype. Its data-synthesis approach allows accuracy to be assessed and optimized for each individual profile without needing cohort data, making ancestry inference more broadly applicable to molecular datasets.",
       "significance": "Medium",
       "tags": [
         "population-genetics",
-        "tool",
-        "methodology"
+        "methodology",
+        "tool"
       ]
     },
     {
@@ -89,13 +120,170 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43008316/"
         }
       ],
-      "summary": "SigBridgeR is an R toolkit that standardizes the identification and benchmarking of phenotype-associated cell subpopulations by integrating bulk and single-cell transcriptomic data. It addresses the lack of fair comparison and reproducibility across existing computational methods by providing a unified framework with consistent parameters and output formats. This enables researchers to more reliably link specific cell types to clinical phenotypes.",
+      "summary": "SigBridgeR is an R toolkit that standardizes the identification and benchmarking of phenotype-associated cell subpopulations by integrating bulk transcriptomic and single-cell RNA-seq data. It addresses the current lack of comparability across existing computational methods by unifying algorithmic strategies, parameter configurations, and output formats, enabling fair method comparison and reproducible analyses.",
       "significance": "Medium",
       "tags": [
         "single-cell",
         "transcriptomics",
+        "tool"
+      ]
+    },
+    {
+      "id": "66e06c5d8085",
+      "title": "Inferring gene regulatory networks from single-cell perturbation data by optimizing causal reach of latent mediator dynamics.",
+      "abstract": "Resolving the causal structure of gene regulatory networks is central to understanding cellular regulation. Pooled CRISPR screens with single-cell RNA readouts measure the transcriptional consequences of many interventions in parallel, providing a powerful resource for causal discovery. Combinatorial designs that perturb multiple regulators per cell increase throughput and can reveal responses that single-gene perturbations do not. However, inferring causal gene networks from these experiments remains challenging because gene regulatory interactions are nonlinear, dynamic, and often involve fe",
+      "journal": "bioRxiv : the preprint server for biology",
+      "doi": "10.64898/2026.11.05.764481",
+      "pmid": "43060182",
+      "first_author": "Qian W",
+      "pub_date": "2026-11-06",
+      "source": "PubMed",
+      "url": "https://doi.org/10.64898%2F2026.11.05.764481",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.64898%2F2026.11.05.764481"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/43060182/"
+        }
+      ],
+      "summary": "The paper presents a computational method for inferring causal gene regulatory networks from pooled CRISPR single-cell perturbation screens, including combinatorial perturbations. It models latent mediator dynamics and optimizes 'causal reach' to capture nonlinear, dynamic regulatory interactions that simpler correlation-based approaches miss. This addresses a key bottleneck in using high-throughput perturbation screens for causal discovery.",
+      "significance": "Medium",
+      "tags": [
+        "single-cell",
+        "CRISPR",
+        "network-analysis",
+        "methodology",
+        "transcriptomics"
+      ]
+    },
+    {
+      "id": "728142371046",
+      "title": "Mapping the regulatory wiring of endothelial cell differentiation reveals a critical role for Hippo mechanosignaling.",
+      "abstract": "At each step of development, stem cells encounter a branching decision to differentiate into one type of cell or another. This decision is executed through the action of competing gene programs that specify different cellular identities. Consequently, creating a comprehensive map of the gene programs that drive each branching step of human cell differentiation remains a long-sought goal of developmental and stem cell biology. Here, we introduce a framework combining genome-wide CRISPR screens, single-cell readouts, and gene program inference to systematically discover and characterize regulato",
+      "journal": "bioRxiv : the preprint server for biology",
+      "doi": "10.64898/2026.11.04.763740",
+      "pmid": "43060471",
+      "first_author": "Nguyen TC",
+      "pub_date": "2026-11-05",
+      "source": "PubMed",
+      "url": "https://doi.org/10.64898%2F2026.11.04.763740",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.64898%2F2026.11.04.763740"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/43060471/"
+        }
+      ],
+      "summary": "This preprint presents a framework that combines genome-wide CRISPR screens with single-cell readouts and gene program inference to map the regulatory programs controlling human endothelial cell differentiation. The authors identify Hippo mechanosignaling as a critical regulator of this differentiation branching decision, providing a systematic approach for discovering regulators of cell fate choices.",
+      "significance": "Medium",
+      "tags": [
+        "CRISPR",
+        "single-cell",
+        "development",
+        "methodology"
+      ]
+    },
+    {
+      "id": "8a0d851e0237",
+      "title": "gcat, its_a_scam: modular tools for single cell data processing and per-cell quality control.",
+      "abstract": "The era of designing bioinformatic pipelines using open source tools is giving way to monolithic, and often proprietary, tools designed for end-to-end analysis, especially in the context of single cell data. While these tools are convenient for going from sequencing data to an almost complete data analysis \"in a few clicks\", they can strongly limit data use beyond standard analyses.",
+      "journal": "bioRxiv : the preprint server for biology",
+      "doi": "10.64898/2026.11.03.764034",
+      "pmid": "43060612",
+      "first_author": "Prabakar RK",
+      "pub_date": "2026-11-04",
+      "source": "PubMed",
+      "url": "https://doi.org/10.64898%2F2026.11.03.764034",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.64898%2F2026.11.03.764034"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/43060612/"
+        }
+      ],
+      "summary": "The authors present gcat and its_a_scam, two modular open-source tools for single-cell data processing and per-cell quality control. They argue that monolithic end-to-end pipelines limit flexibility, and their tools aim to restore composability so users can adapt analyses beyond standard workflows.",
+      "significance": "Low",
+      "tags": [
+        "single-cell",
         "tool",
         "methodology"
+      ]
+    },
+    {
+      "id": "e5952ab268d2",
+      "title": "VIGAT: VLM-guided gene activity quantification from single-cell ATAC-seq.",
+      "abstract": "Gene activity quantification from single-cell ATAC-seq is challenging because genomic regions informative of cell identity can vary across genes and tissues, while broadly accessible regions may provide limited cell-type-discriminative information. We developed VIGAT, a vision-language model (VLM)-guided tool that automates visual interpretation of ATAC coverage plots for adaptive gene activity quantification. VIGAT jointly examines accessibility patterns across multiple marker genes, integrating genomic annotations and biological context to select gene-specific regions enriched for cluster-di",
+      "journal": "bioRxiv : the preprint server for biology",
+      "doi": "10.64898/2026.10.16.759698",
+      "pmid": "43060042",
+      "first_author": "Ji B",
+      "pub_date": "2026-11-03",
+      "source": "PubMed",
+      "url": "https://doi.org/10.64898%2F2026.10.16.759698",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.64898%2F2026.10.16.759698"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/43060042/"
+        }
+      ],
+      "summary": "VIGAT is a new tool that uses a vision-language model to automatically interpret ATAC-seq coverage plots and adaptively quantify gene activity from single-cell ATAC-seq data. By jointly examining accessibility patterns across multiple marker genes and integrating genomic annotations, it selects gene-specific regions that are most informative for distinguishing cell types, addressing the challenge that informative regions vary across genes and tissues.",
+      "significance": "Medium",
+      "tags": [
+        "single-cell",
+        "epigenomics",
+        "machine-learning"
+      ]
+    },
+    {
+      "id": "8ea425853bb2",
+      "title": "Integration of single-cell multi-omic data with graph-based topic modelling.",
+      "abstract": "Recent advances in single-cell biology enable the profiling of multiple molecular layers, such as the transcriptome, epigenome, and surface proteins, within a single cell. Tackling the complexity of these data from multiple perspectives allows researchers to gain the most comprehensive insights into cellular biological properties. Here, we propose a graph-based topic modelling method called bionSBM. Our method leverages well-known community-detection methods for multipartite graphs and the interpretability of topic modelling to cluster and explain high-dimensional, sparse, and noisy single-cel",
+      "journal": "Briefings in bioinformatics",
+      "doi": "10.1093/bib/bbag608",
+      "pmid": "43034902",
+      "first_author": "Malagoli G",
+      "pub_date": "2026-11-02",
+      "source": "PubMed",
+      "url": "https://doi.org/10.1093%2Fbib%2Fbbag608",
+      "links": [
+        {
+          "type": "doi",
+          "label": "DOI",
+          "url": "https://doi.org/10.1093%2Fbib%2Fbbag608"
+        },
+        {
+          "type": "pubmed",
+          "label": "PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/43034902/"
+        }
+      ],
+      "summary": "The authors present bionSBM, a graph-based topic modelling method for integrating single-cell multi-omic data across transcriptome, epigenome, and surface protein layers. It combines community-detection algorithms for multipartite graphs with topic modelling to cluster and interpret high-dimensional, sparse, and noisy single-cell data. The method aims to provide a unified, interpretable framework for multi-layer single-cell analysis.",
+      "significance": "Medium",
+      "tags": [
+        "single-cell",
+        "methodology",
+        "machine-learning"
       ]
     },
     {
@@ -121,13 +309,12 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42727749/"
         }
       ],
-      "summary": "The authors propose a per-edge arbitration approach for gene regulatory network inference, training a gradient-boosted classifier on the raw scores from ten different inference methods (including GENIE3, GRNBoost2, CLR, and ARACNe) so that method weighting varies by edge rather than being fixed globally. They also develop a diagnostic typology of inter-method conflict. Evaluated across six single-cell perturbation screens, the approach aims to resolve disagreements between inference methods more intelligently than selecting one method or simple averaging.",
+      "summary": "The authors propose a per-edge arbitration approach for gene regulatory network inference, training a gradient-boosted classifier on the raw scores from ten different inference methods so that method weighting varies by edge rather than being fixed or averaged. They also develop a diagnostic typology of inter-method conflicts. The approach is evaluated across six single-cell perturbation screens.",
       "significance": "Medium",
       "tags": [
         "network-analysis",
         "single-cell",
-        "machine-learning",
-        "methodology"
+        "machine-learning"
       ]
     },
     {
@@ -153,12 +340,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42705211/"
         }
       ],
-      "summary": "This study integrates single-cell and bulk RNA-seq data with machine learning to build a prognostic and immunotherapeutic signature (PIS) for non-small cell lung cancer based on epithelial cell-derived genes. The signature stratifies patients by survival and immune activity, with low-PIS patients showing better outcomes and higher immune infiltration. ADAM12 is identified and validated as a key functional regulator through cell line and mouse experiments.",
+      "summary": "This study integrates single-cell and bulk RNA-seq data from NSCLC patients to build a prognostic and immunotherapeutic signature (PIS) based on epithelial cell-derived genes, using machine learning to predict survival and immunotherapy response. Low-PIS patients show better outcomes and higher immune infiltration, and ADAM12 is identified and experimentally validated as a key functional regulator in NSCLC. The work combines computational signature development with in vitro and mouse model validation.",
       "significance": "Medium",
       "tags": [
         "single-cell",
         "transcriptomics",
-        "cancer"
+        "cancer",
+        "machine-learning",
+        "clinical"
       ]
     },
     {
@@ -184,14 +373,14 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42601252/"
         }
       ],
-      "summary": "This review categorizes 33 recent computational methods for inferring cell-cell communication from spatial transcriptomics data into three groups: cell-type or single-cell resolution network inference, modeling of microenvironment-driven transcriptional variability, and regulatory modulation. It highlights how spatial context enables more biologically grounded communication inference than scRNA-seq alone and maps methods to the distinct biological questions they address.",
+      "summary": "This review categorizes 33 recent computational methods for inferring cell-cell communication from spatial transcriptomics data. The authors organize these methods into three groups: those inferring communication networks at cell-type or single-cell resolution, those modeling microenvironment-driven transcriptional variability, and those modeling regulatory mechanisms. The review provides a framework to help researchers choose appropriate methods for their biological questions.",
       "significance": "Medium",
       "tags": [
         "spatial-omics",
         "transcriptomics",
+        "methodology",
         "review",
-        "network-analysis",
-        "methodology"
+        "systems-biology"
       ]
     },
     {
@@ -217,7 +406,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42526067/"
         }
       ],
-      "summary": "The authors introduce a Contextual Activity Score (CAS), a new metric for inferring ADAR-associated RNA editing activity from gene expression data rather than raw sequencing reads. Unlike the standard Alu Editing Index, CAS is designed to work across bulk RNA-seq, single-cell, and spatial transcriptomics, where read-level editing quantification is impractical. This provides a broadly applicable framework for studying ADAR activity in contexts previously inaccessible to existing methods.",
+      "summary": "The authors introduce a Contextual Activity Score (CAS) that infers ADAR-associated RNA editing activity directly from gene expression data, bypassing the need for raw sequencing reads required by the standard Alu Editing Index. This enables estimation of ADAR activity across RNA-seq, single-cell, and spatial transcriptomics platforms where the AEI is impractical.",
       "significance": "Medium",
       "tags": [
         "transcriptomics",
@@ -248,7 +437,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42507894/"
         }
       ],
-      "summary": "This study investigates how alternative polyadenylation (APA), a post-transcriptional regulatory mechanism, contributes to neuroblastoma, the most common pediatric solid tumor. The authors identify NUDT21 as a key orchestrator of an integrated transcriptional and post-transcriptional circuit that sustains neuroblastoma cell proliferation and survival, suggesting APA regulation as a potential therapeutic vulnerability.",
+      "summary": "This study investigates how alternative polyadenylation (APA), a post-transcriptional regulatory mechanism, contributes to neuroblastoma biology. The authors identify NUDT21 as a central orchestrator of an integrated transcriptional and post-transcriptional circuit that sustains neuroblastoma cell proliferation and survival, suggesting APA regulation as a potential therapeutic vulnerability in this pediatric cancer.",
       "significance": "Medium",
       "tags": [
         "cancer",
@@ -279,7 +468,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42990313/"
         }
       ],
-      "summary": "The authors analyzed a large single-cell RNA-seq atlas of 266 pediatric solid tumor samples and xenografts, revealing that pediatric sarcomas express mixed neurodevelopmental gene programs reflecting their arrested progenitor origins. This lineage mixing identifies tumor-selective pairs of surface antigens that could serve as targets for combinatorial therapy, offering a potential strategy to overcome the low mutational burden of these cancers.",
+      "summary": "This study analyzed a pan-pediatric single-cell RNA-seq atlas of 266 samples across 22 pediatric solid tumor types to identify shared developmental gene expression programs. The authors found that pediatric sarcomas exhibit lineage-mixed neurodevelopmental programs, which they used to nominate tumor-selective surface antigen pairs as potential therapeutic targets. This work demonstrates how single-cell atlases can reveal convergent vulnerabilities across rare pediatric cancers.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -310,7 +499,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42990126/"
         }
       ],
-      "summary": "HOMED is a new computational framework for DNA methylation deconvolution that accounts for hierarchical relationships among related cell types and uses single-cell RNA-seq and paired bulk RNA-seq/DNAm data to optimize CpG signatures. This improves the accuracy of estimating cell-type proportions from bulk methylation data, which is important for epigenome-wide association studies where cellular heterogeneity confounds results. The method was validated across multiple simulated and real datasets.",
+      "summary": "HOMED is a new computational framework for DNA methylation deconvolution that improves estimation of cell-type proportions in bulk tissue samples. It incorporates hierarchical relationships among related cell types and uses single-cell RNA-seq and paired bulk RNA-seq/DNAm data to optimize CpG signatures, addressing limitations of existing reference-based methods. The approach is validated across multiple simulated and real datasets.",
       "significance": "Medium",
       "tags": [
         "epigenomics",
@@ -341,7 +530,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42956748/"
         }
       ],
-      "summary": "This review categorizes 16 computational methods for estimating cell potency—a cell's differentiation potential—from static single-cell RNA-seq data. The authors group methods into average-based, entropy-based, and knowledge-based approaches based on how they summarize gene expression, and compare them using a unified mathematical framework. The work clarifies the differing assumptions underlying potency inference and provides guidance for choosing appropriate methods.",
+      "summary": "This review systematically categorizes 16 computational methods for estimating cell potency (differentiation potential) from single-cell RNA-seq data into average-based, entropy-based, and knowledge-based approaches. The authors analyze the contrasting assumptions underlying each method and provide a unified mathematical framework for comparison. The work serves as a practical guide for researchers choosing potency estimation tools and highlights the need for standardized benchmarks.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -372,7 +561,7 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42935241/"
         }
       ],
-      "summary": "CellMarker 3.0 is an updated database that combines manually curated, experimentally validated cell marker genes with computationally predicted markers for human and mouse cell types across many tissues. It adds substantial new content over the prior version (274 tissues, 1,877 cell types, 64,040 markers) and introduces interactive web tools for analyzing single-cell RNA-seq and spatial transcriptomics data.",
+      "summary": "CellMarker 3.0 is an updated database that combines manually curated, experimentally validated cell marker genes with computationally predicted markers for many cell types in human and mouse tissues. The release adds substantial new content (274 tissues, 1,877 cell types, 64,040 markers, and over 1.2 million tissue-cell type-marker entries) and introduces interactive web tools for analyzing single-cell RNA-seq and spatial transcriptomics data.",
       "significance": "Medium",
       "tags": [
         "single-cell",
@@ -403,42 +592,11 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/42934226/"
         }
       ],
-      "summary": "The authors developed droplet-based long-read single-cell epigenome sequencing methods, dscNanoATAC and dscNanoCUT, by combining a commercial microfluidic device with nanopore sequencing to profile chromatin accessibility and histone modifications in individual cells at high throughput. This addresses previous scalability limitations of long-read single-cell epigenomics, enabling multidimensional regulatory element profiling within single cells.",
+      "summary": "The authors developed droplet-based long-read single-cell epigenome sequencing methods, dscNanoATAC and dscNanoCUT, that combine a commercial microfluidic device with nanopore sequencing to profile chromatin accessibility and histone modifications in individual cells at high throughput. This addresses the scalability bottleneck of prior long-read single-cell epigenomic approaches, enabling multidimensional regulatory element profiling per cell.",
       "significance": "High",
       "tags": [
         "epigenomics",
         "single-cell",
-        "methodology"
-      ]
-    },
-    {
-      "id": "6af74eb21949",
-      "title": "Denoising single-cell ATAC-seq data with Shannon entropy.",
-      "abstract": "Single-cell Assay for Transposase Accessible Chromatin with sequencing (scATAC-seq) is widely used to investigate chromatin accessibility but experiments often contain empty droplets, droplets containing damaged nuclei or cellular-debris. Accurately filtering high-quality nuclei is important as noisy droplets contribute reads that can distort downstream analysis and obscure rare cell population. Current approaches often rely on read depth and or predefined genomic features that are not exactly the same as chromatin accessibility landscape. Here, we present a Shannon entropy-based method that f",
-      "journal": "bioRxiv : the preprint server for biology",
-      "doi": "10.64898/2026.10.20.760589",
-      "pmid": "42996021",
-      "first_author": "Yang S",
-      "pub_date": "2026-10-23",
-      "source": "PubMed",
-      "url": "https://doi.org/10.64898%2F2026.10.20.760589",
-      "links": [
-        {
-          "type": "doi",
-          "label": "DOI",
-          "url": "https://doi.org/10.64898%2F2026.10.20.760589"
-        },
-        {
-          "type": "pubmed",
-          "label": "PubMed",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42996021/"
-        }
-      ],
-      "summary": "The authors introduce a Shannon entropy-based method for filtering low-quality and empty droplets in single-cell ATAC-seq data. Unlike existing approaches that rely on read depth or predefined genomic features, this method uses the information content of the chromatin accessibility landscape itself to distinguish high-quality nuclei from noisy droplets. This helps preserve rare cell populations that might otherwise be obscured by debris-derived reads.",
-      "significance": "Medium",
-      "tags": [
-        "single-cell",
-        "epigenomics",
         "methodology"
       ]
     },
@@ -465,8 +623,8 @@
           "url": "https://pubmed.ncbi.nlm.nih.gov/43038266/"
         }
       ],
-      "summary": "This study identifies a ten-gene signature related to tyrosine metabolism that predicts prognosis in low-grade astrocytoma and suggests that altered tyrosine metabolism is linked to immune suppression in the tumor microenvironment. The authors propose that this signature could help stratify patients and reveal a metabolic-immune axis that may be therapeutically relevant.",
-      "significance": "Medium",
+      "summary": "This study identifies a ten-gene tyrosine-metabolism signature that predicts prognosis in low-grade astrocytoma and links it to suppressed metabolic-immune interactions. The work suggests that dysregulated tyrosine metabolism in specific cell types contributes to an immunosuppressive microenvironment in these tumors.",
+      "significance": "Low",
       "tags": [
         "cancer",
         "metabolomics",
